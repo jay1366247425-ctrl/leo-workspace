@@ -2,8 +2,14 @@
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Leo教练｜个人商业与生活全能云端工作台</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Leo教练 | 个人商业与生活全能工作台</title>
+  <!-- PWA Full-Screen Meta Tags for iOS & Android -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Leo工作台">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#064E3B">
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Inter Font -->
@@ -11,19 +17,20 @@
   <style>
     body {
       font-family: 'Inter', -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif;
-      background-color: #f8faf9;
+      background-color: #F8FAFC;
       color: #1e293b;
       -webkit-tap-highlight-color: transparent;
     }
 
     /* Executive Brand Palette */
-    .bg-forest { background-color: #133834; }
-    .text-forest { color: #133834; }
-    .border-forest { border-color: #133834; }
-    .bg-gold { background-color: #c59b48; }
-    .text-gold { color: #c59b48; }
-    .text-gold-light { color: #e2b866; }
-    .border-gold { border-color: #c59b48; }
+    .bg-forest { background-color: #064E3B; }
+    .text-forest { color: #064E3B; }
+    .border-forest { border-color: #064E3B; }
+    .bg-teal-deep { background-color: #0F766E; }
+    .bg-gold { background-color: #D97706; }
+    .text-gold { color: #D97706; }
+    .text-gold-light { color: #FBBF24; }
+    .border-gold { border-color: #D97706; }
 
     /* Custom Scrollbars */
     ::-webkit-scrollbar { width: 5px; height: 5px; }
@@ -42,32 +49,53 @@
 </head>
 <body class="min-h-screen flex flex-col pb-20 md:pb-8">
 
+  <!-- Optional 4-Digit PIN Lock Overlay -->
+  <div id="pin-lock-screen" class="fixed inset-0 bg-forest z-50 hidden flex-col items-center justify-center p-6 text-white">
+    <div class="w-14 h-14 rounded-2xl bg-gold/20 border-2 border-gold flex items-center justify-center text-gold-light font-bold text-2xl mb-4">
+      L
+    </div>
+    <h2 class="text-lg font-bold tracking-tight">Leo教练 · 专属云端工作台</h2>
+    <p class="text-xs text-emerald-200 mt-1 mb-6">请输入 4 位安全访问密码解锁</p>
+    <input type="password" id="pin-unlock-input" maxlength="4" inputmode="numeric" placeholder="••••"
+      oninput="checkPinUnlock()"
+      class="w-40 text-center text-2xl tracking-[0.5em] font-bold py-3 rounded-xl bg-white/10 border border-gold text-white focus:outline-none focus:bg-white/20">
+    <p id="pin-error-msg" class="text-xs text-rose-300 mt-2 h-4"></p>
+  </div>
+
   <!-- Top Executive Header -->
   <header class="no-print bg-forest text-white border-b-4 border-gold sticky top-0 z-40 shadow-md">
-    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-2">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-2">
       <div class="flex items-center gap-3">
         <div class="w-9 h-9 rounded-xl bg-gold/20 border border-gold flex items-center justify-center text-gold-light font-bold text-base shrink-0">
           L
         </div>
         <div>
-          <div class="flex items-center gap-2">
+          <div class="flex flex-wrap items-center gap-2">
             <span class="text-[10px] font-bold tracking-widest uppercase text-gold-light">LEO’S EXECUTIVE OS</span>
-            <span id="sync-badge" class="inline-flex items-center gap-1 text-[10px] px-2 py-0.5 rounded-full bg-white/10 text-emerald-300">
-              <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-              <span id="sync-status-text">云端连接中...</span>
+            <span id="sync-badge" class="inline-flex items-center gap-1.5 text-[10px] px-2.5 py-0.5 rounded-full bg-white/10 text-emerald-300 font-medium">
+              <span id="sync-dot" class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+              <span id="sync-status-text">正在连接新加坡云端节点...</span>
             </span>
           </div>
-          <h1 class="text-base sm:text-lg font-bold tracking-tight">Leo教练 · 全能商业与生活工作台</h1>
+          <h1 class="text-base sm:text-lg font-bold tracking-tight">Leo教练 | 个人商业与生活全能工作台</h1>
         </div>
       </div>
 
-      <!-- Data Sovereignty Controls -->
+      <!-- Data Sovereignty & Sync Controls -->
       <div class="flex items-center gap-1.5 sm:gap-2">
-        <button onclick="exportAllBackup()" class="bg-white/10 hover:bg-white/20 text-white text-xs px-2.5 sm:px-3 py-2 rounded-lg transition cursor-pointer flex items-center gap-1" title="导出全量 JSON 备份">
+        <button onclick="manualForceSync()" class="bg-teal-deep hover:bg-teal-700 text-white text-xs px-2.5 sm:px-3 py-2 rounded-lg transition cursor-pointer flex items-center gap-1 shadow-xs" title="立即强制刷新/同步云端">
+          <svg class="w-3.5 h-3.5 text-gold-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+          <span class="hidden sm:inline">立即同步</span>
+        </button>
+        <button onclick="openPinSettingsModal()" class="bg-white/10 hover:bg-white/20 text-white text-xs px-2.5 py-2 rounded-lg transition cursor-pointer flex items-center gap-1" title="设置4位隐私安全锁">
+          <svg class="w-3.5 h-3.5 text-gold-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+          <span class="hidden md:inline">安全锁</span>
+        </button>
+        <button onclick="exportAllBackup()" class="bg-white/10 hover:bg-white/20 text-white text-xs px-2.5 sm:px-3 py-2 rounded-lg transition cursor-pointer flex items-center gap-1" title="一键导出 JSON 备份">
           <svg class="w-3.5 h-3.5 text-gold-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
           <span class="hidden sm:inline">导出备份</span>
         </button>
-        <label class="bg-white/10 hover:bg-white/20 text-white text-xs px-2.5 sm:px-3 py-2 rounded-lg transition cursor-pointer flex items-center gap-1" title="从 JSON 文件恢复数据">
+        <label class="bg-white/10 hover:bg-white/20 text-white text-xs px-2.5 sm:px-3 py-2 rounded-lg transition cursor-pointer flex items-center gap-1" title="导入 JSON 备份恢复">
           <svg class="w-3.5 h-3.5 text-gold-light" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/></svg>
           <span class="hidden sm:inline">导入恢复</span>
           <input type="file" id="import-json-input" accept=".json" class="hidden" onchange="importAllBackup(event)">
@@ -76,18 +104,18 @@
     </div>
 
     <!-- Desktop Top Pillar Navigation -->
-    <nav class="hidden md:block bg-[#0e2a27] border-t border-white/10">
+    <nav class="hidden md:block bg-[#04392b] border-t border-white/10">
       <div class="max-w-7xl mx-auto px-4 flex items-center gap-2 py-2">
         <button onclick="switchPillar('global')" data-pillar="global" class="pillar-btn px-4 py-2 rounded-lg text-xs font-semibold transition cursor-pointer flex items-center gap-2 bg-gold text-white">
           <span>📊 全局复利总看板</span>
         </button>
-        <button onclick="switchPillar('youth')" data-pillar="youth" class="pillar-btn px-4 py-2 rounded-lg text-xs font-semibold transition cursor-pointer flex items-center gap-2 text-gray-300 hover:bg-white/10">
+        <button onclick="switchPillar('youth')" data-pillar="youth" class="pillar-btn px-4 py-2 rounded-lg text-xs font-semibold transition cursor-pointer flex items-center gap-2 text-gray-200 hover:bg-white/10">
           <span>🏃 Leo户外双语体能</span>
         </button>
-        <button onclick="switchPillar('guide')" data-pillar="guide" class="pillar-btn px-4 py-2 rounded-lg text-xs font-semibold transition cursor-pointer flex items-center gap-2 text-gray-300 hover:bg-white/10">
+        <button onclick="switchPillar('guide')" data-pillar="guide" class="pillar-btn px-4 py-2 rounded-lg text-xs font-semibold transition cursor-pointer flex items-center gap-2 text-gray-200 hover:bg-white/10">
           <span>🗺️ 丽水英语地接</span>
         </button>
-        <button onclick="switchPillar('health')" data-pillar="health" class="pillar-btn px-4 py-2 rounded-lg text-xs font-semibold transition cursor-pointer flex items-center gap-2 text-gray-300 hover:bg-white/10">
+        <button onclick="switchPillar('health')" data-pillar="health" class="pillar-btn px-4 py-2 rounded-lg text-xs font-semibold transition cursor-pointer flex items-center gap-2 text-gray-200 hover:bg-white/10">
           <span>🥗 饮食锻炼健康系统</span>
         </button>
       </div>
@@ -140,25 +168,25 @@
         </div>
         <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-xs">
           <div class="flex items-center justify-between">
-            <span class="text-xs text-slate-500 font-medium">2027.3 自由过渡进度</span>
+            <span class="text-xs text-slate-500 font-medium">2027.3.31 自由过渡进度</span>
             <span class="text-xs font-bold text-gold" id="kpi-freedom-pct">0%</span>
           </div>
           <div class="w-full bg-slate-100 h-2.5 rounded-full mt-2.5 overflow-hidden">
-            <div id="kpi-freedom-bar" class="bg-forest h-full rounded-full transition-all duration-500" style="width: 35%"></div>
+            <div id="kpi-freedom-bar" class="bg-forest h-full rounded-full transition-all duration-500" style="width: 38%"></div>
           </div>
-          <div class="text-[11px] text-slate-500 mt-1.5" id="kpi-freedom-note">距离 2027年3月 独立创业节点</div>
+          <div class="text-[11px] text-slate-500 mt-1.5" id="kpi-freedom-note">目标节点：2027年3月31日</div>
         </div>
       </div>
 
-      <!-- Revenue & Compounding Breakdown + Low-Entropy Decision Checklist -->
+      <!-- Revenue & Compounding Breakdown + Low-Entropy Decision Checklist & Memo -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
         <!-- Left: Revenue Streams Table -->
-        <div class="lg:col-span-8 bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-xs">
-          <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+        <div class="lg:col-span-8 bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-xs space-y-4">
+          <div class="flex flex-wrap items-center justify-between gap-2">
             <div>
               <h2 class="text-base font-bold text-forest flex items-center gap-2">
                 <span class="w-2 h-4 bg-gold rounded-xs inline-block"></span>
-                现金流与资产复利结构追踪（可实时修改）
+                现金流与资产复利结构追踪（多端实时同步）
               </h2>
               <p class="text-xs text-slate-500 mt-0.5">本职安全垫 + 高毛利双语副业 + 长期复利资产配置</p>
             </div>
@@ -183,6 +211,20 @@
               </tbody>
             </table>
           </div>
+
+          <!-- Cloud Quick Memo Pad -->
+          <div class="pt-3 border-t border-slate-100">
+            <div class="flex items-center justify-between mb-1.5">
+              <label class="text-xs font-bold text-forest flex items-center gap-1.5">
+                <span>📝 跨设备云端随手备忘录（手机记灵感 · 电脑直接看）</span>
+              </label>
+              <button onclick="saveQuickMemo()" class="text-xs font-semibold bg-gold text-white px-3 py-1 rounded-lg hover:bg-amber-600 cursor-pointer">
+                保存备忘到云端
+              </button>
+            </div>
+            <textarea id="global-quick-memo" rows="3" placeholder="在这里记录突发商业灵感、跟进事项或购置清单，点击保存即全端同步..."
+              class="w-full text-xs p-3 rounded-xl border border-slate-200 bg-[#F8FAFC] focus:outline-none focus:border-forest leading-relaxed"></textarea>
+          </div>
         </div>
 
         <!-- Right: Low-Entropy Executive Principles Card -->
@@ -190,24 +232,24 @@
           <div class="bg-forest text-white rounded-2xl p-5 border-b-4 border-gold shadow-sm">
             <div class="text-[11px] font-bold tracking-widest uppercase text-gold-light">DECISION FILTER · 决策过滤器</div>
             <h3 class="text-base font-bold mt-1">低熵人生三原则自检卡</h3>
-            <p class="text-xs text-slate-300 mt-1">接任何新项目、新客户或新事务前，必须同时满足以下三项：</p>
+            <p class="text-xs text-slate-200 mt-1">接任何新项目、新客户或新事务前，必须同时满足以下三项：</p>
             <div class="mt-4 space-y-2.5 text-xs">
               <label class="flex items-start gap-2.5 bg-white/10 p-3 rounded-xl cursor-pointer">
-                <input type="checkbox" checked class="mt-0.5 accent-[#c59b48]">
+                <input type="checkbox" checked class="mt-0.5 accent-[#D97706]">
                 <div>
                   <div class="font-bold text-gold-light">1. 高毛利 (High Margin)</div>
                   <div class="text-slate-200 mt-0.5">单位时间产值高，绝不卷低价体力消耗战。</div>
                 </div>
               </label>
               <label class="flex items-start gap-2.5 bg-white/10 p-3 rounded-xl cursor-pointer">
-                <input type="checkbox" checked class="mt-0.5 accent-[#c59b48]">
+                <input type="checkbox" checked class="mt-0.5 accent-[#D97706]">
                 <div>
                   <div class="font-bold text-gold-light">2. 强复利 (Compounding)</div>
                   <div class="text-slate-200 mt-0.5">动作库、口碑、英文讲解词可一次沉淀、反复变现。</div>
                 </div>
               </label>
               <label class="flex items-start gap-2.5 bg-white/10 p-3 rounded-xl cursor-pointer">
-                <input type="checkbox" checked class="mt-0.5 accent-[#c59b48]">
+                <input type="checkbox" checked class="mt-0.5 accent-[#D97706]">
                 <div>
                   <div class="font-bold text-gold-light">3. 极低熵 (Low Entropy)</div>
                   <div class="text-slate-200 mt-0.5">交付边界清晰，不牺牲睡眠，不消耗妻子情绪能量。</div>
@@ -250,7 +292,7 @@
         <div class="flex flex-wrap items-center justify-between gap-2 bg-white p-4 rounded-2xl border border-slate-200">
           <div>
             <h2 class="text-base font-bold text-forest">学员档案与体测基线库 (CRM)</h2>
-            <p class="text-xs text-slate-500">管理线上二胎会员与丽水周末小班学员，点击可录入最新体测成绩</p>
+            <p class="text-xs text-slate-500">管理线上二胎会员与丽水周末小班学员，支持快捷 +1 / -1 课时调整与体测记录</p>
           </div>
           <button onclick="openStudentModal()" class="bg-forest hover:bg-emerald-950 text-white text-xs font-semibold px-4 py-2.5 rounded-xl shadow-xs cursor-pointer">
             + 新增学员档案
@@ -293,8 +335,8 @@
           </div>
 
           <!-- Quick Interactive Evaluator -->
-          <div class="bg-[#f4f7f6] rounded-xl p-4 border border-slate-200 mt-4">
-            <h3 class="text-xs font-bold text-forest uppercase tracking-wider mb-3">⚡ 快捷学员体测对比评估器（自动亮灯预警）</h3>
+          <div class="bg-[#F8FAFC] rounded-xl p-4 border border-slate-200 mt-4">
+            <h3 class="text-xs font-bold text-forest uppercase tracking-wider mb-3">⚡ 体测录入与自动亮灯诊断器（左右平衡偏差 &gt;30% 自动红色预警）</h3>
             <div class="grid grid-cols-1 sm:grid-cols-5 gap-3 items-end">
               <div>
                 <label class="block text-[11px] font-semibold text-slate-600 mb-1">1分钟跳绳 (次)</label>
@@ -342,8 +384,8 @@
               <button onclick="filterDrills('动态热身')" data-dcat="动态热身" class="dcat-btn px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-slate-100 text-slate-600 whitespace-nowrap cursor-pointer">动态热身</button>
               <button onclick="filterDrills('稳定性纠偏')" data-dcat="稳定性纠偏" class="dcat-btn px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-slate-100 text-slate-600 whitespace-nowrap cursor-pointer">稳定性纠偏</button>
               <button onclick="filterDrills('爆发力循环')" data-dcat="爆发力循环" class="dcat-btn px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-slate-100 text-slate-600 whitespace-nowrap cursor-pointer">爆发力循环</button>
-              <button onclick="filterDrills('神经敏捷')" data-dcat="神经敏捷" class="dcat-btn px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-slate-100 text-slate-600 whitespace-nowrap cursor-pointer">神经敏捷</button>
-              <button onclick="filterDrills('放松拉伸')" data-dcat="放松拉伸" class="dcat-btn px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-slate-100 text-slate-600 whitespace-nowrap cursor-pointer">放松拉伸</button>
+              <button onclick="filterDrills('敏捷反应')" data-dcat="敏捷反应" class="dcat-btn px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-slate-100 text-slate-600 whitespace-nowrap cursor-pointer">敏捷反应</button>
+              <button onclick="filterDrills('拉伸复盘')" data-dcat="拉伸复盘" class="dcat-btn px-2.5 py-1 rounded-lg text-[11px] font-semibold bg-slate-100 text-slate-600 whitespace-nowrap cursor-pointer">拉伸复盘</button>
             </div>
 
             <div id="drills-list-container" class="space-y-2 max-h-[520px] overflow-y-auto pr-1">
@@ -389,14 +431,14 @@
               <!-- Coach Notes -->
               <div>
                 <label class="block text-[11px] font-semibold text-slate-600 mb-1">Leo 教练专属纠偏叮嘱（可实时修改）</label>
-                <textarea id="lesson-coach-notes" rows="2" class="w-full text-xs p-2.5 rounded-lg border border-slate-200 bg-[#f8faf9] focus:outline-none focus:border-forest">1. 质量高于数量：落地膝盖保持对准第二脚趾，绝不内扣。
+                <textarea id="lesson-coach-notes" rows="2" class="w-full text-xs p-2.5 rounded-lg border border-slate-200 bg-[#F8FAFC] focus:outline-none focus:border-forest">1. 质量高于数量：落地膝盖保持对准第二脚趾，绝不内扣。
 2. 拍摄一段 10 秒正面+侧面动作视频发微信（Leo_coach），获取 1v1 语音纠偏。</textarea>
               </div>
 
               <!-- Dual Action Buttons -->
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-1">
                 <button onclick="copyLessonToWeChat()" class="bg-forest hover:bg-emerald-950 text-white text-xs font-semibold py-2.5 px-4 rounded-xl shadow-xs transition cursor-pointer flex items-center justify-center gap-1.5">
-                  <span>📋 一键复制微信发送版</span>
+                  <span>📋 一键复制微信交付版</span>
                 </button>
                 <button onclick="completeAndDeductLesson()" class="bg-gold hover:bg-amber-600 text-white text-xs font-semibold py-2.5 px-4 rounded-xl shadow-xs transition cursor-pointer flex items-center justify-center gap-1.5">
                   <span>✅ 确认上课并自动消课 (-1节)</span>
@@ -410,11 +452,14 @@
       <!-- SUB-MODULE 2.4: 上课记录表 (Lesson Logs & Auto-Deduction) -->
       <div id="ysub-logs" class="ysub-view hidden space-y-4">
         <div class="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200">
-          <div class="flex items-center justify-between mb-4">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
             <div>
               <h2 class="text-base font-bold text-forest">上课与自动消课历史记录表</h2>
-              <p class="text-xs text-slate-500">每次在备课器点击“确认上课并自动消课”，系统将自动在此归档并扣减学员剩余课时</p>
+              <p class="text-xs text-slate-500">每次在备课器点击“确认上课并自动消课”，系统将自动在此归档并扣减学员剩余课时，也支持手动补录</p>
             </div>
+            <button onclick="openLessonLogModal()" class="bg-forest hover:bg-emerald-950 text-white text-xs font-semibold px-3.5 py-2 rounded-xl cursor-pointer">
+              + 手动补录上课记录
+            </button>
           </div>
           <div class="overflow-x-auto">
             <table class="w-full text-left border-collapse text-xs">
@@ -422,7 +467,7 @@
                 <tr class="bg-slate-50 text-slate-600 border-b border-slate-200">
                   <th class="py-2.5 px-3 font-semibold">日期</th>
                   <th class="py-2.5 px-3 font-semibold">学员姓名</th>
-                  <th class="py-2.5 px-3 font-semibold">训练核心内容</th>
+                  <th class="py-2.5 px-3 font-semibold">训练核心内容与观察备注</th>
                   <th class="py-2.5 px-3 font-semibold">扣减课时</th>
                   <th class="py-2.5 px-3 font-semibold">确认营收</th>
                   <th class="py-2.5 px-3 font-semibold text-right">操作</th>
@@ -482,7 +527,7 @@
           <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
             <div>
               <h2 class="text-base font-bold text-forest">国际游客订单与松阳/丽水行程管理</h2>
-              <p class="text-xs text-slate-500">Showaround / TourByLocals / 独立直客订单追踪</p>
+              <p class="text-xs text-slate-500">Showaround / TourByLocals / GetYourGuide / 独立直客订单追踪</p>
             </div>
             <button onclick="openTourModal()" class="bg-forest hover:bg-emerald-950 text-white text-xs font-semibold px-3.5 py-2 rounded-xl cursor-pointer">
               + 新增海外地接订单
@@ -527,12 +572,12 @@
               <label class="block text-slate-600 font-semibold mb-1">纯电补能/高速/门票杂费成本 (¥)</label>
               <input type="number" id="calc-cost-fee" value="80" oninput="calcTourMargin()" class="w-full px-3 py-2 rounded-lg border border-slate-300 bg-slate-50">
             </div>
-            <div class="bg-[#eaf0ee] p-3.5 rounded-xl border border-[#b8c9c4] mt-2">
+            <div class="bg-[#ecfdf5] p-3.5 rounded-xl border border-emerald-200 mt-2">
               <div class="flex justify-between items-center">
                 <span class="text-slate-700 font-medium">对外总报价 (约 USD):</span>
                 <span class="font-bold text-forest text-sm" id="calc-total-quote">¥1,600 ($222)</span>
               </div>
-              <div class="flex justify-between items-center mt-1.5 pt-1.5 border-t border-slate-300/60">
+              <div class="flex justify-between items-center mt-1.5 pt-1.5 border-t border-emerald-200/80">
                 <span class="text-slate-700 font-medium">单日纯利润 & 毛利率:</span>
                 <span class="font-bold text-emerald-800 text-sm" id="calc-net-margin">¥1,520 (95.0%)</span>
               </div>
@@ -545,7 +590,7 @@
       <div class="bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-xs space-y-4">
         <div class="flex flex-wrap items-center justify-between gap-2">
           <div>
-            <h2 class="text-base font-bold text-forest">松阳古村与丽水生态双语文化讲解词库</h2>
+            <h2 class="text-base font-bold text-forest">松阳古村、廊桥与云和梯田双语文化讲解词库</h2>
             <p class="text-xs text-slate-500">融入体育人文社会学视角的高级文化叙事，支持一键复制英文讲解词条</p>
           </div>
           <button onclick="openScriptModal()" class="bg-gold hover:bg-amber-600 text-white text-xs font-semibold px-3.5 py-2 rounded-xl cursor-pointer">
@@ -572,7 +617,7 @@
               <div class="w-10 h-10 rounded-full bg-forest text-gold-light font-bold flex items-center justify-center text-sm">W</div>
               <div>
                 <h3 class="font-bold text-forest text-sm">Wilson (蒋正新) · 今日精进打卡</h3>
-                <p class="text-[11px] text-slate-500">体能保持 · 山姆三色糙米饭高蛋白 · 精力管理</p>
+                <p class="text-[11px] text-slate-500">力量/足球 · 咖啡限量 · 山姆三色糙米饭高蛋白</p>
               </div>
             </div>
             <span class="text-xs font-bold px-2.5 py-1 rounded-full bg-emerald-50 text-emerald-700" id="wilson-today-score">0/4 项</span>
@@ -590,7 +635,7 @@
               <div class="w-10 h-10 rounded-full bg-amber-100 text-amber-800 font-bold flex items-center justify-center text-sm">刘</div>
               <div>
                 <h3 class="font-bold text-forest text-sm">妻子 (刘策焕) · 能量守护与关怀</h3>
-                <p class="text-[11px] text-slate-500">班主任高负荷减压 · 深度睡眠 · 情绪电量监测</p>
+                <p class="text-[11px] text-slate-500">睡眠守护 · 情绪红绿灯 · 逛街补能 · 低熵减压</p>
               </div>
             </div>
             <select id="wife-mood-select" onchange="updateTodayHealth()" class="text-xs font-semibold px-2.5 py-1 rounded-full border border-slate-200 bg-emerald-50 text-emerald-800">
@@ -606,13 +651,13 @@
         </div>
       </div>
 
-      <!-- Clean Meal & Recovery Reference + Weight/Log History -->
+      <!-- Clean Meal & Shopping Checklist + Weight/Log History -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
-        <!-- Meal & Recovery Bank (5 cols) -->
+        <!-- Meal & Shopping Bank (5 cols) -->
         <div class="lg:col-span-5 bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-xs space-y-3">
           <div class="flex items-center justify-between">
-            <h3 class="text-sm font-bold text-forest">双人低熵高蛋白备餐与补能清单</h3>
-            <button onclick="openMealModal()" class="text-xs font-semibold text-gold hover:underline cursor-pointer">+ 添加食谱</button>
+            <h3 class="text-sm font-bold text-forest">山姆高蛋白干净备餐与采购清单</h3>
+            <button onclick="openMealModal()" class="text-xs font-semibold text-gold hover:underline cursor-pointer">+ 添加备餐/采购项</button>
           </div>
           <div id="clean-meals-list" class="space-y-2.5 text-xs">
             <!-- Rendered by JS -->
@@ -622,9 +667,9 @@
         <!-- Historical Health Logs (7 cols) -->
         <div class="lg:col-span-7 bg-white rounded-2xl p-4 sm:p-5 border border-slate-200 shadow-xs space-y-3">
           <div class="flex items-center justify-between">
-            <h3 class="text-sm font-bold text-forest">双人健康与体重睡眠周志</h3>
+            <h3 class="text-sm font-bold text-forest">双人健康、体重与睡眠守护周志</h3>
             <button onclick="openHealthLogModal()" class="bg-forest text-white text-xs font-semibold px-3 py-1.5 rounded-lg cursor-pointer">
-              + 记录身体指标
+              + 记录今日身体与情绪指标
             </button>
           </div>
           <div class="overflow-x-auto">
@@ -632,8 +677,8 @@
               <thead>
                 <tr class="bg-slate-50 text-slate-600 border-b border-slate-200">
                   <th class="py-2 px-3 font-semibold">日期</th>
-                  <th class="py-2 px-3 font-semibold">Wilson 体重/训练</th>
-                  <th class="py-2 px-3 font-semibold">刘老师睡眠/情绪状态</th>
+                  <th class="py-2 px-3 font-semibold">Wilson 体重/训练/饮食</th>
+                  <th class="py-2 px-3 font-semibold">刘老师睡眠/情绪守护</th>
                   <th class="py-2 px-3 font-semibold text-right">操作</th>
                 </tr>
               </thead>
@@ -674,22 +719,24 @@
 
   <!-- Firebase & Application Logic -->
   <script type="module">
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
-    import { getAuth, signInAnonymously, signInWithCustomToken, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
-    import { getFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import { initializeFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-    // Environment variables provided by Canvas/Platform
-    const appId = typeof __app_id !== 'undefined' ? __app_id : 'leo-executive-os-default';
-    let firebaseConfig = null;
-    try {
-      if (typeof __firebase_config !== 'undefined') {
-        firebaseConfig = JSON.parse(__firebase_config);
-      }
-    } catch (e) {
-      console.warn("Firebase config parse error:", e);
-    }
+    // EXACT REAL FIREBASE CONFIGURATION FOR WILSON (新加坡节点 leo-workspace-f1e5f)
+    const firebaseConfig = {
+      apiKey: "AIzaSyC6kjKZzhGC1Es5Q1XPHwbmhRPbRoUD5VI",
+      authDomain: "leo-workspace-f1e5f.firebaseapp.com",
+      projectId: "leo-workspace-f1e5f",
+      storageBucket: "leo-workspace-f1e5f.firebasestorage.app",
+      messagingSenderId: "63439622900",
+      appId: "1:63439622900:web:77c13bee6bacf5b8efc4a1",
+      measurementId: "G-BJ3B3HE0QD"
+    };
 
-    // Default Master State (Rich, authentic initial data tailored to Wilson / Leo教练)
+    const LOCAL_CACHE_KEY = 'leo_workspace_prod_cache_v2';
+    const PIN_STORAGE_KEY = 'leo_workspace_pin_code';
+
+    // Default Master State (Rich, authentic initial data tailored to Wilson / Leo教练 & 妻子刘策焕)
     const DEFAULT_STATE = {
       finance: [
         { id: 'f1', name: 'Leo户外双语体能私教', category: '高毛利副业', target: 8000, actual: 1680, note: '深圳线上二胎陪练 + 丽水周末小班' },
@@ -698,6 +745,7 @@
         { id: 'f4', name: '长期复利资产定投账户', category: '投资复利', target: 6000, actual: 6000, note: '每月结余强制转入复利池' }
       ],
       freedomProgress: 38,
+      quickMemo: '1. 本周重点：跟进深圳吴立新家长（姐姐左脚平衡16s弱侧激活反馈），推进季度二胎陪练会员转化。\n2. 周末检查理想i6胎压与车内清洁，准备松阳杨家堂/陈家铺双语讲解路线。',
       students: [
         {
           id: 's1',
@@ -708,7 +756,7 @@
           planType: '线上VIP二胎陪练体验',
           remainingLessons: 3,
           metrics: '跳绳 180/分 | 闭眼单脚 左16s / 右60s | 立定跳远 152cm',
-          notes: '下肢爆发力校队级；左右本体感觉失衡近4倍，重点强化左侧臀中肌与踝稳定，防膝内扣。'
+          notes: '下肢爆发力校队级；左右本体感觉失衡近4倍（左16s vs 右60s），重点强化左侧臀中肌与踝稳定，防膝内扣。'
         },
         {
           id: 's2',
@@ -792,7 +840,7 @@
         },
         {
           id: 'd5',
-          category: '神经敏捷',
+          category: '敏捷反应',
           titleZh: '听令反应翻滚冲刺',
           titleEn: 'Reaction Roll & Sprint',
           focus: '训练神经系统对突发信号的反应速度 (Reaction Speed)，以及不同体位下的启动加速。',
@@ -812,7 +860,7 @@
         },
         {
           id: 'd7',
-          category: '放松拉伸',
+          category: '拉伸复盘',
           titleZh: '髋屈肌与腘绳肌动态拉伸',
           titleEn: 'Hip Flexor & Hamstring Stretch',
           focus: '释放跑跳后下肢后链与髂腰肌紧张，改善久坐写作业导致的骨盆前倾代偿。',
@@ -826,7 +874,7 @@
           id: 'l1',
           date: '2026-11-08',
           studentName: '吴立新-姐姐',
-          summary: '扶墙高抬腿 + 单腿微屈膝接抛球(左脚强化) + 反应起跑',
+          summary: '扶墙高抬腿 + 单腿微屈膝接抛球(左脚强化) + 反应起跑（观察：左脚支撑初期微晃，第3组明显稳定）',
           deducted: 1,
           revenue: 0
         },
@@ -834,7 +882,7 @@
           id: 'l2',
           date: '2026-11-08',
           studentName: '吴立新-弟弟',
-          summary: '扶墙高抬腿 + 听令反应翻滚冲刺 + 俯卧撑起跑',
+          summary: '扶墙高抬腿 + 听令反应翻滚冲刺 + 俯卧撑起跑（观察：反应启动极快，英文口令响应准确）',
           deducted: 1,
           revenue: 0
         }
@@ -893,9 +941,9 @@
         {
           id: 't2',
           guest: 'Elena Rossi (Italy)',
-          dateRoute: '2026-11-22 · 丽水古堰画乡生态摄影线',
+          dateRoute: '2026-11-22 · 丽水古堰画乡 + 云和梯田生态线',
           platform: 'Showaround',
-          fee: 1400,
+          fee: 1500,
           status: '询盘中'
         }
       ],
@@ -914,9 +962,15 @@
         },
         {
           id: 'sc3',
-          spot: '丽水 · 古堰画乡 (Guyan Huaxiang)',
-          en: '“Here stands the Tongji Weir, an ancient hydraulic engineering marvel built in 505 AD that still irrigates thousands of acres today—a living testament to sustainable ecological wisdom.”',
-          zh: '这里矗立着建于公元505年的古代水利奇迹——通济堰，至今仍在灌溉万亩良田，是可持续发展生态智慧的活化石。'
+          spot: '庆元/松阳 · 廊桥文化 (Ancient Timber Arch Bridges)',
+          en: '“Built entirely without a single iron nail, these traditional woven-timber arch bridges showcase extraordinary structural resilience—a living heritage of communal gathering and rural craftsmanship.”',
+          zh: '通体未用一颗铁钉，这些传统木拱廊桥展现了惊人的结构力学韧性——是乡村公共生活与传统营造技艺的活态遗产。'
+        },
+        {
+          id: 'sc4',
+          spot: '云和 · 云和梯田 (Yunhe Terraced Fields)',
+          en: '“Carved into the mountains over a millennium by local farming communities, Yunhe Terraces form a breathtaking micro-ecosystem where morning mist, bamboo forests, and water mirrors shift with every season.”',
+          zh: '历经千年由山民一锄一犁开凿而成，云和梯田构成了令人屏息的山地微生态系统，晨雾、竹海与水田镜面随四季流转变幻。'
         }
       ],
       todayHealth: {
@@ -926,88 +980,192 @@
         wifeMood: '🟢 绿灯平稳（状态在线）'
       },
       cleanMeals: [
-        { id: 'm1', title: 'Wilson 午餐主力：山姆三色糙米饭高蛋白餐', desc: '山姆三色糙米饭 150g + 去皮鸡腿肉/纯瘦牛肉 180g + 清炒西兰花，饱腹抗炎不犯困。' },
-        { id: 'm2', title: 'Wilson 下午带训前：即食鸡胸肉 + 香蕉补能', desc: '下班后去体育公园带课或踢球前 45 分钟补充快碳与优质蛋白，维持神经兴奋度。' },
-        { id: 'm3', title: '妻子刘老师减压晚餐：温热易消化暖胃餐', desc: '避开辛辣刺激，清蒸鲈鱼/山药排骨汤 + 杂粮粥，帮助班主任高强度用嗓与用脑后快速放松助眠。' }
+        { id: 'm1', title: '🛒 山姆常备采购：三色糙米饭 + 去皮鸡腿排 + 纯瘦牛肉粒', desc: '高蛋白低升糖核心食材库，下班后 10 分钟快速备餐，保持白天翻译与傍晚带训精力充沛。', checked: true },
+        { id: 'm2', title: '🍗 训练前快补：即食鸡胸肉 + 香蕉 + 无糖美式(仅限上午)', desc: '傍晚去体育公园带课或踢球前 45 分钟补充优质蛋白与快碳；下午严控咖啡因守护深度睡眠。', checked: true },
+        { id: 'm3', title: '🍲 妻子刘老师减压暖胃晚餐：清蒸鲈鱼 / 山药排骨汤', desc: '针对班主任高强度用嗓与用脑，避开重油重辣外卖，晚餐清淡温热助眠、恢复副交感神经。', checked: false }
       ],
       healthLogs: [
-        { id: 'hl1', date: '2026-11-08', wilsonInfo: '72.4 kg · 公园敏捷带训+下肢力量45min', wifeInfo: '睡眠 7.5h · 🟢 绿灯平稳（周末散步放松）' },
-        { id: 'hl2', date: '2026-11-07', wilsonInfo: '72.6 kg · 足球局90min · 糙米高蛋白达标', wifeInfo: '睡眠 7.0h · 🟡 黄灯微疲（处理班级事务，已倾听陪伴）' }
+        { id: 'hl1', date: '2026-11-08', wilsonInfo: '72.4 kg · 公园敏捷带训+下肢力量45min · 山姆糙米高蛋白', wifeInfo: '睡眠 7.5h · 🟢 绿灯平稳（周末一起逛街散步放松）' },
+        { id: 'hl2', date: '2026-11-07', wilsonInfo: '72.6 kg · 足球局90min · 咖啡仅早间1杯', wifeInfo: '睡眠 7.0h · 🟡 黄灯微疲（处理班级事务，已倾听陪伴减压）' }
       ]
     };
 
+    // Load local cache first for instant zero-flicker boot
     let appState = JSON.parse(JSON.stringify(DEFAULT_STATE));
+    try {
+      const cached = localStorage.getItem(LOCAL_CACHE_KEY);
+      if (cached) {
+        appState = { ...JSON.parse(JSON.stringify(DEFAULT_STATE)), ...JSON.parse(cached) };
+      }
+    } catch (e) {
+      console.warn("Local cache read error:", e);
+    }
+
     let db = null;
-    let auth = null;
-    let currentUser = null;
     let stateDocRef = null;
     let selectedLessonDrillIds = ['d1', 'd2', 'd5', 'd7'];
     let currentDrillFilter = 'ALL';
 
-    // Initialize Firebase Auth & Firestore Real-time Sync
-    async function initCloudSync() {
-      const statusText = document.getElementById('sync-status-text');
-      if (!firebaseConfig) {
-        statusText.textContent = '本地演示模式';
-        renderAll();
-        return;
+    function setSyncBadge(status, text) {
+      const dot = document.getElementById('sync-dot');
+      const label = document.getElementById('sync-status-text');
+      const badge = document.getElementById('sync-badge');
+      label.textContent = text;
+
+      if (status === 'connected') {
+        dot.className = 'w-2 h-2 rounded-full bg-emerald-400 animate-pulse';
+        badge.className = 'inline-flex items-center gap-1.5 text-[10px] px-2.5 py-0.5 rounded-full bg-emerald-950/80 border border-emerald-500/40 text-emerald-300 font-medium';
+      } else if (status === 'syncing') {
+        dot.className = 'w-2 h-2 rounded-full bg-amber-400 animate-ping';
+        badge.className = 'inline-flex items-center gap-1.5 text-[10px] px-2.5 py-0.5 rounded-full bg-amber-950/80 border border-amber-500/40 text-amber-200 font-medium';
+      } else {
+        dot.className = 'w-2 h-2 rounded-full bg-rose-500';
+        badge.className = 'inline-flex items-center gap-1.5 text-[10px] px-2.5 py-0.5 rounded-full bg-rose-950/90 border border-rose-500/50 text-rose-200 font-medium';
       }
+    }
+
+    function saveLocalCache() {
+      try {
+        localStorage.setItem(LOCAL_CACHE_KEY, JSON.stringify(appState));
+      } catch (e) {
+        console.warn("Local cache write failed:", e);
+      }
+    }
+
+    // Initialize Direct Firestore Real-time Sync (Singapore Node: leo-workspace-f1e5f)
+    async function initCloudSync() {
+      checkPinOnBoot();
+      renderAll();
 
       try {
         const app = initializeApp(firebaseConfig);
-        auth = getAuth(app);
-        db = getFirestore(app);
+        // Enable experimentalAutoDetectLongPolling to bypass WebChannel stream blocks on mobile proxies/webviews
+        db = initializeFirestore(app, {
+          experimentalAutoDetectLongPolling: true,
+          useFetchStreams: false
+        });
+        // Direct document path matching Firestore rules: allow read, write: if true;
+        stateDocRef = doc(db, 'leo_workspace_prod', 'main_state');
 
-        // Rule 3: Auth before queries
-        if (typeof __initial_auth_token !== 'undefined' && __initial_auth_token) {
-          await signInWithCustomToken(auth, __initial_auth_token);
-        } else {
-          await signInAnonymously(auth);
-        }
+        // Fallback warning if network/proxy blocks Google Firestore within 12s
+        const connTimeout = setTimeout(() => {
+          const statusEl = document.getElementById('sync-status-text');
+          if (statusEl && statusEl.textContent.includes('正在连接')) {
+            setSyncBadge('error', '⚠️ 离线本地模式 (请确认代理/网络可访问 Google)');
+          }
+        }, 12000);
 
-        onAuthStateChanged(auth, (user) => {
-          if (!user) return;
-          currentUser = user;
-          const uid = user.uid;
-          // Rule 1: Strict Path /artifacts/{appId}/users/{userId}/{collectionName}
-          stateDocRef = doc(db, 'artifacts', appId, 'users', uid, 'workspace', 'master_state');
-
-          onSnapshot(stateDocRef, (snapshot) => {
-            if (snapshot.exists()) {
-              const cloudData = snapshot.data();
-              appState = { ...JSON.parse(JSON.stringify(DEFAULT_STATE)), ...cloudData };
-              statusText.textContent = '多端云同步已连接';
+        onSnapshot(stateDocRef, { includeMetadataChanges: true }, (snapshot) => {
+          clearTimeout(connTimeout);
+          if (snapshot.exists()) {
+            const cloudData = snapshot.data();
+            appState = { ...JSON.parse(JSON.stringify(DEFAULT_STATE)), ...cloudData };
+            saveLocalCache();
+            if (snapshot.metadata.fromCache) {
+              setSyncBadge('syncing', '🟡 本地缓存模式 (等待新加坡节点响应...)');
             } else {
-              // First time initialization in cloud
-              saveStateToCloud();
-              statusText.textContent = '云端工作台已初始化';
+              setSyncBadge('connected', '🟢 云端实时已连接 (新加坡节点)');
             }
             renderAll();
-          }, (error) => {
-            console.error("Firestore onSnapshot error:", error);
-            statusText.textContent = '离线模式 (请检查网络)';
-            renderAll();
-          });
+          } else if (!snapshot.metadata.fromCache) {
+            // Initialize cloud document with default data on very first launch
+            saveStateToCloud();
+          }
+        }, (error) => {
+          clearTimeout(connTimeout);
+          console.error("Firestore onSnapshot error:", error);
+          setSyncBadge('error', `⚠️ 云端同步受阻: ${error.code || '请检查网络或Firestore规则'}`);
         });
       } catch (err) {
         console.error("Firebase init failed:", err);
-        statusText.textContent = '本地模式';
-        renderAll();
+        setSyncBadge('error', `⚠️ 初始化异常: ${err.message}`);
       }
     }
 
     async function saveStateToCloud() {
+      saveLocalCache();
       renderAll();
-      if (!currentUser || !stateDocRef) return;
+      if (!stateDocRef) return;
       try {
-        document.getElementById('sync-status-text').textContent = '同步中...';
+        setSyncBadge('syncing', '正在同步至新加坡云端...');
         await setDoc(stateDocRef, appState);
-        document.getElementById('sync-status-text').textContent = '多端已同步 ✓';
+        setSyncBadge('connected', '🟢 云端实时已连接 (新加坡节点)');
       } catch (e) {
-        console.error("Save error:", e);
-        document.getElementById('sync-status-text').textContent = '同步异常';
+        console.error("Firestore write error:", e);
+        setSyncBadge('error', `⚠️ 写入失败(${e.code || '权限/网络'}): 已暂存本地`);
+        showToast(`⚠️ 云端写入失败(${e.code || '请检查规则'})，数据已暂存本地`);
       }
     }
+
+    window.manualForceSync = async function() {
+      if (!stateDocRef) return;
+      try {
+        setSyncBadge('syncing', '正在拉取最新云端数据...');
+        const snap = await getDoc(stateDocRef);
+        if (snap.exists()) {
+          appState = { ...JSON.parse(JSON.stringify(DEFAULT_STATE)), ...snap.data() };
+          saveLocalCache();
+          renderAll();
+          setSyncBadge('connected', '🟢 云端实时已连接 (新加坡节点)');
+          showToast('✅ 已从新加坡云端拉取最新数据');
+        } else {
+          await saveStateToCloud();
+          showToast('✅ 已将本地数据初始化到云端');
+        }
+      } catch (e) {
+        setSyncBadge('error', `⚠️ 同步失败: ${e.code || e.message}`);
+        showToast(`⚠️ 同步失败: ${e.message}`);
+      }
+    };
+
+    // =========================================================
+    // OPTIONAL 4-DIGIT PIN SECURITY LOCK
+    // =========================================================
+    function checkPinOnBoot() {
+      const savedPin = localStorage.getItem(PIN_STORAGE_KEY);
+      if (savedPin && savedPin.length === 4) {
+        const lockScreen = document.getElementById('pin-lock-screen');
+        lockScreen.classList.remove('hidden');
+        lockScreen.classList.add('flex');
+      }
+    }
+
+    window.checkPinUnlock = function() {
+      const input = document.getElementById('pin-unlock-input').value;
+      const savedPin = localStorage.getItem(PIN_STORAGE_KEY);
+      if (input.length === 4) {
+        if (input === savedPin) {
+          const lockScreen = document.getElementById('pin-lock-screen');
+          lockScreen.classList.add('hidden');
+          lockScreen.classList.remove('flex');
+          document.getElementById('pin-unlock-input').value = '';
+          document.getElementById('pin-error-msg').textContent = '';
+        } else {
+          document.getElementById('pin-error-msg').textContent = '密码错误，请重试';
+          document.getElementById('pin-unlock-input').value = '';
+        }
+      }
+    };
+
+    window.openPinSettingsModal = function() {
+      const currentPin = localStorage.getItem(PIN_STORAGE_KEY) || '';
+      openModal('设置 4 位隐私安全锁（默认不锁定）', `
+        <p class="text-xs text-slate-500">开启后，每次打开本网页需输入 4 位数字密码方可查看数据；留空并保存则关闭安全锁。</p>
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">4 位数字密码（留空表示关闭）</label>
+          <input type="text" name="pin" maxlength="4" pattern="[0-9]*" inputmode="numeric" value="${currentPin}" placeholder="例如：2027" class="w-full px-3 py-2 rounded-lg border border-slate-300 tracking-widest font-bold">
+        </div>
+      `, (formData) => {
+        const newPin = (formData.get('pin') || '').trim();
+        if (newPin.length === 4 && /^\d{4}$/.test(newPin)) {
+          localStorage.setItem(PIN_STORAGE_KEY, newPin);
+          showToast('🔒 4位安全锁已开启（本设备生效）');
+        } else {
+          localStorage.removeItem(PIN_STORAGE_KEY);
+          showToast('🔓 安全锁已关闭（零摩擦直开）');
+        }
+      });
+    };
 
     // Master Render Coordinator
     function renderAll() {
@@ -1034,18 +1192,16 @@
       document.querySelectorAll('.pillar-view').forEach(el => el.classList.add('hidden'));
       document.getElementById(`pillar-${pillarName}`).classList.remove('hidden');
 
-      // Desktop nav styling
       document.querySelectorAll('.pillar-btn').forEach(btn => {
         if (btn.dataset.pillar === pillarName) {
           btn.classList.add('bg-gold', 'text-white');
-          btn.classList.remove('text-gray-300', 'hover:bg-white/10');
+          btn.classList.remove('text-gray-200', 'hover:bg-white/10');
         } else {
           btn.classList.remove('bg-gold', 'text-white');
-          btn.classList.add('text-gray-300', 'hover:bg-white/10');
+          btn.classList.add('text-gray-200', 'hover:bg-white/10');
         }
       });
 
-      // Mobile nav styling
       document.querySelectorAll('.mobile-pillar-btn').forEach(btn => {
         if (btn.dataset.pillar === pillarName) {
           btn.classList.add('text-gold-light');
@@ -1097,6 +1253,11 @@
       document.getElementById('kpi-freedom-pct').textContent = `${pct}%`;
       document.getElementById('kpi-freedom-bar').style.width = `${Math.min(100, Math.max(0, pct))}%`;
 
+      const memoEl = document.getElementById('global-quick-memo');
+      if (memoEl && document.activeElement !== memoEl) {
+        memoEl.value = appState.quickMemo || '';
+      }
+
       const tbody = document.getElementById('finance-table-body');
       tbody.innerHTML = appState.finance.map((item, idx) => `
         <tr class="hover:bg-slate-50/70">
@@ -1104,7 +1265,7 @@
             ${item.name}
             <div class="text-[11px] font-normal text-slate-400">${item.note || ''}</div>
           </td>
-          <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full text-[11px] font-medium bg-[#eaf0ee] text-forest">${item.category}</span></td>
+          <td class="py-3 px-3"><span class="px-2 py-0.5 rounded-full text-[11px] font-medium bg-[#ecfdf5] text-forest">${item.category}</span></td>
           <td class="py-3 px-3 text-slate-600">¥${Number(item.target).toLocaleString()}</td>
           <td class="py-3 px-3 font-bold text-emerald-700">¥${Number(item.actual).toLocaleString()}</td>
           <td class="py-3 px-3 text-right space-x-1">
@@ -1114,6 +1275,12 @@
         </tr>
       `).join('');
     }
+
+    window.saveQuickMemo = function() {
+      appState.quickMemo = document.getElementById('global-quick-memo').value;
+      saveStateToCloud();
+      showToast('✅ 备忘录已保存并同步至所有设备');
+    };
 
     window.openFinanceModal = function(idx = null) {
       const item = idx !== null ? appState.finance[idx] : { name: '', category: '高毛利副业', target: 5000, actual: 0, note: '' };
@@ -1132,7 +1299,7 @@
             </select>
           </div>
           <div>
-            <label class="block text-xs font-semibold text-slate-700 mb-1">2027.3 过渡总进度 (%)</label>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">2027.3.31 过渡总进度 (%)</label>
             <input type="number" name="freedomProgress" min="0" max="100" value="${appState.freedomProgress}" class="w-full px-3 py-2 rounded-lg border border-slate-300">
           </div>
         </div>
@@ -1174,7 +1341,7 @@
     };
 
     // =========================================================
-    // PILLAR 2.1: STUDENTS CRM
+    // PILLAR 2.1: STUDENTS CRM (+1/-1 Lesson Buttons Included)
     // =========================================================
     function renderStudents() {
       const grid = document.getElementById('students-grid');
@@ -1191,11 +1358,15 @@
               </div>
               <div class="text-right shrink-0">
                 <div class="text-[10px] text-slate-400">剩余课时</div>
-                <div class="text-lg font-bold ${s.remainingLessons <= 2 ? 'text-red-600' : 'text-forest'}">${s.remainingLessons} <span class="text-xs font-normal">节</span></div>
+                <div class="flex items-center gap-1.5 mt-0.5">
+                  <button onclick="adjustStudentLesson(${idx}, -1)" class="w-6 h-6 rounded-lg bg-slate-100 hover:bg-rose-100 text-slate-700 hover:text-rose-700 font-bold text-xs flex items-center justify-center cursor-pointer" title="扣减1课时">-1</button>
+                  <span class="text-base font-bold min-w-[2.2rem] text-center ${s.remainingLessons <= 2 ? 'text-red-600' : 'text-forest'}">${s.remainingLessons}</span>
+                  <button onclick="adjustStudentLesson(${idx}, 1)" class="w-6 h-6 rounded-lg bg-emerald-50 hover:bg-emerald-100 text-emerald-800 font-bold text-xs flex items-center justify-center cursor-pointer" title="续费增加1课时">+1</button>
+                </div>
               </div>
             </div>
 
-            <div class="mt-3 p-2.5 rounded-xl bg-[#f8faf9] border border-slate-200/80 text-xs">
+            <div class="mt-3 p-2.5 rounded-xl bg-[#F8FAFC] border border-slate-200/80 text-xs">
               <div class="font-semibold text-forest mb-1">📊 最新体测基线：</div>
               <div class="text-slate-700 font-medium">${s.metrics || '暂未录入体测数据'}</div>
             </div>
@@ -1217,6 +1388,14 @@
         </div>
       `).join('');
     }
+
+    window.adjustStudentLesson = function(idx, delta) {
+      const s = appState.students[idx];
+      if (!s) return;
+      s.remainingLessons = Math.max(0, (Number(s.remainingLessons) || 0) + delta);
+      saveStateToCloud();
+      showToast(`${s.name} 剩余课时已调整为 ${s.remainingLessons} 节`);
+    };
 
     window.quickPrepForStudent = function(studentId) {
       switchYouthSub('drills');
@@ -1331,8 +1510,8 @@
             </tr>
             <tr>
               <td class="py-2.5 px-3 font-bold text-forest">闭眼单脚站立 (秒)</td>
-              <td class="py-2.5 px-3 font-bold text-emerald-700">≥ ${bm.bal} 秒 (左右差 &lt; 25%)</td>
-              <td class="py-2.5 px-3 text-slate-600">前庭觉与踝/髋本体感觉稳定性；左右差距过大预警单侧代偿</td>
+              <td class="py-2.5 px-3 font-bold text-emerald-700">≥ ${bm.bal} 秒 (左右偏差 &lt; 30%)</td>
+              <td class="py-2.5 px-3 text-slate-600">前庭觉与踝/髋本体感觉稳定性；左右偏差 &gt;30% 红色预警单侧代偿</td>
               <td class="py-2.5 px-3 text-right"><button onclick="editBenchmark('${key}')" class="text-gold font-semibold hover:underline cursor-pointer">修改数值</button></td>
             </tr>
             <tr>
@@ -1393,8 +1572,8 @@
 
       const maxBal = Math.max(balL, balR, 1);
       const minBal = Math.min(balL, balR);
-      const asymRatio = (maxBal / Math.max(minBal, 1)).toFixed(1);
-      const isAsymWarning = minBal < bm.bal * 0.6 || (maxBal - minBal) > 15;
+      const asymPct = Math.round(((maxBal - minBal) / maxBal) * 100);
+      const isAsymWarning = asymPct > 30 || minBal < bm.bal * 0.6;
 
       const box = document.getElementById('eval-result-box');
       box.innerHTML = `
@@ -1405,12 +1584,15 @@
           <span class="px-2 py-0.5 rounded font-semibold ${jump >= bm.jump ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
             立定跳远: ${jump >= bm.jump ? '爆发力优秀' : '需强化屈髋伸展'} (${jump}/${bm.jump}cm)
           </span>
-          <span class="px-2 py-0.5 rounded font-semibold ${isAsymWarning ? 'bg-red-100 text-red-800' : 'bg-emerald-100 text-emerald-800'}">
-            单脚平衡: ${isAsymWarning ? `⚠️ 失衡预警 (左右相差 ${asymRatio} 倍)` : '左右对称稳定'}
+          <span class="px-2 py-0.5 rounded font-semibold ${sprint <= bm.sprint ? 'bg-emerald-100 text-emerald-800' : 'bg-amber-100 text-amber-800'}">
+            50米跑: ${sprint <= bm.sprint ? '速度优秀' : '需强化起跑前3步'} (${sprint}s / ≤${bm.sprint}s)
+          </span>
+          <span class="px-2 py-0.5 rounded font-bold ${isAsymWarning ? 'bg-red-600 text-white' : 'bg-emerald-100 text-emerald-800'}">
+            单脚平衡: ${isAsymWarning ? `🚨 红色失衡预警 (偏差 ${asymPct}% > 30%)` : `左右对称稳定 (偏差 ${asymPct}%)`}
           </span>
         </div>
         <div class="text-slate-600">
-          <strong>诊断建议：</strong>${isAsymWarning
+          <strong>生物力学诊断建议：</strong>${isAsymWarning
             ? `弱侧（${balL < balR ? '左脚 ' + balL + 's' : '右脚 ' + balR + 's'}）本体感觉明显偏弱，跑跳时易出现优势侧代偿与单侧膝内扣，建议优先加入【单腿微屈膝接抛球】进行弱侧激活。`
             : `下肢爆发力与前庭本体感觉发展均衡，可安全进阶至高强度神经敏捷与双语反应冲刺训练。`}
         </div>
@@ -1445,7 +1627,7 @@
         const isChecked = selectedLessonDrillIds.includes(d.id);
         return `
           <div onclick="toggleLessonDrill('${d.id}')" class="p-3 rounded-xl border transition cursor-pointer select-none ${
-            isChecked ? 'bg-[#eaf0ee]/80 border-gold ring-1 ring-gold' : 'bg-white border-slate-200 hover:border-forest/50'
+            isChecked ? 'bg-[#ecfdf5]/80 border-gold ring-1 ring-gold' : 'bg-white border-slate-200 hover:border-forest/50'
           }">
             <div class="flex items-start justify-between gap-2">
               <div class="flex items-start gap-2.5">
@@ -1509,14 +1691,14 @@
       }
 
       container.innerHTML = selected.map((d, idx) => `
-        <div class="p-2.5 rounded-xl bg-[#f8faf9] border border-slate-200 text-xs">
+        <div class="p-2.5 rounded-xl bg-[#F8FAFC] border border-slate-200 text-xs">
           <div class="flex items-center justify-between">
             <span class="font-bold text-forest">STEP ${idx + 1} · ${d.titleZh} <span class="font-normal italic text-slate-500">(${d.titleEn})</span></span>
             <button onclick="toggleLessonDrill('${d.id}')" class="text-slate-400 hover:text-red-500 px-1 cursor-pointer">×</button>
           </div>
           <div class="text-amber-800 font-medium mt-0.5">剂量：${d.dosage}</div>
           <div class="text-slate-600 mt-0.5">要点：${d.focus}</div>
-          <div class="text-[#9a6e1c] font-semibold mt-0.5">🗣️ ${d.cueEn} <span class="font-normal text-slate-500">(${d.cueZh})</span></div>
+          <div class="text-[#b45309] font-semibold mt-0.5">🗣️ ${d.cueEn} <span class="font-normal text-slate-500">(${d.cueZh})</span></div>
         </div>
       `).join('');
     };
@@ -1532,8 +1714,8 @@
             <option value="动态热身" ${d.category === '动态热身' ? 'selected' : ''}>动态热身</option>
             <option value="稳定性纠偏" ${d.category === '稳定性纠偏' ? 'selected' : ''}>稳定性纠偏</option>
             <option value="爆发力循环" ${d.category === '爆发力循环' ? 'selected' : ''}>爆发力循环</option>
-            <option value="神经敏捷" ${d.category === '神经敏捷' ? 'selected' : ''}>神经敏捷</option>
-            <option value="放松拉伸" ${d.category === '放松拉伸' ? 'selected' : ''}>放松拉伸</option>
+            <option value="敏捷反应" ${d.category === '敏捷反应' ? 'selected' : ''}>敏捷反应</option>
+            <option value="拉伸复盘" ${d.category === '拉伸复盘' ? 'selected' : ''}>拉伸复盘</option>
           </select>
         </div>
         <div class="grid grid-cols-2 gap-3">
@@ -1642,10 +1824,8 @@
         return;
       }
 
-      // Deduct 1 lesson
       student.remainingLessons = Math.max(0, (Number(student.remainingLessons) || 0) - 1);
 
-      // Add log entry
       appState.lessonLogs.unshift({
         id: 'log_' + Date.now(),
         date: new Date().toISOString().split('T')[0],
@@ -1655,7 +1835,6 @@
         revenue: fee
       });
 
-      // Add revenue to youth coaching finance line if fee > 0
       if (fee > 0) {
         const youthFin = appState.finance.find(f => f.id === 'f1');
         if (youthFin) youthFin.actual = Number(youthFin.actual) + fee;
@@ -1666,7 +1845,7 @@
     };
 
     // =========================================================
-    // PILLAR 2.4: LESSON LOGS
+    // PILLAR 2.4: LESSON LOGS (Manual Add/Edit/Delete)
     // =========================================================
     function renderLessonLogs() {
       const tbody = document.getElementById('lesson-logs-body');
@@ -1677,12 +1856,59 @@
           <td class="py-2.5 px-3 text-slate-700">${l.summary}</td>
           <td class="py-2.5 px-3 font-semibold text-amber-700">-${l.deducted} 节</td>
           <td class="py-2.5 px-3 font-semibold text-emerald-700">${l.revenue > 0 ? '¥' + l.revenue : '划扣预存课时'}</td>
-          <td class="py-2.5 px-3 text-right">
+          <td class="py-2.5 px-3 text-right space-x-1 whitespace-nowrap">
+            <button onclick="openLessonLogModal(${idx})" class="text-forest font-semibold hover:underline cursor-pointer">编辑</button>
             <button onclick="deleteLessonLog(${idx})" class="text-red-500 hover:underline cursor-pointer">删除</button>
           </td>
         </tr>
       `).join('');
     }
+
+    window.openLessonLogModal = function(idx = null) {
+      const today = new Date().toISOString().split('T')[0];
+      const l = idx !== null ? appState.lessonLogs[idx] : {
+        date: today, studentName: appState.students[0]?.name || '', summary: '', deducted: 1, revenue: 0
+      };
+      openModal(idx !== null ? '编辑上课记录' : '手动补录上课记录', `
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">上课日期 *</label>
+            <input type="date" name="date" required value="${l.date}" class="w-full px-3 py-2 rounded-lg border border-slate-300">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">学员姓名 *</label>
+            <input type="text" name="studentName" required value="${l.studentName}" class="w-full px-3 py-2 rounded-lg border border-slate-300">
+          </div>
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-1">训练内容与教练观察笔记 *</label>
+          <textarea name="summary" rows="3" required class="w-full px-3 py-2 rounded-lg border border-slate-300">${l.summary}</textarea>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">消耗课时数</label>
+            <input type="number" name="deducted" value="${l.deducted}" class="w-full px-3 py-2 rounded-lg border border-slate-300">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-slate-700 mb-1">单次确认营收 (¥)</label>
+            <input type="number" name="revenue" value="${l.revenue}" class="w-full px-3 py-2 rounded-lg border border-slate-300">
+          </div>
+        </div>
+      `, (formData) => {
+        const obj = {
+          id: idx !== null ? appState.lessonLogs[idx].id : 'log_' + Date.now(),
+          date: formData.get('date'),
+          studentName: formData.get('studentName'),
+          summary: formData.get('summary'),
+          deducted: Number(formData.get('deducted')),
+          revenue: Number(formData.get('revenue'))
+        };
+        if (idx !== null) appState.lessonLogs[idx] = obj;
+        else appState.lessonLogs.unshift(obj);
+        saveStateToCloud();
+        showToast('上课记录已保存并同步');
+      });
+    };
 
     window.deleteLessonLog = function(idx) {
       appState.lessonLogs.splice(idx, 1);
@@ -1698,7 +1924,7 @@
       grid.innerHTML = appState.pricing.map((p, idx) => `
         <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-xs flex flex-col justify-between space-y-4">
           <div>
-            <span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#eaf0ee] text-forest">${p.tag}</span>
+            <span class="inline-block text-[10px] font-bold uppercase tracking-wider px-2.5 py-0.5 rounded-full bg-[#ecfdf5] text-forest">${p.tag}</span>
             <h3 class="font-bold text-base text-forest mt-2">${p.name}</h3>
             <div class="text-xl font-bold text-gold mt-1">${p.price}</div>
             <p class="text-xs text-slate-600 mt-3 leading-relaxed">${p.features}</p>
@@ -1779,7 +2005,7 @@
               <button onclick="deleteSop(${idx})" class="text-red-500 hover:underline cursor-pointer">删除</button>
             </div>
           </div>
-          <div class="text-xs text-slate-600 whitespace-pre-line leading-relaxed bg-[#f8faf9] p-3 rounded-xl border border-slate-100">${s.rules}</div>
+          <div class="text-xs text-slate-600 whitespace-pre-line leading-relaxed bg-[#F8FAFC] p-3 rounded-xl border border-slate-100">${s.rules}</div>
         </div>
       `).join('');
     }
@@ -1888,6 +2114,8 @@
         };
         if (idx !== null) appState.tours[idx] = obj;
         else appState.tours.push(obj);
+
+        // If marked completed, optionally sync to guide finance
         saveStateToCloud();
         showToast('海外地接订单已更新');
       });
@@ -1915,7 +2143,7 @@
     function renderScripts() {
       const grid = document.getElementById('cultural-scripts-grid');
       grid.innerHTML = appState.scripts.map((sc, idx) => `
-        <div class="bg-[#f8faf9] rounded-2xl p-4 border border-slate-200 flex flex-col justify-between space-y-3">
+        <div class="bg-[#F8FAFC] rounded-2xl p-4 border border-slate-200 flex flex-col justify-between space-y-3">
           <div>
             <div class="flex items-center justify-between gap-2">
               <span class="font-bold text-xs text-forest">📍 ${sc.spot}</span>
@@ -1997,8 +2225,8 @@
 
       document.getElementById('wilson-today-score').textContent = `${wChecks.filter(Boolean).length}/4 项`;
       document.getElementById('wilson-checklist').innerHTML = WILSON_HABITS.map((label, i) => `
-        <label class="flex items-center gap-2.5 p-2.5 rounded-xl border border-slate-100 bg-[#f8faf9] hover:border-forest/40 cursor-pointer">
-          <input type="checkbox" ${wChecks[i] ? 'checked' : ''} onchange="toggleHealthCheck('wilson', ${i})" class="w-4 h-4 accent-[#133834]">
+        <label class="flex items-center gap-2.5 p-2.5 rounded-xl border border-slate-100 bg-[#F8FAFC] hover:border-forest/40 cursor-pointer">
+          <input type="checkbox" ${wChecks[i] ? 'checked' : ''} onchange="toggleHealthCheck('wilson', ${i})" class="w-4 h-4 accent-[#064E3B]">
           <span class="${wChecks[i] ? 'line-through text-slate-400' : 'text-slate-700 font-medium'}">${label}</span>
         </label>
       `).join('');
@@ -2007,20 +2235,23 @@
       if (th.wifeMood) moodSel.value = th.wifeMood;
 
       document.getElementById('wife-checklist').innerHTML = WIFE_HABITS.map((label, i) => `
-        <label class="flex items-center gap-2.5 p-2.5 rounded-xl border border-slate-100 bg-[#f8faf9] hover:border-amber-400 cursor-pointer">
-          <input type="checkbox" ${wifeChecks[i] ? 'checked' : ''} onchange="toggleHealthCheck('wife', ${i})" class="w-4 h-4 accent-[#c59b48]">
+        <label class="flex items-center gap-2.5 p-2.5 rounded-xl border border-slate-100 bg-[#F8FAFC] hover:border-amber-400 cursor-pointer">
+          <input type="checkbox" ${wifeChecks[i] ? 'checked' : ''} onchange="toggleHealthCheck('wife', ${i})" class="w-4 h-4 accent-[#D97706]">
           <span class="${wifeChecks[i] ? 'line-through text-slate-400' : 'text-slate-700 font-medium'}">${label}</span>
         </label>
       `).join('');
 
-      // Clean Meals
+      // Clean Meals & Shopping Checklist
       document.getElementById('clean-meals-list').innerHTML = appState.cleanMeals.map((m, idx) => `
-        <div class="p-3 rounded-xl bg-[#f8faf9] border border-slate-200/80">
-          <div class="flex items-center justify-between">
-            <span class="font-bold text-forest">${m.title}</span>
-            <button onclick="deleteMeal(${idx})" class="text-[11px] text-red-400 hover:text-red-600 cursor-pointer">删除</button>
+        <div class="p-3 rounded-xl bg-[#F8FAFC] border border-slate-200/80 flex items-start gap-2.5">
+          <input type="checkbox" ${m.checked ? 'checked' : ''} onchange="toggleMealCheck(${idx})" class="mt-1 w-4 h-4 accent-[#064E3B] cursor-pointer">
+          <div class="flex-1">
+            <div class="flex items-center justify-between gap-2">
+              <span class="font-bold text-forest ${m.checked ? 'line-through opacity-60' : ''}">${m.title}</span>
+              <button onclick="deleteMeal(${idx})" class="text-[11px] text-red-400 hover:text-red-600 cursor-pointer">删除</button>
+            </div>
+            <p class="text-slate-600 mt-1 leading-relaxed">${m.desc}</p>
           </div>
-          <p class="text-slate-600 mt-1 leading-relaxed">${m.desc}</p>
         </div>
       `).join('');
 
@@ -2046,17 +2277,22 @@
       saveStateToCloud();
     };
 
+    window.toggleMealCheck = function(idx) {
+      appState.cleanMeals[idx].checked = !appState.cleanMeals[idx].checked;
+      saveStateToCloud();
+    };
+
     window.updateTodayHealth = function() {
       appState.todayHealth.wifeMood = document.getElementById('wife-mood-select').value;
       saveStateToCloud();
-      showToast('妻子能量状态已记录');
+      showToast('妻子能量状态已记录并同步');
     };
 
     window.openMealModal = function() {
-      openModal('新增双人备餐/补能食谱', `
+      openModal('新增山姆高蛋白备餐 / 采购项', `
         <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1">餐食名称 *</label>
-          <input type="text" name="title" required placeholder="例如：山姆谷饲牛肉粒 + 糙米能量碗" class="w-full px-3 py-2 rounded-lg border border-slate-300">
+          <label class="block text-xs font-semibold text-slate-700 mb-1">餐食或采购食材名称 *</label>
+          <input type="text" name="title" required placeholder="例如：山姆谷饲牛肉粒 + 三色糙米能量碗" class="w-full px-3 py-2 rounded-lg border border-slate-300">
         </div>
         <div>
           <label class="block text-xs font-semibold text-slate-700 mb-1">食材配比与营养功效 *</label>
@@ -2066,10 +2302,11 @@
         appState.cleanMeals.push({
           id: 'm_' + Date.now(),
           title: formData.get('title'),
-          desc: formData.get('desc')
+          desc: formData.get('desc'),
+          checked: false
         });
         saveStateToCloud();
-        showToast('食谱已添加到库');
+        showToast('备餐/采购项已添加');
       });
     };
 
@@ -2081,12 +2318,12 @@
     window.openHealthLogModal = function() {
       openModal('记录双人身体指标与周志', `
         <div>
-          <label class="block text-xs font-semibold text-slate-700 mb-1">Wilson 今日体重 / 训练总结 *</label>
-          <input type="text" name="wilsonInfo" required placeholder="例如：72.3 kg · 力量训练45min · 高蛋白达标" class="w-full px-3 py-2 rounded-lg border border-slate-300">
+          <label class="block text-xs font-semibold text-slate-700 mb-1">Wilson 今日体重 / 训练 / 饮食总结 *</label>
+          <input type="text" name="wilsonInfo" required placeholder="例如：72.3 kg · 力量训练45min · 山姆糙米高蛋白" class="w-full px-3 py-2 rounded-lg border border-slate-300">
         </div>
         <div>
           <label class="block text-xs font-semibold text-slate-700 mb-1">妻子 (刘策焕) 睡眠与状态记录 *</label>
-          <input type="text" name="wifeInfo" required placeholder="例如：睡眠 7.5h · 🟢 绿灯平稳" class="w-full px-3 py-2 rounded-lg border border-slate-300">
+          <input type="text" name="wifeInfo" required placeholder="例如：睡眠 7.5h · 🟢 绿灯平稳（晚间散步放松）" class="w-full px-3 py-2 rounded-lg border border-slate-300">
         </div>
       `, (formData) => {
         appState.healthLogs.unshift({
@@ -2096,7 +2333,7 @@
           wifeInfo: formData.get('wifeInfo')
         });
         saveStateToCloud();
-        showToast('健康周志已保存');
+        showToast('健康周志已保存并云端同步');
       });
     };
 
@@ -2178,7 +2415,7 @@
       const toast = document.getElementById('toast');
       toast.textContent = msg;
       toast.classList.remove('opacity-0');
-      setTimeout(() => toast.classList.add('opacity-0'), 2600);
+      setTimeout(() => toast.classList.add('opacity-0'), 2800);
     }
 
     // Boot application
