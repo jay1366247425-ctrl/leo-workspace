@@ -77,7 +77,6 @@
 
     <!-- ==================== 支柱 1：Leo户外双语体能 ==================== -->
     <section id="view-fitness" class="pillar-view space-y-3">
-      <!-- 子模块导航 -->
       <div class="flex gap-1 overflow-x-auto no-scrollbar bg-white p-1 rounded-lg border border-slate-200">
         <button onclick="switchFitSub('students')" id="fit-sub-students" class="fit-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap bg-forest-900 text-white">1. 学员表</button>
         <button onclick="switchFitSub('records')" id="fit-sub-records" class="fit-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">2. 上课与消课</button>
@@ -141,7 +140,7 @@
               <select id="lessonStudentSelect" onchange="renderLessonPreview();updateFeedbackText()" class="w-full text-xs border border-slate-200 rounded-lg px-2.5 py-1.5 bg-slate-50"></select>
               <div id="lessonGoalBanner" class="hidden bg-amber-50 border border-amber-200 rounded-lg p-2 text-[11px] text-amber-900"></div>
               <div id="selectedDrillsPreview" class="space-y-1.5 text-xs text-slate-600 min-h-[60px] bg-slate-50 p-2.5 rounded-lg">
-                点击左侧动作“+ 加入本课”。
+                点击左侧动作“+ 选入”。
               </div>
             </div>
 
@@ -178,7 +177,6 @@
 
       <!-- 1.4 评估标准与国标BMI联动表 -->
       <div id="fit-panel-standards" class="fit-panel hidden space-y-3">
-        <!-- 学员实测联动对照器 -->
         <div class="card p-3 space-y-2 border-champagne-500/40">
           <div class="flex items-center justify-between gap-2">
             <span class="font-bold text-xs text-forest-900">🔍 学员评估联动对照</span>
@@ -187,7 +185,6 @@
           <div id="stdStudentMatchBox" class="text-xs bg-slate-50 p-2.5 rounded-lg text-slate-600"></div>
         </div>
 
-        <!-- 切换：8维评估标准 vs 国家青少年BMI标准表 -->
         <div class="flex items-center justify-between">
           <div class="flex gap-1 bg-white p-1 rounded-lg border border-slate-200">
             <button onclick="switchStdView('8dim')" id="std-btn-8dim" class="px-2.5 py-1 rounded-md text-xs font-semibold bg-forest-900 text-white">分龄敏感期8维标准</button>
@@ -277,8 +274,8 @@
 
     <!-- ==================== 支柱 3：健康饮食锻炼系统 ==================== -->
     <section id="view-health" class="pillar-view hidden space-y-2.5">
+      <!-- 顶部人物与持久化时间周期卡片 -->
       <div class="card p-3 space-y-2.5">
-        <!-- 扁平单行人员切换 + 起止日期 -->
         <div class="flex flex-wrap items-center justify-between gap-2">
           <div class="grid grid-cols-2 gap-1 bg-slate-100 p-1 rounded-lg">
             <button onclick="switchHealthPerson('me')" id="hp-me" class="px-3.5 py-1 rounded-md text-xs font-bold bg-forest-900 text-white whitespace-nowrap">🏃 我</button>
@@ -314,6 +311,24 @@
         </div>
       </div>
 
+      <!-- 新增：阶段身体基础档案与总体规划（总纲卡片） -->
+      <div class="card p-3 space-y-2 border-forest-900/20">
+        <div class="flex items-center justify-between">
+          <h3 class="font-bold text-xs text-forest-900">📌 阶段身体基础状况与总体规划</h3>
+          <span class="text-[10px] text-slate-400">自动云端同步</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
+          <div>
+            <label class="text-[11px] text-slate-500 block mb-1">近期伤病 / 身体基础状况</label>
+            <textarea id="metaBaseCondition" rows="2" onchange="saveHealthMeta()" placeholder="记录近期受伤部位、旧伤隐患、生病恢复或基础体质情况..." class="w-full border border-slate-200 rounded-lg p-2 bg-slate-50"></textarea>
+          </div>
+          <div>
+            <label class="text-[11px] text-slate-500 block mb-1">本阶段总体目标与安排</label>
+            <textarea id="metaPeriodFocus" rows="2" onchange="saveHealthMeta()" placeholder="记录这段时间核心要做什么（如：强化下肢离心力量、控糖减脂、保障睡眠恢复）..." class="w-full border border-slate-200 rounded-lg p-2 bg-slate-50"></textarea>
+          </div>
+        </div>
+      </div>
+
       <!-- 本期间总览表 -->
       <div id="periodOverviewBox" class="card p-3 hidden space-y-2">
         <div class="flex items-center justify-between">
@@ -328,20 +343,20 @@
         <!-- 1. 健康状态 -->
         <div class="card p-3 space-y-2.5">
           <div class="flex items-center justify-between">
-            <h3 class="font-bold text-xs text-forest-900">1. 健康状态 · <span id="activeDateLabel" class="text-champagne-600"></span></h3>
+            <h3 class="font-bold text-xs text-forest-900">1. 当日健康状态 · <span id="activeDateLabel" class="text-champagne-600"></span></h3>
             <div class="flex items-center gap-1 text-xs">
               <span class="text-slate-500 text-[11px]">晨重(kg)</span>
               <input id="dayWeight" type="number" step="0.1" onchange="saveCurrentDayHealth()" placeholder="--" class="w-16 border border-slate-200 rounded-md px-2 py-1 text-right font-semibold" />
             </div>
           </div>
           <div id="healthTagContainer" class="flex flex-wrap gap-1.5"></div>
-          <input id="dayHealthNote" type="text" onchange="saveCurrentDayHealth()" placeholder="记录具体部位不适或注意事项..." class="w-full text-xs border border-slate-200 rounded-lg px-2.5 py-1.5 bg-slate-50" />
+          <input id="dayHealthNote" type="text" onchange="saveCurrentDayHealth()" placeholder="记录当日具体部位不适或注意事项..." class="w-full text-xs border border-slate-200 rounded-lg px-2.5 py-1.5 bg-slate-50" />
         </div>
 
         <!-- 2. 锻炼系统 (仅“我”显示) -->
         <div id="myTrainingCard" class="card p-3 space-y-2.5">
           <div class="flex items-center justify-between gap-2">
-            <h3 class="font-bold text-xs text-forest-900">2. 锻炼计划</h3>
+            <h3 class="font-bold text-xs text-forest-900">2. 当日锻炼计划</h3>
             <select id="dayIntensity" onchange="saveCurrentDayHealth()" class="text-xs border border-slate-200 rounded-md px-2 py-1 bg-slate-50 font-semibold text-forest-900"></select>
           </div>
           <div id="healthWarningBanner" class="hidden bg-rose-50 border border-rose-200 text-rose-800 text-[11px] p-2 rounded-lg"></div>
@@ -356,7 +371,7 @@
 
         <!-- 3. 饮食系统 -->
         <div class="card p-3 space-y-2.5">
-          <h3 class="font-bold text-xs text-forest-900">3. 饮食记录与参考</h3>
+          <h3 class="font-bold text-xs text-forest-900">3. 当日饮食记录与参考</h3>
           <div id="smartNutritionAdvice" class="bg-emerald-50 border border-emerald-200 text-emerald-900 text-[11px] p-2.5 rounded-lg leading-relaxed"></div>
           <div class="grid grid-cols-1 md:grid-cols-3 gap-2 text-xs">
             <div class="bg-slate-50 p-2 rounded-lg border border-slate-100 space-y-1">
@@ -469,6 +484,15 @@
     const DOC_REF = doc(db, "leo_life_os", "master_v3");
     const LOCAL_KEY = "leo_life_os_backup_v3";
 
+    function getOffsetDate(days) {
+      const d = new Date();
+      d.setDate(d.getDate() + days);
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${y}-${m}-${day}`;
+    }
+
     const DEFAULT_STATE = {
       pin: "1999",
       lockEnabled: false,
@@ -579,10 +603,36 @@
         { id: "sc4", county: "莲都", spot: "古堰画乡 (通济堰)", cn: "建于公元505年的世界灌溉工程遗产，至今仍在滋养着瓯江两岸的良田。", en: "Constructed in 505 AD, Tongji Weir is a World Heritage Irrigation Structure that still nourishes the fertile plains along the Oujiang River today." },
         { id: "sc5", county: "缙云", spot: "仙都鼎湖峰", cn: "高达170.8米的单体石柱拔地而起，是黄帝文化与自然奇观的完美交汇。", en: "Rising 170.8 meters straight from the valley floor, Dinghu Peak stands as a dramatic monolithic pillar steeped in ancient Taoist and Yellow Emperor legends." }
       ],
+      healthMeta: {
+        me: {
+          periodStart: getOffsetDate(-3),
+          periodEnd: getOffsetDate(3),
+          baseCondition: "",
+          periodFocus: ""
+        },
+        wife: {
+          periodStart: getOffsetDate(-3),
+          periodEnd: getOffsetDate(3),
+          baseCondition: "",
+          periodFocus: ""
+        }
+      },
       healthLogs: { me: {}, wife: {} }
     };
 
-    let state = JSON.parse(localStorage.getItem(LOCAL_KEY)) || structuredClone(DEFAULT_STATE);
+    let savedLocal = JSON.parse(localStorage.getItem(LOCAL_KEY));
+    let state = savedLocal ? {
+      ...structuredClone(DEFAULT_STATE),
+      ...savedLocal,
+      dictionaries: { ...DEFAULT_STATE.dictionaries, ...(savedLocal.dictionaries || {}) },
+      sops: { ...DEFAULT_STATE.sops, ...(savedLocal.sops || {}) },
+      healthMeta: {
+        me: { ...DEFAULT_STATE.healthMeta.me, ...(savedLocal.healthMeta?.me || {}) },
+        wife: { ...DEFAULT_STATE.healthMeta.wife, ...(savedLocal.healthMeta?.wife || {}) }
+      },
+      healthLogs: { me: {}, wife: {}, ...(savedLocal.healthLogs || {}) }
+    } : structuredClone(DEFAULT_STATE);
+
     const ui = {
       pillar: "fitness",
       fitSub: "students",
@@ -593,21 +643,10 @@
       sopChannel: "online",
       county: "全部",
       healthPerson: "me",
-      periodStart: getOffsetDate(-3),
-      periodEnd: getOffsetDate(3),
       activeDate: getOffsetDate(0),
       showOverview: false
     };
     window.ui = ui;
-
-    function getOffsetDate(days) {
-      const d = new Date();
-      d.setDate(d.getDate() + days);
-      const y = d.getFullYear();
-      const m = String(d.getMonth() + 1).padStart(2, "0");
-      const day = String(d.getDate()).padStart(2, "0");
-      return `${y}-${m}-${day}`;
-    }
 
     // 国家卫生行业标准 WS/T 586-2018 & WS/T 456-2014 5-17岁儿童青少年分性别年龄BMI界值表
     const CN_CHILD_BMI = {
@@ -683,6 +722,10 @@
           ...remote,
           dictionaries: { ...DEFAULT_STATE.dictionaries, ...(remote.dictionaries || {}) },
           sops: { ...DEFAULT_STATE.sops, ...(remote.sops || {}) },
+          healthMeta: {
+            me: { ...DEFAULT_STATE.healthMeta.me, ...(remote.healthMeta?.me || {}) },
+            wife: { ...DEFAULT_STATE.healthMeta.wife, ...(remote.healthMeta?.wife || {}) }
+          },
           healthLogs: { me: {}, wife: {}, ...(remote.healthLogs || {}) }
         };
         localStorage.setItem(LOCAL_KEY, JSON.stringify(state));
@@ -758,7 +801,7 @@
       document.getElementById(`tour-sub-${sub}`).className = "tour-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold bg-forest-900 text-white";
     };
 
-    // ==================== 1.1 学员表 (含上课进度与快捷消课联动) ====================
+    // ==================== 1.1 学员表 ====================
     function renderStudents() {
       const box = document.getElementById("studentList");
       box.innerHTML = state.students.map(s => {
@@ -1484,7 +1527,7 @@
       closeModal(); saveState();
     };
 
-    // ==================== 3. 健康饮食锻炼系统 (修复日期切换与移动端排版) ====================
+    // ==================== 3. 健康饮食锻炼系统 (云端持久化周期 + 阶段总纲) ====================
     function getDatesInRange(startStr, endStr) {
       const dates = [];
       const [sy, sm, sd] = startStr.split("-").map(Number);
@@ -1504,6 +1547,19 @@
       return dates.length ? dates : [startStr];
     }
 
+    function getPersonMeta(person) {
+      if (!state.healthMeta) state.healthMeta = structuredClone(DEFAULT_STATE.healthMeta);
+      if (!state.healthMeta[person]) {
+        state.healthMeta[person] = {
+          periodStart: getOffsetDate(-3),
+          periodEnd: getOffsetDate(3),
+          baseCondition: "",
+          periodFocus: ""
+        };
+      }
+      return state.healthMeta[person];
+    }
+
     window.selectHealthDate = (dateStr) => {
       ui.activeDate = dateStr;
       renderHealth();
@@ -1518,11 +1574,23 @@
     };
 
     window.updatePeriodRange = () => {
-      ui.periodStart = document.getElementById("periodStart").value;
-      ui.periodEnd = document.getElementById("periodEnd").value;
-      const dates = getDatesInRange(ui.periodStart, ui.periodEnd);
+      const meta = getPersonMeta(ui.healthPerson);
+      const newStart = document.getElementById("periodStart").value;
+      const newEnd = document.getElementById("periodEnd").value;
+      if (newStart) meta.periodStart = newStart;
+      if (newEnd) meta.periodEnd = newEnd;
+      const dates = getDatesInRange(meta.periodStart, meta.periodEnd);
       if (!dates.includes(ui.activeDate)) ui.activeDate = dates[0];
-      renderHealth();
+      saveState();
+      showToast("追踪时间段已保存并同步");
+    };
+
+    window.saveHealthMeta = () => {
+      const meta = getPersonMeta(ui.healthPerson);
+      meta.baseCondition = document.getElementById("metaBaseCondition").value;
+      meta.periodFocus = document.getElementById("metaPeriodFocus").value;
+      saveState();
+      showToast("阶段身体档案已同步");
     };
 
     window.togglePeriodOverview = () => {
@@ -1550,10 +1618,20 @@
     }
 
     function renderHealth() {
-      document.getElementById("periodStart").value = ui.periodStart;
-      document.getElementById("periodEnd").value = ui.periodEnd;
-      const dates = getDatesInRange(ui.periodStart, ui.periodEnd);
-      if (!dates.includes(ui.activeDate)) ui.activeDate = dates[0];
+      const meta = getPersonMeta(ui.healthPerson);
+      const startStr = meta.periodStart || getOffsetDate(-3);
+      const endStr = meta.periodEnd || getOffsetDate(3);
+
+      document.getElementById("periodStart").value = startStr;
+      document.getElementById("periodEnd").value = endStr;
+      document.getElementById("metaBaseCondition").value = meta.baseCondition || "";
+      document.getElementById("metaPeriodFocus").value = meta.periodFocus || "";
+
+      const dates = getDatesInRange(startStr, endStr);
+      if (!dates.includes(ui.activeDate)) {
+        const today = getOffsetDate(0);
+        ui.activeDate = dates.includes(today) ? today : dates[0];
+      }
       const logs = state.healthLogs[ui.healthPerson] || {};
 
       const weights = dates.map(d => parseFloat(logs[d]?.weight)).filter(w => !isNaN(w));
@@ -1570,7 +1648,6 @@
         document.getElementById("periodWeightDiff").textContent = "待录入";
       }
 
-      // 扁平防挤压日期按钮
       document.getElementById("periodDatePills").innerHTML = dates.map(d => {
         const shortD = d.slice(5);
         const active = d === ui.activeDate;
@@ -1614,10 +1691,14 @@
         document.getElementById("dayTrainTheme").value = cur.trainTheme || "";
 
         const warnBanner = document.getElementById("healthWarningBanner");
-        const hasPain = (cur.tags || []).some(t => t.includes("不适") || t.includes("酸胀") || t.includes("累")) || (cur.note && cur.note.length > 0);
-        if (hasPain) {
+        const hasDayPain = (cur.tags || []).some(t => t.includes("不适") || t.includes("酸胀") || t.includes("累")) || (cur.note && cur.note.trim().length > 0);
+        const hasBasePain = meta.baseCondition && meta.baseCondition.trim().length > 0;
+        if (hasDayPain || hasBasePain) {
           warnBanner.classList.remove("hidden");
-          warnBanner.textContent = `⚠️ 状态联动提醒：存在身体反馈（${(cur.tags||[]).join('、')} ${cur.note}），建议降低下肢高冲击负荷并加强拉伸。`;
+          const parts = [];
+          if (hasBasePain) parts.push(`阶段基础档案：${meta.baseCondition.trim()}`);
+          if (hasDayPain) parts.push(`当日反馈：${(cur.tags||[]).join('、')} ${cur.note}`);
+          warnBanner.textContent = `⚠️ 身体防护联动提醒（${parts.join(' ｜ ')}），安排动作与强度时注意保护与热身。`;
         } else {
           warnBanner.classList.add("hidden");
         }
