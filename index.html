@@ -6,7 +6,7 @@
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="apple-mobile-web-app-title" content="Leo Life OS" />
-  <title>Leo | 个人商业与生活全能系统</title>
+  <title>Leo | Life OS</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -21,396 +21,355 @@
     }
   </script>
   <style>
-    body { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", sans-serif; background-color: #F4F5F7; color: #1E293B; -webkit-tap-highlight-color: transparent; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Helvetica Neue", sans-serif; background-color: #F3F4F6; color: #1E293B; -webkit-tap-highlight-color: transparent; }
     .no-scrollbar::-webkit-scrollbar { display: none; }
     .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    .card { background: #FFFFFF; border-radius: 14px; border: 1px solid #E2E8F0; box-shadow: 0 1px 3px rgba(15, 41, 30, 0.04); }
-    .btn-primary { background: #0F291E; color: #FFFFFF; transition: all 0.15s; }
-    .btn-primary:active { transform: scale(0.98); background: #163828; }
-    .btn-gold { background: #C5A059; color: #0F291E; font-weight: 600; transition: all 0.15s; }
-    .btn-gold:active { transform: scale(0.98); background: #A8843E; }
+    .card { background: #FFFFFF; border-radius: 10px; border: 1px solid #E5E7EB; }
+    .btn-primary { background: #0F291E; color: #FFFFFF; transition: opacity 0.15s; }
+    .btn-primary:active { opacity: 0.85; }
+    .btn-gold { background: #C5A059; color: #0F291E; font-weight: 600; transition: opacity 0.15s; }
+    .btn-gold:active { opacity: 0.85; }
   </style>
 </head>
-<body class="pb-20">
+<body class="pb-16 text-[13px]">
 
-  <!-- 锁屏遮罩 (默认PIN: 1999，可在设置中修改或关闭) -->
+  <!-- 锁屏遮罩 -->
   <div id="lockScreen" class="fixed inset-0 z-50 bg-forest-900 text-white flex flex-col items-center justify-center p-6 hidden">
-    <div class="w-16 h-16 rounded-2xl bg-champagne-500 text-forest-900 flex items-center justify-center text-2xl font-bold mb-4 shadow-lg">L</div>
-    <h1 class="text-xl font-bold tracking-wide mb-1">Leo | Personal Life OS</h1>
-    <p class="text-xs text-slate-300 mb-6">低熵 · 复利 · 高毛利个人商业与生活全能系统</p>
-    <input id="pinInput" type="password" inputmode="numeric" maxlength="6" placeholder="输入4位访问密码 (默认1999)" class="w-64 text-center text-lg tracking-widest bg-forest-800 border border-slate-600 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-champagne-500 mb-3" />
-    <button onclick="unlockApp()" class="w-64 btn-gold py-3 rounded-xl text-sm shadow">解锁进入系统</button>
-    <p id="pinError" class="text-rose-400 text-xs mt-2 hidden">密码错误，请重试</p>
+    <div class="w-12 h-12 rounded-xl bg-champagne-500 text-forest-900 flex items-center justify-center text-xl font-bold mb-3">L</div>
+    <h1 class="text-lg font-bold mb-1">Leo | Life OS</h1>
+    <p class="text-xs text-slate-400 mb-5">Personal Business & Life Operating System</p>
+    <input id="pinInput" type="password" inputmode="numeric" maxlength="6" placeholder="输入PIN码 (默认1999)" class="w-60 text-center text-base tracking-widest bg-forest-800 border border-slate-600 rounded-lg px-3 py-2.5 text-white focus:outline-none focus:border-champagne-500 mb-3" />
+    <button onclick="unlockApp()" class="w-60 btn-gold py-2.5 rounded-lg text-xs">解锁</button>
+    <p id="pinError" class="text-rose-400 text-xs mt-2 hidden">密码错误</p>
   </div>
 
-  <!-- 顶部主导航栏 -->
-  <header class="sticky top-0 z-40 bg-forest-900 text-white shadow-md">
-    <div class="max-w-6xl mx-auto px-4 pt-3 pb-2">
-      <div class="flex items-center justify-between mb-2.5">
-        <div class="flex items-center gap-2">
-          <span class="w-7 h-7 rounded-lg bg-champagne-500 text-forest-900 font-extrabold flex items-center justify-center text-sm">L</span>
-          <div>
-            <div class="font-bold text-sm leading-tight">Leo | 个人商业与生活全能系统</div>
-            <div class="flex items-center gap-1.5 text-[11px] text-slate-300 mt-0.5">
-              <span id="syncDot" class="w-2 h-2 rounded-full bg-amber-400 inline-block"></span>
-              <span id="syncText">正在连接新加坡云端节点...</span>
+  <!-- 顶部扁平主导航栏 -->
+  <header class="sticky top-0 z-40 bg-forest-900 text-white shadow-xs">
+    <div class="max-w-5xl mx-auto px-3 pt-2.5 pb-2">
+      <div class="flex items-center justify-between gap-2 mb-2">
+        <div class="flex items-center gap-2 min-w-0">
+          <span class="w-6 h-6 rounded-md bg-champagne-500 text-forest-900 font-extrabold flex items-center justify-center text-xs shrink-0">L</span>
+          <div class="truncate">
+            <div class="font-bold text-sm leading-none truncate">Leo | Life OS</div>
+            <div class="flex items-center gap-1 text-[10px] text-slate-300 mt-1">
+              <span id="syncDot" class="w-1.5 h-1.5 rounded-full bg-amber-400 inline-block shrink-0"></span>
+              <span id="syncText" class="truncate">连接新加坡节点...</span>
             </div>
           </div>
         </div>
-        <div class="flex items-center gap-1.5">
-          <button onclick="exportBackup()" class="text-xs bg-forest-800 hover:bg-slate-700 border border-slate-600 px-2.5 py-1.5 rounded-lg text-slate-200">导出备份</button>
-          <button onclick="openSettingsModal()" class="text-xs bg-forest-800 hover:bg-slate-700 border border-slate-600 px-2.5 py-1.5 rounded-lg text-champagne-400">⚙️ 字典/锁</button>
+        <div class="flex items-center gap-1.5 shrink-0">
+          <button onclick="exportBackup()" class="text-[11px] bg-forest-800 border border-slate-700 px-2.5 py-1 rounded-md text-slate-200 whitespace-nowrap">备份</button>
+          <button onclick="openSettingsModal()" class="text-[11px] bg-forest-800 border border-slate-700 px-2.5 py-1 rounded-md text-champagne-400 whitespace-nowrap">⚙️ 设置</button>
         </div>
       </div>
 
-      <!-- 4大核心支柱切换器 (按指定顺序：体能 -> 地接 -> 健康饮食锻炼 -> 全局复利) -->
-      <nav class="flex gap-1.5 overflow-x-auto no-scrollbar pb-1">
-        <button onclick="switchPillar('fitness')" id="tab-fitness" class="pillar-tab px-3.5 py-2 rounded-lg text-xs font-semibold whitespace-nowrap bg-champagne-500 text-forest-900">🏃 Leo户外双语体能</button>
-        <button onclick="switchPillar('tour')" id="tab-tour" class="pillar-tab px-3.5 py-2 rounded-lg text-xs font-semibold whitespace-nowrap bg-forest-800 text-slate-200">🗺️ 丽水英语地接</button>
-        <button onclick="switchPillar('health')" id="tab-health" class="pillar-tab px-3.5 py-2 rounded-lg text-xs font-semibold whitespace-nowrap bg-forest-800 text-slate-200">🥗 健康饮食锻炼系统</button>
-        <button onclick="switchPillar('dashboard')" id="tab-dashboard" class="pillar-tab px-3.5 py-2 rounded-lg text-xs font-semibold whitespace-nowrap bg-forest-800 text-slate-200">📊 全局复利总看板</button>
+      <!-- 4大核心支柱扁平切换器 -->
+      <nav class="grid grid-cols-4 gap-1 bg-forest-800/80 p-1 rounded-lg">
+        <button onclick="switchPillar('fitness')" id="tab-fitness" class="pillar-tab py-1.5 px-1 rounded-md text-[11px] font-semibold text-center truncate bg-champagne-500 text-forest-900">🏃 双语体能</button>
+        <button onclick="switchPillar('tour')" id="tab-tour" class="pillar-tab py-1.5 px-1 rounded-md text-[11px] font-semibold text-center truncate text-slate-200">🗺️ 英语地接</button>
+        <button onclick="switchPillar('health')" id="tab-health" class="pillar-tab py-1.5 px-1 rounded-md text-[11px] font-semibold text-center truncate text-slate-200">🥗 健康饮食</button>
+        <button onclick="switchPillar('dashboard')" id="tab-dashboard" class="pillar-tab py-1.5 px-1 rounded-md text-[11px] font-semibold text-center truncate text-slate-200">📊 复利总览</button>
       </nav>
     </div>
   </header>
 
-  <main class="max-w-6xl mx-auto px-4 pt-4">
+  <main class="max-w-5xl mx-auto px-3 pt-3">
 
     <!-- ==================== 支柱 1：Leo户外双语体能 ==================== -->
-    <section id="view-fitness" class="pillar-view space-y-4">
-      <!-- 子模块导航 (按指定业务逻辑顺序) -->
-      <div class="flex gap-1.5 overflow-x-auto no-scrollbar bg-white p-1.5 rounded-xl border border-slate-200">
-        <button onclick="switchFitSub('students')" id="fit-sub-students" class="fit-sub-btn px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap bg-forest-900 text-white">1. 学员表(国标BMI)</button>
-        <button onclick="switchFitSub('records')" id="fit-sub-records" class="fit-sub-btn px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap text-slate-600">2. 上课与消课记录</button>
-        <button onclick="switchFitSub('drills')" id="fit-sub-drills" class="fit-sub-btn px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap text-slate-600">3. 9大动作库与反馈</button>
-        <button onclick="switchFitSub('standards')" id="fit-sub-standards" class="fit-sub-btn px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap text-slate-600">4. 分龄敏感期8维评估</button>
-        <button onclick="switchFitSub('pricing')" id="fit-sub-pricing" class="fit-sub-btn px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap text-slate-600">5. 定价体系</button>
-        <button onclick="switchFitSub('sop')" id="fit-sub-sop" class="fit-sub-btn px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap text-slate-600">6. 线上/线下SOP</button>
-        <button onclick="switchFitSub('media')" id="fit-sub-media" class="fit-sub-btn px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap text-slate-600">7. 自媒体引流看板</button>
+    <section id="view-fitness" class="pillar-view space-y-3">
+      <!-- 子模块导航 -->
+      <div class="flex gap-1 overflow-x-auto no-scrollbar bg-white p-1 rounded-lg border border-slate-200">
+        <button onclick="switchFitSub('students')" id="fit-sub-students" class="fit-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap bg-forest-900 text-white">1. 学员表</button>
+        <button onclick="switchFitSub('records')" id="fit-sub-records" class="fit-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">2. 上课与消课</button>
+        <button onclick="switchFitSub('drills')" id="fit-sub-drills" class="fit-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">3. 动作库与反馈</button>
+        <button onclick="switchFitSub('standards')" id="fit-sub-standards" class="fit-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">4. 评估标准与BMI</button>
+        <button onclick="switchFitSub('pricing')" id="fit-sub-pricing" class="fit-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">5. 定价体系</button>
+        <button onclick="switchFitSub('sop')" id="fit-sub-sop" class="fit-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">6. 交付SOP</button>
+        <button onclick="switchFitSub('media')" id="fit-sub-media" class="fit-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">7. 自媒体看板</button>
       </div>
 
       <!-- 1.1 学员表 -->
-      <div id="fit-panel-students" class="fit-panel space-y-3">
+      <div id="fit-panel-students" class="fit-panel space-y-2.5">
         <div class="flex items-center justify-between">
-          <div>
-            <h2 class="font-bold text-base text-forest-900">学员档案库（动态周岁 + 国家儿童青少年BMI标准 + 家长核心诉求）</h2>
-            <p class="text-xs text-slate-500">自动依据 WS/T 586-2018 & WS/T 456-2014 分性别分年龄段判别体型</p>
-          </div>
-          <button onclick="openStudentModal()" class="btn-primary px-3.5 py-2 rounded-xl text-xs font-semibold">+ 新增学员</button>
+          <h2 class="font-bold text-sm text-forest-900">学员档案库</h2>
+          <button onclick="openStudentModal()" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-semibold">+ 新增学员</button>
         </div>
-        <div id="studentList" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+        <div id="studentList" class="grid grid-cols-1 md:grid-cols-2 gap-2.5"></div>
       </div>
 
       <!-- 1.2 上课与消课记录 -->
-      <div id="fit-panel-records" class="fit-panel hidden space-y-3">
-        <div class="grid grid-cols-3 gap-2.5">
-          <div class="card p-3">
-            <div class="text-[11px] text-slate-500">正式消课总节数</div>
-            <div id="statFormalCount" class="text-lg font-bold text-forest-900 mt-0.5">0 节</div>
+      <div id="fit-panel-records" class="fit-panel hidden space-y-2.5">
+        <div class="grid grid-cols-3 gap-2">
+          <div class="card p-2.5">
+            <div class="text-[11px] text-slate-500">正式消课</div>
+            <div id="statFormalCount" class="text-base font-bold text-forest-900 mt-0.5">0 节</div>
           </div>
-          <div class="card p-3">
-            <div class="text-[11px] text-slate-500">体验课人次</div>
-            <div id="statTrialCount" class="text-lg font-bold text-champagne-600 mt-0.5">0 人</div>
+          <div class="card p-2.5">
+            <div class="text-[11px] text-slate-500">体验人次</div>
+            <div id="statTrialCount" class="text-base font-bold text-champagne-600 mt-0.5">0 人</div>
           </div>
-          <div class="card p-3">
-            <div class="text-[11px] text-slate-500">体验课转化率</div>
-            <div id="statTrialRate" class="text-lg font-bold text-emerald-600 mt-0.5">0%</div>
+          <div class="card p-2.5">
+            <div class="text-[11px] text-slate-500">体验转化率</div>
+            <div id="statTrialRate" class="text-base font-bold text-emerald-600 mt-0.5">0%</div>
           </div>
         </div>
         <div class="flex items-center justify-between">
-          <h2 class="font-bold text-base text-forest-900">上课打卡与体验转化追踪</h2>
-          <button onclick="openRecordModal()" class="btn-primary px-3.5 py-2 rounded-xl text-xs font-semibold">+ 记录上课/体验</button>
+          <h2 class="font-bold text-sm text-forest-900">上课打卡与转化记录</h2>
+          <button onclick="openRecordModal()" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-semibold">+ 记录上课</button>
         </div>
-        <div id="recordList" class="space-y-2.5"></div>
+        <div id="recordList" class="space-y-2"></div>
       </div>
 
-      <!-- 1.3 9大动作库与课后家长反馈生成器 -->
-      <div id="fit-panel-drills" class="fit-panel hidden space-y-4">
-        <div class="grid grid-cols-1 lg:grid-cols-12 gap-4">
-          <!-- 左侧：9大分类双语动作库 -->
-          <div class="lg:col-span-7 space-y-3">
+      <!-- 1.3 动作库与家长反馈 -->
+      <div id="fit-panel-drills" class="fit-panel hidden space-y-3">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-3">
+          <div class="lg:col-span-7 space-y-2.5">
             <div class="flex items-center justify-between">
-              <h2 class="font-bold text-base text-forest-900">双语动作训练库（热身 + 7大身体素质 + 拉伸）</h2>
-              <button onclick="openDrillModal()" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-semibold">+ 新增动作</button>
+              <h2 class="font-bold text-sm text-forest-900">9大双语动作库</h2>
+              <button onclick="openDrillModal()" class="btn-primary px-2.5 py-1 rounded-md text-xs font-semibold">+ 新增动作</button>
             </div>
-            <div id="drillCategoryTabs" class="flex gap-1.5 overflow-x-auto no-scrollbar pb-1"></div>
+            <div id="drillCategoryTabs" class="flex gap-1 overflow-x-auto no-scrollbar pb-0.5"></div>
             <div id="drillList" class="space-y-2"></div>
           </div>
 
-          <!-- 右侧：教练现场教案预览 + 课后科学反馈生成器 -->
-          <div class="lg:col-span-5 space-y-3">
-            <div class="card p-4 space-y-3 border-champagne-500/40">
+          <div class="lg:col-span-5 space-y-2.5">
+            <div class="card p-3 space-y-2.5">
               <div class="flex items-center justify-between">
-                <h3 class="font-bold text-sm text-forest-900">📋 教练现场备课单（点选左侧动作自动组合）</h3>
-                <button onclick="clearSelectedDrills()" class="text-xs text-slate-400 hover:text-rose-500">清空已选</button>
+                <h3 class="font-bold text-xs text-forest-900">📋 现场备课单</h3>
+                <button onclick="clearSelectedDrills()" class="text-[11px] text-slate-400">清空</button>
               </div>
-              <div>
-                <label class="text-xs text-slate-500 block mb-1">关联学员（自动高亮家长核心诉求）</label>
-                <select id="lessonStudentSelect" onchange="renderLessonPreview()" class="w-full text-xs border border-slate-200 rounded-lg px-2.5 py-2 bg-slate-50"></select>
-              </div>
-              <div id="lessonGoalBanner" class="hidden bg-amber-50 border border-amber-200 rounded-lg p-2.5 text-xs text-amber-900"></div>
-              <div id="selectedDrillsPreview" class="space-y-2 text-xs text-slate-600 min-h-[80px] bg-slate-50 p-3 rounded-xl">
-                暂未勾选动作，请在左侧点击动作卡片上的“+ 加入本课”。
+              <select id="lessonStudentSelect" onchange="renderLessonPreview();updateFeedbackText()" class="w-full text-xs border border-slate-200 rounded-lg px-2.5 py-1.5 bg-slate-50"></select>
+              <div id="lessonGoalBanner" class="hidden bg-amber-50 border border-amber-200 rounded-lg p-2 text-[11px] text-amber-900"></div>
+              <div id="selectedDrillsPreview" class="space-y-1.5 text-xs text-slate-600 min-h-[60px] bg-slate-50 p-2.5 rounded-lg">
+                点击左侧动作“+ 加入本课”。
               </div>
             </div>
 
-            <!-- 家长课后科学表现反馈生成器 -->
-            <div class="card p-4 space-y-3">
-              <h3 class="font-bold text-sm text-forest-900">💬 家长课后科学表现反馈生成器（微信一键复制）</h3>
-              <div class="grid grid-cols-2 gap-2 text-xs">
+            <div class="card p-3 space-y-2.5">
+              <h3 class="font-bold text-xs text-forest-900">💬 家长课后表现反馈生成器</h3>
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                 <div>
-                  <label class="text-slate-500 block mb-1">1. 课堂专注力与注意力</label>
-                  <select id="fbFocus" onchange="updateFeedbackText()" class="w-full border border-slate-200 rounded-lg p-2 bg-slate-50">
-                    <option value="极高（全程眼神紧跟指令，抗干扰能力强）">极高（全程眼神紧跟指令）</option>
+                  <label class="text-[11px] text-slate-500 block mb-1">1. 专注力与注意力</label>
+                  <select id="fbFocus" onchange="updateFeedbackText()" class="w-full border border-slate-200 rounded-lg p-1.5 bg-slate-50">
+                    <option value="极高（全程眼神紧跟指令，抗干扰能力强）">极高（全程紧跟指令）</option>
                     <option value="良好（前30分钟高度集中，后段略需口令唤醒）">良好（前段极佳，后段需唤醒）</option>
-                    <option value="有波动（对游戏化环节兴奋，静态纠偏易分心）">有波动（静态纠偏易分心）</option>
+                    <option value="有波动（游戏环节兴奋，静态纠偏易分心）">有波动（静态纠偏易分心）</option>
                   </select>
                 </div>
                 <div>
-                  <label class="text-slate-500 block mb-1">2. 身体疲劳度与负荷(RPE)</label>
-                  <select id="fbFatigue" onchange="updateFeedbackText()" class="w-full border border-slate-200 rounded-lg p-2 bg-slate-50">
-                    <option value="RPE 6-7分（微汗喘气、动作不变形，处于黄金超量恢复区间）">RPE 6-7分（黄金有效负荷）</option>
+                  <label class="text-[11px] text-slate-500 block mb-1">2. 身体疲劳度(RPE)</label>
+                  <select id="fbFatigue" onchange="updateFeedbackText()" class="w-full border border-slate-200 rounded-lg p-1.5 bg-slate-50">
+                    <option value="RPE 6-7分（微汗喘气、动作不变形，处于黄金有效负荷区间）">RPE 6-7分（黄金有效负荷）</option>
                     <option value="RPE 8分（心率拉满、下肢明显酸胀，建议今晚增加优质蛋白与早睡）">RPE 8分（高负荷，需加强恢复）</option>
                     <option value="RPE 4-5分（轻松游刃有余，下次课可提升爆发力与对抗难度）">RPE 4-5分（轻松，下次可进阶）</option>
                   </select>
                 </div>
               </div>
-              <div class="text-xs space-y-2">
-                <div>
-                  <label class="text-slate-500 block mb-1">3. 英语表达亮点（做得好的地方）</label>
-                  <input id="fbEngGood" oninput="updateFeedbackText()" type="text" value="能听懂并快速反应 'Posture tall / Stick the landing' 等核心指令，敢于大声用英文计数与回应。" class="w-full border border-slate-200 rounded-lg p-2" />
-                </div>
-                <div>
-                  <label class="text-slate-500 block mb-1">4. 英语/动作待提升点（下节课重点）</label>
-                  <input id="fbEngImprove" oninput="updateFeedbackText()" type="text" value="高速跑动喘气时容易切回中文求助，下节课鼓励用短句 'Water break / Ready' 主动表达。" class="w-full border border-slate-200 rounded-lg p-2" />
-                </div>
+              <div class="text-xs space-y-1.5">
+                <input id="fbEngGood" oninput="updateFeedbackText()" type="text" value="能听懂并快速反应 'Posture tall / Stick the landing' 等核心指令，敢于大声用英文计数与回应。" class="w-full border border-slate-200 rounded-lg p-1.5" placeholder="英语表现亮点" />
+                <input id="fbEngImprove" oninput="updateFeedbackText()" type="text" value="高速跑动喘气时容易切回中文求助，下节课鼓励用短句 'Water break / Ready' 主动表达。" class="w-full border border-slate-200 rounded-lg p-1.5" placeholder="下节课提升点" />
               </div>
-              <textarea id="fbOutput" rows="5" class="w-full text-xs bg-forest-900 text-slate-100 rounded-xl p-3 leading-relaxed"></textarea>
-              <button onclick="copyText('fbOutput', '家长反馈已复制，可直接去微信粘贴发送！')" class="w-full btn-gold py-2.5 rounded-xl text-xs">一键复制家长反馈话术</button>
+              <textarea id="fbOutput" rows="5" class="w-full text-xs bg-forest-900 text-slate-100 rounded-lg p-2.5 leading-relaxed"></textarea>
+              <button onclick="copyText('fbOutput', '家长反馈已复制')" class="w-full btn-gold py-2 rounded-lg text-xs">一键复制微信反馈</button>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- 1.4 分年龄敏感期 8 维评估标准 -->
+      <!-- 1.4 评估标准与国标BMI联动表 -->
       <div id="fit-panel-standards" class="fit-panel hidden space-y-3">
-        <div class="flex items-center justify-between">
-          <div>
-            <h2 class="font-bold text-base text-forest-900">分年龄段敏感期 8 维评估标准库（7大身体素质 + 英语口语）</h2>
-            <p class="text-xs text-slate-500">涵盖幼儿园大班至初三及成年人，高亮各阶段神经/体能发育黄金敏感期</p>
+        <!-- 学员实测联动对照器 -->
+        <div class="card p-3 space-y-2 border-champagne-500/40">
+          <div class="flex items-center justify-between gap-2">
+            <span class="font-bold text-xs text-forest-900">🔍 学员评估联动对照</span>
+            <select id="stdStudentSelect" onchange="renderStudentStandardMatch()" class="text-xs border border-slate-200 rounded-lg px-2 py-1 bg-slate-50 max-w-[180px]"></select>
           </div>
-          <button onclick="openStandardModal()" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-semibold">+ 新增/编辑阶段标准</button>
+          <div id="stdStudentMatchBox" class="text-xs bg-slate-50 p-2.5 rounded-lg text-slate-600"></div>
         </div>
-        <div id="standardsList" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+
+        <!-- 切换：8维评估标准 vs 国家青少年BMI标准表 -->
+        <div class="flex items-center justify-between">
+          <div class="flex gap-1 bg-white p-1 rounded-lg border border-slate-200">
+            <button onclick="switchStdView('8dim')" id="std-btn-8dim" class="px-2.5 py-1 rounded-md text-xs font-semibold bg-forest-900 text-white">分龄敏感期8维标准</button>
+            <button onclick="switchStdView('bmi')" id="std-btn-bmi" class="px-2.5 py-1 rounded-md text-xs font-semibold text-slate-600">国标青少年BMI对照表</button>
+          </div>
+          <button onclick="openStandardModal()" id="btnAddStd" class="btn-primary px-2.5 py-1 rounded-md text-xs font-semibold">+ 新增阶段</button>
+        </div>
+
+        <div id="standardsList" class="grid grid-cols-1 md:grid-cols-2 gap-2.5"></div>
+        <div id="bmiTableContainer" class="card p-3 hidden overflow-x-auto"></div>
       </div>
 
       <!-- 1.5 定价体系 -->
-      <div id="fit-panel-pricing" class="fit-panel hidden space-y-3">
+      <div id="fit-panel-pricing" class="fit-panel hidden space-y-2.5">
         <div class="flex items-center justify-between">
-          <h2 class="font-bold text-base text-forest-900">高毛利标准化定价体系</h2>
+          <h2 class="font-bold text-sm text-forest-900">标准化定价体系</h2>
           <button onclick="openPricingModal()" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-semibold">+ 新增课包</button>
         </div>
-        <div id="pricingList" class="grid grid-cols-1 md:grid-cols-3 gap-3"></div>
+        <div id="pricingList" class="grid grid-cols-1 md:grid-cols-3 gap-2.5"></div>
       </div>
 
       <!-- 1.6 线上 / 线下交付 SOP -->
-      <div id="fit-panel-sop" class="fit-panel hidden space-y-3">
-        <div class="flex flex-wrap items-center justify-between gap-2">
-          <div class="flex gap-1.5 bg-white p-1 rounded-xl border border-slate-200">
-            <button onclick="switchSopChannel('online')" id="sop-tab-online" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-forest-900 text-white">🌐 线上全漏斗 SOP</button>
-            <button onclick="switchSopChannel('offline')" id="sop-tab-offline" class="px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600">🌳 线下全漏斗 SOP</button>
+      <div id="fit-panel-sop" class="fit-panel hidden space-y-2.5">
+        <div class="flex items-center justify-between gap-2">
+          <div class="flex gap-1 bg-white p-1 rounded-lg border border-slate-200">
+            <button onclick="switchSopChannel('online')" id="sop-tab-online" class="px-2.5 py-1 rounded-md text-xs font-semibold bg-forest-900 text-white">🌐 线上SOP</button>
+            <button onclick="switchSopChannel('offline')" id="sop-tab-offline" class="px-2.5 py-1 rounded-md text-xs font-semibold text-slate-600">🌳 线下SOP</button>
           </div>
-          <button onclick="openSopModal()" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-semibold">+ 新增SOP节点</button>
+          <button onclick="openSopModal()" class="btn-primary px-2.5 py-1.5 rounded-lg text-xs font-semibold">+ 新增节点</button>
         </div>
-        <div id="sopList" class="space-y-2.5"></div>
+        <div id="sopList" class="space-y-2"></div>
       </div>
 
-      <!-- 1.7 体能业务自媒体引流与获客看板 -->
-      <div id="fit-panel-media" class="fit-panel hidden space-y-3">
-        <div class="grid grid-cols-3 gap-2.5">
-          <div class="card p-3">
-            <div class="text-[11px] text-slate-500">体能内容总发布</div>
-            <div id="fitMediaPosts" class="text-lg font-bold text-forest-900 mt-0.5">0 篇</div>
-          </div>
-          <div class="card p-3">
-            <div class="text-[11px] text-slate-500">累计引流加微信</div>
-            <div id="fitMediaLeads" class="text-lg font-bold text-champagne-600 mt-0.5">0 人</div>
-          </div>
-          <div class="card p-3">
-            <div class="text-[11px] text-slate-500">社媒直接转化体验课</div>
-            <div id="fitMediaConv" class="text-lg font-bold text-emerald-600 mt-0.5">0 单</div>
-          </div>
+      <!-- 1.7 体能自媒体看板 -->
+      <div id="fit-panel-media" class="fit-panel hidden space-y-2.5">
+        <div class="grid grid-cols-3 gap-2">
+          <div class="card p-2.5"><div class="text-[11px] text-slate-500">内容发布</div><div id="fitMediaPosts" class="text-base font-bold text-forest-900">0 篇</div></div>
+          <div class="card p-2.5"><div class="text-[11px] text-slate-500">引流加微信</div><div id="fitMediaLeads" class="text-base font-bold text-champagne-600">0 人</div></div>
+          <div class="card p-2.5"><div class="text-[11px] text-slate-500">转化体验课</div><div id="fitMediaConv" class="text-base font-bold text-emerald-600">0 单</div></div>
         </div>
         <div class="flex items-center justify-between">
-          <div>
-            <h2 class="font-bold text-base text-forest-900">国内社媒引流转化追踪（小红书 / 抖音 / 视频号）</h2>
-            <p class="text-xs text-slate-500">追踪高转化选题，聚焦“私信咨询 → 加微信 → 体验课成交”闭环</p>
-          </div>
-          <button onclick="openMediaModal('fitness')" class="btn-primary px-3.5 py-2 rounded-xl text-xs font-semibold">+ 记录发布转化</button>
+          <h2 class="font-bold text-sm text-forest-900">国内社媒获客追踪</h2>
+          <button onclick="openMediaModal('fitness')" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-semibold">+ 记录发布</button>
         </div>
-        <div id="fitMediaList" class="space-y-2.5"></div>
+        <div id="fitMediaList" class="space-y-2"></div>
       </div>
     </section>
 
     <!-- ==================== 支柱 2：丽水英语地接 ==================== -->
-    <section id="view-tour" class="pillar-view hidden space-y-4">
-      <div class="flex gap-1.5 overflow-x-auto no-scrollbar bg-white p-1.5 rounded-xl border border-slate-200">
-        <button onclick="switchTourSub('orders')" id="tour-sub-orders" class="tour-sub-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-forest-900 text-white">1. 国际游客订单与毛利</button>
-        <button onclick="switchTourSub('scripts')" id="tour-sub-scripts" class="tour-sub-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600">2. 丽水九县市区英文讲解词库</button>
-        <button onclick="switchTourSub('media')" id="tour-sub-media" class="tour-sub-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600">3. 跨海社媒引流看板</button>
+    <section id="view-tour" class="pillar-view hidden space-y-3">
+      <div class="flex gap-1 overflow-x-auto no-scrollbar bg-white p-1 rounded-lg border border-slate-200">
+        <button onclick="switchTourSub('orders')" id="tour-sub-orders" class="tour-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold bg-forest-900 text-white">1. 游客订单</button>
+        <button onclick="switchTourSub('scripts')" id="tour-sub-scripts" class="tour-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold text-slate-600">2. 九县市区词库</button>
+        <button onclick="switchTourSub('media')" id="tour-sub-media" class="tour-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold text-slate-600">3. 跨海社媒</button>
       </div>
 
-      <!-- 2.1 游客订单 -->
-      <div id="tour-panel-orders" class="tour-panel space-y-3">
+      <div id="tour-panel-orders" class="tour-panel space-y-2.5">
         <div class="flex items-center justify-between">
-          <div>
-            <h2 class="font-bold text-base text-forest-900">海外游客接单台账（理想 i6 电车低成本高毛利核算）</h2>
-            <p class="text-xs text-slate-500">对接 Showaround / TourByLocals / GetYourGuide / 独立定制客户</p>
-          </div>
-          <button onclick="openTourOrderModal()" class="btn-primary px-3.5 py-2 rounded-xl text-xs font-semibold">+ 新增地接订单</button>
+          <h2 class="font-bold text-sm text-forest-900">海外游客接单台账</h2>
+          <button onclick="openTourOrderModal()" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-semibold">+ 新增订单</button>
         </div>
-        <div id="tourOrderList" class="space-y-2.5"></div>
+        <div id="tourOrderList" class="space-y-2"></div>
       </div>
 
-      <!-- 2.2 九县市区双语讲解词库 -->
-      <div id="tour-panel-scripts" class="tour-panel hidden space-y-3">
+      <div id="tour-panel-scripts" class="tour-panel hidden space-y-2.5">
         <div class="flex items-center justify-between">
-          <h2 class="font-bold text-base text-forest-900">丽水九县市区景点英文深度讲解词库</h2>
-          <button onclick="openScriptModal()" class="btn-primary px-3.5 py-2 rounded-xl text-xs font-semibold">+ 新增景点词条</button>
+          <h2 class="font-bold text-sm text-forest-900">丽水九县市区英文讲解词</h2>
+          <button onclick="openScriptModal()" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-semibold">+ 新增词条</button>
         </div>
-        <div id="countyTabs" class="flex gap-1.5 overflow-x-auto no-scrollbar pb-1"></div>
-        <div id="scriptList" class="grid grid-cols-1 md:grid-cols-2 gap-3"></div>
+        <div id="countyTabs" class="flex gap-1 overflow-x-auto no-scrollbar pb-0.5"></div>
+        <div id="scriptList" class="grid grid-cols-1 md:grid-cols-2 gap-2.5"></div>
       </div>
 
-      <!-- 2.3 地接跨海自媒体看板 -->
-      <div id="tour-panel-media" class="tour-panel hidden space-y-3">
-        <div class="grid grid-cols-3 gap-2.5">
-          <div class="card p-3">
-            <div class="text-[11px] text-slate-500">跨海内容发布</div>
-            <div id="tourMediaPosts" class="text-lg font-bold text-forest-900 mt-0.5">0 篇</div>
-          </div>
-          <div class="card p-3">
-            <div class="text-[11px] text-slate-500">累计海外询盘</div>
-            <div id="tourMediaLeads" class="text-lg font-bold text-champagne-600 mt-0.5">0 条</div>
-          </div>
-          <div class="card p-3">
-            <div class="text-[11px] text-slate-500">社媒锁单成团</div>
-            <div id="tourMediaConv" class="text-lg font-bold text-emerald-600 mt-0.5">0 单</div>
-          </div>
+      <div id="tour-panel-media" class="tour-panel hidden space-y-2.5">
+        <div class="grid grid-cols-3 gap-2">
+          <div class="card p-2.5"><div class="text-[11px] text-slate-500">跨海发布</div><div id="tourMediaPosts" class="text-base font-bold text-forest-900">0 篇</div></div>
+          <div class="card p-2.5"><div class="text-[11px] text-slate-500">海外询盘</div><div id="tourMediaLeads" class="text-base font-bold text-champagne-600">0 条</div></div>
+          <div class="card p-2.5"><div class="text-[11px] text-slate-500">锁单成团</div><div id="tourMediaConv" class="text-base font-bold text-emerald-600">0 单</div></div>
         </div>
         <div class="flex items-center justify-between">
-          <div>
-            <h2 class="font-bold text-base text-forest-900">海外平台获客追踪（小红书海外华人 / IG / TikTok / YouTube / 平台主页）</h2>
-            <p class="text-xs text-slate-500">沉淀海外游客最买单的松阳古村、云和梯田与非遗视觉切入点</p>
-          </div>
-          <button onclick="openMediaModal('tour')" class="btn-primary px-3.5 py-2 rounded-xl text-xs font-semibold">+ 记录跨海发布</button>
+          <h2 class="font-bold text-sm text-forest-900">跨海社媒引流追踪</h2>
+          <button onclick="openMediaModal('tour')" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-semibold">+ 记录发布</button>
         </div>
-        <div id="tourMediaList" class="space-y-2.5"></div>
+        <div id="tourMediaList" class="space-y-2"></div>
       </div>
     </section>
 
     <!-- ==================== 支柱 3：健康饮食锻炼系统 ==================== -->
-    <section id="view-health" class="pillar-view hidden space-y-4">
-      <!-- 顶部人物与自定义时间周期控制栏 -->
-      <div class="card p-4 space-y-3">
+    <section id="view-health" class="pillar-view hidden space-y-2.5">
+      <div class="card p-3 space-y-2.5">
+        <!-- 扁平单行人员切换 + 起止日期 -->
         <div class="flex flex-wrap items-center justify-between gap-2">
-          <div class="flex gap-2">
-            <button onclick="switchHealthPerson('me')" id="hp-me" class="px-4 py-2 rounded-xl text-xs font-bold bg-forest-900 text-white">🏃 我 (足球能力+形体)</button>
-            <button onclick="switchHealthPerson('wife')" id="hp-wife" class="px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600">🌸 妻子 (形体美+能量守护)</button>
+          <div class="grid grid-cols-2 gap-1 bg-slate-100 p-1 rounded-lg">
+            <button onclick="switchHealthPerson('me')" id="hp-me" class="px-3.5 py-1 rounded-md text-xs font-bold bg-forest-900 text-white whitespace-nowrap">🏃 我</button>
+            <button onclick="switchHealthPerson('wife')" id="hp-wife" class="px-3.5 py-1 rounded-md text-xs font-bold text-slate-600 whitespace-nowrap">🌸 妻子</button>
           </div>
-          <div class="flex items-center gap-1.5 text-xs">
-            <input type="date" id="periodStart" onchange="updatePeriodRange()" class="border border-slate-200 rounded-lg px-2 py-1.5 bg-slate-50" />
+          <div class="flex items-center gap-1 text-xs">
+            <input type="date" id="periodStart" onchange="updatePeriodRange()" class="border border-slate-200 rounded-md px-2 py-1 bg-slate-50 text-xs" />
             <span class="text-slate-400">至</span>
-            <input type="date" id="periodEnd" onchange="updatePeriodRange()" class="border border-slate-200 rounded-lg px-2 py-1.5 bg-slate-50" />
+            <input type="date" id="periodEnd" onchange="updatePeriodRange()" class="border border-slate-200 rounded-md px-2 py-1 bg-slate-50 text-xs" />
           </div>
         </div>
 
-        <!-- 本期间体重变化对比 -->
-        <div class="grid grid-cols-3 gap-2.5 bg-slate-50 p-3 rounded-xl border border-slate-100 text-center">
+        <!-- 本期间体重对比条 -->
+        <div class="grid grid-cols-3 gap-2 bg-slate-50 py-2 px-2.5 rounded-lg border border-slate-100 text-center">
           <div>
-            <div class="text-[11px] text-slate-500">本期间期初体重</div>
-            <div id="periodStartWeight" class="text-sm font-bold text-slate-800 mt-0.5">-- kg</div>
+            <div class="text-[10px] text-slate-500">期初体重</div>
+            <div id="periodStartWeight" class="text-xs font-bold text-slate-800 mt-0.5">-- kg</div>
           </div>
           <div>
-            <div class="text-[11px] text-slate-500">本期间最新体重</div>
-            <div id="periodEndWeight" class="text-sm font-bold text-forest-900 mt-0.5">-- kg</div>
+            <div class="text-[10px] text-slate-500">最新体重</div>
+            <div id="periodEndWeight" class="text-xs font-bold text-forest-900 mt-0.5">-- kg</div>
           </div>
           <div>
-            <div class="text-[11px] text-slate-500">本期间体重变化</div>
-            <div id="periodWeightDiff" class="text-sm font-bold text-emerald-600 mt-0.5">0.0 kg</div>
+            <div class="text-[10px] text-slate-500">本期间变化</div>
+            <div id="periodWeightDiff" class="text-xs font-bold text-emerald-600 mt-0.5">0.0 kg</div>
           </div>
         </div>
 
-        <!-- 日期胶囊切换 + 全期间总览按钮 -->
-        <div class="flex items-center justify-between gap-2">
-          <div id="periodDatePills" class="flex gap-1.5 overflow-x-auto no-scrollbar py-1 flex-1"></div>
-          <button onclick="togglePeriodOverview()" id="btnPeriodOverview" class="px-3 py-1.5 rounded-lg text-xs font-semibold bg-amber-100 text-amber-900 whitespace-nowrap">📅 本期间总览表</button>
+        <!-- 扁平可滑动日期胶囊 + 总览开关 -->
+        <div class="flex items-center gap-1.5">
+          <div id="periodDatePills" class="flex gap-1 overflow-x-auto no-scrollbar py-0.5 flex-1"></div>
+          <button onclick="togglePeriodOverview()" id="btnPeriodOverview" class="px-2.5 py-1.5 rounded-md text-[11px] font-semibold bg-amber-100 text-amber-900 shrink-0 whitespace-nowrap">📅 总览表</button>
         </div>
       </div>
 
-      <!-- 全期间总览矩阵视图 -->
-      <div id="periodOverviewBox" class="card p-4 hidden space-y-2">
+      <!-- 本期间总览表 -->
+      <div id="periodOverviewBox" class="card p-3 hidden space-y-2">
         <div class="flex items-center justify-between">
-          <h3 class="font-bold text-sm text-forest-900">本期间每日健康、训练与三餐记录总览</h3>
-          <button onclick="togglePeriodOverview()" class="text-xs text-slate-500">收起总览</button>
+          <h3 class="font-bold text-xs text-forest-900">本期间全日程记录总览</h3>
+          <button onclick="togglePeriodOverview()" class="text-[11px] text-slate-400">收起</button>
         </div>
         <div id="periodOverviewTable" class="overflow-x-auto text-xs"></div>
       </div>
 
-      <!-- 单日三步联动操作区 -->
-      <div id="dailyHealthWorkspace" class="space-y-3">
-        <!-- 第1步：健康系统 -->
-        <div class="card p-4 space-y-3">
+      <!-- 单日三步联动 -->
+      <div class="space-y-2.5">
+        <!-- 1. 健康状态 -->
+        <div class="card p-3 space-y-2.5">
           <div class="flex items-center justify-between">
-            <h3 class="font-bold text-sm text-forest-900">1️⃣ 健康系统 · <span id="activeDateLabel" class="text-champagne-600"></span> 状态与指标</h3>
-            <div class="flex items-center gap-1.5 text-xs">
-              <span class="text-slate-500">晨重(kg):</span>
-              <input id="dayWeight" type="number" step="0.1" onchange="saveCurrentDayHealth()" placeholder="70.5" class="w-20 border border-slate-200 rounded-lg px-2 py-1 text-right font-semibold" />
+            <h3 class="font-bold text-xs text-forest-900">1. 健康状态 · <span id="activeDateLabel" class="text-champagne-600"></span></h3>
+            <div class="flex items-center gap-1 text-xs">
+              <span class="text-slate-500 text-[11px]">晨重(kg)</span>
+              <input id="dayWeight" type="number" step="0.1" onchange="saveCurrentDayHealth()" placeholder="--" class="w-16 border border-slate-200 rounded-md px-2 py-1 text-right font-semibold" />
             </div>
           </div>
-          <div>
-            <div class="flex items-center justify-between mb-1.5">
-              <span class="text-xs text-slate-500">身体状态标签（可点击“⚙️字典/锁”自由增删标签）</span>
-            </div>
-            <div id="healthTagContainer" class="flex flex-wrap gap-1.5"></div>
-          </div>
-          <input id="dayHealthNote" type="text" onchange="saveCurrentDayHealth()" placeholder="记录具体部位不适（如左踝微酸、睡眠不足）或注意事项..." class="w-full text-xs border border-slate-200 rounded-lg px-3 py-2 bg-slate-50" />
+          <div id="healthTagContainer" class="flex flex-wrap gap-1.5"></div>
+          <input id="dayHealthNote" type="text" onchange="saveCurrentDayHealth()" placeholder="记录具体部位不适或注意事项..." class="w-full text-xs border border-slate-200 rounded-lg px-2.5 py-1.5 bg-slate-50" />
         </div>
 
-        <!-- 第2步：锻炼系统 (仅“我”显示，切换“妻子”自动隐藏) -->
-        <div id="myTrainingCard" class="card p-4 space-y-3">
-          <div class="flex flex-wrap items-center justify-between gap-2">
-            <h3 class="font-bold text-sm text-forest-900">2️⃣ 锻炼系统 · 训练强度与具体动作计划</h3>
-            <select id="dayIntensity" onchange="saveCurrentDayHealth()" class="text-xs border border-slate-200 rounded-lg px-2.5 py-1.5 bg-slate-50 font-semibold text-forest-900"></select>
+        <!-- 2. 锻炼系统 (仅“我”显示) -->
+        <div id="myTrainingCard" class="card p-3 space-y-2.5">
+          <div class="flex items-center justify-between gap-2">
+            <h3 class="font-bold text-xs text-forest-900">2. 锻炼计划</h3>
+            <select id="dayIntensity" onchange="saveCurrentDayHealth()" class="text-xs border border-slate-200 rounded-md px-2 py-1 bg-slate-50 font-semibold text-forest-900"></select>
           </div>
-          <div id="healthWarningBanner" class="hidden bg-rose-50 border border-rose-200 text-rose-800 text-xs p-2.5 rounded-lg"></div>
-          
-          <!-- 当日具体训练动作列表 -->
-          <div class="space-y-2">
-            <div class="flex items-center justify-between text-xs">
-              <span class="text-slate-500">今日训练主题与具体动作明细：</span>
-              <button onclick="addTrainingItem()" class="text-forest-900 font-semibold hover:underline">+ 添加动作/组数</button>
+          <div id="healthWarningBanner" class="hidden bg-rose-50 border border-rose-200 text-rose-800 text-[11px] p-2 rounded-lg"></div>
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between">
+              <input id="dayTrainTheme" type="text" onchange="saveCurrentDayHealth()" placeholder="今日训练主题（如：足球比赛 / 下肢力量）" class="flex-1 text-xs border border-slate-200 rounded-lg px-2.5 py-1.5 mr-2" />
+              <button onclick="addTrainingItem()" class="btn-primary px-2.5 py-1.5 rounded-lg text-[11px] shrink-0 whitespace-nowrap">+ 加动作</button>
             </div>
-            <input id="dayTrainTheme" type="text" onchange="saveCurrentDayHealth()" placeholder="例如：下肢爆发力+足球变向敏捷 / 晚间8人制足球赛" class="w-full text-xs border border-slate-200 rounded-lg px-3 py-2 font-medium" />
-            <div id="dayTrainItemsList" class="space-y-1.5"></div>
+            <div id="dayTrainItemsList" class="space-y-1"></div>
           </div>
         </div>
 
-        <!-- 第3步：饮食系统 (自动联动建议 + 自由三餐记录) -->
-        <div class="card p-4 space-y-3">
-          <h3 class="font-bold text-sm text-forest-900">3️⃣ 饮食系统 · 智能营养建议与早中晚三餐记录</h3>
-          <div id="smartNutritionAdvice" class="bg-emerald-50 border border-emerald-200 text-emerald-900 text-xs p-3 rounded-xl leading-relaxed"></div>
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5 text-xs">
-            <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100 space-y-1.5">
-              <div class="font-semibold text-slate-700">🌅 早餐记录</div>
-              <textarea id="mealBreakfast" rows="2" onchange="saveCurrentDayHealth()" placeholder="实际吃了什么（如：黑咖啡+2个水煮蛋+全麦面包）" class="w-full bg-white border border-slate-200 rounded-lg p-2"></textarea>
+        <!-- 3. 饮食系统 -->
+        <div class="card p-3 space-y-2.5">
+          <h3 class="font-bold text-xs text-forest-900">3. 饮食记录与参考</h3>
+          <div id="smartNutritionAdvice" class="bg-emerald-50 border border-emerald-200 text-emerald-900 text-[11px] p-2.5 rounded-lg leading-relaxed"></div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-2 text-xs">
+            <div class="bg-slate-50 p-2 rounded-lg border border-slate-100 space-y-1">
+              <div class="font-semibold text-[11px] text-slate-600">🌅 早餐</div>
+              <textarea id="mealBreakfast" rows="2" onchange="saveCurrentDayHealth()" placeholder="记录早餐..." class="w-full bg-white border border-slate-200 rounded-md p-1.5"></textarea>
             </div>
-            <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100 space-y-1.5">
-              <div class="font-semibold text-slate-700">☀️ 午餐记录</div>
-              <textarea id="mealLunch" rows="2" onchange="saveCurrentDayHealth()" placeholder="实际吃了什么（如：山姆三色糙米饭150g+去皮鸡腿肉+西兰花）" class="w-full bg-white border border-slate-200 rounded-lg p-2"></textarea>
+            <div class="bg-slate-50 p-2 rounded-lg border border-slate-100 space-y-1">
+              <div class="font-semibold text-[11px] text-slate-600">☀️ 午餐</div>
+              <textarea id="mealLunch" rows="2" onchange="saveCurrentDayHealth()" placeholder="记录午餐..." class="w-full bg-white border border-slate-200 rounded-md p-1.5"></textarea>
             </div>
-            <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-100 space-y-1.5">
-              <div class="font-semibold text-slate-700">🌙 晚餐与加餐</div>
-              <textarea id="mealDinner" rows="2" onchange="saveCurrentDayHealth()" placeholder="实际吃了什么（如：纯瘦牛肉+清炒时蔬，尽量控油）" class="w-full bg-white border border-slate-200 rounded-lg p-2"></textarea>
+            <div class="bg-slate-50 p-2 rounded-lg border border-slate-100 space-y-1">
+              <div class="font-semibold text-[11px] text-slate-600">🌙 晚餐/加餐</div>
+              <textarea id="mealDinner" rows="2" onchange="saveCurrentDayHealth()" placeholder="记录晚餐..." class="w-full bg-white border border-slate-200 rounded-md p-1.5"></textarea>
             </div>
           </div>
         </div>
@@ -418,75 +377,75 @@
     </section>
 
     <!-- ==================== 支柱 4：全局复利总看板 ==================== -->
-    <section id="view-dashboard" class="pillar-view hidden space-y-4">
-      <div class="card p-5 bg-gradient-to-br from-forest-900 to-forest-800 text-white">
-        <div class="flex items-center justify-between mb-3">
+    <section id="view-dashboard" class="pillar-view hidden space-y-3">
+      <div class="card p-4 bg-forest-900 text-white">
+        <div class="flex items-center justify-between mb-2">
           <div>
-            <span class="text-[11px] uppercase tracking-wider text-champagne-400 font-semibold">2027.03.31 合同到期全职独立过渡进度</span>
-            <h2 class="text-lg font-bold mt-0.5">高毛利 · 复利 · 低熵 个人商业总览</h2>
+            <span class="text-[10px] uppercase tracking-wider text-champagne-400 font-semibold">2027.03.31 合同到期过渡</span>
+            <h2 class="text-base font-bold mt-0.5">高毛利 · 复利 · 低熵 商业总览</h2>
           </div>
           <div class="text-right">
-            <div id="countdownDays" class="text-2xl font-extrabold text-champagne-400">-- 天</div>
-            <div class="text-[11px] text-slate-300">距离自由职业倒计时</div>
+            <div id="countdownDays" class="text-xl font-extrabold text-champagne-400">-- 天</div>
+            <div class="text-[10px] text-slate-300">独立倒计时</div>
           </div>
         </div>
-        <div class="w-full bg-forest-900/80 h-2.5 rounded-full overflow-hidden border border-slate-700">
-          <div id="transitionBar" class="bg-champagne-500 h-full rounded-full transition-all" style="width: 65%"></div>
+        <div class="w-full bg-forest-800 h-2 rounded-full overflow-hidden">
+          <div class="bg-champagne-500 h-full rounded-full" style="width: 68%"></div>
         </div>
       </div>
 
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <div class="card p-3.5">
-          <div class="text-xs text-slate-500">体能累计确认营收</div>
-          <div id="dashFitRev" class="text-xl font-bold text-forest-900 mt-1">¥0</div>
-          <div id="dashFitLessons" class="text-[11px] text-slate-400 mt-0.5">剩余待消: 0 节</div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5">
+        <div class="card p-3">
+          <div class="text-[11px] text-slate-500">体能累计营收</div>
+          <div id="dashFitRev" class="text-lg font-bold text-forest-900 mt-0.5">¥0</div>
+          <div id="dashFitLessons" class="text-[10px] text-slate-400">剩余待消: 0 节</div>
         </div>
-        <div class="card p-3.5">
-          <div class="text-xs text-slate-500">丽水地接净毛利</div>
-          <div id="dashTourRev" class="text-xl font-bold text-champagne-600 mt-1">¥0</div>
-          <div id="dashTourOrders" class="text-[11px] text-slate-400 mt-0.5">累计成团: 0 单</div>
+        <div class="card p-3">
+          <div class="text-[11px] text-slate-500">丽水地接净毛利</div>
+          <div id="dashTourRev" class="text-lg font-bold text-champagne-600 mt-0.5">¥0</div>
+          <div id="dashTourOrders" class="text-[10px] text-slate-400">成团: 0 单</div>
         </div>
-        <div class="card p-3.5">
-          <div class="text-xs text-slate-500">全渠道社媒引流线索</div>
-          <div id="dashTotalLeads" class="text-xl font-bold text-emerald-600 mt-1">0 人</div>
-          <div class="text-[11px] text-slate-400 mt-0.5">国内体能 + 跨海地接</div>
+        <div class="card p-3">
+          <div class="text-[11px] text-slate-500">全渠道社媒线索</div>
+          <div id="dashTotalLeads" class="text-lg font-bold text-emerald-600 mt-0.5">0 人</div>
+          <div class="text-[10px] text-slate-400">国内 + 跨海询盘</div>
         </div>
-        <div class="card p-3.5">
-          <div class="text-xs text-slate-500">在册活跃学员数</div>
-          <div id="dashActiveStudents" class="text-xl font-bold text-slate-800 mt-1">0 人</div>
-          <div class="text-[11px] text-slate-400 mt-0.5">高净值长期复利资产</div>
+        <div class="card p-3">
+          <div class="text-[11px] text-slate-500">在册活跃学员</div>
+          <div id="dashActiveStudents" class="text-lg font-bold text-slate-800 mt-0.5">0 人</div>
+          <div class="text-[10px] text-slate-400">长期复利资产</div>
         </div>
       </div>
 
-      <div class="card p-4 space-y-2.5">
-        <h3 class="font-bold text-sm text-forest-900">🧭 战略决策三维自检过滤器（接新项目/新合作前必看）</h3>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5 text-xs">
-          <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
-            <div class="font-bold text-forest-900 mb-1">1. 高毛利（拒绝廉价体力）</div>
-            <p class="text-slate-600">客单价是否匹配专家级双语稀缺性？是否能利用理想 i6 电车低边际成本放大净利？</p>
+      <div class="card p-3.5 space-y-2">
+        <h3 class="font-bold text-xs text-forest-900">🧭 战略决策三维自检</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-2 text-xs">
+          <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
+            <div class="font-bold text-forest-900 mb-0.5">1. 高毛利</div>
+            <p class="text-slate-600 text-[11px]">客单价匹配双语稀缺性，利用理想 i6 电车低边际成本放大净利。</p>
           </div>
-          <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
-            <div class="font-bold text-forest-900 mb-1">2. 可复利（拒绝一次性劳动）</div>
-            <p class="text-slate-600">这次交付能否沉淀为可复用的动作库、英文讲解词或自媒体爆款素材？</p>
+          <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
+            <div class="font-bold text-forest-900 mb-0.5">2. 可复利</div>
+            <p class="text-slate-600 text-[11px]">每次交付沉淀为可复用动作库、英文讲解词或社媒爆款素材。</p>
           </div>
-          <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
-            <div class="font-bold text-forest-900 mb-1">3. 极低熵（守护家庭能量场）</div>
-            <p class="text-slate-600">是否会侵占陪伴妻子的精力或引发高情绪内耗？若损耗过高，直接否决。</p>
+          <div class="p-2.5 rounded-lg bg-slate-50 border border-slate-200">
+            <div class="font-bold text-forest-900 mb-0.5">3. 极低熵</div>
+            <p class="text-slate-600 text-[11px]">守护家庭能量场，任何引发高情绪内耗的合作直接否决。</p>
           </div>
         </div>
       </div>
     </section>
   </main>
 
-  <!-- ==================== 通用动态弹窗容器 ==================== -->
-  <div id="modalOverlay" class="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs hidden flex items-center justify-center p-4 overflow-y-auto">
-    <div id="modalBox" class="bg-white rounded-2xl max-w-lg w-full p-5 shadow-2xl space-y-4 my-auto max-h-[90vh] overflow-y-auto"></div>
+  <!-- 通用动态弹窗 -->
+  <div id="modalOverlay" class="fixed inset-0 z-50 bg-black/50 hidden flex items-center justify-center p-3 overflow-y-auto">
+    <div id="modalBox" class="bg-white rounded-xl max-w-lg w-full p-4 shadow-xl space-y-3 my-auto max-h-[88vh] overflow-y-auto"></div>
   </div>
 
-  <!-- Toast 提示 -->
-  <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 z-50 bg-forest-900 text-white text-xs px-4 py-2.5 rounded-full shadow-lg hidden"></div>
+  <!-- Toast -->
+  <div id="toast" class="fixed bottom-5 left-1/2 -translate-x-1/2 z-50 bg-forest-900 text-white text-xs px-4 py-2 rounded-full shadow-lg hidden"></div>
 
-  <!-- Firebase SDK (使用新加坡节点 + 长轮询兼容模式) -->
+  <!-- Firebase SDK -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
     import { initializeFirestore, doc, setDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
@@ -510,15 +469,14 @@
     const DOC_REF = doc(db, "leo_life_os", "master_v3");
     const LOCAL_KEY = "leo_life_os_backup_v3";
 
-    // 默认初始数据结构
     const DEFAULT_STATE = {
       pin: "1999",
       lockEnabled: false,
       dictionaries: {
         locations: ["线上直播陪练", "丽水处州公园", "丽水白云山公园", "云和体育公园", "学员上门小区"],
         cities: ["深圳", "丽水", "云和", "杭州"],
-        trialFailReasons: ["距离/接送时间不合适", "预算超出预期", "孩子暂缺运动兴趣", "对比其他机构中", "待下周复测后决定"],
-        goalTags: ["📏 科学长高/骨龄干预", "🗣️ 纯英沉浸沟通", "⚡ 体能全面拔高", "🦴 体态与左右平衡纠偏", "🏆 校队/体测达标"],
+        trialFailReasons: ["距离/时间不合适", "预算超出预期", "孩子暂缺兴趣", "对比其他机构中", "待下周复测决定"],
+        goalTags: ["📏 科学长高/骨龄干预", "🗣️ 纯英沉浸沟通", "⚡ 体能全面拔高", "🦴 体态与平衡纠偏", "🏆 校队/体测达标"],
         healthTagsMe: ["精力充沛", "睡眠充足(7.5h+)", "下肢微酸胀", "左踝轻微不适", "工作偏累需恢复"],
         healthTagsWife: ["状态极佳", "睡眠偏少", "生理期需保暖", "逛街/放松补能", "工作内耗需陪伴"],
         trainingIntensities: ["低强度恢复/拉伸", "中等强度有氧/技术", "力量与爆发力专项", "高强度足球对抗赛", "完全休息日"],
@@ -536,8 +494,8 @@
           city: "深圳",
           remainingLessons: 12,
           unitPrice: 200,
-          goals: ["📏 科学长高/骨龄干预", "🦴 体态与左右平衡纠偏", "🗣️ 纯英沉浸沟通"],
-          notes: "跳绳180/分、立定跳远152cm极强，但闭眼单脚右60s/左16s，重点强化左侧臀中肌与踝关节本体感觉。"
+          goals: ["📏 科学长高/骨龄干预", "🦴 体态与平衡纠偏", "🗣️ 纯英沉浸沟通"],
+          notes: "跳绳180/分、立定跳远152cm，闭眼单脚右60s/左16s，重点强化左侧臀中肌与踝关节本体感觉。"
         },
         {
           id: "stu_2",
@@ -564,7 +522,7 @@
           fee: 200,
           converted: true,
           failReason: "",
-          summary: "完成左侧单腿微屈膝接抛球3组 + 反应起跑急停，左脚单站提升至28秒。"
+          summary: "左侧单腿微屈膝接抛球3组 + 反应起跑急停，左脚单站提升至28秒。"
         }
       ],
       drills: [
@@ -579,12 +537,12 @@
         { id: "d9", cat: "拉伸恢复", name: "臀肌与小腿静态放松", enName: "Glute & Calf Static Cool-down", dose: "每侧30秒", cue: "Deep breath in, slow breath out. Relax your shoulders." }
       ],
       standards: [
-        { id: "st_1", stage: "幼儿园大班 (5-6岁)", sensitive: "前庭平衡 & 基础动作模式(FMS)敏感期", metrics: "跳绳60-90个/分 | 立定跳远100-115cm | 闭眼单脚站立≥15秒 | 英语听懂15个基础动作指令" },
-        { id: "st_2", stage: "小学1-2年级 (6-8岁)", sensitive: "神经系统协调性与灵敏度黄金窗口", metrics: "跳绳110-140个/分 | 立定跳远125-140cm | 闭眼单脚≥30秒(左右差<20%) | 英文短语回应" },
-        { id: "st_3", stage: "小学3-4年级 (8-10岁)", sensitive: "反应速度 & 步频节奏敏感期", metrics: "跳绳145-175个/分 | 立定跳远145-165cm | 50米跑9.2-9.8秒 | 英文描述身体感受" },
-        { id: "st_4", stage: "小学5-6年级 (10-12岁)", sensitive: "有氧耐力基础 & 青春期前力量储备", metrics: "跳绳165-190个/分 | 立定跳远165-185cm | 50米跑8.5-9.2秒 | 全英文课堂无障碍互动" },
-        { id: "st_5", stage: "初中阶段 (12-15岁·初一至初三)", sensitive: "心肺耐力 & 下肢爆发力(中考体育冲刺)", metrics: "跳绳185+个/分 | 立定跳远男225+/女185+cm | 1000m/800m满分线 | 运动科学双语交流" },
-        { id: "st_6", stage: "成年人 (18岁+)", sensitive: "核心抗旋稳定性 & 功能性心肺维持", metrics: "深蹲/硬拉动作筛查无代偿 | 静息心率<65bpm | 单腿稳定≥60秒 | 实战运动英语沟通" }
+        { id: "st_1", minAge: 5, maxAge: 6, stage: "幼儿园大班 (5-6岁)", sensitive: "前庭平衡 & 基础动作模式(FMS)敏感期", metrics: "跳绳60-90个/分 | 立定跳远100-115cm | 闭眼单脚站立≥15秒 | 英语听懂15个基础指令" },
+        { id: "st_2", minAge: 6, maxAge: 8, stage: "小学1-2年级 (6-8岁)", sensitive: "神经系统协调性与灵敏度黄金窗口", metrics: "跳绳110-140个/分 | 立定跳远125-140cm | 闭眼单脚≥30秒(左右差<20%) | 英文短语回应" },
+        { id: "st_3", minAge: 8, maxAge: 10, stage: "小学3-4年级 (8-10岁)", sensitive: "反应速度 & 步频节奏敏感期", metrics: "跳绳145-175个/分 | 立定跳远145-165cm | 50米跑9.2-9.8秒 | 英文描述身体感受" },
+        { id: "st_4", minAge: 10, maxAge: 12, stage: "小学5-6年级 (10-12岁)", sensitive: "有氧耐力基础 & 青春期前力量储备", metrics: "跳绳165-190个/分 | 立定跳远165-185cm | 50米跑8.5-9.2秒 | 全英文课堂无障碍互动" },
+        { id: "st_5", minAge: 12, maxAge: 15, stage: "初中阶段 (12-15岁)", sensitive: "心肺耐力 & 下肢爆发力(中考体育)", metrics: "跳绳185+个/分 | 立定跳远男225+/女185+cm | 1000m/800m满分线 | 运动科学双语交流" },
+        { id: "st_6", minAge: 18, maxAge: 99, stage: "成年人 (18岁+)", sensitive: "核心抗旋稳定性 & 功能性心肺维持", metrics: "深蹲/硬拉动作筛查无代偿 | 静息心率<65bpm | 单腿稳定≥60秒 | 实战运动英语沟通" }
       ],
       pricing: [
         { id: "p1", title: "1v1 生物力学评估+体验课", price: "¥199", unit: "90分钟", desc: "8维体测建档 + 英文水平摸底 + 定制纠偏建议报告" },
@@ -621,19 +579,17 @@
         { id: "sc4", county: "莲都", spot: "古堰画乡 (通济堰)", cn: "建于公元505年的世界灌溉工程遗产，至今仍在滋养着瓯江两岸的良田。", en: "Constructed in 505 AD, Tongji Weir is a World Heritage Irrigation Structure that still nourishes the fertile plains along the Oujiang River today." },
         { id: "sc5", county: "缙云", spot: "仙都鼎湖峰", cn: "高达170.8米的单体石柱拔地而起，是黄帝文化与自然奇观的完美交汇。", en: "Rising 170.8 meters straight from the valley floor, Dinghu Peak stands as a dramatic monolithic pillar steeped in ancient Taoist and Yellow Emperor legends." }
       ],
-      healthLogs: {
-        me: {},
-        wife: {}
-      }
+      healthLogs: { me: {}, wife: {} }
     };
 
     let state = JSON.parse(localStorage.getItem(LOCAL_KEY)) || structuredClone(DEFAULT_STATE);
-    let ui = {
+    const ui = {
       pillar: "fitness",
       fitSub: "students",
       tourSub: "orders",
       drillCat: "全部",
       selectedDrills: [],
+      stdView: "8dim",
       sopChannel: "online",
       county: "全部",
       healthPerson: "me",
@@ -642,14 +598,18 @@
       activeDate: getOffsetDate(0),
       showOverview: false
     };
+    window.ui = ui;
 
     function getOffsetDate(days) {
       const d = new Date();
       d.setDate(d.getDate() + days);
-      return d.toISOString().split("T")[0];
+      const y = d.getFullYear();
+      const m = String(d.getMonth() + 1).padStart(2, "0");
+      const day = String(d.getDate()).padStart(2, "0");
+      return `${y}-${m}-${day}`;
     }
 
-    // 国家卫生行业标准 WS/T 586-2018 & WS/T 456-2014 6-18岁儿童青少年分性别年龄BMI界值表 (精简核心查表)
+    // 国家卫生行业标准 WS/T 586-2018 & WS/T 456-2014 5-17岁儿童青少年分性别年龄BMI界值表
     const CN_CHILD_BMI = {
       male: {
         5:  { thin: 13.7, over: 16.8, obese: 18.2 },
@@ -694,29 +654,27 @@
 
       const hM = heightCm / 100;
       const bmi = +(weightKg / (hM * hM)).toFixed(1);
-      let label = "正常", badge = "bg-emerald-100 text-emerald-800", stdNote = "国家分龄标准";
+      let label = "正常", badge = "bg-emerald-100 text-emerald-800";
 
       if (years >= 18) {
-        stdNote = "成人标准";
         if (bmi < 18.5) { label = "偏瘦"; badge = "bg-amber-100 text-amber-800"; }
         else if (bmi >= 28) { label = "肥胖"; badge = "bg-rose-100 text-rose-800"; }
         else if (bmi >= 24) { label = "超重"; badge = "bg-orange-100 text-orange-800"; }
       } else {
         const lookupAge = Math.max(5, Math.min(17, years));
         const ref = (CN_CHILD_BMI[gender] || CN_CHILD_BMI.male)[lookupAge];
-        stdNote = `国标WS/T586(${lookupAge}岁)`;
         if (bmi < ref.thin) { label = "消瘦"; badge = "bg-amber-100 text-amber-800"; }
         else if (bmi >= ref.obese) { label = "肥胖"; badge = "bg-rose-100 text-rose-800"; }
         else if (bmi >= ref.over) { label = "超重"; badge = "bg-orange-100 text-orange-800"; }
       }
-      return { ageText, bmi, label, badge, stdNote };
+      return { years, ageText, bmi, label, badge };
     }
 
-    // 实时云同步监听
+    // 实时云同步
     let isRemoteUpdating = false;
     onSnapshot(DOC_REF, (snap) => {
-      document.getElementById("syncDot").className = "w-2 h-2 rounded-full bg-emerald-400 inline-block";
-      document.getElementById("syncText").textContent = "云端实时已连接 (新加坡节点)";
+      document.getElementById("syncDot").className = "w-1.5 h-1.5 rounded-full bg-emerald-400 inline-block shrink-0";
+      document.getElementById("syncText").textContent = "云端实时同步中";
       if (snap.exists()) {
         isRemoteUpdating = true;
         const remote = snap.data();
@@ -733,43 +691,34 @@
       } else {
         saveState();
       }
-    }, (err) => {
-      document.getElementById("syncDot").className = "w-2 h-2 rounded-full bg-rose-400 inline-block";
-      document.getElementById("syncText").textContent = "离线缓存模式 (检查网络/节点)";
-      console.error("Firestore sync error:", err);
+    }, () => {
+      document.getElementById("syncDot").className = "w-1.5 h-1.5 rounded-full bg-rose-400 inline-block shrink-0";
+      document.getElementById("syncText").textContent = "本地离线缓存";
     });
 
     async function saveState() {
       localStorage.setItem(LOCAL_KEY, JSON.stringify(state));
       renderAll();
       if (isRemoteUpdating) return;
-      try {
-        await setDoc(DOC_REF, state);
-      } catch (e) {
-        console.warn("Cloud write pending:", e);
-      }
+      try { await setDoc(DOC_REF, state); } catch (e) {}
     }
 
     window.showToast = (msg) => {
       const t = document.getElementById("toast");
       t.textContent = msg;
       t.classList.remove("hidden");
-      setTimeout(() => t.classList.add("hidden"), 2400);
+      setTimeout(() => t.classList.add("hidden"), 2200);
     };
 
     window.copyText = (elId, msg) => {
-      const val = document.getElementById(elId).value;
-      navigator.clipboard.writeText(val).then(() => showToast(msg || "已复制到剪贴板"));
+      navigator.clipboard.writeText(document.getElementById(elId).value).then(() => showToast(msg || "已复制"));
     };
-
     window.copyRaw = (txt, msg) => {
       navigator.clipboard.writeText(txt).then(() => showToast(msg || "已复制"));
     };
 
-    // 锁屏逻辑
     window.unlockApp = () => {
-      const val = document.getElementById("pinInput").value;
-      if (val === state.pin) {
+      if (document.getElementById("pinInput").value === state.pin) {
         document.getElementById("lockScreen").classList.add("hidden");
         sessionStorage.setItem("leo_unlocked", "1");
       } else {
@@ -777,15 +726,14 @@
       }
     };
 
-    // 导航切换
     window.switchPillar = (p) => {
       ui.pillar = p;
       document.querySelectorAll(".pillar-view").forEach(el => el.classList.add("hidden"));
       document.getElementById(`view-${p}`).classList.remove("hidden");
       document.querySelectorAll(".pillar-tab").forEach(btn => {
-        btn.className = "pillar-tab px-3.5 py-2 rounded-lg text-xs font-semibold whitespace-nowrap bg-forest-800 text-slate-200";
+        btn.className = "pillar-tab py-1.5 px-1 rounded-md text-[11px] font-semibold text-center truncate text-slate-200";
       });
-      document.getElementById(`tab-${p}`).className = "pillar-tab px-3.5 py-2 rounded-lg text-xs font-semibold whitespace-nowrap bg-champagne-500 text-forest-900";
+      document.getElementById(`tab-${p}`).className = "pillar-tab py-1.5 px-1 rounded-md text-[11px] font-semibold text-center truncate bg-champagne-500 text-forest-900";
       renderAll();
     };
 
@@ -794,9 +742,10 @@
       document.querySelectorAll(".fit-panel").forEach(el => el.classList.add("hidden"));
       document.getElementById(`fit-panel-${sub}`).classList.remove("hidden");
       document.querySelectorAll(".fit-sub-btn").forEach(btn => {
-        btn.className = "fit-sub-btn px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap text-slate-600";
+        btn.className = "fit-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600";
       });
-      document.getElementById(`fit-sub-${sub}`).className = "fit-sub-btn px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap bg-forest-900 text-white";
+      document.getElementById(`fit-sub-${sub}`).className = "fit-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap bg-forest-900 text-white";
+      if (sub === "standards") renderStandards();
     };
 
     window.switchTourSub = (sub) => {
@@ -804,83 +753,96 @@
       document.querySelectorAll(".tour-panel").forEach(el => el.classList.add("hidden"));
       document.getElementById(`tour-panel-${sub}`).classList.remove("hidden");
       document.querySelectorAll(".tour-sub-btn").forEach(btn => {
-        btn.className = "tour-sub-btn px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600";
+        btn.className = "tour-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold text-slate-600";
       });
-      document.getElementById(`tour-sub-${sub}`).className = "tour-sub-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-forest-900 text-white";
+      document.getElementById(`tour-sub-${sub}`).className = "tour-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold bg-forest-900 text-white";
     };
 
-    // ==================== 渲染 1.1 学员表 ====================
+    // ==================== 1.1 学员表 (含上课进度与快捷消课联动) ====================
     function renderStudents() {
       const box = document.getElementById("studentList");
       box.innerHTML = state.students.map(s => {
         const info = calcAgeAndBmi(s.birthday, s.gender, s.height, s.weight);
-        const goalsHtml = (s.goals || []).map(g => `<span class="text-[11px] bg-amber-50 text-amber-900 border border-amber-200 px-2 py-0.5 rounded-md">${g}</span>`).join("");
+        const stuRecords = state.records.filter(r => r.studentId === s.id || r.studentName === s.name);
+        const lastRec = stuRecords[0];
+        const goalsHtml = (s.goals || []).map(g => `<span class="text-[10px] bg-amber-50 text-amber-900 border border-amber-200 px-1.5 py-0.5 rounded">${g}</span>`).join("");
         return `
-          <div class="card p-4 space-y-2.5">
+          <div class="card p-3 space-y-2">
             <div class="flex items-start justify-between">
               <div>
-                <div class="flex items-center gap-2">
+                <div class="flex items-center gap-1.5 flex-wrap">
                   <span class="font-bold text-sm text-forest-900">${s.name}</span>
-                  <span class="text-xs bg-slate-100 text-slate-700 px-2 py-0.5 rounded-md">${s.gender === 'female' ? '女' : '男'} · ${info.ageText}</span>
-                  <span class="text-[11px] text-slate-500">📍${s.city}</span>
+                  <span class="text-[11px] bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded">${s.gender === 'female' ? '女' : '男'} · ${info.ageText}</span>
+                  <span class="text-[11px] text-slate-400">📍${s.city}</span>
                 </div>
-                <div class="text-xs text-slate-500 mt-1">
-                  身高 <strong class="text-slate-800">${s.height}cm</strong> · 体重 <strong class="text-slate-800">${s.weight}kg</strong> · BMI <strong class="text-slate-800">${info.bmi}</strong>
-                  <span class="ml-1 px-1.5 py-0.5 rounded text-[11px] font-semibold ${info.badge}">${info.label} (${info.stdNote})</span>
+                <div class="text-xs text-slate-600 mt-1">
+                  ${s.height}cm · ${s.weight}kg · BMI <strong>${info.bmi}</strong>
+                  <span class="ml-1 px-1.5 py-0.5 rounded text-[10px] font-semibold ${info.badge}">${info.label}</span>
                 </div>
               </div>
-              <div class="text-right">
-                <div class="text-xs text-slate-400">剩余课时</div>
-                <div class="text-base font-extrabold text-forest-900">${s.remainingLessons} 节</div>
+              <div class="text-right shrink-0">
+                <div class="text-[10px] text-slate-400">剩余课时</div>
+                <div class="text-sm font-extrabold text-forest-900">${s.remainingLessons} 节</div>
               </div>
             </div>
-            <div class="flex flex-wrap gap-1">${goalsHtml || '<span class="text-[11px] text-slate-400">未设核心诉求</span>'}</div>
-            <p class="text-xs text-slate-600 bg-slate-50 p-2.5 rounded-lg">${s.notes || '暂无评估备注'}</p>
-            <div class="flex justify-end gap-2 pt-1 text-xs">
-              <button onclick="openStudentModal('${s.id}')" class="text-slate-600 hover:text-forest-900 font-medium">编辑档案</button>
-              <button onclick="deleteItem('students', '${s.id}')" class="text-rose-500 hover:underline">删除</button>
+            <div class="flex flex-wrap gap-1">${goalsHtml}</div>
+            <div class="text-[11px] text-slate-500 bg-slate-50 px-2.5 py-1.5 rounded-md flex items-center justify-between">
+              <span>已上 <strong>${stuRecords.length}</strong> 次课 ${lastRec ? `· 最近 ${lastRec.date}` : ''}</span>
+              <button onclick="openRecordModal('${s.id}')" class="text-forest-900 font-bold hover:underline">+ 记一节课</button>
+            </div>
+            <p class="text-[11px] text-slate-600 leading-relaxed">${s.notes || ''}</p>
+            <div class="flex justify-end gap-3 pt-1 border-t border-slate-100 text-[11px]">
+              <button onclick="jumpToStudentEval('${s.id}')" class="text-champagne-600 font-semibold">评估对照</button>
+              <button onclick="openStudentModal('${s.id}')" class="text-slate-500">编辑</button>
+              <button onclick="deleteItem('students', '${s.id}')" class="text-rose-400">删除</button>
             </div>
           </div>
         `;
       }).join("");
     }
 
+    window.jumpToStudentEval = (stuId) => {
+      switchFitSub("standards");
+      document.getElementById("stdStudentSelect").value = stuId;
+      renderStudentStandardMatch();
+    };
+
     window.openStudentModal = (id = null) => {
       const s = id ? state.students.find(x => x.id === id) : { name: "", gender: "male", birthday: "2018-01-01", height: 130, weight: 26, city: state.dictionaries.cities[0], remainingLessons: 0, unitPrice: 200, goals: [], notes: "" };
       const goalCheckboxes = state.dictionaries.goalTags.map(g => {
         const checked = (s.goals || []).includes(g) ? "checked" : "";
-        return `<label class="flex items-center gap-1.5 text-xs bg-slate-50 border border-slate-200 px-2.5 py-1.5 rounded-lg cursor-pointer">
-          <input type="checkbox" name="stuGoal" value="${g}" ${checked} class="accent-forest-900" /> ${g}
+        return `<label class="flex items-center gap-1 text-[11px] bg-slate-50 border border-slate-200 px-2 py-1 rounded-md cursor-pointer">
+          <input type="checkbox" name="stuGoal" value="${g}" ${checked} /> ${g}
         </label>`;
       }).join("");
 
       openModal(`
-        <h3 class="font-bold text-base text-forest-900">${id ? '编辑学员档案' : '新增学员档案'}</h3>
-        <div class="grid grid-cols-2 gap-2.5 text-xs">
-          <div><label class="text-slate-500">学员姓名</label><input id="mStuName" value="${s.name}" class="w-full border rounded-lg p-2 mt-1" /></div>
-          <div><label class="text-slate-500">性别 (国标BMI必选)</label>
-            <select id="mStuGender" class="w-full border rounded-lg p-2 mt-1">
+        <h3 class="font-bold text-sm text-forest-900">${id ? '编辑学员档案' : '新增学员档案'}</h3>
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <div><label class="text-slate-500">姓名</label><input id="mStuName" value="${s.name}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          <div><label class="text-slate-500">性别</label>
+            <select id="mStuGender" class="w-full border rounded-lg p-1.5 mt-0.5">
               <option value="male" ${s.gender==='male'?'selected':''}>男</option>
               <option value="female" ${s.gender==='female'?'selected':''}>女</option>
             </select>
           </div>
-          <div><label class="text-slate-500">出生日期 (自动算动态周岁)</label><input id="mStuBirth" type="date" value="${s.birthday}" class="w-full border rounded-lg p-2 mt-1" /></div>
-          <div><label class="text-slate-500">常驻城市</label>
-            <select id="mStuCity" class="w-full border rounded-lg p-2 mt-1">${state.dictionaries.cities.map(c=>`<option ${s.city===c?'selected':''}>${c}</option>`).join('')}</select>
+          <div><label class="text-slate-500">出生日期</label><input id="mStuBirth" type="date" value="${s.birthday}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          <div><label class="text-slate-500">城市</label>
+            <select id="mStuCity" class="w-full border rounded-lg p-1.5 mt-0.5">${state.dictionaries.cities.map(c=>`<option ${s.city===c?'selected':''}>${c}</option>`).join('')}</select>
           </div>
-          <div><label class="text-slate-500">身高 (cm)</label><input id="mStuHeight" type="number" step="0.5" value="${s.height}" class="w-full border rounded-lg p-2 mt-1" /></div>
-          <div><label class="text-slate-500">体重 (kg)</label><input id="mStuWeight" type="number" step="0.1" value="${s.weight}" class="w-full border rounded-lg p-2 mt-1" /></div>
-          <div><label class="text-slate-500">剩余课时</label><input id="mStuLessons" type="number" value="${s.remainingLessons}" class="w-full border rounded-lg p-2 mt-1" /></div>
-          <div><label class="text-slate-500">单节课时费 (元)</label><input id="mStuPrice" type="number" value="${s.unitPrice}" class="w-full border rounded-lg p-2 mt-1" /></div>
+          <div><label class="text-slate-500">身高 (cm)</label><input id="mStuHeight" type="number" step="0.5" value="${s.height}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          <div><label class="text-slate-500">体重 (kg)</label><input id="mStuWeight" type="number" step="0.1" value="${s.weight}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          <div><label class="text-slate-500">剩余课时</label><input id="mStuLessons" type="number" value="${s.remainingLessons}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          <div><label class="text-slate-500">单节课时费 (元)</label><input id="mStuPrice" type="number" value="${s.unitPrice}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
         </div>
         <div class="text-xs">
-          <label class="text-slate-500 block mb-1.5">家长核心报名诉求（可多选，备课自动高亮）</label>
+          <label class="text-slate-500 block mb-1">家长核心诉求</label>
           <div class="flex flex-wrap gap-1.5">${goalCheckboxes}</div>
         </div>
-        <div class="text-xs"><label class="text-slate-500">体测与评估备注</label><textarea id="mStuNotes" rows="2" class="w-full border rounded-lg p-2 mt-1">${s.notes}</textarea></div>
-        <div class="flex justify-end gap-2 pt-2">
-          <button onclick="closeModal()" class="px-4 py-2 rounded-lg text-xs text-slate-500">取消</button>
-          <button onclick="saveStudent('${id || ''}')" class="btn-primary px-4 py-2 rounded-lg text-xs">保存同步</button>
+        <div class="text-xs"><label class="text-slate-500">评估与体测备注</label><textarea id="mStuNotes" rows="2" class="w-full border rounded-lg p-1.5 mt-0.5">${s.notes}</textarea></div>
+        <div class="flex justify-end gap-2 pt-1">
+          <button onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">取消</button>
+          <button onclick="saveStudent('${id || ''}')" class="btn-primary px-4 py-1.5 rounded-lg text-xs">保存</button>
         </div>
       `);
     };
@@ -900,18 +862,12 @@
         goals,
         notes: document.getElementById("mStuNotes").value
       };
-      if (id) {
-        const idx = state.students.findIndex(x => x.id === id);
-        state.students[idx] = obj;
-      } else {
-        state.students.unshift(obj);
-      }
-      closeModal();
-      saveState();
-      showToast("学员档案已云端同步");
+      if (id) state.students[state.students.findIndex(x => x.id === id)] = obj;
+      else state.students.unshift(obj);
+      closeModal(); saveState(); showToast("学员档案已同步");
     };
 
-    // ==================== 渲染 1.2 上课与消课记录 ====================
+    // ==================== 1.2 上课与消课记录 ====================
     function renderRecords() {
       const formal = state.records.filter(r => r.type === "formal");
       const trials = state.records.filter(r => r.type === "trial");
@@ -923,63 +879,76 @@
       document.getElementById("statTrialRate").textContent = `${rate}%`;
 
       document.getElementById("recordList").innerHTML = state.records.map(r => `
-        <div class="card p-3.5 flex items-start justify-between gap-3">
+        <div class="card p-3 flex items-start justify-between gap-2.5">
           <div class="space-y-1">
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-1.5 flex-wrap">
               <span class="text-xs font-bold text-forest-900">${r.date}</span>
-              <span class="font-bold text-sm">${r.studentName}</span>
-              <span class="text-[11px] px-2 py-0.5 rounded font-semibold ${r.type==='formal' ? 'bg-forest-900 text-white' : 'bg-amber-100 text-amber-900'}">
-                ${r.type === 'formal' ? '正式消课 (-1节)' : (r.converted ? '体验课 · 已转化✅' : '体验课 · 未转化⚠️')}
+              <span class="font-bold text-xs">${r.studentName}</span>
+              <span class="text-[10px] px-1.5 py-0.5 rounded font-semibold ${r.type==='formal' ? 'bg-forest-900 text-white' : 'bg-amber-100 text-amber-900'}">
+                ${r.type === 'formal' ? '正式消课(-1)' : (r.converted ? '体验·已转化✅' : '体验·未转化⚠️')}
               </span>
-              <span class="text-[11px] text-slate-500">📍${r.location}</span>
+              <span class="text-[10px] text-slate-400">📍${r.location}</span>
             </div>
             <p class="text-xs text-slate-600">${r.summary}</p>
-            ${r.type === 'trial' && !r.converted && r.failReason ? `<div class="text-[11px] text-rose-600">复盘未转化原因：${r.failReason}</div>` : ''}
+            ${r.type === 'trial' && !r.converted && r.failReason ? `<div class="text-[11px] text-rose-600">未转化原因：${r.failReason}</div>` : ''}
           </div>
           <div class="text-right shrink-0">
-            <div class="text-sm font-bold text-emerald-700">+¥${r.fee || 0}</div>
-            <button onclick="deleteItem('records', '${r.id}')" class="text-[11px] text-rose-400 hover:underline mt-1">删除</button>
+            <div class="text-xs font-bold text-emerald-700">+¥${r.fee || 0}</div>
+            <button onclick="deleteItem('records', '${r.id}')" class="text-[10px] text-rose-400 mt-1">删除</button>
           </div>
         </div>
       `).join("");
     }
 
-    window.openRecordModal = () => {
-      const stuOpts = state.students.map(s => `<option value="${s.id}">${s.name} (余${s.remainingLessons}节)</option>`).join("") + `<option value="new_trial">+ 临时体验新学员</option>`;
+    window.onRecordStudentChange = () => {
+      const stuId = document.getElementById("mRecStu").value;
+      const stu = state.students.find(s => s.id === stuId);
+      const hint = document.getElementById("mRecStuHint");
+      if (stu) {
+        document.getElementById("mRecFee").value = stu.unitPrice || 200;
+        hint.textContent = `当前余 ${stu.remainingLessons} 节 | 核心诉求：${(stu.goals||[]).join('、') || '暂无'}`;
+      } else {
+        hint.textContent = "新体验学员记录（不扣减正式课时）";
+      }
+    };
+
+    window.openRecordModal = (preselectedStuId = null) => {
+      const stuOpts = state.students.map(s => `<option value="${s.id}" ${preselectedStuId===s.id?'selected':''}>${s.name} (余${s.remainingLessons}节)</option>`).join("") + `<option value="new_trial">+ 临时体验新学员</option>`;
       const locOpts = state.dictionaries.locations.map(l => `<option>${l}</option>`).join("");
       const failOpts = state.dictionaries.trialFailReasons.map(f => `<option>${f}</option>`).join("");
       openModal(`
-        <h3 class="font-bold text-base text-forest-900">记录上课消课 / 体验转化复盘</h3>
-        <div class="grid grid-cols-2 gap-2.5 text-xs">
-          <div><label class="text-slate-500">上课日期</label><input id="mRecDate" type="date" value="${getOffsetDate(0)}" class="w-full border rounded-lg p-2 mt-1" /></div>
-          <div><label class="text-slate-500">课程性质</label>
-            <select id="mRecType" onchange="document.getElementById('trialBox').classList.toggle('hidden', this.value==='formal')" class="w-full border rounded-lg p-2 mt-1">
-              <option value="formal">正式课 (自动扣减1节课时)</option>
-              <option value="trial">体验课 (不扣课时，计入转化率)</option>
+        <h3 class="font-bold text-sm text-forest-900">记录上课消课 / 体验复盘</h3>
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <div><label class="text-slate-500">日期</label><input id="mRecDate" type="date" value="${getOffsetDate(0)}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          <div><label class="text-slate-500">类型</label>
+            <select id="mRecType" onchange="document.getElementById('trialBox').classList.toggle('hidden', this.value==='formal')" class="w-full border rounded-lg p-1.5 mt-0.5">
+              <option value="formal">正式课 (扣1节)</option>
+              <option value="trial">体验课 (不扣课)</option>
             </select>
           </div>
-          <div><label class="text-slate-500">选择学员</label><select id="mRecStu" class="w-full border rounded-lg p-2 mt-1">${stuOpts}</select></div>
-          <div><label class="text-slate-500">临时体验姓名 (若选新学员)</label><input id="mRecTempName" placeholder="如：王小明(体验)" class="w-full border rounded-lg p-2 mt-1" /></div>
-          <div><label class="text-slate-500">上课地点 (字典可选)</label><select id="mRecLoc" class="w-full border rounded-lg p-2 mt-1">${locOpts}</select></div>
-          <div><label class="text-slate-500">本节确认收入 (元)</label><input id="mRecFee" type="number" value="200" class="w-full border rounded-lg p-2 mt-1" /></div>
+          <div><label class="text-slate-500">选择学员</label><select id="mRecStu" onchange="onRecordStudentChange()" class="w-full border rounded-lg p-1.5 mt-0.5">${stuOpts}</select></div>
+          <div><label class="text-slate-500">新体验姓名(选填)</label><input id="mRecTempName" placeholder="体验学员名" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          <div class="col-span-2 text-[11px] text-amber-800 bg-amber-50 px-2 py-1 rounded" id="mRecStuHint"></div>
+          <div><label class="text-slate-500">上课地点</label><select id="mRecLoc" class="w-full border rounded-lg p-1.5 mt-0.5">${locOpts}</select></div>
+          <div><label class="text-slate-500">本节收入 (元)</label><input id="mRecFee" type="number" value="200" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
         </div>
-        <div id="trialBox" class="hidden bg-amber-50 p-3 rounded-xl border border-amber-200 space-y-2 text-xs">
+        <div id="trialBox" class="hidden bg-amber-50 p-2.5 rounded-lg border border-amber-200 space-y-1.5 text-xs">
           <div class="flex items-center gap-3">
-            <span class="font-semibold text-amber-900">体验课结果：</span>
-            <label><input type="radio" name="mRecConv" value="1" checked /> 成功转化正价课</label>
-            <label><input type="radio" name="mRecConv" value="0" /> 暂未转化</label>
+            <span class="font-semibold">体验结果：</span>
+            <label><input type="radio" name="mRecConv" value="1" checked /> 已转化</label>
+            <label><input type="radio" name="mRecConv" value="0" /> 未转化</label>
           </div>
           <div>
-            <label class="text-slate-600">未转化原因归因 (字典可选)：</label>
-            <select id="mRecFail" class="w-full border rounded-lg p-1.5 mt-1 bg-white">${failOpts}</select>
+            <select id="mRecFail" class="w-full border rounded-md p-1.5 bg-white">${failOpts}</select>
           </div>
         </div>
-        <div class="text-xs"><label class="text-slate-500">训练核心内容与课堂观察</label><textarea id="mRecSum" rows="2" class="w-full border rounded-lg p-2 mt-1" placeholder="记录本次重点突破与孩子反应..."></textarea></div>
-        <div class="flex justify-end gap-2 pt-2">
-          <button onclick="closeModal()" class="px-4 py-2 rounded-lg text-xs text-slate-500">取消</button>
-          <button onclick="saveRecord()" class="btn-primary px-4 py-2 rounded-lg text-xs">确认打卡并同步</button>
+        <div class="text-xs"><label class="text-slate-500">课堂内容与表现记录</label><textarea id="mRecSum" rows="2" class="w-full border rounded-lg p-1.5 mt-0.5" placeholder="记录训练重点与动作表现..."></textarea></div>
+        <div class="flex justify-end gap-2 pt-1">
+          <button onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">取消</button>
+          <button onclick="saveRecord()" class="btn-primary px-4 py-1.5 rounded-lg text-xs">确认打卡</button>
         </div>
       `);
+      onRecordStudentChange();
     };
 
     window.saveRecord = () => {
@@ -990,9 +959,7 @@
         const stu = state.students.find(s => s.id === stuId);
         if (stu) {
           stuName = stu.name;
-          if (type === "formal" && stu.remainingLessons > 0) {
-            stu.remainingLessons -= 1;
-          }
+          if (type === "formal" && stu.remainingLessons > 0) stu.remainingLessons -= 1;
         }
       }
       const converted = document.querySelector('input[name="mRecConv"]:checked')?.value === "1";
@@ -1008,34 +975,34 @@
         failReason: converted ? "" : document.getElementById("mRecFail").value,
         summary: document.getElementById("mRecSum").value
       });
-      closeModal();
-      saveState();
-      showToast(type === "formal" ? "已打卡并自动扣减1节课时" : "体验课记录已归档");
+      closeModal(); saveState(); showToast("上课记录已同步");
     };
 
-    // ==================== 渲染 1.3 动作库与家长反馈 ====================
+    // ==================== 1.3 动作库与家长反馈 ====================
     const DRILL_CATS = ["全部", "动态热身", "力量", "速度", "耐力", "柔韧", "灵敏", "协调", "平衡", "拉伸恢复"];
+    window.setDrillCat = (c) => { ui.drillCat = c; renderDrills(); };
+
     function renderDrills() {
       document.getElementById("drillCategoryTabs").innerHTML = DRILL_CATS.map(c => `
-        <button onclick="ui.drillCat='${c}';renderDrills()" class="px-2.5 py-1 rounded-lg text-xs whitespace-nowrap font-medium ${ui.drillCat===c ? 'bg-forest-900 text-white' : 'bg-white border border-slate-200 text-slate-600'}">${c}</button>
+        <button onclick="setDrillCat('${c}')" class="px-2.5 py-1 rounded-md text-xs whitespace-nowrap font-medium ${ui.drillCat===c ? 'bg-forest-900 text-white' : 'bg-white border border-slate-200 text-slate-600'}">${c}</button>
       `).join("");
 
       const filtered = ui.drillCat === "全部" ? state.drills : state.drills.filter(d => d.cat === ui.drillCat);
       document.getElementById("drillList").innerHTML = filtered.map(d => `
-        <div class="card p-3 flex items-center justify-between gap-2">
+        <div class="card p-2.5 flex items-center justify-between gap-2">
           <div>
-            <div class="flex items-center gap-1.5">
-              <span class="text-[11px] bg-slate-100 text-forest-900 font-semibold px-2 py-0.5 rounded">${d.cat}</span>
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <span class="text-[10px] bg-slate-100 text-forest-900 font-semibold px-1.5 py-0.5 rounded">${d.cat}</span>
               <span class="font-bold text-xs text-slate-800">${d.name}</span>
               <span class="text-[11px] text-slate-400">${d.enName}</span>
             </div>
-            <div class="text-xs text-slate-600 mt-1">剂量：<strong>${d.dose}</strong> · 口令：<span class="italic text-forest-800">"${d.cue}"</span></div>
+            <div class="text-[11px] text-slate-600 mt-1">剂量：<strong>${d.dose}</strong> · <span class="italic text-forest-800">"${d.cue}"</span></div>
           </div>
           <div class="flex flex-col gap-1 shrink-0">
-            <button onclick="addDrillToLesson('${d.id}')" class="btn-gold px-2.5 py-1 rounded-lg text-[11px]">+ 加入本课</button>
-            <div class="flex justify-end gap-1.5 text-[11px]">
-              <button onclick="openDrillModal('${d.id}')" class="text-slate-400 hover:text-slate-700">改</button>
-              <button onclick="deleteItem('drills', '${d.id}')" class="text-rose-400 hover:underline">删</button>
+            <button onclick="addDrillToLesson('${d.id}')" class="btn-gold px-2 py-1 rounded text-[11px]">+ 选入</button>
+            <div class="flex justify-end gap-1.5 text-[10px]">
+              <button onclick="openDrillModal('${d.id}')" class="text-slate-400">改</button>
+              <button onclick="deleteItem('drills', '${d.id}')" class="text-rose-400">删</button>
             </div>
           </div>
         </div>
@@ -1043,7 +1010,7 @@
 
       const sel = document.getElementById("lessonStudentSelect");
       const curVal = sel.value;
-      sel.innerHTML = `<option value="">-- 选择学员以对齐家长诉求 --</option>` + state.students.map(s => `<option value="${s.id}">${s.name}</option>`).join("");
+      sel.innerHTML = `<option value="">-- 选择学员对齐诉求 --</option>` + state.students.map(s => `<option value="${s.id}">${s.name}</option>`).join("");
       if (curVal) sel.value = curVal;
       renderLessonPreview();
       updateFeedbackText();
@@ -1064,20 +1031,20 @@
       const stu = state.students.find(s => s.id === stuId);
       if (stu && stu.goals && stu.goals.length) {
         banner.classList.remove("hidden");
-        banner.innerHTML = `<strong>🎯 家长核心买点提醒 (${stu.name})：</strong>${stu.goals.join(" ｜ ")}`;
+        banner.innerHTML = `<strong>🎯 家长买点 (${stu.name})：</strong>${stu.goals.join(" ｜ ")}`;
       } else {
         banner.classList.add("hidden");
       }
 
       const box = document.getElementById("selectedDrillsPreview");
       if (!ui.selectedDrills.length) {
-        box.innerHTML = "暂未勾选动作，请在左侧点击动作卡片上的“+ 加入本课”。";
+        box.innerHTML = "点击左侧动作“+ 选入”。";
         return;
       }
       box.innerHTML = ui.selectedDrills.map((d, i) => `
-        <div class="bg-white p-2 rounded-lg border border-slate-200">
+        <div class="bg-white p-2 rounded border border-slate-200">
           <div class="font-bold text-forest-900">${i+1}. [${d.cat}] ${d.name} (${d.dose})</div>
-          <div class="text-[11px] text-champagne-600 mt-0.5">🗣️ 英文口令: "${d.cue}"</div>
+          <div class="text-[11px] text-champagne-600 mt-0.5">🗣️ "${d.cue}"</div>
         </div>
       `).join("");
     };
@@ -1098,19 +1065,19 @@
     window.openDrillModal = (id = null) => {
       const d = id ? state.drills.find(x => x.id === id) : { cat: "力量", name: "", enName: "", dose: "10次 × 3组", cue: "" };
       openModal(`
-        <h3 class="font-bold text-base text-forest-900">${id ? '编辑训练动作' : '新增双语训练动作'}</h3>
-        <div class="space-y-2.5 text-xs">
-          <div><label class="text-slate-500">所属分类 (9大指标)</label>
-            <select id="mDrCat" class="w-full border rounded-lg p-2 mt-1">${DRILL_CATS.slice(1).map(c=>`<option ${d.cat===c?'selected':''}>${c}</option>`).join('')}</select>
+        <h3 class="font-bold text-sm text-forest-900">${id ? '编辑训练动作' : '新增双语训练动作'}</h3>
+        <div class="space-y-2 text-xs">
+          <div><label class="text-slate-500">分类</label>
+            <select id="mDrCat" class="w-full border rounded-lg p-1.5 mt-0.5">${DRILL_CATS.slice(1).map(c=>`<option ${d.cat===c?'selected':''}>${c}</option>`).join('')}</select>
           </div>
-          <div><label class="text-slate-500">中文动作名称</label><input id="mDrName" value="${d.name}" class="w-full border rounded-lg p-2 mt-1" /></div>
-          <div><label class="text-slate-500">英文动作名称</label><input id="mDrEn" value="${d.enName}" class="w-full border rounded-lg p-2 mt-1" /></div>
-          <div><label class="text-slate-500">标准训练剂量</label><input id="mDrDose" value="${d.dose}" class="w-full border rounded-lg p-2 mt-1" /></div>
-          <div><label class="text-slate-500">教练纯英带练口令</label><input id="mDrCue" value="${d.cue}" class="w-full border rounded-lg p-2 mt-1" /></div>
+          <div><label class="text-slate-500">中文名称</label><input id="mDrName" value="${d.name}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          <div><label class="text-slate-500">英文名称</label><input id="mDrEn" value="${d.enName}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          <div><label class="text-slate-500">训练剂量</label><input id="mDrDose" value="${d.dose}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          <div><label class="text-slate-500">英文带练口令</label><input id="mDrCue" value="${d.cue}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
         </div>
-        <div class="flex justify-end gap-2 pt-2">
-          <button onclick="closeModal()" class="px-4 py-2 rounded-lg text-xs text-slate-500">取消</button>
-          <button onclick="saveDrill('${id || ''}')" class="btn-primary px-4 py-2 rounded-lg text-xs">保存同步</button>
+        <div class="flex justify-end gap-2 pt-1">
+          <button onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">取消</button>
+          <button onclick="saveDrill('${id || ''}')" class="btn-primary px-4 py-1.5 rounded-lg text-xs">保存</button>
         </div>
       `);
     };
@@ -1129,57 +1096,137 @@
       closeModal(); saveState(); showToast("动作库已更新");
     };
 
-    // ==================== 渲染 1.4 评估标准 / 1.5 定价 / 1.6 SOP ====================
-    function renderStandards() {
-      document.getElementById("standardsList").innerHTML = state.standards.map(st => `
-        <div class="card p-3.5 space-y-1.5">
+    // ==================== 1.4 评估标准与国标BMI联动表 ====================
+    window.switchStdView = (v) => {
+      ui.stdView = v;
+      document.getElementById("std-btn-8dim").className = v === "8dim" ? "px-2.5 py-1 rounded-md text-xs font-semibold bg-forest-900 text-white" : "px-2.5 py-1 rounded-md text-xs font-semibold text-slate-600";
+      document.getElementById("std-btn-bmi").className = v === "bmi" ? "px-2.5 py-1 rounded-md text-xs font-semibold bg-forest-900 text-white" : "px-2.5 py-1 rounded-md text-xs font-semibold text-slate-600";
+      document.getElementById("standardsList").classList.toggle("hidden", v !== "8dim");
+      document.getElementById("btnAddStd").classList.toggle("hidden", v !== "8dim");
+      document.getElementById("bmiTableContainer").classList.toggle("hidden", v !== "bmi");
+    };
+
+    window.renderStudentStandardMatch = () => {
+      const stuId = document.getElementById("stdStudentSelect").value;
+      const box = document.getElementById("stdStudentMatchBox");
+      const stu = state.students.find(s => s.id === stuId);
+      if (!stu) {
+        box.innerHTML = "请选择一位学员，自动匹配其年龄段敏感期8维评估标准、国标BMI阈值及历史上课进展。";
+        return;
+      }
+      const info = calcAgeAndBmi(stu.birthday, stu.gender, stu.height, stu.weight);
+      const matchedStd = state.standards.find(st => info.years >= (st.minAge || 0) && info.years <= (st.maxAge || 99)) || state.standards[0];
+      const stuRecs = state.records.filter(r => r.studentId === stu.id || r.studentName === stu.name);
+      const latestRec = stuRecs[0];
+
+      box.innerHTML = `
+        <div class="space-y-1.5">
           <div class="flex items-center justify-between">
-            <span class="font-bold text-sm text-forest-900">${st.stage}</span>
-            <button onclick="openStandardModal('${st.id}')" class="text-xs text-slate-500 hover:text-forest-900">编辑</button>
+            <span class="font-bold text-forest-900">${stu.name} (${info.ageText})</span>
+            <span class="px-1.5 py-0.5 rounded text-[10px] font-semibold ${info.badge}">BMI ${info.bmi} · ${info.label}</span>
           </div>
-          <div class="text-xs bg-amber-50 text-amber-900 px-2.5 py-1 rounded-md font-semibold">🔥 敏感期重点：${st.sensitive}</div>
+          <div class="text-amber-900 bg-amber-50 px-2 py-1 rounded"><strong>对应敏感期：</strong>${matchedStd.stage} — ${matchedStd.sensitive}</div>
+          <div><strong>8维基准线：</strong>${matchedStd.metrics}</div>
+          <div class="text-slate-500"><strong>上课衔接：</strong>累计已上 ${stuRecs.length} 节 ${latestRec ? `| 最近(${latestRec.date})：${latestRec.summary}` : '| 暂无上课记录'}</div>
+        </div>
+      `;
+    };
+
+    function renderStandards() {
+      const sel = document.getElementById("stdStudentSelect");
+      const curVal = sel.value || (state.students[0]?.id || "");
+      sel.innerHTML = state.students.map(s => `<option value="${s.id}">${s.name}</option>`).join("");
+      if (curVal) sel.value = curVal;
+      renderStudentStandardMatch();
+
+      document.getElementById("standardsList").innerHTML = state.standards.map(st => `
+        <div class="card p-3 space-y-1.5">
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-xs text-forest-900">${st.stage}</span>
+            <button onclick="openStandardModal('${st.id}')" class="text-[11px] text-slate-400">编辑</button>
+          </div>
+          <div class="text-[11px] bg-amber-50 text-amber-900 px-2 py-1 rounded font-semibold">🔥 ${st.sensitive}</div>
           <p class="text-xs text-slate-600 leading-relaxed">${st.metrics}</p>
         </div>
       `).join("");
+
+      const ages = Object.keys(CN_CHILD_BMI.male);
+      document.getElementById("bmiTableContainer").innerHTML = `
+        <div class="font-bold text-xs text-forest-900 mb-2">国家卫健委学龄儿童青少年 BMI 界值表 (WS/T 586-2018 & WS/T 456-2014)</div>
+        <table class="w-full text-left border-collapse text-[11px]">
+          <thead>
+            <tr class="bg-slate-100 text-slate-600 border-b">
+              <th class="p-1.5">周岁</th>
+              <th class="p-1.5">男·消瘦(&lt;)</th><th class="p-1.5">男·超重(≥)</th><th class="p-1.5">男·肥胖(≥)</th>
+              <th class="p-1.5">女·消瘦(&lt;)</th><th class="p-1.5">女·超重(≥)</th><th class="p-1.5">女·肥胖(≥)</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${ages.map(a => `
+              <tr class="border-b">
+                <td class="p-1.5 font-bold">${a}岁</td>
+                <td class="p-1.5 text-amber-700">${CN_CHILD_BMI.male[a].thin}</td>
+                <td class="p-1.5 text-orange-700">${CN_CHILD_BMI.male[a].over}</td>
+                <td class="p-1.5 text-rose-700">${CN_CHILD_BMI.male[a].obese}</td>
+                <td class="p-1.5 text-amber-700">${CN_CHILD_BMI.female[a].thin}</td>
+                <td class="p-1.5 text-orange-700">${CN_CHILD_BMI.female[a].over}</td>
+                <td class="p-1.5 text-rose-700">${CN_CHILD_BMI.female[a].obese}</td>
+              </tr>
+            `).join("")}
+          </tbody>
+        </table>
+      `;
     }
 
     window.openStandardModal = (id = null) => {
-      const st = id ? state.standards.find(x => x.id === id) : { stage: "", sensitive: "", metrics: "" };
+      const st = id ? state.standards.find(x => x.id === id) : { minAge: 6, maxAge: 8, stage: "", sensitive: "", metrics: "" };
       openModal(`
-        <h3 class="font-bold text-base text-forest-900">${id ? '编辑阶段评估标准' : '新增年龄段评估标准'}</h3>
-        <div class="space-y-2.5 text-xs">
-          <div><label class="text-slate-500">年龄/学段名称</label><input id="mStStage" value="${st.stage}" class="w-full border rounded-lg p-2 mt-1" /></div>
-          <div><label class="text-slate-500">核心敏感期重点</label><input id="mStSens" value="${st.sensitive}" class="w-full border rounded-lg p-2 mt-1" /></div>
-          <div><label class="text-slate-500">8维评估量化指标 (7大素质+英语口语)</label><textarea id="mStMet" rows="3" class="w-full border rounded-lg p-2 mt-1">${st.metrics}</textarea></div>
+        <h3 class="font-bold text-sm text-forest-900">${id ? '编辑评估标准' : '新增年龄段标准'}</h3>
+        <div class="space-y-2 text-xs">
+          <div><label class="text-slate-500">学段名称</label><input id="mStStage" value="${st.stage}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          <div class="grid grid-cols-2 gap-2">
+            <div><label class="text-slate-500">起始岁数</label><input id="mStMin" type="number" value="${st.minAge || 5}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+            <div><label class="text-slate-500">结束岁数</label><input id="mStMax" type="number" value="${st.maxAge || 15}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          </div>
+          <div><label class="text-slate-500">敏感期重点</label><input id="mStSens" value="${st.sensitive}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          <div><label class="text-slate-500">8维量化指标</label><textarea id="mStMet" rows="3" class="w-full border rounded-lg p-1.5 mt-0.5">${st.metrics}</textarea></div>
         </div>
-        <div class="flex justify-end gap-2 pt-2">
-          <button onclick="closeModal()" class="px-4 py-2 rounded-lg text-xs text-slate-500">取消</button>
-          <button onclick="saveStandard('${id || ''}')" class="btn-primary px-4 py-2 rounded-lg text-xs">保存</button>
+        <div class="flex justify-end gap-2 pt-1">
+          <button onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">取消</button>
+          <button onclick="saveStandard('${id || ''}')" class="btn-primary px-4 py-1.5 rounded-lg text-xs">保存</button>
         </div>
       `);
     };
 
     window.saveStandard = (id) => {
-      const obj = { id: id || "st_" + Date.now(), stage: document.getElementById("mStStage").value, sensitive: document.getElementById("mStSens").value, metrics: document.getElementById("mStMet").value };
+      const obj = {
+        id: id || "st_" + Date.now(),
+        minAge: parseInt(document.getElementById("mStMin").value) || 5,
+        maxAge: parseInt(document.getElementById("mStMax").value) || 15,
+        stage: document.getElementById("mStStage").value,
+        sensitive: document.getElementById("mStSens").value,
+        metrics: document.getElementById("mStMet").value
+      };
       if (id) state.standards[state.standards.findIndex(x => x.id === id)] = obj;
       else state.standards.push(obj);
       closeModal(); saveState();
     };
 
+    // ==================== 1.5 定价 / 1.6 SOP / 1.7 自媒体 ====================
     function renderPricing() {
       document.getElementById("pricingList").innerHTML = state.pricing.map(p => `
-        <div class="card p-4 flex flex-col justify-between space-y-2">
+        <div class="card p-3 flex flex-col justify-between space-y-2">
           <div>
-            <div class="text-xs text-champagne-600 font-semibold">${p.unit}</div>
-            <h3 class="font-bold text-sm text-forest-900 mt-0.5">${p.title}</h3>
-            <div class="text-2xl font-extrabold text-forest-900 my-2">${p.price}</div>
-            <p class="text-xs text-slate-600">${p.desc}</p>
+            <div class="text-[11px] text-champagne-600 font-semibold">${p.unit}</div>
+            <h3 class="font-bold text-xs text-forest-900 mt-0.5">${p.title}</h3>
+            <div class="text-xl font-extrabold text-forest-900 my-1.5">${p.price}</div>
+            <p class="text-[11px] text-slate-600">${p.desc}</p>
           </div>
-          <div class="flex justify-between items-center pt-2 border-t border-slate-100 text-xs">
-            <button onclick="copyRaw('【Leo户外双语体能】${p.title}：${p.price}（${p.unit}），包含：${p.desc}', '报价话术已复制')" class="text-forest-900 font-semibold">复制报价</button>
+          <div class="flex justify-between items-center pt-2 border-t border-slate-100 text-[11px]">
+            <button onclick="copyRaw('【Leo户外双语体能】${p.title}：${p.price}（${p.unit}），包含：${p.desc}', '报价已复制')" class="text-forest-900 font-semibold">复制报价</button>
             <div class="space-x-2">
-              <button onclick="openPricingModal('${p.id}')" class="text-slate-400">编辑</button>
-              <button onclick="deleteItem('pricing', '${p.id}')" class="text-rose-400">删除</button>
+              <button onclick="openPricingModal('${p.id}')" class="text-slate-400">改</button>
+              <button onclick="deleteItem('pricing', '${p.id}')" class="text-rose-400">删</button>
             </div>
           </div>
         </div>
@@ -1189,18 +1236,18 @@
     window.openPricingModal = (id = null) => {
       const p = id ? state.pricing.find(x => x.id === id) : { title: "", price: "¥", unit: "", desc: "" };
       openModal(`
-        <h3 class="font-bold text-base text-forest-900">${id ? '编辑课包定价' : '新增高毛利课包'}</h3>
-        <div class="space-y-2.5 text-xs">
-          <div><label class="text-slate-500">课包名称</label><input id="mPrTitle" value="${p.title}" class="w-full border rounded-lg p-2 mt-1" /></div>
+        <h3 class="font-bold text-sm text-forest-900">${id ? '编辑课包' : '新增课包'}</h3>
+        <div class="space-y-2 text-xs">
+          <div><label class="text-slate-500">名称</label><input id="mPrTitle" value="${p.title}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
           <div class="grid grid-cols-2 gap-2">
-            <div><label class="text-slate-500">价格</label><input id="mPrPrice" value="${p.price}" class="w-full border rounded-lg p-2 mt-1" /></div>
-            <div><label class="text-slate-500">规格/周期</label><input id="mPrUnit" value="${p.unit}" class="w-full border rounded-lg p-2 mt-1" /></div>
+            <div><label class="text-slate-500">价格</label><input id="mPrPrice" value="${p.price}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+            <div><label class="text-slate-500">规格</label><input id="mPrUnit" value="${p.unit}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
           </div>
-          <div><label class="text-slate-500">核心权益描述</label><textarea id="mPrDesc" rows="2" class="w-full border rounded-lg p-2 mt-1">${p.desc}</textarea></div>
+          <div><label class="text-slate-500">权益描述</label><textarea id="mPrDesc" rows="2" class="w-full border rounded-lg p-1.5 mt-0.5">${p.desc}</textarea></div>
         </div>
-        <div class="flex justify-end gap-2 pt-2">
-          <button onclick="closeModal()" class="px-4 py-2 rounded-lg text-xs text-slate-500">取消</button>
-          <button onclick="savePricing('${id || ''}')" class="btn-primary px-4 py-2 rounded-lg text-xs">保存</button>
+        <div class="flex justify-end gap-2 pt-1">
+          <button onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">取消</button>
+          <button onclick="savePricing('${id || ''}')" class="btn-primary px-4 py-1.5 rounded-lg text-xs">保存</button>
         </div>
       `);
     };
@@ -1214,26 +1261,26 @@
 
     window.switchSopChannel = (ch) => {
       ui.sopChannel = ch;
-      document.getElementById("sop-tab-online").className = ch === "online" ? "px-3 py-1.5 rounded-lg text-xs font-semibold bg-forest-900 text-white" : "px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600";
-      document.getElementById("sop-tab-offline").className = ch === "offline" ? "px-3 py-1.5 rounded-lg text-xs font-semibold bg-forest-900 text-white" : "px-3 py-1.5 rounded-lg text-xs font-semibold text-slate-600";
+      document.getElementById("sop-tab-online").className = ch === "online" ? "px-2.5 py-1 rounded-md text-xs font-semibold bg-forest-900 text-white" : "px-2.5 py-1 rounded-md text-xs font-semibold text-slate-600";
+      document.getElementById("sop-tab-offline").className = ch === "offline" ? "px-2.5 py-1 rounded-md text-xs font-semibold bg-forest-900 text-white" : "px-2.5 py-1 rounded-md text-xs font-semibold text-slate-600";
       renderSops();
     };
 
     function renderSops() {
       const list = state.sops[ui.sopChannel] || [];
       document.getElementById("sopList").innerHTML = list.map((item, idx) => `
-        <div class="card p-3.5 flex items-start justify-between gap-3">
+        <div class="card p-3 flex items-start justify-between gap-2">
           <div>
-            <div class="flex items-center gap-2">
-              <span class="text-[11px] bg-champagne-500 text-forest-900 font-bold px-2 py-0.5 rounded">${item.step}</span>
-              <span class="font-bold text-sm text-forest-900">${item.title}</span>
+            <div class="flex items-center gap-1.5">
+              <span class="text-[10px] bg-champagne-500 text-forest-900 font-bold px-1.5 py-0.5 rounded">${item.step}</span>
+              <span class="font-bold text-xs text-forest-900">${item.title}</span>
             </div>
-            <p class="text-xs text-slate-600 mt-1.5">${item.detail}</p>
+            <p class="text-[11px] text-slate-600 mt-1">${item.detail}</p>
           </div>
-          <div class="flex items-center gap-1 shrink-0 text-xs">
-            <button onclick="moveSop(${idx}, -1)" class="px-1.5 py-1 bg-slate-100 rounded">↑</button>
-            <button onclick="moveSop(${idx}, 1)" class="px-1.5 py-1 bg-slate-100 rounded">↓</button>
-            <button onclick="openSopModal('${item.id}')" class="px-2 py-1 text-slate-500">改</button>
+          <div class="flex items-center gap-1 shrink-0 text-[11px]">
+            <button onclick="moveSop(${idx}, -1)" class="px-1.5 py-0.5 bg-slate-100 rounded">↑</button>
+            <button onclick="moveSop(${idx}, 1)" class="px-1.5 py-0.5 bg-slate-100 rounded">↓</button>
+            <button onclick="openSopModal('${item.id}')" class="px-1.5 py-0.5 text-slate-500">改</button>
           </div>
         </div>
       `).join("");
@@ -1251,15 +1298,15 @@
       const list = state.sops[ui.sopChannel];
       const item = id ? list.find(x => x.id === id) : { step: `${list.length+1}. 新环节`, title: "", detail: "" };
       openModal(`
-        <h3 class="font-bold text-base text-forest-900">${id ? '编辑SOP节点' : '新增SOP节点'}</h3>
-        <div class="space-y-2.5 text-xs">
-          <div><label class="text-slate-500">阶段序号</label><input id="mSopStep" value="${item.step}" class="w-full border rounded-lg p-2 mt-1" /></div>
-          <div><label class="text-slate-500">节点标题</label><input id="mSopTitle" value="${item.title}" class="w-full border rounded-lg p-2 mt-1" /></div>
-          <div><label class="text-slate-500">标准动作与边界细节</label><textarea id="mSopDet" rows="3" class="w-full border rounded-lg p-2 mt-1">${item.detail}</textarea></div>
+        <h3 class="font-bold text-sm text-forest-900">${id ? '编辑SOP' : '新增SOP'}</h3>
+        <div class="space-y-2 text-xs">
+          <div><label class="text-slate-500">序号</label><input id="mSopStep" value="${item.step}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          <div><label class="text-slate-500">标题</label><input id="mSopTitle" value="${item.title}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          <div><label class="text-slate-500">详情</label><textarea id="mSopDet" rows="3" class="w-full border rounded-lg p-1.5 mt-0.5">${item.detail}</textarea></div>
         </div>
-        <div class="flex justify-end gap-2 pt-2">
-          <button onclick="closeModal()" class="px-4 py-2 rounded-lg text-xs text-slate-500">取消</button>
-          <button onclick="saveSop('${id || ''}')" class="btn-primary px-4 py-2 rounded-lg text-xs">保存</button>
+        <div class="flex justify-end gap-2 pt-1">
+          <button onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">取消</button>
+          <button onclick="saveSop('${id || ''}')" class="btn-primary px-4 py-1.5 rounded-lg text-xs">保存</button>
         </div>
       `);
     };
@@ -1272,7 +1319,6 @@
       closeModal(); saveState();
     };
 
-    // ==================== 渲染 1.7 & 2.3 双业务自媒体看板 ====================
     function renderMedia() {
       ["fitness", "tour"].forEach(biz => {
         const posts = state.mediaPosts.filter(m => m.biz === biz);
@@ -1287,28 +1333,28 @@
           document.getElementById("tourMediaPosts").textContent = `${posts.length} 篇`;
           document.getElementById("tourMediaLeads").textContent = `${totalLeads} 条`;
           document.getElementById("tourMediaConv").textContent = `${totalDeals} 单`;
-          document.getElementById("tourMediaList").innerHTML = posts.map(m => renderMediaCard(m, "海外询盘", "锁单成团")).join("");
+          document.getElementById("tourMediaList").innerHTML = posts.map(m => renderMediaCard(m, "询盘", "锁单")).join("");
         }
       });
     }
 
     function renderMediaCard(m, leadLabel, dealLabel) {
       return `
-        <div class="card p-3.5 flex items-center justify-between gap-3">
+        <div class="card p-3 flex items-center justify-between gap-2">
           <div class="space-y-1">
-            <div class="flex items-center gap-2">
-              <span class="text-[11px] bg-forest-900 text-white px-2 py-0.5 rounded font-semibold">${m.platform}</span>
-              <span class="text-xs text-slate-400">${m.date}</span>
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <span class="text-[10px] bg-forest-900 text-white px-1.5 py-0.5 rounded font-semibold">${m.platform}</span>
+              <span class="text-[11px] text-slate-400">${m.date}</span>
               <span class="font-bold text-xs text-slate-800">${m.title}</span>
             </div>
-            <div class="flex gap-3 text-xs text-slate-600">
-              <span>曝光: <strong>${m.views}</strong></span>
-              <span>私信咨询: <strong>${m.inquiries}</strong></span>
-              <span class="text-champagne-600">${leadLabel}: <strong>${m.leads}</strong></span>
-              <span class="text-emerald-600">${dealLabel}: <strong>${m.deals}</strong></span>
+            <div class="flex gap-2.5 text-[11px] text-slate-600">
+              <span>曝光:<strong>${m.views}</strong></span>
+              <span>私信:<strong>${m.inquiries}</strong></span>
+              <span class="text-champagne-600">${leadLabel}:<strong>${m.leads}</strong></span>
+              <span class="text-emerald-600">${dealLabel}:<strong>${m.deals}</strong></span>
             </div>
           </div>
-          <button onclick="deleteItem('mediaPosts', '${m.id}')" class="text-xs text-rose-400 hover:underline shrink-0">删除</button>
+          <button onclick="deleteItem('mediaPosts', '${m.id}')" class="text-[11px] text-rose-400 shrink-0">删除</button>
         </div>
       `;
     }
@@ -1316,27 +1362,26 @@
     window.openMediaModal = (biz) => {
       const plats = biz === "fitness" ? state.dictionaries.fitMediaPlatforms : state.dictionaries.tourMediaPlatforms;
       openModal(`
-        <h3 class="font-bold text-base text-forest-900">记录自媒体发布与获客转化 (${biz==='fitness'?'双语体能':'丽水英语地接'})</h3>
-        <div class="grid grid-cols-2 gap-2.5 text-xs">
-          <div><label class="text-slate-500">发布日期</label><input id="mMdDate" type="date" value="${getOffsetDate(0)}" class="w-full border rounded-lg p-2 mt-1" /></div>
-          <div><label class="text-slate-500">发布平台</label><select id="mMdPlat" class="w-full border rounded-lg p-2 mt-1">${plats.map(p=>`<option>${p}</option>`).join('')}</select></div>
-          <div class="col-span-2"><label class="text-slate-500">内容主题/标题</label><input id="mMdTitle" class="w-full border rounded-lg p-2 mt-1" /></div>
-          <div><label class="text-slate-500">浏览/曝光量</label><input id="mMdViews" type="number" value="0" class="w-full border rounded-lg p-2 mt-1" /></div>
-          <div><label class="text-slate-500">私信咨询数</label><input id="mMdInq" type="number" value="0" class="w-full border rounded-lg p-2 mt-1" /></div>
-          <div><label class="text-slate-500">${biz==='fitness'?'新增微信好友数':'有效海外询盘数'}</label><input id="mMdLeads" type="number" value="0" class="w-full border rounded-lg p-2 mt-1" /></div>
-          <div><label class="text-slate-500">${biz==='fitness'?'成交体验课数':'锁单成团数'}</label><input id="mMdDeals" type="number" value="0" class="w-full border rounded-lg p-2 mt-1" /></div>
+        <h3 class="font-bold text-sm text-forest-900">记录自媒体发布转化</h3>
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <div><label class="text-slate-500">日期</label><input id="mMdDate" type="date" value="${getOffsetDate(0)}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          <div><label class="text-slate-500">平台</label><select id="mMdPlat" class="w-full border rounded-lg p-1.5 mt-0.5">${plats.map(p=>`<option>${p}</option>`).join('')}</select></div>
+          <div class="col-span-2"><label class="text-slate-500">内容标题</label><input id="mMdTitle" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          <div><label class="text-slate-500">浏览曝光</label><input id="mMdViews" type="number" value="0" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          <div><label class="text-slate-500">私信数</label><input id="mMdInq" type="number" value="0" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          <div><label class="text-slate-500">${biz==='fitness'?'加微信数':'海外询盘数'}</label><input id="mMdLeads" type="number" value="0" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          <div><label class="text-slate-500">${biz==='fitness'?'体验成交':'锁单成团'}</label><input id="mMdDeals" type="number" value="0" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
         </div>
-        <div class="flex justify-end gap-2 pt-2">
-          <button onclick="closeModal()" class="px-4 py-2 rounded-lg text-xs text-slate-500">取消</button>
-          <button onclick="saveMedia('${biz}')" class="btn-primary px-4 py-2 rounded-lg text-xs">保存同步</button>
+        <div class="flex justify-end gap-2 pt-1">
+          <button onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">取消</button>
+          <button onclick="saveMedia('${biz}')" class="btn-primary px-4 py-1.5 rounded-lg text-xs">保存</button>
         </div>
       `);
     };
 
     window.saveMedia = (biz) => {
       state.mediaPosts.unshift({
-        id: "m_" + Date.now(),
-        biz,
+        id: "m_" + Date.now(), biz,
         date: document.getElementById("mMdDate").value,
         platform: document.getElementById("mMdPlat").value,
         title: document.getElementById("mMdTitle").value.trim() || "未命名内容",
@@ -1345,60 +1390,62 @@
         leads: parseInt(document.getElementById("mMdLeads").value) || 0,
         deals: parseInt(document.getElementById("mMdDeals").value) || 0
       });
-      closeModal(); saveState(); showToast("自媒体引流数据已同步");
+      closeModal(); saveState(); showToast("已同步");
     };
 
-    // ==================== 渲染 2.1 & 2.2 丽水英语地接 ====================
+    // ==================== 2. 丽水英语地接 ====================
     const LISHUI_COUNTIES = ["全部", "松阳", "云和", "莲都", "缙云", "景宁", "龙泉", "遂昌", "青田", "庆元"];
+    window.setCounty = (c) => { ui.county = c; renderTour(); };
+
     function renderTour() {
       document.getElementById("tourOrderList").innerHTML = state.tourOrders.map(o => `
-        <div class="card p-3.5 flex items-center justify-between">
+        <div class="card p-3 flex items-center justify-between gap-2">
           <div>
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-1.5 flex-wrap">
               <span class="text-xs font-bold text-forest-900">${o.date}</span>
-              <span class="font-bold text-sm">${o.guest}</span>
-              <span class="text-[11px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-semibold">${o.status}</span>
+              <span class="font-bold text-xs">${o.guest}</span>
+              <span class="text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-semibold">${o.status}</span>
             </div>
-            <p class="text-xs text-slate-600 mt-1">${o.route}</p>
+            <p class="text-[11px] text-slate-600 mt-1">${o.route}</p>
           </div>
-          <div class="text-right">
-            <div class="text-sm font-bold text-forest-900">净赚 ¥${(o.gross || 0) - (o.cost || 0)}</div>
-            <div class="text-[11px] text-slate-400">总收¥${o.gross} - 电耗/杂费¥${o.cost}</div>
-            <button onclick="deleteItem('tourOrders', '${o.id}')" class="text-[11px] text-rose-400 hover:underline">删除</button>
+          <div class="text-right shrink-0">
+            <div class="text-xs font-bold text-forest-900">净赚 ¥${(o.gross || 0) - (o.cost || 0)}</div>
+            <div class="text-[10px] text-slate-400">收¥${o.gross} - 费¥${o.cost}</div>
+            <button onclick="deleteItem('tourOrders', '${o.id}')" class="text-[10px] text-rose-400">删除</button>
           </div>
         </div>
       `).join("");
 
       document.getElementById("countyTabs").innerHTML = LISHUI_COUNTIES.map(c => `
-        <button onclick="ui.county='${c}';renderTour()" class="px-2.5 py-1 rounded-lg text-xs whitespace-nowrap font-medium ${ui.county===c ? 'bg-forest-900 text-white' : 'bg-white border border-slate-200 text-slate-600'}">${c}</button>
+        <button onclick="setCounty('${c}')" class="px-2.5 py-1 rounded-md text-xs whitespace-nowrap font-medium ${ui.county===c ? 'bg-forest-900 text-white' : 'bg-white border border-slate-200 text-slate-600'}">${c}</button>
       `).join("");
 
       const filteredScripts = ui.county === "全部" ? state.scripts : state.scripts.filter(s => s.county === ui.county);
       document.getElementById("scriptList").innerHTML = filteredScripts.map(s => `
-        <div class="card p-3.5 space-y-1.5">
+        <div class="card p-3 space-y-1.5">
           <div class="flex items-center justify-between">
             <span class="font-bold text-xs text-forest-900">📍 [${s.county}] ${s.spot}</span>
-            <button onclick="copyRaw(\`${s.en.replace(/`/g, '')}\`, '英文讲解词已复制')" class="text-xs text-champagne-600 font-semibold">复制英文</button>
+            <button onclick="copyRaw(\`${s.en.replace(/`/g, '')}\`, '英文讲解词已复制')" class="text-[11px] text-champagne-600 font-semibold">复制英文</button>
           </div>
-          <p class="text-xs text-slate-500">${s.cn}</p>
-          <p class="text-xs text-forest-900 bg-slate-50 p-2.5 rounded-lg italic leading-relaxed">"${s.en}"</p>
+          <p class="text-[11px] text-slate-500">${s.cn}</p>
+          <p class="text-xs text-forest-900 bg-slate-50 p-2 rounded-md italic leading-relaxed">"${s.en}"</p>
         </div>
       `).join("");
     }
 
     window.openTourOrderModal = () => {
       openModal(`
-        <h3 class="font-bold text-base text-forest-900">新增丽水英语地接订单</h3>
-        <div class="grid grid-cols-2 gap-2.5 text-xs">
-          <div><label class="text-slate-500">服务日期</label><input id="mToDate" type="date" value="${getOffsetDate(0)}" class="w-full border rounded-lg p-2 mt-1" /></div>
-          <div><label class="text-slate-500">游客姓名/国籍</label><input id="mToGuest" placeholder="如：Emma (USA)" class="w-full border rounded-lg p-2 mt-1" /></div>
-          <div class="col-span-2"><label class="text-slate-500">行程路线</label><input id="mToRoute" placeholder="如：松阳杨家堂+陈家铺+云和梯田" class="w-full border rounded-lg p-2 mt-1" /></div>
-          <div><label class="text-slate-500">总收款 (元)</label><input id="mToGross" type="number" value="1600" class="w-full border rounded-lg p-2 mt-1" /></div>
-          <div><label class="text-slate-500">理想i6充电/门票杂费 (元)</label><input id="mToCost" type="number" value="60" class="w-full border rounded-lg p-2 mt-1" /></div>
+        <h3 class="font-bold text-sm text-forest-900">新增英语地接订单</h3>
+        <div class="grid grid-cols-2 gap-2 text-xs">
+          <div><label class="text-slate-500">服务日期</label><input id="mToDate" type="date" value="${getOffsetDate(0)}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          <div><label class="text-slate-500">游客姓名/国籍</label><input id="mToGuest" placeholder="Emma (USA)" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          <div class="col-span-2"><label class="text-slate-500">行程路线</label><input id="mToRoute" placeholder="松阳杨家堂+陈家铺" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          <div><label class="text-slate-500">总收款 (元)</label><input id="mToGross" type="number" value="1600" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          <div><label class="text-slate-500">杂费/电耗 (元)</label><input id="mToCost" type="number" value="60" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
         </div>
-        <div class="flex justify-end gap-2 pt-2">
-          <button onclick="closeModal()" class="px-4 py-2 rounded-lg text-xs text-slate-500">取消</button>
-          <button onclick="saveTourOrder()" class="btn-primary px-4 py-2 rounded-lg text-xs">保存同步</button>
+        <div class="flex justify-end gap-2 pt-1">
+          <button onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">取消</button>
+          <button onclick="saveTourOrder()" class="btn-primary px-4 py-1.5 rounded-lg text-xs">保存</button>
         </div>
       `);
     };
@@ -1418,16 +1465,16 @@
 
     window.openScriptModal = () => {
       openModal(`
-        <h3 class="font-bold text-base text-forest-900">新增丽水景点英文讲解词条</h3>
-        <div class="space-y-2.5 text-xs">
-          <div><label class="text-slate-500">所属县市区</label><select id="mScCounty" class="w-full border rounded-lg p-2 mt-1">${LISHUI_COUNTIES.slice(1).map(c=>`<option>${c}</option>`).join('')}</select></div>
-          <div><label class="text-slate-500">景点名称</label><input id="mScSpot" class="w-full border rounded-lg p-2 mt-1" /></div>
-          <div><label class="text-slate-500">中文背景要点</label><textarea id="mScCn" rows="2" class="w-full border rounded-lg p-2 mt-1"></textarea></div>
-          <div><label class="text-slate-500">地道英文讲解词</label><textarea id="mScEn" rows="3" class="w-full border rounded-lg p-2 mt-1"></textarea></div>
+        <h3 class="font-bold text-sm text-forest-900">新增景点英文讲解词</h3>
+        <div class="space-y-2 text-xs">
+          <div><label class="text-slate-500">所属县市区</label><select id="mScCounty" class="w-full border rounded-lg p-1.5 mt-0.5">${LISHUI_COUNTIES.slice(1).map(c=>`<option>${c}</option>`).join('')}</select></div>
+          <div><label class="text-slate-500">景点名称</label><input id="mScSpot" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          <div><label class="text-slate-500">中文背景</label><textarea id="mScCn" rows="2" class="w-full border rounded-lg p-1.5 mt-0.5"></textarea></div>
+          <div><label class="text-slate-500">英文讲解词</label><textarea id="mScEn" rows="3" class="w-full border rounded-lg p-1.5 mt-0.5"></textarea></div>
         </div>
-        <div class="flex justify-end gap-2 pt-2">
-          <button onclick="closeModal()" class="px-4 py-2 rounded-lg text-xs text-slate-500">取消</button>
-          <button onclick="saveScript()" class="btn-primary px-4 py-2 rounded-lg text-xs">保存同步</button>
+        <div class="flex justify-end gap-2 pt-1">
+          <button onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">取消</button>
+          <button onclick="saveScript()" class="btn-primary px-4 py-1.5 rounded-lg text-xs">保存</button>
         </div>
       `);
     };
@@ -1437,25 +1484,35 @@
       closeModal(); saveState();
     };
 
-    // ==================== 渲染 3：健康饮食锻炼系统 ====================
+    // ==================== 3. 健康饮食锻炼系统 (修复日期切换与移动端排版) ====================
     function getDatesInRange(startStr, endStr) {
       const dates = [];
-      let cur = new Date(startStr);
-      const end = new Date(endStr);
+      const [sy, sm, sd] = startStr.split("-").map(Number);
+      const [ey, em, ed] = endStr.split("-").map(Number);
+      if (!sy || !ey) return [getOffsetDate(0)];
+      let cur = new Date(sy, sm - 1, sd);
+      const end = new Date(ey, em - 1, ed);
       let guard = 0;
       while (cur <= end && guard < 60) {
-        dates.push(cur.toISOString().split("T")[0]);
+        const y = cur.getFullYear();
+        const m = String(cur.getMonth() + 1).padStart(2, "0");
+        const d = String(cur.getDate()).padStart(2, "0");
+        dates.push(`${y}-${m}-${d}`);
         cur.setDate(cur.getDate() + 1);
         guard++;
       }
       return dates.length ? dates : [startStr];
     }
 
+    window.selectHealthDate = (dateStr) => {
+      ui.activeDate = dateStr;
+      renderHealth();
+    };
+
     window.switchHealthPerson = (p) => {
       ui.healthPerson = p;
-      document.getElementById("hp-me").className = p === "me" ? "px-4 py-2 rounded-xl text-xs font-bold bg-forest-900 text-white" : "px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600";
-      document.getElementById("hp-wife").className = p === "wife" ? "px-4 py-2 rounded-xl text-xs font-bold bg-forest-900 text-white" : "px-4 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600";
-      // 妻子不显示锻炼系统模块
+      document.getElementById("hp-me").className = p === "me" ? "px-3.5 py-1 rounded-md text-xs font-bold bg-forest-900 text-white whitespace-nowrap" : "px-3.5 py-1 rounded-md text-xs font-bold text-slate-600 whitespace-nowrap";
+      document.getElementById("hp-wife").className = p === "wife" ? "px-3.5 py-1 rounded-md text-xs font-bold bg-forest-900 text-white whitespace-nowrap" : "px-3.5 py-1 rounded-md text-xs font-bold text-slate-600 whitespace-nowrap";
       document.getElementById("myTrainingCard").classList.toggle("hidden", p === "wife");
       renderHealth();
     };
@@ -1496,9 +1553,9 @@
       document.getElementById("periodStart").value = ui.periodStart;
       document.getElementById("periodEnd").value = ui.periodEnd;
       const dates = getDatesInRange(ui.periodStart, ui.periodEnd);
+      if (!dates.includes(ui.activeDate)) ui.activeDate = dates[0];
       const logs = state.healthLogs[ui.healthPerson] || {};
 
-      // 计算本期间体重变化
       const weights = dates.map(d => parseFloat(logs[d]?.weight)).filter(w => !isNaN(w));
       if (weights.length >= 1) {
         const firstW = weights[0];
@@ -1513,28 +1570,27 @@
         document.getElementById("periodWeightDiff").textContent = "待录入";
       }
 
-      // 渲染日期胶囊
+      // 扁平防挤压日期按钮
       document.getElementById("periodDatePills").innerHTML = dates.map(d => {
         const shortD = d.slice(5);
         const active = d === ui.activeDate;
-        return `<button onclick="ui.activeDate='${d}';renderHealth()" class="px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap ${active ? 'bg-champagne-500 text-forest-900' : 'bg-slate-100 text-slate-600'}">${shortD}</button>`;
+        return `<button type="button" onclick="selectHealthDate('${d}')" class="shrink-0 px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap ${active ? 'bg-champagne-500 text-forest-900 shadow-2xs' : 'bg-slate-100 text-slate-600'}">${shortD}</button>`;
       }).join("");
 
-      // 渲染总览表
       if (ui.showOverview) {
         document.getElementById("periodOverviewTable").innerHTML = `
-          <table class="w-full text-left border-collapse">
+          <table class="w-full text-left border-collapse text-[11px]">
             <thead><tr class="border-b bg-slate-50 text-slate-500">
-              <th class="p-2">日期</th><th class="p-2">晨重</th><th class="p-2">健康状态</th>${ui.healthPerson==='me'?'<th class="p-2">训练安排</th>':''}<th class="p-2">早/中/晚三餐摘要</th>
+              <th class="p-1.5">日期</th><th class="p-1.5">晨重</th><th class="p-1.5">状态</th>${ui.healthPerson==='me'?'<th class="p-1.5">训练</th>':''}<th class="p-1.5">三餐摘要</th>
             </tr></thead>
             <tbody>${dates.map(d => {
               const l = logs[d] || {};
               return `<tr class="border-b">
-                <td class="p-2 font-semibold whitespace-nowrap">${d.slice(5)}</td>
-                <td class="p-2">${l.weight ? l.weight+'kg' : '-'}</td>
-                <td class="p-2">${(l.tags||[]).join('、') || '-'}</td>
-                ${ui.healthPerson==='me' ? `<td class="p-2">${l.trainTheme || l.intensity || '-'}</td>` : ''}
-                <td class="p-2 text-slate-600">早:${l.breakfast||'-'} | 午:${l.lunch||'-'} | 晚:${l.dinner||'-'}</td>
+                <td class="p-1.5 font-semibold whitespace-nowrap">${d.slice(5)}</td>
+                <td class="p-1.5">${l.weight ? l.weight+'kg' : '-'}</td>
+                <td class="p-1.5">${(l.tags||[]).join('、') || '-'}</td>
+                ${ui.healthPerson==='me' ? `<td class="p-1.5">${l.trainTheme || l.intensity || '-'}</td>` : ''}
+                <td class="p-1.5 text-slate-600">早:${l.breakfast||'-'} | 午:${l.lunch||'-'} | 晚:${l.dinner||'-'}</td>
               </tr>`;
             }).join("")}</tbody>
           </table>
@@ -1546,14 +1602,12 @@
       document.getElementById("dayWeight").value = cur.weight || "";
       document.getElementById("dayHealthNote").value = cur.note || "";
 
-      // 状态标签按钮
       const tagDict = ui.healthPerson === "me" ? state.dictionaries.healthTagsMe : state.dictionaries.healthTagsWife;
       document.getElementById("healthTagContainer").innerHTML = tagDict.map(t => {
         const selected = (cur.tags || []).includes(t);
-        return `<button onclick="toggleHealthTag('${t}')" class="px-2.5 py-1 rounded-lg text-xs border ${selected ? 'bg-forest-900 text-white border-forest-900' : 'bg-white text-slate-600 border-slate-200'}">${t}</button>`;
+        return `<button type="button" onclick="toggleHealthTag('${t}')" class="px-2 py-1 rounded-md text-[11px] border ${selected ? 'bg-forest-900 text-white border-forest-900' : 'bg-white text-slate-600 border-slate-200'}">${t}</button>`;
       }).join("");
 
-      // 我的锻炼模块
       if (ui.healthPerson === "me") {
         const intSel = document.getElementById("dayIntensity");
         intSel.innerHTML = state.dictionaries.trainingIntensities.map(i => `<option ${cur.intensity===i?'selected':''}>${i}</option>`).join("");
@@ -1563,31 +1617,30 @@
         const hasPain = (cur.tags || []).some(t => t.includes("不适") || t.includes("酸胀") || t.includes("累")) || (cur.note && cur.note.length > 0);
         if (hasPain) {
           warnBanner.classList.remove("hidden");
-          warnBanner.textContent = `⚠️ 健康系统联动预警：检测到今日存在状态/部位反馈（${(cur.tags||[]).join('、')} ${cur.note}），建议适当降低下肢高冲击负荷，加强热身与泡沫轴放松。`;
+          warnBanner.textContent = `⚠️ 状态联动提醒：存在身体反馈（${(cur.tags||[]).join('、')} ${cur.note}），建议降低下肢高冲击负荷并加强拉伸。`;
         } else {
           warnBanner.classList.add("hidden");
         }
 
         document.getElementById("dayTrainItemsList").innerHTML = (cur.trainItems || []).map((item, idx) => `
-          <div class="flex items-center justify-between bg-slate-50 px-3 py-2 rounded-lg text-xs border border-slate-100">
+          <div class="flex items-center justify-between bg-slate-50 px-2.5 py-1.5 rounded-md text-xs border border-slate-100">
             <span><strong>${idx+1}.</strong> ${item}</span>
-            <button onclick="removeTrainItem(${idx})" class="text-rose-400 hover:underline">移除</button>
+            <button type="button" onclick="removeTrainItem(${idx})" class="text-rose-400 text-[11px]">移除</button>
           </div>
-        `).join("") || `<div class="text-[11px] text-slate-400">暂无具体动作明细，点击右上角“+ 添加动作/组数”编写。</div>`;
+        `).join("");
       }
 
-      // 智能饮食建议联动
       const adviceBox = document.getElementById("smartNutritionAdvice");
       if (ui.healthPerson === "me") {
         const isHigh = (cur.intensity || "").includes("高强度") || (cur.intensity || "").includes("力量");
         adviceBox.innerHTML = isHigh
-          ? `<strong>🥗 联动饮食建议（高消耗/足球力量日）：</strong>今日训练消耗大，建议午餐与练后增加<strong>山姆三色糙米饭（180-200g）</strong>补足肌糖原，蛋白质优先<strong>去皮鸡腿肉/纯瘦牛肉（按体重1.8g/kg足量摄入）</strong>，加速肌肉修复。`
-          : `<strong>🥗 联动饮食建议（常规/恢复日）：</strong>保持优质蛋白摄入（即食鸡胸肉/鸡蛋），主食三色糙米饭适度减量（100-120g），多摄入深色绿叶蔬菜控油稳体脂。`;
+          ? `<strong>高消耗参考：</strong>午餐及练后增加<strong>山姆三色糙米饭(180-200g)</strong>补糖原，优选<strong>去皮鸡腿/纯瘦牛肉</strong>足量摄入蛋白。`
+          : `<strong>常规/恢复日参考：</strong>三色糙米饭适度减量(100-120g)，保持优质蛋白(鸡胸/鸡蛋)与深色蔬菜摄入。`;
       } else {
         const isPeriod = (cur.tags || []).some(t => t.includes("生理期") || t.includes("内耗"));
         adviceBox.innerHTML = isPeriod
-          ? `<strong>🌸 妻子能量与饮食关怀建议：</strong>今日需重点保暖与情绪舒缓，饮食宜温热易消化（如红枣银耳、温热牛肉汤、优质蛋白），避免冰饮与过度节食。`
-          : `<strong>🌸 妻子形体美与轻盈营养建议：</strong>遵循“先吃蔬菜 → 再吃优质蛋白（鱼虾/鸡胸/瘦牛肉） → 最后少量粗粮”进食顺序，兼顾轻盈体态与白天班主任工作精力。`;
+          ? `<strong>能量守护参考：</strong>今日宜温热易消化饮食（红枣银耳、温热牛肉汤），注意保暖与情绪舒缓。`
+          : `<strong>轻盈体态参考：</strong>建议“先吃蔬菜 → 再吃优质蛋白 → 最后少量粗粮”，兼顾轻盈感与白天教学精力。`;
       }
 
       document.getElementById("mealBreakfast").value = cur.breakfast || "";
@@ -1605,13 +1658,11 @@
 
     window.addTrainingItem = () => {
       openModal(`
-        <h3 class="font-bold text-base text-forest-900">添加具体训练动作与组数</h3>
-        <div class="text-xs space-y-2">
-          <input id="mTrItem" placeholder="例如：杠铃深蹲 80kg 8次×4组 / 绳梯敏捷步 5组" class="w-full border rounded-lg p-2.5" />
-        </div>
-        <div class="flex justify-end gap-2 pt-2">
-          <button onclick="closeModal()" class="px-4 py-2 rounded-lg text-xs text-slate-500">取消</button>
-          <button onclick="confirmAddTrainItem()" class="btn-primary px-4 py-2 rounded-lg text-xs">加入今日计划</button>
+        <h3 class="font-bold text-sm text-forest-900">添加具体训练动作</h3>
+        <input id="mTrItem" placeholder="如：杠铃深蹲 80kg 8次×4组 / 绳梯敏捷 5组" class="w-full border rounded-lg p-2 text-xs" />
+        <div class="flex justify-end gap-2 pt-1">
+          <button onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">取消</button>
+          <button onclick="confirmAddTrainItem()" class="btn-primary px-4 py-1.5 rounded-lg text-xs">加入</button>
         </div>
       `);
     };
@@ -1619,15 +1670,13 @@
     window.confirmAddTrainItem = () => {
       const val = document.getElementById("mTrItem").value.trim();
       if (val) {
-        const cur = getDayLog("me", ui.activeDate);
-        cur.trainItems.push(val);
+        getDayLog("me", ui.activeDate).trainItems.push(val);
         closeModal(); saveState();
       }
     };
 
     window.removeTrainItem = (idx) => {
-      const cur = getDayLog("me", ui.activeDate);
-      cur.trainItems.splice(idx, 1);
+      getDayLog("me", ui.activeDate).trainItems.splice(idx, 1);
       saveState();
     };
 
@@ -1645,7 +1694,7 @@
       saveState();
     };
 
-    // ==================== 渲染 4：全局复利总看板 ====================
+    // ==================== 4. 全局复利总看板 ====================
     function renderDashboard() {
       const target = new Date("2027-03-31");
       const diffDays = Math.max(0, Math.ceil((target - new Date()) / (1000 * 60 * 60 * 24)));
@@ -1659,33 +1708,32 @@
       document.getElementById("dashFitRev").textContent = `¥${fitRev.toLocaleString()}`;
       document.getElementById("dashFitLessons").textContent = `剩余待消: ${remLessons} 节`;
       document.getElementById("dashTourRev").textContent = `¥${tourRev.toLocaleString()}`;
-      document.getElementById("dashTourOrders").textContent = `累计成团: ${state.tourOrders.length} 单`;
+      document.getElementById("dashTourOrders").textContent = `成团: ${state.tourOrders.length} 单`;
       document.getElementById("dashTotalLeads").textContent = `${totalLeads} 人`;
       document.getElementById("dashActiveStudents").textContent = `${state.students.length} 人`;
     }
 
-    // ==================== 通用字典与系统设置弹窗 ====================
+    // ==================== 设置与词典 ====================
     window.openSettingsModal = () => {
       const d = state.dictionaries;
       openModal(`
-        <h3 class="font-bold text-base text-forest-900">⚙️ 自定义选项词典与安全锁设置</h3>
-        <p class="text-[11px] text-slate-500">用英文逗号或中文顿号分隔各项标签，保存后全系统下拉菜单与标签即时同步更新。</p>
-        <div class="space-y-2.5 text-xs">
-          <div><label class="font-semibold text-slate-700">常用上课地点</label><input id="setLocs" value="${d.locations.join('、')}" class="w-full border rounded-lg p-2 mt-1" /></div>
-          <div><label class="font-semibold text-slate-700">常驻城市池</label><input id="setCities" value="${d.cities.join('、')}" class="w-full border rounded-lg p-2 mt-1" /></div>
-          <div><label class="font-semibold text-slate-700">家长报名核心诉求标签</label><input id="setGoals" value="${d.goalTags.join('、')}" class="w-full border rounded-lg p-2 mt-1" /></div>
-          <div><label class="font-semibold text-slate-700">我的训练强度等级标签</label><input id="setIntensities" value="${d.trainingIntensities.join('、')}" class="w-full border rounded-lg p-2 mt-1" /></div>
-          <div><label class="font-semibold text-slate-700">我的健康状态标签</label><input id="setTagsMe" value="${d.healthTagsMe.join('、')}" class="w-full border rounded-lg p-2 mt-1" /></div>
-          <div><label class="font-semibold text-slate-700">妻子健康状态标签</label><input id="setTagsWife" value="${d.healthTagsWife.join('、')}" class="w-full border rounded-lg p-2 mt-1" /></div>
-          <div><label class="font-semibold text-slate-700">体验课未转化原因</label><input id="setFails" value="${d.trialFailReasons.join('、')}" class="w-full border rounded-lg p-2 mt-1" /></div>
+        <h3 class="font-bold text-sm text-forest-900">⚙️ 选项词典与安全锁</h3>
+        <div class="space-y-2 text-xs">
+          <div><label class="font-semibold text-slate-600">常用上课地点</label><input id="setLocs" value="${d.locations.join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          <div><label class="font-semibold text-slate-600">常驻城市</label><input id="setCities" value="${d.cities.join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          <div><label class="font-semibold text-slate-600">家长报名诉求</label><input id="setGoals" value="${d.goalTags.join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          <div><label class="font-semibold text-slate-600">我的训练强度标签</label><input id="setIntensities" value="${d.trainingIntensities.join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          <div><label class="font-semibold text-slate-600">我的健康状态标签</label><input id="setTagsMe" value="${d.healthTagsMe.join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          <div><label class="font-semibold text-slate-600">妻子健康状态标签</label><input id="setTagsWife" value="${d.healthTagsWife.join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          <div><label class="font-semibold text-slate-600">体验未转化原因</label><input id="setFails" value="${d.trialFailReasons.join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
           <div class="pt-2 border-t flex items-center justify-between">
-            <label class="flex items-center gap-1.5 font-semibold"><input id="setLockOn" type="checkbox" ${state.lockEnabled?'checked':''} /> 启用启动密码锁</label>
-            <input id="setPin" value="${state.pin}" maxlength="6" class="w-24 border rounded-lg p-1.5 text-center" placeholder="4位PIN" />
+            <label class="flex items-center gap-1.5 font-semibold"><input id="setLockOn" type="checkbox" ${state.lockEnabled?'checked':''} /> 启动密码锁</label>
+            <input id="setPin" value="${state.pin}" maxlength="6" class="w-20 border rounded-lg p-1 text-center" />
           </div>
         </div>
-        <div class="flex justify-end gap-2 pt-2">
-          <button onclick="closeModal()" class="px-4 py-2 rounded-lg text-xs text-slate-500">取消</button>
-          <button onclick="saveDictionaries()" class="btn-primary px-4 py-2 rounded-lg text-xs">保存全局词典</button>
+        <div class="flex justify-end gap-2 pt-1">
+          <button onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">取消</button>
+          <button onclick="saveDictionaries()" class="btn-primary px-4 py-1.5 rounded-lg text-xs">保存</button>
         </div>
       `);
     };
@@ -1701,22 +1749,22 @@
       state.dictionaries.trialFailReasons = splitList("setFails");
       state.lockEnabled = document.getElementById("setLockOn").checked;
       state.pin = document.getElementById("setPin").value.trim() || "1999";
-      closeModal(); saveState(); showToast("自定义词典与安全设置已云端同步");
+      closeModal(); saveState(); showToast("设置已同步");
     };
 
     window.deleteItem = (collection, id) => {
-      if (!confirm("确定删除此条记录？")) return;
+      if (!confirm("确定删除？")) return;
       state[collection] = state[collection].filter(x => x.id !== id);
-      saveState(); showToast("已删除并同步");
+      saveState(); showToast("已删除");
     };
 
     window.exportBackup = () => {
       const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
       const a = document.createElement("a");
       a.href = URL.createObjectURL(blob);
-      a.download = `Leo_Life_OS_Backup_${getOffsetDate(0)}.json`;
+      a.download = `Leo_Life_OS_${getOffsetDate(0)}.json`;
       a.click();
-      showToast("完整JSON备份已导出");
+      showToast("备份已导出");
     };
 
     window.openModal = (html) => {
