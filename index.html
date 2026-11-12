@@ -536,12 +536,13 @@
         </div>
       </div>
 
-      <!-- 按日期选择的每日 To-Do List 行动清单 -->
+      <!-- 按日期选择的每日 To-Do List 行动清单（支持自定义标签 + 上下移动与置顶排序） -->
       <div class="card p-3.5 space-y-3">
         <div class="flex flex-wrap items-center justify-between gap-2">
-          <div class="flex items-center gap-1.5">
+          <div class="flex items-center gap-1.5 flex-wrap">
             <h3 class="font-bold text-xs text-forest-900">✅ 每日聚焦行动清单 (To-Do List)</h3>
             <span id="todoProgressBadge" class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">0/0 完成</span>
+            <button type="button" onclick="openTodoTagManagerModal()" class="text-[11px] bg-amber-50 text-amber-900 border border-amber-200 px-2 py-0.5 rounded font-semibold hover:bg-amber-100">🏷️ 编辑预设标签</button>
           </div>
           <div class="flex items-center gap-1 text-xs">
             <button type="button" onclick="stepTodoDate(-1)" class="px-2 py-1 rounded bg-slate-100 text-slate-700 font-bold">◀</button>
@@ -552,22 +553,16 @@
         </div>
 
         <div class="flex flex-wrap sm:flex-nowrap items-center gap-1.5">
-          <select id="newTodoTag" class="border border-slate-200 rounded-lg px-2 py-1.5 text-xs bg-slate-50 font-semibold text-forest-900">
-            <option value="🔥 核心重心">🔥 核心重心</option>
-            <option value="🏃 体能/顾问">🏃 体能/顾问</option>
-            <option value="🗺️ 英语地接">🗺️ 英语地接</option>
-            <option value="📈 投资/本职">📈 投资/本职</option>
-            <option value="🏠 装修/家庭">🏠 装修/家庭</option>
-          </select>
-          <input id="newTodoText" type="text" onkeydown="if(event.key==='Enter')addTodoItem()" placeholder="输入今日关键行动（按回车或点右侧添加）..." class="flex-1 border border-slate-200 rounded-lg px-3 py-1.5 text-xs" />
+          <select id="newTodoTag" class="border border-slate-200 rounded-lg px-2 py-1.5 text-xs bg-slate-50 font-semibold text-forest-900"></select>
+          <input id="newTodoText" type="text" onkeydown="if(event.key==='Enter')addTodoItem()" placeholder="输入今日关键行动（按回车或点右侧添加，添加后可上下调序或置顶）..." class="flex-1 border border-slate-200 rounded-lg px-3 py-1.5 text-xs min-w-[180px]" />
           <button type="button" onclick="addTodoItem()" class="btn-primary px-3.5 py-1.5 rounded-lg text-xs font-semibold shrink-0">+ 添加任务</button>
         </div>
 
         <div id="todoListContainer" class="space-y-1.5"></div>
 
         <div class="flex items-center justify-between pt-1 border-t border-slate-100 text-[11px] text-slate-400">
-          <span>只列高价值低熵动作，拒绝琐事堆砌</span>
-          <button type="button" onclick="rolloverUnfinishedTodos()" class="text-champagne-600 font-semibold hover:underline">⏭️ 将今日未完成任务顺延至明天</button>
+          <span>💡 提示：点击「⚡置顶」或「↑ ↓」可把最重要的事排到最前面；点击标签或「改」可随时修改标签与内容</span>
+          <button type="button" onclick="rolloverUnfinishedTodos()" class="text-champagne-600 font-semibold hover:underline shrink-0">⏭️ 将未完成顺延至明天</button>
         </div>
       </div>
 
@@ -664,6 +659,7 @@
       },
       todosByDate: {},
       dictionaries: {
+        todoTags: ["🔥 核心重心", "🏃 体能/顾问", "🗺️ 英语地接", "📈 投资/本职", "🏠 装修/家庭", "⚡ 紧急高优"],
         locations: ["丽水处州公园", "丽水白云山公园", "云和体育公园", "学员上门小区", "线上视频指导"],
         cities: ["丽水", "云和", "深圳", "杭州", "上海", "北京"],
         trialFailReasons: ["距离/时间不合适", "预算超出预期", "孩子暂缺兴趣", "对比其他机构中", "待下周复测决定"],
@@ -948,13 +944,17 @@
 
     function mergeStateWithDefaults(raw) {
       if (!raw) return structuredClone(DEFAULT_STATE);
+      const mergedDict = { ...DEFAULT_STATE.dictionaries, ...(raw.dictionaries || {}) };
+      if (!Array.isArray(mergedDict.todoTags) || !mergedDict.todoTags.length) {
+        mergedDict.todoTags = structuredClone(DEFAULT_STATE.dictionaries.todoTags);
+      }
       return {
         ...structuredClone(DEFAULT_STATE),
         ...raw,
         customLabels: { ...DEFAULT_STATE.customLabels, ...(raw.customLabels || {}) },
         strategicFocus: { ...DEFAULT_STATE.strategicFocus, ...(raw.strategicFocus || {}) },
         todosByDate: raw.todosByDate || {},
-        dictionaries: { ...DEFAULT_STATE.dictionaries, ...(raw.dictionaries || {}) },
+        dictionaries: mergedDict,
         sops: {
           online: upgradeSopList(raw.sops?.online, DEFAULT_STATE.sops.online),
           offline: upgradeSopList(raw.sops?.offline, DEFAULT_STATE.sops.offline),
@@ -2238,7 +2238,7 @@
       closeModal(); saveState();
     };
 
-    // ==================== 3. 健康饮食锻炼系统（新增训练动作单条复制/跨日期任意复用） ====================
+    // ==================== 3. 健康饮食锻炼系统 ====================
     function getDatesInRange(startStr, endStr) {
       const dates = [];
       const [sy, sm, sd] = startStr.split("-").map(Number);
@@ -2496,13 +2496,11 @@
       `).join("");
     }
 
-    // 复制单条训练动作文本
     window.copyTrainItemText = (idx) => {
       const item = getDayLog("me", ui.activeDate).trainItems[idx];
       if (item) window.copyRaw(item, "训练动作已复制");
     };
 
-    // 将单条训练动作复用到任意指定日期
     window.openCopySingleTrainToDateModal = (idx) => {
       const item = getDayLog("me", ui.activeDate).trainItems[idx];
       if (!item) return;
@@ -2532,7 +2530,6 @@
       showToast(`已将该动作复用至 ${targetDate}`);
     };
 
-    // 从过往任意历史训练日中勾选部分或全部动作复用到当前日期
     window.openReuseTrainingModal = () => {
       const meLogs = state.healthLogs.me || {};
       const historyDates = Object.keys(meLogs)
@@ -2716,7 +2713,7 @@
       saveState();
     };
 
-    // ==================== 4. 全局复利总看板 ====================
+    // ==================== 4. 全局复利总看板（新增：自定义标签管理 + 上下调序/置顶 + 弹窗同时改标签与内容） ====================
     window.saveStrategicFocus = () => {
       state.strategicFocus = {
         longTerm: document.getElementById("focusLong").value,
@@ -2743,11 +2740,36 @@
       renderDashboard();
     };
 
+    // 快捷管理 To-Do 预设标签池
+    window.openTodoTagManagerModal = () => {
+      const currentTags = (state.dictionaries.todoTags || DEFAULT_STATE.dictionaries.todoTags).join("、");
+      openModal(`
+        <h3 class="font-bold text-sm text-forest-900">🏷️ 编辑每日行动 (To-Do) 预设标签库</h3>
+        <div class="space-y-2 text-xs">
+          <p class="text-slate-500">用顿号（、）或逗号分隔，可自由增删改属于你的任务分类标签：</p>
+          <textarea id="mTodoTagsInput" rows="3" class="w-full border rounded-lg p-2 font-medium text-forest-900">${currentTags}</textarea>
+        </div>
+        <div class="flex justify-end gap-2 pt-1">
+          <button onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">取消</button>
+          <button onclick="saveTodoTagPool()" class="btn-primary px-4 py-1.5 rounded-lg text-xs">保存标签库</button>
+        </div>
+      `);
+    };
+
+    window.saveTodoTagPool = () => {
+      const list = document.getElementById("mTodoTagsInput").value.split(/[,，、\n]/).map(s => s.trim()).filter(Boolean);
+      if (list.length) {
+        state.dictionaries.todoTags = list;
+        closeModal(); saveState();
+        showToast("预设标签库已更新");
+      }
+    };
+
     window.addTodoItem = () => {
       const input = document.getElementById("newTodoText");
       const text = input.value.trim();
       if (!text) return;
-      const tag = document.getElementById("newTodoTag").value;
+      const tag = document.getElementById("newTodoTag").value || "🔥 核心重心";
       if (!state.todosByDate) state.todosByDate = {};
       if (!state.todosByDate[ui.todoDate]) state.todosByDate[ui.todoDate] = [];
       state.todosByDate[ui.todoDate].push({
@@ -2769,15 +2791,77 @@
       }
     };
 
+    // 上移 / 下移 To-Do 任务顺序
+    window.moveTodoItem = (idx, dir) => {
+      const list = state.todosByDate?.[ui.todoDate];
+      if (!Array.isArray(list)) return;
+      const target = idx + dir;
+      if (target < 0 || target >= list.length) return;
+      [list[idx], list[target]] = [list[target], list[idx]];
+      saveState();
+    };
+
+    // 一键将重要任务置顶到第一位
+    window.pinTodoItemTop = (idx) => {
+      const list = state.todosByDate?.[ui.todoDate];
+      if (!Array.isArray(list) || idx <= 0 || idx >= list.length) return;
+      const [item] = list.splice(idx, 1);
+      list.unshift(item);
+      saveState();
+      showToast("⚡ 已置顶到第一顺位");
+    };
+
+    // 弹窗编辑单条 To-Do 的标签（支持下拉或直接手写新标签）与内容
     window.editTodoItem = (id) => {
       const list = state.todosByDate?.[ui.todoDate] || [];
       const item = list.find(x => x.id === id);
       if (!item) return;
-      const newTxt = prompt("修改任务内容：", item.text);
-      if (newTxt !== null && newTxt.trim() !== "") {
-        item.text = newTxt.trim();
-        saveState();
+      const tagPool = state.dictionaries.todoTags || DEFAULT_STATE.dictionaries.todoTags;
+      const tagChips = tagPool.map(t =>
+        `<button type="button" onclick="document.getElementById('mEditTodoTag').value='${t}'" class="px-2 py-1 rounded bg-slate-100 text-[11px] hover:bg-champagne-400/30">${t}</button>`
+      ).join("");
+
+      openModal(`
+        <h3 class="font-bold text-sm text-forest-900">✏️ 编辑行动标签与任务内容</h3>
+        <div class="space-y-2.5 text-xs">
+          <div>
+            <label class="text-slate-500 block mb-1">1. 任务分类标签（可直接自由输入自定义文字，或点选下方常用标签）：</label>
+            <input id="mEditTodoTag" value="${item.tag || ''}" placeholder="输入自定义标签..." class="w-full border rounded-lg p-1.5 font-bold text-forest-900 mb-1.5" />
+            <div class="flex flex-wrap gap-1">${tagChips}</div>
+          </div>
+          <div>
+            <label class="text-slate-500 block mb-1">2. 具体行动内容：</label>
+            <textarea id="mEditTodoText" rows="2" class="w-full border rounded-lg p-2">${item.text}</textarea>
+          </div>
+          <label class="flex items-center gap-1.5 text-[11px] text-amber-900 bg-amber-50 p-2 rounded border border-amber-200 cursor-pointer">
+            <input type="checkbox" id="mSaveNewTagToPool" checked /> 若输入了新标签，自动保存到预设标签库供以后使用
+          </label>
+        </div>
+        <div class="flex justify-end gap-2 pt-1">
+          <button onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">取消</button>
+          <button onclick="saveEditedTodoItem('${id}')" class="btn-primary px-4 py-1.5 rounded-lg text-xs">保存修改</button>
+        </div>
+      `);
+    };
+
+    window.saveEditedTodoItem = (id) => {
+      const list = state.todosByDate?.[ui.todoDate] || [];
+      const item = list.find(x => x.id === id);
+      if (!item) return;
+      const newTag = document.getElementById("mEditTodoTag").value.trim() || "🔥 核心重心";
+      const newText = document.getElementById("mEditTodoText").value.trim();
+      if (!newText) return;
+      item.tag = newTag;
+      item.text = newText;
+
+      if (document.getElementById("mSaveNewTagToPool").checked) {
+        if (!Array.isArray(state.dictionaries.todoTags)) state.dictionaries.todoTags = [];
+        if (!state.dictionaries.todoTags.includes(newTag)) {
+          state.dictionaries.todoTags.push(newTag);
+        }
       }
+      closeModal(); saveState();
+      showToast("任务标签与内容已更新");
     };
 
     window.deleteTodoItem = (id) => {
@@ -2822,21 +2906,32 @@
       document.getElementById("focusMid").value = sf.midTerm || "";
       document.getElementById("focusShort").value = sf.shortTerm || "";
 
+      // 动态渲染自定义 To-Do 标签下拉列表
+      const tagSel = document.getElementById("newTodoTag");
+      const curTagVal = tagSel.value;
+      const tagPool = state.dictionaries.todoTags || DEFAULT_STATE.dictionaries.todoTags;
+      tagSel.innerHTML = tagPool.map(t => `<option value="${t}">${t}</option>`).join("");
+      if (curTagVal && tagPool.includes(curTagVal)) tagSel.value = curTagVal;
+
       document.getElementById("todoDateInput").value = ui.todoDate;
       const todos = state.todosByDate?.[ui.todoDate] || [];
       const doneCount = todos.filter(t => t.done).length;
       document.getElementById("todoProgressBadge").textContent = `${doneCount}/${todos.length} 完成`;
 
-      document.getElementById("todoListContainer").innerHTML = todos.map(t => `
+      document.getElementById("todoListContainer").innerHTML = todos.map((t, idx) => `
         <div class="flex items-center justify-between gap-2 p-2.5 rounded-lg border ${t.done ? 'bg-slate-50 border-slate-100 opacity-60' : 'bg-white border-slate-200'}">
-          <label class="flex items-center gap-2 flex-1 cursor-pointer min-w-0">
-            <input type="checkbox" ${t.done ? 'checked' : ''} onchange="toggleTodoDone('${t.id}')" class="w-4 h-4 accent-forest-900 rounded shrink-0" />
-            <span class="text-[10px] bg-slate-100 text-forest-900 font-semibold px-1.5 py-0.5 rounded shrink-0">${t.tag}</span>
-            <span class="text-xs truncate ${t.done ? 'line-through text-slate-400' : 'text-slate-800 font-medium'}">${t.text}</span>
-          </label>
-          <div class="flex items-center gap-2 shrink-0 text-[11px]">
-            <button type="button" onclick="editTodoItem('${t.id}')" class="text-slate-400 hover:text-forest-900">改</button>
-            <button type="button" onclick="deleteTodoItem('${t.id}')" class="text-rose-400">删</button>
+          <div class="flex items-center gap-2 flex-1 min-w-0">
+            <input type="checkbox" ${t.done ? 'checked' : ''} onchange="toggleTodoDone('${t.id}')" class="w-4 h-4 accent-forest-900 rounded shrink-0 cursor-pointer" />
+            <span class="text-[10px] text-slate-400 font-bold w-4 shrink-0">${idx + 1}.</span>
+            <button type="button" onclick="editTodoItem('${t.id}')" title="点击修改标签" class="text-[10px] bg-amber-50 border border-amber-200 text-forest-900 font-semibold px-1.5 py-0.5 rounded shrink-0 hover:bg-amber-100">${t.tag}</button>
+            <span onclick="toggleTodoDone('${t.id}')" class="text-xs truncate cursor-pointer ${t.done ? 'line-through text-slate-400' : 'text-slate-800 font-medium'}">${t.text}</span>
+          </div>
+          <div class="flex items-center gap-1 shrink-0 text-[11px]">
+            ${idx > 0 ? `<button type="button" onclick="pinTodoItemTop(${idx})" title="一键排到最前" class="px-1.5 py-0.5 bg-amber-100 text-amber-900 rounded font-bold">⚡置顶</button>` : ''}
+            <button type="button" onclick="moveTodoItem(${idx}, -1)" ${idx === 0 ? 'disabled' : ''} class="px-1.5 py-0.5 bg-slate-100 rounded ${idx === 0 ? 'opacity-30' : 'hover:bg-slate-200'}">↑</button>
+            <button type="button" onclick="moveTodoItem(${idx}, 1)" ${idx === todos.length - 1 ? 'disabled' : ''} class="px-1.5 py-0.5 bg-slate-100 rounded ${idx === todos.length - 1 ? 'opacity-30' : 'hover:bg-slate-200'}">↓</button>
+            <button type="button" onclick="editTodoItem('${t.id}')" class="px-1.5 py-0.5 text-slate-500 hover:text-forest-900">改</button>
+            <button type="button" onclick="deleteTodoItem('${t.id}')" class="px-1 py-0.5 text-rose-400">删</button>
           </div>
         </div>
       `).join("") || `<div class="text-xs text-slate-400 py-3 text-center bg-slate-50 rounded-lg">当日暂无待办事项，对照上方【近期核心业务重心】添加 3~5 件关键行动吧。</div>`;
@@ -2882,6 +2977,7 @@
 
           <div class="space-y-2">
             <div class="font-bold text-forest-900">📚 下拉选项与标签词典（用顿号或逗号分隔）</div>
+            <div><label class="text-slate-600">每日To-Do行动分类标签</label><input id="setTodoTags" value="${(d.todoTags||DEFAULT_STATE.dictionaries.todoTags).join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
             <div><label class="text-slate-600">常用上课地点</label><input id="setLocs" value="${d.locations.join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
             <div><label class="text-slate-600">线上会员常用训练场景</label><input id="setOnlineEnvs" value="${(d.onlineEnvs||[]).join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
             <div><label class="text-slate-600">进食餐次类型标签</label><input id="setMealTypes" value="${(d.mealTypes||[]).join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
@@ -2920,6 +3016,7 @@
         onSub3: document.getElementById("lblOn3").value.trim() || "3. 周期计划与答疑",
         onSub4: document.getElementById("lblOn4").value.trim() || "4. 订阅定价与赠品"
       };
+      state.dictionaries.todoTags = splitList("setTodoTags");
       state.dictionaries.locations = splitList("setLocs");
       state.dictionaries.onlineEnvs = splitList("setOnlineEnvs");
       state.dictionaries.mealTypes = splitList("setMealTypes");
