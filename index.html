@@ -455,7 +455,10 @@
 
         <div id="myTrainingCard" class="card p-3 space-y-2.5">
           <div class="flex items-center justify-between gap-2 flex-wrap">
-            <h3 class="font-bold text-xs text-forest-900">2. 当日锻炼计划（支持单条/批量跨日期复用）</h3>
+            <div class="flex items-center gap-1.5">
+              <h3 class="font-bold text-xs text-forest-900">2. 当日锻炼计划</h3>
+              <span id="trainProgressBadge" class="text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-bold">0/0 完成</span>
+            </div>
             <select id="dayIntensity" onchange="saveCurrentDayHealth()" class="text-xs border border-slate-200 rounded-md px-2 py-1 bg-slate-50 font-semibold text-forest-900"></select>
           </div>
           <div id="healthWarningBanner" class="hidden bg-rose-50 border border-rose-200 text-rose-800 text-[11px] p-2 rounded-lg"></div>
@@ -709,7 +712,7 @@
         { id: "d5", cat: "柔韧", name: "世界最伟大拉伸", enName: "World's Greatest Stretch", dose: "每侧保持20秒 × 2组", cue: "Open your chest to the sky! Feel the hip flexor stretch!" },
         { id: "d6", cat: "灵敏", name: "十字象限快速双脚跳", enName: "Quadrant Quick Hops", dose: "20秒 × 3组", cue: "Light on your toes! Soft and bouncy ankles!" },
         { id: "d7", cat: "协调", name: "敏捷梯单双脚交替步", enName: "Agility Ladder In-In-Out-Out", dose: "4趟", cue: "Rhythm first, speed second! Stay on the balls of your feet!" },
-        { id: "d8", cat: "平衡", name: "单腿微屈膝动态接抛球", enName: "Single-Leg Stance Ball Catch", dose: "弱侧30秒×3组 / 强侧30秒×1组", cue: "Soft knee! Knee over second toe! Hold steady!" },
+        { id: "d8", cat: "平衡", name: "单腿微屈膝动态接抛球", enName: "Single-Leg Stance Ball Catch", dose: "弱侧30秒×3组 / 右侧30秒×1组", cue: "Soft knee! Knee over second toe! Hold steady!" },
         { id: "d9", cat: "拉伸恢复", name: "臀肌与小腿静态放松", enName: "Glute & Calf Static Cool-down", dose: "每侧30秒", cue: "Deep breath in, slow breath out. Relax your shoulders." }
       ],
       standards: [
@@ -2239,6 +2242,13 @@
     };
 
     // ==================== 3. 健康饮食锻炼系统 ====================
+    // 兼容旧版纯文本训练条目与新版可勾选对象格式
+    function normalizeTrainItem(raw) {
+      if (typeof raw === "string") return { text: raw, done: false };
+      if (raw && typeof raw === "object") return { text: raw.text || "", done: !!raw.done };
+      return { text: "", done: false };
+    }
+
     function getDatesInRange(startStr, endStr) {
       const dates = [];
       const [sy, sm, sd] = startStr.split("-").map(Number);
@@ -2339,6 +2349,9 @@
         };
       }
       const log = state.healthLogs[person][dateStr];
+      if (!Array.isArray(log.trainItems)) log.trainItems = [];
+      log.trainItems = log.trainItems.map(normalizeTrainItem);
+
       if (!Array.isArray(log.mealEntries)) {
         log.mealEntries = [];
         if (log.breakfast && log.breakfast.trim()) log.mealEntries.push({ id: "me_b", time: "08:00", type: "早餐", content: log.breakfast.trim() });
@@ -2400,11 +2413,14 @@
             <tbody>${dates.map(d => {
               const l = getDayLog(ui.healthPerson, d);
               const mealsTxt = (l.mealEntries || []).map(m => `[${m.time} ${m.type}] ${m.content}`).join(" ｜ ") || "-";
+              const doneTrain = (l.trainItems || []).filter(x => x.done).length;
+              const totalTrain = (l.trainItems || []).length;
+              const trainSummary = (l.trainTheme || l.intensity || '-') + (totalTrain ? ` (${doneTrain}/${totalTrain})` : '');
               return `<tr class="border-b">
                 <td class="p-1.5 font-semibold whitespace-nowrap">${d.slice(5)}</td>
                 <td class="p-1.5">${l.weight ? l.weight+'kg' : '-'}</td>
                 <td class="p-1.5">${(l.tags||[]).join('、') || '-'}</td>
-                ${ui.healthPerson==='me' ? `<td class="p-1.5">${l.trainTheme || l.intensity || '-'}</td>` : ''}
+                ${ui.healthPerson==='me' ? `<td class="p-1.5">${trainSummary}</td>` : ''}
                 <td class="p-1.5 text-slate-600">${mealsTxt}</td>
               </tr>`;
             }).join("")}</tbody>
@@ -2441,16 +2457,29 @@
           warnBanner.classList.add("hidden");
         }
 
-        document.getElementById("dayTrainItemsList").innerHTML = (cur.trainItems || []).map((item, idx) => `
-          <div class="flex items-center justify-between gap-2 bg-slate-50 px-2.5 py-1.5 rounded-md text-xs border border-slate-100">
-            <span class="truncate"><strong>${idx+1}.</strong> ${item}</span>
-            <div class="flex items-center gap-1.5 shrink-0 text-[11px]">
-              <button type="button" onclick="copyTrainItemText(${idx})" class="px-1.5 py-0.5 rounded bg-white border border-slate-200 text-slate-600">复制</button>
-              <button type="button" onclick="openCopySingleTrainToDateModal(${idx})" class="px-1.5 py-0.5 rounded bg-amber-50 border border-amber-200 text-amber-900 font-medium">复用至他日</button>
-              <button type="button" onclick="removeTrainItem(${idx})" class="text-rose-400">删</button>
+        const trainList = cur.trainItems || [];
+        const doneTrainCount = trainList.filter(x => x.done).length;
+        const trainBadge = document.getElementById("trainProgressBadge");
+        if (trainBadge) {
+          trainBadge.textContent = `${doneTrainCount}/${trainList.length} 完成`;
+        }
+
+        document.getElementById("dayTrainItemsList").innerHTML = trainList.map((rawItem, idx) => {
+          const item = normalizeTrainItem(rawItem);
+          return `
+            <div class="flex items-center justify-between gap-2 px-2.5 py-1.5 rounded-md text-xs border ${item.done ? 'bg-slate-100/70 border-slate-100 opacity-65' : 'bg-slate-50 border-slate-200/80'}">
+              <div class="flex items-center gap-2 flex-1 min-w-0">
+                <input type="checkbox" ${item.done ? 'checked' : ''} onchange="toggleTrainItemDone(${idx})" class="w-4 h-4 accent-forest-900 rounded shrink-0 cursor-pointer" />
+                <span onclick="toggleTrainItemDone(${idx})" class="truncate cursor-pointer select-text ${item.done ? 'line-through text-slate-400' : 'text-slate-800 font-medium'}"><strong>${idx+1}.</strong> ${item.text}</span>
+              </div>
+              <div class="flex items-center gap-1.5 shrink-0 text-[11px]">
+                <button type="button" onclick="openEditTrainItemModal(${idx})" class="px-1.5 py-0.5 rounded bg-white border border-slate-200 text-slate-600 hover:text-forest-900">改</button>
+                <button type="button" onclick="openCopySingleTrainToDateModal(${idx})" class="px-1.5 py-0.5 rounded bg-amber-50 border border-amber-200 text-amber-900 font-medium">复用</button>
+                <button type="button" onclick="removeTrainItem(${idx})" class="text-rose-400 px-1">删</button>
+              </div>
             </div>
-          </div>
-        `).join("") || `<div class="text-[11px] text-slate-400 py-1.5">今日暂未添加具体训练动作，可点右上角「📥 从历史复用」或「+ 加动作」。</div>`;
+          `;
+        }).join("") || `<div class="text-[11px] text-slate-400 py-1.5">今日暂未添加具体训练动作，可点右上角「📥 从历史复用」或「+ 加动作」。</div>`;
       }
 
       const adviceBox = document.getElementById("smartNutritionAdvice");
@@ -2496,20 +2525,53 @@
       `).join("");
     }
 
-    window.copyTrainItemText = (idx) => {
-      const item = getDayLog("me", ui.activeDate).trainItems[idx];
-      if (item) window.copyRaw(item, "训练动作已复制");
+    // 勾选/取消勾选训练动作完成状态
+    window.toggleTrainItemDone = (idx) => {
+      const log = getDayLog("me", ui.activeDate);
+      const item = normalizeTrainItem(log.trainItems[idx]);
+      item.done = !item.done;
+      log.trainItems[idx] = item;
+      saveState();
+    };
+
+    // 弹窗修改训练动作文字
+    window.openEditTrainItemModal = (idx) => {
+      const log = getDayLog("me", ui.activeDate);
+      const item = normalizeTrainItem(log.trainItems[idx]);
+      if (!item.text) return;
+      openModal(`
+        <h3 class="font-bold text-sm text-forest-900">✏️ 修改训练动作内容</h3>
+        <div class="space-y-2 text-xs">
+          <input id="mEditTrainText" value="${item.text.replace(/"/g, '"')}" onkeydown="if(event.key==='Enter')saveEditedTrainItem(${idx})" class="w-full border rounded-lg p-2 text-xs font-medium text-forest-900" />
+        </div>
+        <div class="flex justify-end gap-2 pt-1">
+          <button onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">取消</button>
+          <button onclick="saveEditedTrainItem(${idx})" class="btn-primary px-4 py-1.5 rounded-lg text-xs">保存修改</button>
+        </div>
+      `);
+    };
+
+    window.saveEditedTrainItem = (idx) => {
+      const log = getDayLog("me", ui.activeDate);
+      const item = normalizeTrainItem(log.trainItems[idx]);
+      const newVal = document.getElementById("mEditTrainText").value.trim();
+      if (!newVal) return;
+      item.text = newVal;
+      log.trainItems[idx] = item;
+      closeModal(); saveState();
+      showToast("动作内容已修改");
     };
 
     window.openCopySingleTrainToDateModal = (idx) => {
-      const item = getDayLog("me", ui.activeDate).trainItems[idx];
-      if (!item) return;
+      const rawItem = getDayLog("me", ui.activeDate).trainItems[idx];
+      const item = normalizeTrainItem(rawItem);
+      if (!item.text) return;
       openModal(`
         <h3 class="font-bold text-sm text-forest-900">复用训练动作至其他日期</h3>
         <div class="space-y-2.5 text-xs">
-          <div class="p-2 bg-slate-50 rounded border border-slate-200 font-semibold text-forest-900">${item}</div>
+          <div class="p-2 bg-slate-50 rounded border border-slate-200 font-semibold text-forest-900">${item.text}</div>
           <div>
-            <label class="text-slate-500">选择要复用的目标日期（不局限于明天，可任意指定）</label>
+            <label class="text-slate-500">选择要复用的目标日期（可任意指定日期）</label>
             <input id="mTargetTrainDate" type="date" value="${getOffsetDate(1)}" class="w-full border rounded-lg p-1.5 mt-0.5 font-bold" />
           </div>
         </div>
@@ -2521,13 +2583,14 @@
     };
 
     window.confirmCopySingleTrainToDate = (idx) => {
-      const item = getDayLog("me", ui.activeDate).trainItems[idx];
+      const rawItem = getDayLog("me", ui.activeDate).trainItems[idx];
+      const item = normalizeTrainItem(rawItem);
       const targetDate = document.getElementById("mTargetTrainDate").value;
-      if (!item || !targetDate) return;
+      if (!item.text || !targetDate) return;
       const targetLog = getDayLog("me", targetDate);
-      targetLog.trainItems.push(item);
+      targetLog.trainItems.push({ text: item.text, done: false });
       closeModal(); saveState();
-      showToast(`已将该动作复用至 ${targetDate}`);
+      showToast(`已复用至 ${targetDate}`);
     };
 
     window.openReuseTrainingModal = () => {
@@ -2577,12 +2640,15 @@
         box.innerHTML = `<div class="text-slate-400 p-2">该日仅记录了训练主题「${srcLog.trainTheme || '无'}」，无细分动作条目。</div>`;
         return;
       }
-      box.innerHTML = srcLog.trainItems.map((it, i) => `
-        <label class="flex items-center gap-2 bg-white p-2 rounded border border-slate-100 cursor-pointer">
-          <input type="checkbox" name="mReuseItemChk" value="${i}" checked class="accent-forest-900" />
-          <span>${it}</span>
-        </label>
-      `).join("");
+      box.innerHTML = srcLog.trainItems.map((rawIt, i) => {
+        const it = normalizeTrainItem(rawIt);
+        return `
+          <label class="flex items-center gap-2 bg-white p-2 rounded border border-slate-100 cursor-pointer">
+            <input type="checkbox" name="mReuseItemChk" value="${i}" checked class="accent-forest-900" />
+            <span>${it.text}</span>
+          </label>
+        `;
+      }).join("");
     };
 
     window.confirmReuseTraining = () => {
@@ -2597,8 +2663,9 @@
 
       const checkedIndices = Array.from(document.querySelectorAll('input[name="mReuseItemChk"]:checked')).map(el => parseInt(el.value));
       checkedIndices.forEach(idx => {
-        const item = srcLog.trainItems[idx];
-        if (item) curLog.trainItems.push(item);
+        const rawIt = srcLog.trainItems[idx];
+        const it = normalizeTrainItem(rawIt);
+        if (it.text) curLog.trainItems.push({ text: it.text, done: false });
       });
 
       closeModal(); saveState();
@@ -2680,7 +2747,7 @@
             <label class="text-slate-500 block mb-1">从动作库快捷点选：</label>
             <div class="flex flex-wrap gap-1">${quickDrills}</div>
           </div>
-          <input id="mTrItem" placeholder="如：杠铃深蹲 80kg 8次×4组 / 绳梯敏捷 5组" class="w-full border rounded-lg p-2 text-xs" />
+          <input id="mTrItem" onkeydown="if(event.key==='Enter')confirmAddTrainItem()" placeholder="如：杠铃深蹲 80kg 8次×4组 / 绳梯敏捷 5组" class="w-full border rounded-lg p-2 text-xs" />
         </div>
         <div class="flex justify-end gap-2 pt-1">
           <button onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">取消</button>
@@ -2692,7 +2759,7 @@
     window.confirmAddTrainItem = () => {
       const val = document.getElementById("mTrItem").value.trim();
       if (val) {
-        getDayLog("me", ui.activeDate).trainItems.push(val);
+        getDayLog("me", ui.activeDate).trainItems.push({ text: val, done: false });
         closeModal(); saveState();
       }
     };
@@ -2713,7 +2780,7 @@
       saveState();
     };
 
-    // ==================== 4. 全局复利总看板（新增：自定义标签管理 + 上下调序/置顶 + 弹窗同时改标签与内容） ====================
+    // ==================== 4. 全局复利总看板 ====================
     window.saveStrategicFocus = () => {
       state.strategicFocus = {
         longTerm: document.getElementById("focusLong").value,
@@ -2740,7 +2807,6 @@
       renderDashboard();
     };
 
-    // 快捷管理 To-Do 预设标签池
     window.openTodoTagManagerModal = () => {
       const currentTags = (state.dictionaries.todoTags || DEFAULT_STATE.dictionaries.todoTags).join("、");
       openModal(`
@@ -2791,7 +2857,6 @@
       }
     };
 
-    // 上移 / 下移 To-Do 任务顺序
     window.moveTodoItem = (idx, dir) => {
       const list = state.todosByDate?.[ui.todoDate];
       if (!Array.isArray(list)) return;
@@ -2801,7 +2866,6 @@
       saveState();
     };
 
-    // 一键将重要任务置顶到第一位
     window.pinTodoItemTop = (idx) => {
       const list = state.todosByDate?.[ui.todoDate];
       if (!Array.isArray(list) || idx <= 0 || idx >= list.length) return;
@@ -2811,7 +2875,6 @@
       showToast("⚡ 已置顶到第一顺位");
     };
 
-    // 弹窗编辑单条 To-Do 的标签（支持下拉或直接手写新标签）与内容
     window.editTodoItem = (id) => {
       const list = state.todosByDate?.[ui.todoDate] || [];
       const item = list.find(x => x.id === id);
@@ -2906,7 +2969,6 @@
       document.getElementById("focusMid").value = sf.midTerm || "";
       document.getElementById("focusShort").value = sf.shortTerm || "";
 
-      // 动态渲染自定义 To-Do 标签下拉列表
       const tagSel = document.getElementById("newTodoTag");
       const curTagVal = tagSel.value;
       const tagPool = state.dictionaries.todoTags || DEFAULT_STATE.dictionaries.todoTags;
