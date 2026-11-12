@@ -36,7 +36,7 @@
   <!-- 锁屏遮罩 -->
   <div id="lockScreen" class="fixed inset-0 z-50 bg-forest-900 text-white flex flex-col items-center justify-center p-6 hidden">
     <div class="w-12 h-12 rounded-xl bg-champagne-500 text-forest-900 flex items-center justify-center text-xl font-bold mb-3">L</div>
-    <h1 class="text-lg font-bold mb-1">Leo | Life OS</h1>
+    <h1 class="text-lg font-bold mb-1" id="lockAppTitle">Leo | Life OS</h1>
     <p class="text-xs text-slate-400 mb-5">Personal Business & Life Operating System</p>
     <input id="pinInput" type="password" inputmode="numeric" maxlength="6" placeholder="输入PIN码 (默认1999)" class="w-60 text-center text-base tracking-widest bg-forest-800 border border-slate-600 rounded-lg px-3 py-2.5 text-white focus:outline-none focus:border-champagne-500 mb-3" />
     <button onclick="unlockApp()" class="w-60 btn-gold py-2.5 rounded-lg text-xs">解锁</button>
@@ -50,7 +50,7 @@
         <div class="flex items-center gap-2 min-w-0">
           <span class="w-6 h-6 rounded-md bg-champagne-500 text-forest-900 font-extrabold flex items-center justify-center text-xs shrink-0">L</span>
           <div class="truncate">
-            <div class="font-bold text-sm leading-none truncate">Leo | Life OS</div>
+            <div class="font-bold text-sm leading-none truncate" id="navAppTitle">Leo | Life OS</div>
             <div class="flex items-center gap-1 text-[10px] text-slate-300 mt-1">
               <span id="syncDot" class="w-1.5 h-1.5 rounded-full bg-amber-400 inline-block shrink-0"></span>
               <span id="syncText" class="truncate">连接新加坡节点...</span>
@@ -59,13 +59,13 @@
         </div>
         <div class="flex items-center gap-1.5 shrink-0">
           <button onclick="exportBackup()" class="text-[11px] bg-forest-800 border border-slate-700 px-2.5 py-1 rounded-md text-slate-200 whitespace-nowrap">备份</button>
-          <button onclick="openSettingsModal()" class="text-[11px] bg-forest-800 border border-slate-700 px-2.5 py-1 rounded-md text-champagne-400 whitespace-nowrap">⚙️ 设置</button>
+          <button onclick="openSettingsModal()" class="text-[11px] bg-forest-800 border border-slate-700 px-2.5 py-1 rounded-md text-champagne-400 whitespace-nowrap">⚙️ 设置/命名</button>
         </div>
       </div>
 
-      <!-- 4大核心支柱扁平切换器 -->
+      <!-- 4大核心支柱扁平切换器（支持自定义名称） -->
       <nav class="grid grid-cols-4 gap-1 bg-forest-800/80 p-1 rounded-lg">
-        <button onclick="switchPillar('fitness')" id="tab-fitness" class="pillar-tab py-1.5 px-1 rounded-md text-[11px] font-semibold text-center truncate bg-champagne-500 text-forest-900">🏃 体能与顾问</button>
+        <button onclick="switchPillar('fitness')" id="tab-fitness" class="pillar-tab py-1.5 px-1 rounded-md text-[11px] font-semibold text-center truncate bg-champagne-500 text-forest-900">🏃 双语体能</button>
         <button onclick="switchPillar('tour')" id="tab-tour" class="pillar-tab py-1.5 px-1 rounded-md text-[11px] font-semibold text-center truncate text-slate-200">🗺️ 英语地接</button>
         <button onclick="switchPillar('health')" id="tab-health" class="pillar-tab py-1.5 px-1 rounded-md text-[11px] font-semibold text-center truncate text-slate-200">🥗 健康饮食</button>
         <button onclick="switchPillar('dashboard')" id="tab-dashboard" class="pillar-tab py-1.5 px-1 rounded-md text-[11px] font-semibold text-center truncate text-slate-200">📊 复利总览</button>
@@ -75,19 +75,19 @@
 
   <main class="max-w-5xl mx-auto px-3 pt-3">
 
-    <!-- ==================== 支柱 1：体能与健康顾问（源头分流：线下 vs 线上） ==================== -->
+    <!-- ==================== 支柱 1：体能与定制顾问（源头分流：线下 vs 线上） ==================== -->
     <section id="view-fitness" class="pillar-view space-y-2.5">
-      <!-- 源头商业模式切换器 -->
+      <!-- 源头商业模式切换器 (支持自定义命名) -->
       <div class="grid grid-cols-2 gap-1.5 bg-white p-1.5 rounded-xl border border-slate-200 shadow-2xs">
         <button onclick="switchFitMode('offline')" id="mode-btn-offline" class="py-2 px-2 rounded-lg text-xs font-bold text-center transition-all bg-forest-900 text-white">
-          🌳 线下·青少年双语体能
+          🌳 线下·双语体能训练
         </button>
         <button onclick="switchFitMode('online')" id="mode-btn-online" class="py-2 px-2 rounded-lg text-xs font-bold text-center transition-all text-slate-600">
-          🌐 线上·中年男性私享顾问
+          🌐 线上·私享健康与训练顾问
         </button>
       </div>
 
-      <!-- ==================== 【A. 线下模式：青少年双语体能】 ==================== -->
+      <!-- ==================== 【A. 线下模式】 ==================== -->
       <div id="fit-mode-offline" class="space-y-2.5">
         <div class="flex gap-1 overflow-x-auto no-scrollbar bg-white p-1 rounded-lg border border-slate-200">
           <button onclick="switchFitSub('students')" id="fit-sub-students" class="fit-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap bg-forest-900 text-white">1. 学员表</button>
@@ -144,7 +144,7 @@
                 <div id="selectedDrillsPreview" class="space-y-1.5 text-xs text-slate-600 min-h-[60px] bg-slate-50 p-2.5 rounded-lg">点击左侧动作“+ 选入”。</div>
               </div>
               <div class="card p-3 space-y-2.5">
-                <h3 class="font-bold text-xs text-forest-900">💬 家长课后表现反馈生成器</h3>
+                <h3 class="font-bold text-xs text-forest-900">💬 课后表现反馈生成器</h3>
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                   <div>
                     <label class="text-[11px] text-slate-500 block mb-1">1. 专注力与注意力</label>
@@ -168,7 +168,7 @@
                   <input id="fbEngImprove" oninput="updateFeedbackText()" type="text" value="高速跑动喘气时容易切回中文求助，下节课鼓励用短句 'Water break / Ready' 主动表达。" class="w-full border border-slate-200 rounded-lg p-1.5" />
                 </div>
                 <textarea id="fbOutput" rows="5" class="w-full text-xs bg-forest-900 text-slate-100 rounded-lg p-2.5 leading-relaxed"></textarea>
-                <button onclick="copyText('fbOutput', '家长反馈已复制')" class="w-full btn-gold py-2 rounded-lg text-xs">一键复制微信反馈</button>
+                <button onclick="copyText('fbOutput', '反馈已复制')" class="w-full btn-gold py-2 rounded-lg text-xs">一键复制微信反馈</button>
               </div>
             </div>
           </div>
@@ -206,7 +206,7 @@
         <!-- 线下 1.6 SOP -->
         <div id="fit-panel-sop" class="fit-panel hidden space-y-2.5">
           <div class="flex items-center justify-between">
-            <h2 class="font-bold text-sm text-forest-900">🌳 线下青少年双语体能全流程 SOP</h2>
+            <h2 class="font-bold text-sm text-forest-900">🌳 线下业务全流程 SOP</h2>
             <button onclick="openSopModal('offline')" class="btn-primary px-2.5 py-1.5 rounded-lg text-xs font-semibold">+ 新增节点</button>
           </div>
           <div id="sopOfflineList" class="space-y-2"></div>
@@ -220,22 +220,22 @@
             <div class="card p-2.5"><div class="text-[11px] text-slate-500">转化成交</div><div id="fitMediaConv" class="text-base font-bold text-emerald-600">0 单</div></div>
           </div>
           <div class="flex items-center justify-between">
-            <h2 class="font-bold text-sm text-forest-900">线下业务社媒获客追踪（支持多平台多选与编辑）</h2>
+            <h2 class="font-bold text-sm text-forest-900">线下社媒获客追踪（支持多平台多选与编辑）</h2>
             <button onclick="openMediaModal('fitness')" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-semibold">+ 记录发布</button>
           </div>
           <div id="fitMediaList" class="space-y-2"></div>
         </div>
       </div>
 
-      <!-- ==================== 【B. 线上模式：中年男性高净值私享健康与训练顾问】 ==================== -->
+      <!-- ==================== 【B. 线上模式：去标签化·全客群私享定制顾问】 ==================== -->
       <div id="fit-mode-online" class="hidden space-y-2.5">
         <div class="flex gap-1 overflow-x-auto no-scrollbar bg-white p-1 rounded-lg border border-slate-200">
-          <button onclick="switchOnlineSub('clients')" id="on-sub-clients" class="on-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap bg-forest-900 text-white">1. 订阅会员表</button>
-          <button onclick="switchOnlineSub('intake')" id="on-sub-intake" class="on-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">2. 深度定制诊断问卷</button>
-          <button onclick="switchOnlineSub('plans')" id="on-sub-plans" class="on-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">3. 周期计划与答疑记录</button>
-          <button onclick="switchOnlineSub('pricing')" id="on-sub-pricing" class="on-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">4. 月/季订阅定价与赠品</button>
-          <button onclick="switchOnlineSub('sop')" id="on-sub-sop" class="on-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">5. 线上顾问SOP</button>
-          <button onclick="switchOnlineSub('media')" id="on-sub-media" class="on-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">6. 线上自媒体引流</button>
+          <button onclick="switchOnlineSub('clients')" id="on-sub-clients" class="on-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap bg-forest-900 text-white">1. 线上会员表</button>
+          <button onclick="switchOnlineSub('intake')" id="on-sub-intake" class="on-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">2. 定制诊断问卷</button>
+          <button onclick="switchOnlineSub('plans')" id="on-sub-plans" class="on-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">3. 周期计划与答疑</button>
+          <button onclick="switchOnlineSub('pricing')" id="on-sub-pricing" class="on-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">4. 订阅定价与赠品</button>
+          <button onclick="switchOnlineSub('sop')" id="on-sub-sop" class="on-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">5. 线上SOP</button>
+          <button onclick="switchOnlineSub('media')" id="on-sub-media" class="on-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">6. 线上自媒体</button>
         </div>
 
         <!-- 线上 1. 订阅会员表 -->
@@ -243,11 +243,11 @@
           <div class="grid grid-cols-3 gap-2">
             <div class="card p-2.5"><div class="text-[11px] text-slate-500">在服订阅会员</div><div id="statOnActive" class="text-base font-bold text-forest-900">0 人</div></div>
             <div class="card p-2.5"><div class="text-[11px] text-slate-500">线上订阅总营收</div><div id="statOnRev" class="text-base font-bold text-emerald-700">¥0</div></div>
-            <div class="card p-2.5"><div class="text-[11px] text-slate-500">7天内到期续费预警</div><div id="statOnExpiring" class="text-base font-bold text-rose-600">0 人</div></div>
+            <div class="card p-2.5"><div class="text-[11px] text-slate-500">7天内到期预警</div><div id="statOnExpiring" class="text-base font-bold text-rose-600">0 人</div></div>
           </div>
           <div class="flex items-center justify-between">
-            <h2 class="font-bold text-sm text-forest-900">中年男性私享订阅会员档案（按月/季周期管理）</h2>
-            <button onclick="openOnlineClientModal()" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-semibold">+ 新增订阅会员</button>
+            <h2 class="font-bold text-sm text-forest-900">线上私享订阅会员档案（按月/季周期管理）</h2>
+            <button onclick="openOnlineClientModal()" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-semibold">+ 新增线上会员</button>
           </div>
           <div id="onlineClientList" class="grid grid-cols-1 md:grid-cols-2 gap-2.5"></div>
         </div>
@@ -255,17 +255,17 @@
         <!-- 线上 2. 深度定制诊断问卷库 -->
         <div id="on-panel-intake" class="on-panel hidden space-y-2.5">
           <div class="card p-3 bg-forest-900 text-white space-y-2">
-            <div class="flex items-center justify-between">
+            <div class="flex items-center justify-between gap-2">
               <div>
-                <h3 class="font-bold text-xs text-champagne-400">🎯 成交后第一步：发送《高净值男士专属训练与健康摸底问卷》</h3>
-                <p class="text-[11px] text-slate-300 mt-0.5">针对没时间、不爱去健身房找私教、有独立思考力的中年男性，一次性问透场景、器械、旧伤与应酬规律。</p>
+                <h3 class="font-bold text-xs text-champagne-400">🎯 定制前摸底：《私享训练与健康背景诊断问卷》</h3>
+                <p class="text-[11px] text-slate-300 mt-0.5">发给新客户填写，全面摸清其日常场地、器械条件、时间碎片、旧伤与作息规律，让计划极具针对性。</p>
               </div>
               <button onclick="copyIntakeTemplate()" class="btn-gold px-3 py-1.5 rounded-lg text-xs shrink-0">一键复制全套问卷</button>
             </div>
           </div>
           <div class="flex items-center justify-between">
-            <h2 class="font-bold text-sm text-forest-900">诊断问卷模块库（可自由增删改问题）</h2>
-            <button onclick="openIntakeModal()" class="btn-primary px-2.5 py-1.5 rounded-lg text-xs font-semibold">+ 新增问卷维度</button>
+            <h2 class="font-bold text-sm text-forest-900">诊断问卷题库（可自由增删改问题）</h2>
+            <button onclick="openIntakeModal()" class="btn-primary px-2.5 py-1.5 rounded-lg text-xs font-semibold">+ 新增问题</button>
           </div>
           <div id="intakeList" class="grid grid-cols-1 md:grid-cols-2 gap-2.5"></div>
         </div>
@@ -274,10 +274,10 @@
         <div id="on-panel-plans" class="on-panel hidden space-y-2.5">
           <div class="flex items-center justify-between">
             <div>
-              <h2 class="font-bold text-sm text-forest-900">量身周期计划交付 & 每周异步答疑复盘台账</h2>
-              <p class="text-[11px] text-slate-500">不按单节课计费，记录每次周期方案迭代与微信语音/视频动作诊断</p>
+              <h2 class="font-bold text-sm text-forest-900">量身周期计划交付 & 异步答疑复盘台账</h2>
+              <p class="text-[11px] text-slate-500">记录每次周期训练处方更新、饮食调整与视频/语音动作答疑</p>
             </div>
-            <button onclick="openOnlineLogModal()" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-semibold">+ 记录计划/答疑交付</button>
+            <button onclick="openOnlineLogModal()" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-semibold">+ 记录计划/答疑</button>
           </div>
           <div id="onlinePlanLogList" class="space-y-2"></div>
         </div>
@@ -285,8 +285,8 @@
         <!-- 线上 4. 月/季订阅定价与附赠权益 -->
         <div id="on-panel-pricing" class="on-panel hidden space-y-2.5">
           <div class="flex items-center justify-between">
-            <h2 class="font-bold text-sm text-forest-900">线上月度/季度订阅制产品矩阵（含高价值附赠内容）</h2>
-            <button onclick="openPricingModal('online')" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-semibold">+ 新增线上订阅包</button>
+            <h2 class="font-bold text-sm text-forest-900">线上月度/季度订阅制方案（含附赠权益）</h2>
+            <button onclick="openPricingModal('online')" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-semibold">+ 新增订阅方案</button>
           </div>
           <div id="onlinePricingList" class="grid grid-cols-1 md:grid-cols-3 gap-2.5"></div>
         </div>
@@ -294,7 +294,7 @@
         <!-- 线上 5. 线上顾问 SOP -->
         <div id="on-panel-sop" class="on-panel hidden space-y-2.5">
           <div class="flex items-center justify-between">
-            <h2 class="font-bold text-sm text-forest-900">🌐 线上高净值中年男性顾问全漏斗 SOP</h2>
+            <h2 class="font-bold text-sm text-forest-900">🌐 线上私享顾问全漏斗 SOP</h2>
             <button onclick="openSopModal('online')" class="btn-primary px-2.5 py-1.5 rounded-lg text-xs font-semibold">+ 新增节点</button>
           </div>
           <div id="sopOnlineList" class="space-y-2"></div>
@@ -304,11 +304,11 @@
         <div id="on-panel-media" class="on-panel hidden space-y-2.5">
           <div class="grid grid-cols-3 gap-2">
             <div class="card p-2.5"><div class="text-[11px] text-slate-500">内容发布</div><div id="onMediaPosts" class="text-base font-bold text-forest-900">0 篇</div></div>
-            <div class="card p-2.5"><div class="text-[11px] text-slate-500">精英男士加微</div><div id="onMediaLeads" class="text-base font-bold text-champagne-600">0 人</div></div>
+            <div class="card p-2.5"><div class="text-[11px] text-slate-500">私域加微</div><div id="onMediaLeads" class="text-base font-bold text-champagne-600">0 人</div></div>
             <div class="card p-2.5"><div class="text-[11px] text-slate-500">成交月/季卡</div><div id="onMediaConv" class="text-base font-bold text-emerald-600">0 单</div></div>
           </div>
           <div class="flex items-center justify-between">
-            <h2 class="font-bold text-sm text-forest-900">线上顾问社媒引流追踪（多平台多选 + 可随时编辑）</h2>
+            <h2 class="font-bold text-sm text-forest-900">线上顾问社媒引流追踪（多平台多选 + 可编辑）</h2>
             <button onclick="openMediaModal('online_fit')" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-semibold">+ 记录发布</button>
           </div>
           <div id="onMediaList" class="space-y-2"></div>
@@ -316,7 +316,7 @@
       </div>
     </section>
 
-    <!-- ==================== 支柱 2：丽水英语地接（新增地接专属SOP） ==================== -->
+    <!-- ==================== 支柱 2：丽水英语地接 ==================== -->
     <section id="view-tour" class="pillar-view hidden space-y-3">
       <div class="flex gap-1 overflow-x-auto no-scrollbar bg-white p-1 rounded-lg border border-slate-200">
         <button onclick="switchTourSub('orders')" id="tour-sub-orders" class="tour-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap bg-forest-900 text-white">1. 游客订单</button>
@@ -342,7 +342,6 @@
         <div id="scriptList" class="grid grid-cols-1 md:grid-cols-2 gap-2.5"></div>
       </div>
 
-      <!-- 新增：2.3 丽水英语地接专属 SOP -->
       <div id="tour-panel-sop" class="tour-panel hidden space-y-2.5">
         <div class="flex items-center justify-between">
           <h2 class="font-bold text-sm text-forest-900">🗺️ 丽水英语地接全流程标准化 SOP</h2>
@@ -365,7 +364,7 @@
       </div>
     </section>
 
-    <!-- ==================== 支柱 3：健康饮食锻炼系统（长周期网格日历 + 时间轴进食流） ==================== -->
+    <!-- ==================== 支柱 3：健康饮食锻炼系统 ==================== -->
     <section id="view-health" class="pillar-view hidden space-y-2.5">
       <div class="card p-3 space-y-2.5">
         <div class="flex flex-wrap items-center justify-between gap-2">
@@ -380,14 +379,12 @@
           </div>
         </div>
 
-        <!-- 本期间体重对比条 -->
         <div class="grid grid-cols-3 gap-2 bg-slate-50 py-2 px-2.5 rounded-lg border border-slate-100 text-center">
           <div><div class="text-[10px] text-slate-500">期初体重</div><div id="periodStartWeight" class="text-xs font-bold text-slate-800 mt-0.5">-- kg</div></div>
           <div><div class="text-[10px] text-slate-500">最新体重</div><div id="periodEndWeight" class="text-xs font-bold text-forest-900 mt-0.5">-- kg</div></div>
           <div><div class="text-[10px] text-slate-500">本期间变化</div><div id="periodWeightDiff" class="text-xs font-bold text-emerald-600 mt-0.5">0.0 kg</div></div>
         </div>
 
-        <!-- 升级版：前后翻天 + 展开全周期网格日历（彻底解决超过15天滑不动问题） -->
         <div class="flex items-center justify-between gap-1.5 bg-slate-50 p-1.5 rounded-lg border border-slate-200">
           <button type="button" onclick="stepHealthDate(-1)" class="px-2.5 py-1.5 rounded-md bg-white border border-slate-200 text-xs font-bold text-slate-700 active:bg-slate-100">◀ 前一天</button>
           <button type="button" onclick="toggleDateGrid()" class="flex-1 py-1.5 px-2 rounded-md bg-champagne-500 text-forest-900 font-bold text-xs text-center shadow-2xs">
@@ -397,7 +394,6 @@
           <button type="button" onclick="togglePeriodOverview()" class="px-2.5 py-1.5 rounded-md text-[11px] font-semibold bg-amber-100 text-amber-900 shrink-0">总览表</button>
         </div>
 
-        <!-- 展开式全周期多行网格日历（支持任意天数直接点选，有数据带绿点标记） -->
         <div id="periodDateGridWrap" class="hidden pt-1 border-t border-slate-100">
           <div class="flex items-center justify-between mb-1.5">
             <span class="text-[11px] text-slate-500">点击任意日期直接跳转（带●表示当日已有记录）：</span>
@@ -407,7 +403,6 @@
         </div>
       </div>
 
-      <!-- 阶段身体基础档案与总体规划 -->
       <div class="card p-3 space-y-2 border-forest-900/20">
         <div class="flex items-center justify-between">
           <h3 class="font-bold text-xs text-forest-900">📌 阶段身体基础状况与总体规划</h3>
@@ -425,7 +420,6 @@
         </div>
       </div>
 
-      <!-- 本期间总览表 -->
       <div id="periodOverviewBox" class="card p-3 hidden space-y-2">
         <div class="flex items-center justify-between">
           <h3 class="font-bold text-xs text-forest-900">本期间全日程记录总览</h3>
@@ -434,9 +428,7 @@
         <div id="periodOverviewTable" class="overflow-x-auto text-xs"></div>
       </div>
 
-      <!-- 单日三步联动 -->
       <div class="space-y-2.5">
-        <!-- 1. 健康状态 -->
         <div class="card p-3 space-y-2.5">
           <div class="flex items-center justify-between">
             <h3 class="font-bold text-xs text-forest-900">1. 当日健康状态 · <span id="activeDateLabel" class="text-champagne-600"></span></h3>
@@ -449,7 +441,6 @@
           <input id="dayHealthNote" type="text" onchange="saveCurrentDayHealth()" placeholder="记录当日具体部位不适或注意事项..." class="w-full text-xs border border-slate-200 rounded-lg px-2.5 py-1.5 bg-slate-50" />
         </div>
 
-        <!-- 2. 锻炼系统 (仅“我”显示) -->
         <div id="myTrainingCard" class="card p-3 space-y-2.5">
           <div class="flex items-center justify-between gap-2">
             <h3 class="font-bold text-xs text-forest-900">2. 当日锻炼计划</h3>
@@ -465,7 +456,6 @@
           </div>
         </div>
 
-        <!-- 3. 饮食系统（升级为：进食时间轴 + 早中餐合并/灵活时间点追踪） -->
         <div class="card p-3 space-y-2.5">
           <div class="flex items-center justify-between gap-2">
             <div>
@@ -477,7 +467,6 @@
 
           <div id="smartNutritionAdvice" class="bg-emerald-50 border border-emerald-200 text-emerald-900 text-[11px] p-2.5 rounded-lg leading-relaxed"></div>
 
-          <!-- 快捷预设餐次一键添加栏 -->
           <div class="flex gap-1.5 overflow-x-auto no-scrollbar pb-0.5">
             <button type="button" onclick="openMealEntryModal(null, '08:00', '早餐')" class="px-2 py-1 rounded bg-slate-100 text-slate-700 text-[11px] whitespace-nowrap">+ 08:00 早餐</button>
             <button type="button" onclick="openMealEntryModal(null, '10:30', '早午餐合并(Brunch)')" class="px-2 py-1 rounded bg-amber-50 text-amber-900 border border-amber-200 text-[11px] font-semibold whitespace-nowrap">+ 10:30 早中餐合并</button>
@@ -486,19 +475,19 @@
             <button type="button" onclick="openMealEntryModal(null, '18:30', '晚餐')" class="px-2 py-1 rounded bg-slate-100 text-slate-700 text-[11px] whitespace-nowrap">+ 18:30 晚餐</button>
           </div>
 
-          <!-- 进食时间轴列表 -->
           <div id="mealTimelineList" class="space-y-1.5"></div>
         </div>
       </div>
     </section>
 
-    <!-- ==================== 支柱 4：全局复利总看板 ==================== -->
+    <!-- ==================== 支柱 4：全局复利总看板（新增：长中短期战略焦点 + 日期联动每日To-Do清单） ==================== -->
     <section id="view-dashboard" class="pillar-view hidden space-y-3">
+      <!-- 顶部倒计时与过渡进度 -->
       <div class="card p-4 bg-forest-900 text-white">
         <div class="flex items-center justify-between mb-2">
           <div>
             <span class="text-[10px] uppercase tracking-wider text-champagne-400 font-semibold">2027.03.31 合同到期过渡</span>
-            <h2 class="text-base font-bold mt-0.5">高毛利 · 复利 · 低熵 商业总览</h2>
+            <h2 class="text-base font-bold mt-0.5">高毛利 · 复利 · 低熵 全局中枢</h2>
           </div>
           <div class="text-right">
             <div id="countdownDays" class="text-xl font-extrabold text-champagne-400">-- 天</div>
@@ -510,11 +499,73 @@
         </div>
       </div>
 
+      <!-- 新增 1：长 · 中 · 短期战略目标与近期业务重心（随时可编辑，对齐每日行动） -->
+      <div class="card p-3.5 space-y-2.5 border-champagne-500/40">
+        <div class="flex items-center justify-between">
+          <h3 class="font-bold text-xs text-forest-900">🎯 战略聚焦罗盘（长·中·短期目标与近期核心重心）</h3>
+          <span class="text-[10px] text-slate-400">修改后自动云端保存</span>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-2 text-xs">
+          <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200 space-y-1">
+            <label class="font-bold text-[11px] text-forest-900 block">🏔️ 长期愿景 (1-3年复利底座)</label>
+            <textarea id="focusLong" rows="2" onchange="saveStrategicFocus()" placeholder="如：2027.3合同到期无缝切换全职高毛利独立商业；资产复利增长；江南景苑低熵入住。" class="w-full bg-white border border-slate-200 rounded p-1.5 text-xs"></textarea>
+          </div>
+          <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200 space-y-1">
+            <label class="font-bold text-[11px] text-amber-900 block">🚩 中期战役 (本季/本月里程碑)</label>
+            <textarea id="focusMid" rows="2" onchange="saveStrategicFocus()" placeholder="如：跑通线上私享订阅首批发客与SOP；完成新房吊顶施工节点；沉淀松阳地接社媒素材。" class="w-full bg-white border border-slate-200 rounded p-1.5 text-xs"></textarea>
+          </div>
+          <div class="bg-amber-50/70 p-2.5 rounded-lg border border-amber-200 space-y-1">
+            <label class="font-bold text-[11px] text-rose-900 block">🔥 近期核心业务重心 (本周聚焦)</label>
+            <textarea id="focusShort" rows="2" onchange="saveStrategicFocus()" placeholder="填写当前最优先集中的1-2件事，每天列To-Do前先看这里..." class="w-full bg-white border border-amber-300 rounded p-1.5 text-xs font-medium"></textarea>
+          </div>
+        </div>
+      </div>
+
+      <!-- 新增 2：按日期选择的每日 To-Do List 行动清单 -->
+      <div class="card p-3.5 space-y-3">
+        <div class="flex flex-wrap items-center justify-between gap-2">
+          <div class="flex items-center gap-1.5">
+            <h3 class="font-bold text-xs text-forest-900">✅ 每日聚焦行动清单 (To-Do List)</h3>
+            <span id="todoProgressBadge" class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">0/0 完成</span>
+          </div>
+          <!-- 日期选择器 -->
+          <div class="flex items-center gap-1 text-xs">
+            <button type="button" onclick="stepTodoDate(-1)" class="px-2 py-1 rounded bg-slate-100 text-slate-700 font-bold">◀</button>
+            <input type="date" id="todoDateInput" onchange="selectTodoDate(this.value)" class="border border-slate-200 rounded-md px-2 py-1 bg-slate-50 text-xs font-bold text-forest-900" />
+            <button type="button" onclick="stepTodoDate(1)" class="px-2 py-1 rounded bg-slate-100 text-slate-700 font-bold">▶</button>
+            <button type="button" onclick="selectTodoDate(getOffsetDateFn(0))" class="px-2 py-1 rounded bg-champagne-500/20 text-forest-900 text-[11px] font-semibold">今天</button>
+          </div>
+        </div>
+
+        <!-- 快速添加 To-Do 输入栏 -->
+        <div class="flex flex-wrap sm:flex-nowrap items-center gap-1.5">
+          <select id="newTodoTag" class="border border-slate-200 rounded-lg px-2 py-1.5 text-xs bg-slate-50 font-semibold text-forest-900">
+            <option value="🔥 核心重心">🔥 核心重心</option>
+            <option value="🏃 体能/顾问">🏃 体能/顾问</option>
+            <option value="🗺️ 英语地接">🗺️ 英语地接</option>
+            <option value="📈 投资/本职">📈 投资/本职</option>
+            <option value="🏠 装修/家庭">🏠 装修/家庭</option>
+          </select>
+          <input id="newTodoText" type="text" onkeydown="if(event.key==='Enter')addTodoItem()" placeholder="输入今日关键行动（按回车或点右侧添加）..." class="flex-1 border border-slate-200 rounded-lg px-3 py-1.5 text-xs" />
+          <button type="button" onclick="addTodoItem()" class="btn-primary px-3.5 py-1.5 rounded-lg text-xs font-semibold shrink-0">+ 添加任务</button>
+        </div>
+
+        <!-- 当日任务列表 -->
+        <div id="todoListContainer" class="space-y-1.5"></div>
+
+        <!-- 底部快捷操作：未完成顺延到明天 -->
+        <div class="flex items-center justify-between pt-1 border-t border-slate-100 text-[11px] text-slate-400">
+          <span>只列高价值低熵动作，拒绝琐事堆砌</span>
+          <button type="button" onclick="rolloverUnfinishedTodos()" class="text-champagne-600 font-semibold hover:underline">⏭️ 将今日未完成任务顺延至明天</button>
+        </div>
+      </div>
+
+      <!-- 核心商业数据汇总 -->
       <div class="grid grid-cols-2 md:grid-cols-4 gap-2.5">
         <div class="card p-3">
           <div class="text-[11px] text-slate-500">线下+线上体能总营收</div>
           <div id="dashFitRev" class="text-lg font-bold text-forest-900 mt-0.5">¥0</div>
-          <div id="dashFitLessons" class="text-[10px] text-slate-400">线下余课0节 | 线上会员0人</div>
+          <div id="dashFitLessons" class="text-[10px] text-slate-400">线下余0节 | 线上0人</div>
         </div>
         <div class="card p-3">
           <div class="text-[11px] text-slate-500">丽水地接净毛利</div>
@@ -524,10 +575,10 @@
         <div class="card p-3">
           <div class="text-[11px] text-slate-500">全渠道社媒线索</div>
           <div id="dashTotalLeads" class="text-lg font-bold text-emerald-600 mt-0.5">0 人</div>
-          <div class="text-[10px] text-slate-400">线下 + 线上顾问 + 跨海地接</div>
+          <div class="text-[10px] text-slate-400">线下 + 线上 + 跨海地接</div>
         </div>
         <div class="card p-3">
-          <div class="text-[11px] text-slate-500">总服务高净值客户</div>
+          <div class="text-[11px] text-slate-500">总服务活跃客户</div>
           <div id="dashActiveStudents" class="text-lg font-bold text-slate-800 mt-0.5">0 人</div>
           <div class="text-[10px] text-slate-400">长期复利资产池</div>
         </div>
@@ -575,10 +626,32 @@
       const day = String(d.getDate()).padStart(2, "0");
       return `${y}-${m}-${day}`;
     }
+    window.getOffsetDateFn = getOffsetDate;
 
     const DEFAULT_STATE = {
       pin: "1999",
       lockEnabled: false,
+      customLabels: {
+        appTitle: "Leo | Life OS",
+        pillar1: "🏃 体能与顾问",
+        pillar2: "🗺️ 英语地接",
+        pillar3: "🥗 健康饮食",
+        pillar4: "📊 复利总览",
+        fitModeOffline: "🌳 线下·双语体能训练",
+        fitModeOnline: "🌐 线上·私享健康与训练顾问",
+        onSub1: "1. 订阅会员表",
+        onSub2: "2. 定制诊断问卷",
+        onSub3: "3. 周期计划与答疑",
+        onSub4: "4. 订阅定价与赠品",
+        onSub5: "5. 线上SOP",
+        onSub6: "6. 线上自媒体"
+      },
+      strategicFocus: {
+        longTerm: "2027.03.31合同到期无缝切换全职高毛利独立商业；专注资产复利；保障家庭低熵和谐与江南景苑新房顺利落地。",
+        midTerm: "跑通线上定制训练与健康顾问首批发客闭环；完成江南景苑吊顶施工节点；持续沉淀丽水地接海外社媒内容。",
+        shortTerm: "打磨线上私享顾问诊断问卷与内容引流；跟进本周线下体能学员消课；保持规律足球训练与早中餐合并轻断食节律。"
+      },
+      todosByDate: {},
       dictionaries: {
         locations: ["丽水处州公园", "丽水白云山公园", "云和体育公园", "学员上门小区", "线上视频指导"],
         cities: ["丽水", "云和", "深圳", "杭州", "上海", "北京"],
@@ -643,14 +716,14 @@
       pricing: [
         { id: "p1", mode: "offline", title: "1v1 生物力学评估+体验课", price: "¥199", unit: "90分钟", desc: "8维体测建档 + 英文水平摸底 + 定制纠偏建议报告" },
         { id: "p3", mode: "offline", title: "线下户外双语体能 1v3 精品小班", price: "¥2,400", unit: "12课时 (¥200/节)", desc: "丽水优质公园户外实战 + 全英沉浸式指令 + 课后科学反馈" },
-        { id: "op1", mode: "online", title: "精英男士·月度轻享定制与答疑计划", price: "¥1,280", unit: "1个月订阅", desc: "深度健康摸底建档 + 4周全场景定制训练处方 + 每周1次异步视频动作诊断与答疑 | 🎁附赠：《商务应酬/出差控糖饮食速查卡》" },
-        { id: "op2", mode: "online", title: "精英男士·季度蜕变私享陪伴系统 (主推)", price: "¥2,980", unit: "3个月订阅", desc: "12周动态进阶训练周期表（居家/出差/健身房无缝切换）+ 每周深度复盘答疑 + 体检指标运动干预追踪 | 🎁附赠：高力弹力带套装 +《中年男士睡眠与睾酮自然恢复指南》" },
-        { id: "op3", mode: "online", title: "年度私享健康与体能首席顾问", price: "¥9,800", unit: "12个月订阅", desc: "全年分阶段体能与形体统筹 + 伤病预防与康复处方 + 家属基础健康咨询共享权益 | 🎁附赠：定制运动装备包 + 丽水线下2天1晚森林康养私享接待" }
+        { id: "op1", mode: "online", title: "月度轻享·定制训练与营养答疑计划", price: "¥1,280", unit: "1个月订阅", desc: "深度健康摸底建档 + 4周全场景定制训练处方 + 每周1次异步视频动作诊断与答疑 | 🎁附赠：《外食/应酬控糖饮食速查卡》" },
+        { id: "op2", mode: "online", title: "季度蜕变·私享健康与训练陪伴系统 (主推)", price: "¥2,980", unit: "3个月订阅", desc: "12周动态进阶训练周期表（居家/出差/健身房无缝切换）+ 每周深度复盘答疑 + 体检与体态指标追踪 | 🎁附赠：专业弹力带套装 +《深度睡眠与精力恢复指南》" },
+        { id: "op3", mode: "online", title: "年度私享·个人健康与体能首席顾问", price: "¥9,800", unit: "12个月订阅", desc: "全年分阶段体能与形体统筹 + 伤病预防与康复处方 + 家属基础健康咨询共享权益 | 🎁附赠：定制运动装备包 + 丽水线下2天1晚康养私享接待" }
       ],
       onlineClients: [
         {
           id: "oc_1",
-          name: "陈总 (杭州TMT高管)",
+          name: "陈先生 (杭州TMT)",
           age: 39,
           city: "杭州",
           tier: "季度蜕变私享陪伴 (¥2,980)",
@@ -659,24 +732,24 @@
           endDate: "2027-01-31",
           env: "居家徒手+哑铃/弹力带",
           freq: "每周3次 · 每次30分钟",
-          painPoints: "轻度脂肪肝、久坐腰肌劳损、每周2次商务酒局，反感健身房推销，希望在家高效维持精悍体态与充沛精力。",
-          gifts: "已寄送高力弹力带 + 商务应酬饮食指南PDF",
+          painPoints: "轻度脂肪肝、久坐腰背酸痛、每周2次商务应酬，不愿去健身房，希望在家高效维持精悍体态与充沛精力。",
+          gifts: "已寄送高力弹力带 + 饮食指南PDF",
           status: "服务中"
         }
       ],
       onlineIntakeQuestions: [
-        { id: "iq1", cat: "1. 场地与器械偏好（决定计划怎么练最方便）", q: "您平时最方便、最无心理负担的运动场景是哪里？（如：家里客厅铺瑜伽垫、办公室关门15分钟、小区健身房、还是出差酒店客房？）家里目前是否有哑铃、弹力带或壶铃？" },
-        { id: "iq2", cat: "2. 时间碎片与出差规律（决定单次时长与弹性）", q: "您每周哪几天时间相对可控？单次抽出 20~30 分钟是否比抽出完整的 1 小时更容易坚持？每月大概出差几天？" },
-        { id: "iq3", cat: "3. 身体旧伤与体检预警（安全底线与纠偏重点）", q: "过去是否有腰椎、膝盖、肩颈或脚踝旧伤？最近一次体检是否有尿酸、血脂、血压、血糖或脂肪肝等需要重点改善的指标？" },
-        { id: "iq4", cat: "4. 应酬饮酒与作息节律（决定营养与恢复策略）", q: "平时平均几点入睡、睡眠质量如何？每周大约有几次商务应酬或饮酒？是否有早起喝咖啡的习惯？" },
-        { id: "iq5", cat: "5. 过往运动经历与核心诉求（对齐90天期望值）", q: "过去尝试过哪些运动、是什么原因中断的？未来 3 个月，您最希望优先看到哪一个具体改变（如：腰围缩减5cm、下午开会不犯困、或是消除腰背酸痛）？" }
+        { id: "iq1", cat: "1. 场地与器械偏好（决定怎么练最方便省心）", q: "您平时最方便、最无心理负担的运动场景是哪里？（如：家里客厅铺瑜伽垫、办公室15分钟、小区健身房、还是出差酒店客房？）目前手头是否有哑铃、弹力带或壶铃？" },
+        { id: "iq2", cat: "2. 时间碎片与出差规律（决定单次时长与弹性）", q: "您每周哪几天时间相对可控？单次抽出 20~30 分钟是否比抽出完整的 1 小时更容易坚持？每月大概出差或外勤几天？" },
+        { id: "iq3", cat: "3. 身体旧伤与体检预警（安全底线与改善重点）", q: "过去是否有腰椎、膝盖、肩颈或脚踝旧伤？最近一次体检是否有血脂、尿酸、血糖、脂肪肝或体态问题需要重点干预？" },
+        { id: "iq4", cat: "4. 饮食习惯与作息节律（决定营养与恢复策略）", q: "平时平均几点入睡、睡眠质量如何？每周大约有几次外食应酬或饮酒？平时三餐时间是否规律？" },
+        { id: "iq5", cat: "5. 过往运动经历与90天核心诉求", q: "过去尝试过哪些运动、是什么原因中断的？未来 3 个月，您最希望优先看到哪一个具体改变（如：腰围缩减、体态挺拔、精力提升或改善某项体检指标）？" }
       ],
       onlinePlanLogs: [
         {
           id: "opl_1",
           date: "2026-11-09",
           clientId: "oc_1",
-          clientName: "陈总 (杭州TMT高管)",
+          clientName: "陈先生 (杭州TMT)",
           phase: "第1阶段(第1-4周)：核心激活与内脏脂肪燃脂",
           envUsed: "居家25分钟(哑铃+徒手)+出差酒店B计划",
           planDetail: "A计划(居家)：高脚杯深蹲12×4 + 哑铃划船12×4 + 死虫式核心抗旋20×3 + 低冲击波比间歇6组；\nB计划(出差酒店15min)：保加利亚分腿蹲 + 俯卧撑递减组 + 平板支撑。",
@@ -685,14 +758,14 @@
       ],
       sops: {
         online: [
-          { id: "so1", step: "1. 精英人设引流", title: "小红书/视频号输出“中年男士反内耗高效自律”干货", detail: "不发健身房大块头自拍，专发“体育硕士为高管定制居家25分钟抗衰/消肚腩/精力管理”实操体系，吸引有独立思考力的多金男性。" },
-          { id: "so2", step: "2. 深度问卷摸底", title: "加微后不推销单节课，先发《专属健康与场景摸底问卷》", detail: "通过5大维度专业提问（场地、出差频率、体检指标、应酬睡眠），瞬间建立专家级顾问权威感。" },
-          { id: "so3", step: "3. 方案诊断锁单", title: "输出3点一针见血的精力/体态诊断，主推季度订阅卡", detail: "点出其“缺的不是毅力，而是一套适配出差与应酬的弹性系统”，顺势锁定¥2,980季度私享陪伴或¥1,280月卡。" },
-          { id: "so4", step: "4. 双轨计划交付", title: "48小时内交付《主场A计划 + 出差/疲惫日15分钟B计划》", detail: "每个动作配极简要点与示范视频链接，确保客户不用动脑、打开手机就能在客厅或酒店练完。" },
-          { id: "so5", step: "5. 低熵异步陪伴", title: "固定每周日集中视频/语音复盘答疑 + 季度续费复利", detail: "严格执行异步集中答疑（避免24小时碎片陪聊损耗），每月底对比腰围、静息心率与精力评分，到期自然续订年卡。" }
+          { id: "so1", step: "1. 专业内容引流", title: "小红书/视频号输出“反内耗高效居家训练与健康系统”干货", detail: "输出体育硕士视角的“居家25分钟高效燃脂/体态抗衰/精力管理”实操体系，吸引有付费意愿、追求效率的独立思考客群。" },
+          { id: "so2", step: "2. 深度问卷摸底", title: "加微后不推销单节课，先发《私享训练与健康摸底问卷》", detail: "通过5大维度专业提问（场地、时间碎片、体检指标、饮食睡眠），建立专业顾问信任感。" },
+          { id: "so3", step: "3. 方案诊断锁单", title: "输出3点针对性诊断建议，主推季度/月度订阅制方案", detail: "点出其“缺的不是毅力，而是一套适配生活节律的弹性系统”，锁定季度私享陪伴或月度计划。" },
+          { id: "so4", step: "4. 双轨计划交付", title: "48小时内交付《主场A计划 + 出差/疲惫日15分钟B计划》", detail: "每个动作配极简要点与示范说明，确保客户不用动脑、打开手机就能随时练完。" },
+          { id: "so5", step: "5. 低熵异步陪伴", title: "固定每周集中视频/语音复盘答疑 + 周期续费复利", detail: "严格执行异步集中答疑（避免碎片陪聊损耗），每月底对比围度、体态与精力评分，自然续订。" }
         ],
         offline: [
-          { id: "sf1", step: "1. 本地引流", title: "小红书定位丽水/云和发布公园带训实录", detail: "突出体育硕士背景 + 纯正英语口语氛围，吸引丽水注重素质教育的中产家庭。" },
+          { id: "sf1", step: "1. 本地引流", title: "小红书定位丽水/云和发布公园带训实录", detail: "突出体育硕士背景 + 纯正英语口语氛围，吸引注重素质教育的中产家庭。" },
           { id: "sf2", step: "2. 体验评估", title: "处州/白云山公园 1v1 线下评估体验课", detail: "现场完成8维敏感期评估与动作筛查，让家长直观看到孩子体态与英语反应变化。" },
           { id: "sf3", step: "3. 课后反馈", title: "课后2小时内发送科学表现反馈", detail: "围绕专注力、RPE疲劳负荷与英语表达亮点，发送结构化微信反馈。" },
           { id: "sf4", step: "4. 私教续课", title: "锁定12节/24节长期体能与双语课包", detail: "建立专属成长档案，结合孩子长高与体测节点规划周期训练。" },
@@ -708,7 +781,7 @@
       },
       mediaPosts: [
         { id: "m1", biz: "fitness", date: "2026-11-05", platforms: ["抖音", "小红书", "微信视频号"], title: "8岁女孩跳绳180个但单脚站立左右差4倍？隐形体态预警", views: 4200, inquiries: 8, leads: 3, deals: 1 },
-        { id: "m2", biz: "online_fit", date: "2026-11-07", platforms: ["小红书", "微信视频号"], title: "38岁高管不去健身房，如何靠居家25分钟+早午餐合并消掉脂肪肝？", views: 5600, inquiries: 12, leads: 5, deals: 1 },
+        { id: "m2", biz: "online_fit", date: "2026-11-07", platforms: ["小红书", "微信视频号"], title: "不去健身房不找私教，如何靠居家25分钟+早午餐合并重塑体态与精力？", views: 5600, inquiries: 12, leads: 5, deals: 1 },
         { id: "m3", biz: "tour", date: "2026-11-06", platforms: ["Instagram", "TikTok", "小红书(海外华人)"], title: "Hidden Golden Clay Villages in Songyang, Lishui | Private English Tour", views: 1850, inquiries: 4, leads: 2, deals: 1 }
       ],
       tourOrders: [
@@ -733,6 +806,9 @@
       return {
         ...structuredClone(DEFAULT_STATE),
         ...raw,
+        customLabels: { ...DEFAULT_STATE.customLabels, ...(raw.customLabels || {}) },
+        strategicFocus: { ...DEFAULT_STATE.strategicFocus, ...(raw.strategicFocus || {}) },
+        todosByDate: raw.todosByDate || {},
         dictionaries: { ...DEFAULT_STATE.dictionaries, ...(raw.dictionaries || {}) },
         sops: {
           online: raw.sops?.online || structuredClone(DEFAULT_STATE.sops.online),
@@ -754,7 +830,7 @@
 
     const ui = {
       pillar: "fitness",
-      fitMode: "offline", // offline | online
+      fitMode: "offline",
       fitSub: "students",
       onlineSub: "clients",
       tourSub: "orders",
@@ -764,10 +840,30 @@
       county: "全部",
       healthPerson: "me",
       activeDate: getOffsetDate(0),
+      todoDate: getOffsetDate(0),
       showDateGrid: false,
       showOverview: false
     };
     window.ui = ui;
+
+    // 渲染所有自定义模块名称
+    function applyCustomLabels() {
+      const L = state.customLabels || DEFAULT_STATE.customLabels;
+      document.getElementById("navAppTitle").textContent = L.appTitle || "Leo | Life OS";
+      document.getElementById("lockAppTitle").textContent = L.appTitle || "Leo | Life OS";
+      document.getElementById("tab-fitness").textContent = L.pillar1 || "🏃 体能与顾问";
+      document.getElementById("tab-tour").textContent = L.pillar2 || "🗺️ 英语地接";
+      document.getElementById("tab-health").textContent = L.pillar3 || "🥗 健康饮食";
+      document.getElementById("tab-dashboard").textContent = L.pillar4 || "📊 复利总览";
+      document.getElementById("mode-btn-offline").textContent = L.fitModeOffline || "🌳 线下·双语体能训练";
+      document.getElementById("mode-btn-online").textContent = L.fitModeOnline || "🌐 线上·私享健康与训练顾问";
+      document.getElementById("on-sub-clients").textContent = L.onSub1 || "1. 订阅会员表";
+      document.getElementById("on-sub-intake").textContent = L.onSub2 || "2. 定制诊断问卷";
+      document.getElementById("on-sub-plans").textContent = L.onSub3 || "3. 周期计划与答疑";
+      document.getElementById("on-sub-pricing").textContent = L.onSub4 || "4. 订阅定价与赠品";
+      document.getElementById("on-sub-sop").textContent = L.onSub5 || "5. 线上SOP";
+      document.getElementById("on-sub-media").textContent = L.onSub6 || "6. 线上自媒体";
+    }
 
     const CN_CHILD_BMI = {
       male: {
@@ -920,7 +1016,7 @@
       document.getElementById(`tour-sub-${sub}`).className = "tour-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap bg-forest-900 text-white";
     };
 
-    // ==================== 1A. 线下青少年双语体能模块 ====================
+    // ==================== 1A. 线下双语体能模块 ====================
     function renderStudents() {
       const box = document.getElementById("studentList");
       box.innerHTML = state.students.map(s => {
@@ -998,7 +1094,7 @@
           <div><label class="text-slate-500">单节课时费 (元)</label><input id="mStuPrice" type="number" value="${s.unitPrice}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
         </div>
         <div class="text-xs">
-          <label class="text-slate-500 block mb-1">家长核心诉求</label>
+          <label class="text-slate-500 block mb-1">核心诉求</label>
           <div class="flex flex-wrap gap-1.5">${goalCheckboxes}</div>
         </div>
         <div class="text-xs"><label class="text-slate-500">评估与体测备注</label><textarea id="mStuNotes" rows="2" class="w-full border rounded-lg p-1.5 mt-0.5">${s.notes}</textarea></div>
@@ -1189,7 +1285,7 @@
       const stu = state.students.find(s => s.id === stuId);
       if (stu && stu.goals && stu.goals.length) {
         banner.classList.remove("hidden");
-        banner.innerHTML = `<strong>🎯 家长买点 (${stu.name})：</strong>${stu.goals.join(" ｜ ")}`;
+        banner.innerHTML = `<strong>🎯 核心诉求 (${stu.name})：</strong>${stu.goals.join(" ｜ ")}`;
       } else {
         banner.classList.add("hidden");
       }
@@ -1209,14 +1305,14 @@
     window.updateFeedbackText = () => {
       const stuId = document.getElementById("lessonStudentSelect").value;
       const stu = state.students.find(s => s.id === stuId);
-      const name = stu ? stu.name.split(" ")[0] : "宝贝";
+      const name = stu ? stu.name.split(" ")[0] : "学员";
       const focus = document.getElementById("fbFocus").value;
       const fatigue = document.getElementById("fbFatigue").value;
       const good = document.getElementById("fbEngGood").value;
       const imp = document.getElementById("fbEngImprove").value;
       const goalLine = (stu && stu.goals && stu.goals.length) ? `\n🎯 本节重点对齐目标：${stu.goals.join("、")}` : "";
 
-      document.getElementById("fbOutput").value = `【Leo户外双语体能 · 课后科学表现反馈】\n家长您好！今天 ${name} 的训练状态非常棒，跟您同步一下本节课的三个核心观察维度：${goalLine}\n\n1️⃣ 课堂专注力与注意力：\n${focus}\n\n2️⃣ 身体疲劳度与负荷评估：\n${fatigue}\n\n3️⃣ 双语沟通与指令反应：\n• 表现亮点：${good}\n• 下节突破：${imp}\n\n回去记得及时补充温水与优质蛋白，保证充足睡眠让神经与骨骼充分超量恢复！💪`;
+      document.getElementById("fbOutput").value = `【Leo双语体能 · 课后科学表现反馈】\n您好！今天 ${name} 的训练状态非常棒，跟您同步一下本节课的三个核心观察维度：${goalLine}\n\n1️⃣ 课堂专注力与注意力：\n${focus}\n\n2️⃣ 身体疲劳度与负荷评估：\n${fatigue}\n\n3️⃣ 双语沟通与指令反应：\n• 表现亮点：${good}\n• 下节突破：${imp}\n\n回去记得及时补充温水与优质蛋白，保证充足睡眠让神经与骨骼充分超量恢复！💪`;
     };
 
     window.openDrillModal = (id = null) => {
@@ -1368,9 +1464,8 @@
       closeModal(); saveState();
     };
 
-    // ==================== 1B. 线上高净值中年男性私享顾问模块 ====================
+    // ==================== 1B. 线上私享健康与训练顾问模块（无特定人群限制标签） ====================
     function renderOnlineFitness() {
-      // 1. 订阅会员池
       const clients = state.onlineClients || [];
       const now = new Date();
       let expiringCount = 0;
@@ -1390,7 +1485,7 @@
               <div>
                 <div class="flex items-center gap-1.5 flex-wrap">
                   <span class="font-bold text-sm text-forest-900">${c.name}</span>
-                  <span class="text-[11px] bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded">${c.age}岁 · 📍${c.city}</span>
+                  <span class="text-[11px] bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded">${c.age ? c.age+'岁 · ' : ''}📍${c.city}</span>
                 </div>
                 <div class="text-xs font-semibold text-champagne-600 mt-1">${c.tier}</div>
               </div>
@@ -1398,7 +1493,7 @@
             </div>
             <div class="text-[11px] text-slate-600 bg-slate-50 p-2 rounded-lg space-y-1">
               <div><strong>🏋️ 训练场景：</strong>${c.env}（${c.freq}）</div>
-              <div><strong>🎯 痛点与体检指标：</strong>${c.painPoints}</div>
+              <div><strong>🎯 核心诉求与背景：</strong>${c.painPoints}</div>
               <div><strong>🎁 已附赠权益：</strong>${c.gifts || '无'}</div>
               <div class="text-slate-400">周期：${c.startDate} 至 ${c.endDate} · 已交付/答疑 <strong>${logsCount}</strong> 次</div>
             </div>
@@ -1417,7 +1512,6 @@
       document.getElementById("statOnRev").textContent = `¥${totalRev.toLocaleString()}`;
       document.getElementById("statOnExpiring").textContent = `${expiringCount} 人`;
 
-      // 2. 深度定制诊断问卷库
       document.getElementById("intakeList").innerHTML = (state.onlineIntakeQuestions || []).map(item => `
         <div class="card p-3 space-y-1.5 flex flex-col justify-between">
           <div>
@@ -1434,7 +1528,6 @@
         </div>
       `).join("");
 
-      // 3. 周期计划与异步答疑记录
       document.getElementById("onlinePlanLogList").innerHTML = (state.onlinePlanLogs || []).map(l => `
         <div class="card p-3 space-y-1.5">
           <div class="flex items-center justify-between">
@@ -1457,21 +1550,21 @@
 
     window.copyIntakeTemplate = () => {
       const lines = (state.onlineIntakeQuestions || []).map(x => `【${x.cat}】\n${x.q}`).join("\n\n");
-      const full = `您好！为了给您量身定制一套真正省心、贴合您作息与场地的训练与健康方案（无需迁就固定时间，也不用去健身房应付推销），请您在空闲时简单回复以下 5 个问题：\n\n${lines}\n\n收到您的回复后，我会在 48 小时内为您出具专属的《主场A计划 + 出差/疲惫日B计划》及饮食精力管理方案。`;
+      const full = `您好！为了给您量身定制一套真正省心、贴合您作息与场地的训练与健康方案，请您在空闲时简单回复以下问题：\n\n${lines}\n\n收到您的回复后，我会在 48 小时内为您出具专属的《主场A计划 + 差旅/疲惫日B计划》及营养精力管理方案。`;
       window.copyRaw(full, "全套摸底问卷已复制，可直接发给客户！");
     };
 
     window.openOnlineClientModal = (id = null) => {
       const c = id ? state.onlineClients.find(x => x.id === id) : {
-        name: "", age: 38, city: "杭州", tier: "季度蜕变私享陪伴 (¥2,980)", fee: 2980,
+        name: "", age: 35, city: "杭州", tier: "季度蜕变私享陪伴 (¥2,980)", fee: 2980,
         startDate: getOffsetDate(0), endDate: getOffsetDate(90),
-        env: state.dictionaries.onlineEnvs[0], freq: "每周3次 · 每次25-30分钟", painPoints: "", gifts: "附赠高力弹力带 + 应酬饮食指南"
+        env: state.dictionaries.onlineEnvs[0], freq: "每周3次 · 每次25-30分钟", painPoints: "", gifts: "附赠弹力带套装 + 饮食指南"
       };
       const envOpts = state.dictionaries.onlineEnvs.map(e => `<option ${c.env===e?'selected':''}>${e}</option>`).join("");
       openModal(`
-        <h3 class="font-bold text-sm text-forest-900">${id ? '编辑线上订阅会员' : '新增线上订阅会员 (中年男性顾问)'}</h3>
+        <h3 class="font-bold text-sm text-forest-900">${id ? '编辑线上订阅会员' : '新增线上订阅会员'}</h3>
         <div class="grid grid-cols-2 gap-2 text-xs">
-          <div><label class="text-slate-500">客户称呼</label><input id="mOcName" value="${c.name}" placeholder="如：王总(上海金融)" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          <div><label class="text-slate-500">客户姓名/称呼</label><input id="mOcName" value="${c.name}" placeholder="如：陈先生 / 林女士" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
           <div><label class="text-slate-500">年龄</label><input id="mOcAge" type="number" value="${c.age}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
           <div><label class="text-slate-500">城市</label><input id="mOcCity" value="${c.city}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
           <div><label class="text-slate-500">实收订阅金额(元)</label><input id="mOcFee" type="number" value="${c.fee}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
@@ -1480,7 +1573,7 @@
           <div><label class="text-slate-500">订阅到期日</label><input id="mOcEnd" type="date" value="${c.endDate}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
           <div><label class="text-slate-500">主要训练场景与器械</label><select id="mOcEnv" class="w-full border rounded-lg p-1.5 mt-0.5">${envOpts}</select></div>
           <div><label class="text-slate-500">可执行频率</label><input id="mOcFreq" value="${c.freq}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
-          <div class="col-span-2"><label class="text-slate-500">核心痛点 / 体检指标 / 旧伤 / 应酬规律</label><textarea id="mOcPain" rows="2" class="w-full border rounded-lg p-1.5 mt-0.5">${c.painPoints}</textarea></div>
+          <div class="col-span-2"><label class="text-slate-500">核心诉求 / 身体背景 / 旧伤 / 作息规律</label><textarea id="mOcPain" rows="2" class="w-full border rounded-lg p-1.5 mt-0.5">${c.painPoints}</textarea></div>
           <div class="col-span-2"><label class="text-slate-500">附赠内容记录 (器械/指南/权益)</label><input id="mOcGifts" value="${c.gifts}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
         </div>
         <div class="flex justify-end gap-2 pt-1">
@@ -1494,7 +1587,7 @@
       const obj = {
         id: id || "oc_" + Date.now(),
         name: document.getElementById("mOcName").value.trim() || "未命名会员",
-        age: parseInt(document.getElementById("mOcAge").value) || 38,
+        age: parseInt(document.getElementById("mOcAge").value) || 35,
         city: document.getElementById("mOcCity").value.trim(),
         fee: parseFloat(document.getElementById("mOcFee").value) || 0,
         tier: document.getElementById("mOcTier").value.trim(),
@@ -1536,16 +1629,16 @@
     window.openOnlineLogModal = (preClientId = null) => {
       const opts = (state.onlineClients || []).map(c => `<option value="${c.id}" ${preClientId===c.id?'selected':''}>${c.name} (${c.env})</option>`).join("");
       openModal(`
-        <h3 class="font-bold text-sm text-forest-900">记录周期计划交付 / 每周异步答疑</h3>
+        <h3 class="font-bold text-sm text-forest-900">记录周期计划交付 / 异步答疑</h3>
         <div class="space-y-2 text-xs">
           <div class="grid grid-cols-2 gap-2">
             <div><label class="text-slate-500">日期</label><input id="mOplDate" type="date" value="${getOffsetDate(0)}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
             <div><label class="text-slate-500">选择订阅会员</label><select id="mOplClient" class="w-full border rounded-lg p-1.5 mt-0.5">${opts}</select></div>
           </div>
           <div><label class="text-slate-500">所属周期阶段</label><input id="mOplPhase" placeholder="如：第2阶段(第5-8周)：全身抗阻代谢提升" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
-          <div><label class="text-slate-500">执行场景方案 (如居家+出差B计划)</label><input id="mOplEnv" placeholder="居家哑铃25min / 酒店徒手15min" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          <div><label class="text-slate-500">执行场景方案 (如居家+差旅B计划)</label><input id="mOplEnv" placeholder="居家哑铃25min / 酒店徒手15min" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
           <div><label class="text-slate-500">定制训练处方明细</label><textarea id="mOplPlan" rows="3" placeholder="填写A/B计划具体动作、组数、间歇与心率区间..." class="w-full border rounded-lg p-1.5 mt-0.5"></textarea></div>
-          <div><label class="text-slate-500">本周异步答疑与饮食/睡眠反馈</label><textarea id="mOplQa" rows="2" placeholder="记录客户视频动作纠偏、应酬补救建议等..." class="w-full border rounded-lg p-1.5 mt-0.5"></textarea></div>
+          <div><label class="text-slate-500">本周异步答疑与饮食/睡眠反馈</label><textarea id="mOplQa" rows="2" placeholder="记录客户视频动作纠偏、饮食调整建议等..." class="w-full border rounded-lg p-1.5 mt-0.5"></textarea></div>
         </div>
         <div class="flex justify-end gap-2 pt-1">
           <button onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">取消</button>
@@ -1570,7 +1663,7 @@
       closeModal(); saveState(); showToast("计划与答疑记录已归档");
     };
 
-    // ==================== 定价体系（区分线下课包 vs 线上月/季订阅） ====================
+    // ==================== 定价体系 ====================
     function renderPricing() {
       const offlineItems = state.pricing.filter(p => (p.mode || "offline") === "offline");
       const onlineItems = state.pricing.filter(p => p.mode === "online");
@@ -1584,7 +1677,7 @@
             <p class="text-[11px] text-slate-600 leading-relaxed">${p.desc}</p>
           </div>
           <div class="flex justify-between items-center pt-2 border-t border-slate-100 text-[11px]">
-            <button onclick="copyRaw('【Leo私享方案】${p.title}：${p.price}（${p.unit}），包含：${p.desc}', '报价话术已复制')" class="text-forest-900 font-semibold">复制报价</button>
+            <button onclick="copyRaw('【Leo定制方案】${p.title}：${p.price}（${p.unit}），包含：${p.desc}', '报价话术已复制')" class="text-forest-900 font-semibold">复制报价</button>
             <div class="space-x-2">
               <button onclick="openPricingModal('${p.mode || 'offline'}', '${p.id}')" class="text-slate-400">改</button>
               <button onclick="deleteItem('pricing', '${p.id}')" class="text-rose-400">删</button>
@@ -1600,7 +1693,7 @@
     window.openPricingModal = (mode = "offline", id = null) => {
       const p = id ? state.pricing.find(x => x.id === id) : { mode, title: "", price: "¥", unit: mode==="online"?"3个月订阅":"12课时", desc: "" };
       openModal(`
-        <h3 class="font-bold text-sm text-forest-900">${id ? '编辑产品定价' : (mode==='online' ? '新增线上月/季订阅包' : '新增线下课包')}</h3>
+        <h3 class="font-bold text-sm text-forest-900">${id ? '编辑产品定价' : (mode==='online' ? '新增线上订阅方案' : '新增线下课包')}</h3>
         <div class="space-y-2 text-xs">
           <div><label class="text-slate-500">方案名称</label><input id="mPrTitle" value="${p.title}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
           <div class="grid grid-cols-2 gap-2">
@@ -1623,7 +1716,7 @@
       closeModal(); saveState();
     };
 
-    // ==================== 三大业务线 SOP 渲染（线下体能 / 线上顾问 / 丽水地接） ====================
+    // ==================== 三大业务线 SOP ====================
     function renderSops() {
       const renderChannel = (channel, containerId) => {
         const list = state.sops[channel] || [];
@@ -1693,7 +1786,7 @@
       closeModal(); saveState();
     };
 
-    // ==================== 自媒体看板（支持多平台多选 + 随时二次编辑） ====================
+    // ==================== 自媒体看板 ====================
     function renderMedia() {
       const configs = [
         { biz: "fitness", postsEl: "fitMediaPosts", leadsEl: "fitMediaLeads", convEl: "fitMediaConv", listEl: "fitMediaList", leadUnit: "人", leadLabel: "加微信", dealLabel: "成交" },
@@ -1756,7 +1849,7 @@
         <div class="space-y-2.5 text-xs">
           <div><label class="text-slate-500">发布日期</label><input id="mMdDate" type="date" value="${m.date}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
           <div>
-            <label class="text-slate-500 block mb-1">发布平台（支持多选，同一素材多平台分发直接勾选）</label>
+            <label class="text-slate-500 block mb-1">发布平台（支持多选）</label>
             <div class="flex flex-wrap gap-1.5">${platChecks}</div>
           </div>
           <div><label class="text-slate-500">内容选题/标题</label><input id="mMdTitle" value="${m.title}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
@@ -1885,7 +1978,7 @@
       closeModal(); saveState();
     };
 
-    // ==================== 3. 健康饮食锻炼系统（长周期网格日历 + 时间轴进食流） ====================
+    // ==================== 3. 健康饮食锻炼系统 ====================
     function getDatesInRange(startStr, endStr) {
       const dates = [];
       const [sy, sm, sd] = startStr.split("-").map(Number);
@@ -1955,7 +2048,7 @@
       ui.showDateGrid = true;
       document.getElementById("periodDateGridWrap").classList.remove("hidden");
       saveState();
-      showToast("追踪周期已锁定保存，日历网格已展开");
+      showToast("追踪周期已锁定保存");
     };
 
     window.saveHealthMeta = () => {
@@ -1986,7 +2079,6 @@
         };
       }
       const log = state.healthLogs[person][dateStr];
-      // 自动兼容迁移旧版早/中/晚字段到带时间戳的 mealEntries
       if (!Array.isArray(log.mealEntries)) {
         log.mealEntries = [];
         if (log.breakfast && log.breakfast.trim()) log.mealEntries.push({ id: "me_b", time: "08:00", type: "早餐", content: log.breakfast.trim() });
@@ -2031,7 +2123,6 @@
         document.getElementById("periodWeightDiff").textContent = "待录入";
       }
 
-      // 渲染多行网格日历（支持30天/60天无死角点击）
       document.getElementById("periodDatePills").innerHTML = dates.map(d => {
         const shortD = d.slice(5);
         const active = d === ui.activeDate;
@@ -2111,7 +2202,6 @@
           : `<strong>轻盈体态参考：</strong>建议“先吃蔬菜 → 再吃优质蛋白 → 最后少量粗粮”，兼顾轻盈感与教学精力。`;
       }
 
-      // 渲染进食时间轴与计算进食窗口
       const entries = (cur.mealEntries || []).slice().sort((a, b) => (a.time || "").localeCompare(b.time || ""));
       const winEl = document.getElementById("eatingWindowBadge");
       if (entries.length >= 2) {
@@ -2240,11 +2330,132 @@
       saveState();
     };
 
-    // ==================== 4. 全局复利总看板 ====================
+    // ==================== 4. 全局复利总看板（战略聚焦 + 日期联动每日 To-Do List） ====================
+    window.saveStrategicFocus = () => {
+      state.strategicFocus = {
+        longTerm: document.getElementById("focusLong").value,
+        midTerm: document.getElementById("focusMid").value,
+        shortTerm: document.getElementById("focusShort").value
+      };
+      saveState();
+      showToast("长中短期战略重心已同步");
+    };
+
+    window.selectTodoDate = (dStr) => {
+      if (dStr) ui.todoDate = dStr;
+      renderDashboard();
+    };
+
+    window.stepTodoDate = (delta) => {
+      const [y, m, d] = ui.todoDate.split("-").map(Number);
+      const dt = new Date(y, m - 1, d);
+      dt.setDate(dt.getDate() + delta);
+      const ny = dt.getFullYear();
+      const nm = String(dt.getMonth() + 1).padStart(2, "0");
+      const nd = String(dt.getDate()).padStart(2, "0");
+      ui.todoDate = `${ny}-${nm}-${nd}`;
+      renderDashboard();
+    };
+
+    window.addTodoItem = () => {
+      const input = document.getElementById("newTodoText");
+      const text = input.value.trim();
+      if (!text) return;
+      const tag = document.getElementById("newTodoTag").value;
+      if (!state.todosByDate) state.todosByDate = {};
+      if (!state.todosByDate[ui.todoDate]) state.todosByDate[ui.todoDate] = [];
+      state.todosByDate[ui.todoDate].push({
+        id: "td_" + Date.now(),
+        tag,
+        text,
+        done: false
+      });
+      input.value = "";
+      saveState();
+    };
+
+    window.toggleTodoDone = (id) => {
+      const list = state.todosByDate?.[ui.todoDate] || [];
+      const item = list.find(x => x.id === id);
+      if (item) {
+        item.done = !item.done;
+        saveState();
+      }
+    };
+
+    window.editTodoItem = (id) => {
+      const list = state.todosByDate?.[ui.todoDate] || [];
+      const item = list.find(x => x.id === id);
+      if (!item) return;
+      const newTxt = prompt("修改任务内容：", item.text);
+      if (newTxt !== null && newTxt.trim() !== "") {
+        item.text = newTxt.trim();
+        saveState();
+      }
+    };
+
+    window.deleteTodoItem = (id) => {
+      if (!state.todosByDate?.[ui.todoDate]) return;
+      state.todosByDate[ui.todoDate] = state.todosByDate[ui.todoDate].filter(x => x.id !== id);
+      saveState();
+    };
+
+    window.rolloverUnfinishedTodos = () => {
+      const list = state.todosByDate?.[ui.todoDate] || [];
+      const unfinished = list.filter(x => !x.done);
+      if (!unfinished.length) {
+        showToast("今日任务已全部完成，无需顺延！");
+        return;
+      }
+      const [y, m, d] = ui.todoDate.split("-").map(Number);
+      const dt = new Date(y, m - 1, d);
+      dt.setDate(dt.getDate() + 1);
+      const nextDate = `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;
+      if (!state.todosByDate[nextDate]) state.todosByDate[nextDate] = [];
+      unfinished.forEach(item => {
+        state.todosByDate[nextDate].push({
+          id: "td_" + Date.now() + Math.random().toString(36).slice(2, 5),
+          tag: item.tag,
+          text: item.text,
+          done: false
+        });
+      });
+      state.todosByDate[ui.todoDate] = list.filter(x => x.done);
+      ui.todoDate = nextDate;
+      saveState();
+      showToast(`已将 ${unfinished.length} 项未完成任务顺延至 ${nextDate}`);
+    };
+
     function renderDashboard() {
       const target = new Date("2027-03-31");
       const diffDays = Math.max(0, Math.ceil((target - new Date()) / (1000 * 60 * 60 * 24)));
       document.getElementById("countdownDays").textContent = `${diffDays} 天`;
+
+      // 填充长中短期战略重心
+      const sf = state.strategicFocus || DEFAULT_STATE.strategicFocus;
+      document.getElementById("focusLong").value = sf.longTerm || "";
+      document.getElementById("focusMid").value = sf.midTerm || "";
+      document.getElementById("focusShort").value = sf.shortTerm || "";
+
+      // 渲染每日 To-Do List
+      document.getElementById("todoDateInput").value = ui.todoDate;
+      const todos = state.todosByDate?.[ui.todoDate] || [];
+      const doneCount = todos.filter(t => t.done).length;
+      document.getElementById("todoProgressBadge").textContent = `${doneCount}/${todos.length} 完成`;
+
+      document.getElementById("todoListContainer").innerHTML = todos.map(t => `
+        <div class="flex items-center justify-between gap-2 p-2.5 rounded-lg border ${t.done ? 'bg-slate-50 border-slate-100 opacity-60' : 'bg-white border-slate-200'}">
+          <label class="flex items-center gap-2 flex-1 cursor-pointer min-w-0">
+            <input type="checkbox" ${t.done ? 'checked' : ''} onchange="toggleTodoDone('${t.id}')" class="w-4 h-4 accent-forest-900 rounded shrink-0" />
+            <span class="text-[10px] bg-slate-100 text-forest-900 font-semibold px-1.5 py-0.5 rounded shrink-0">${t.tag}</span>
+            <span class="text-xs truncate ${t.done ? 'line-through text-slate-400' : 'text-slate-800 font-medium'}">${t.text}</span>
+          </label>
+          <div class="flex items-center gap-2 shrink-0 text-[11px]">
+            <button type="button" onclick="editTodoItem('${t.id}')" class="text-slate-400 hover:text-forest-900">改</button>
+            <button type="button" onclick="deleteTodoItem('${t.id}')" class="text-rose-400">删</button>
+          </div>
+        </div>
+      `).join("") || `<div class="text-xs text-slate-400 py-3 text-center bg-slate-50 rounded-lg">当日暂无待办事项，对照上方【近期核心业务重心】添加 3~5 件关键行动吧。</div>`;
 
       const offlineFitRev = state.records.reduce((a, r) => a + (r.fee || 0), 0);
       const onlineFitRev = (state.onlineClients || []).reduce((a, c) => a + (parseFloat(c.fee) || 0), 0);
@@ -2261,20 +2472,42 @@
       document.getElementById("dashActiveStudents").textContent = `${state.students.length + (state.onlineClients||[]).length} 人`;
     }
 
-    // ==================== 设置与词典 ====================
+    // ==================== 设置：全模块自定义命名 + 选项字典 ====================
     window.openSettingsModal = () => {
       const d = state.dictionaries;
+      const L = state.customLabels || DEFAULT_STATE.customLabels;
       openModal(`
-        <h3 class="font-bold text-sm text-forest-900">⚙️ 选项词典与安全锁</h3>
-        <div class="space-y-2 text-xs">
-          <div><label class="font-semibold text-slate-600">常用上课地点</label><input id="setLocs" value="${d.locations.join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
-          <div><label class="font-semibold text-slate-600">线上男士常用训练场景</label><input id="setOnlineEnvs" value="${(d.onlineEnvs||[]).join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
-          <div><label class="font-semibold text-slate-600">进食餐次类型标签</label><input id="setMealTypes" value="${(d.mealTypes||[]).join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
-          <div><label class="font-semibold text-slate-600">国内社媒平台池</label><input id="setFitPlats" value="${(d.fitMediaPlatforms||[]).join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
-          <div><label class="font-semibold text-slate-600">海外地接社媒平台池</label><input id="setTourPlats" value="${(d.tourMediaPlatforms||[]).join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
-          <div><label class="font-semibold text-slate-600">我的训练强度标签</label><input id="setIntensities" value="${d.trainingIntensities.join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
-          <div><label class="font-semibold text-slate-600">我的健康状态标签</label><input id="setTagsMe" value="${d.healthTagsMe.join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
-          <div><label class="font-semibold text-slate-600">妻子健康状态标签</label><input id="setTagsWife" value="${d.healthTagsWife.join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+        <h3 class="font-bold text-sm text-forest-900">⚙️ 全局模块命名与选项词典设置</h3>
+        <div class="space-y-3 text-xs">
+          <div class="p-2.5 bg-amber-50/70 border border-amber-200 rounded-lg space-y-2">
+            <div class="font-bold text-amber-900">🏷️ 自定义各模块名称（随时改名，保存即生效）</div>
+            <div class="grid grid-cols-2 gap-2">
+              <div><label class="text-[11px] text-slate-500">系统总标题</label><input id="lblAppTitle" value="${L.appTitle}" class="w-full border rounded p-1 bg-white" /></div>
+              <div><label class="text-[11px] text-slate-500">顶部支柱1名称</label><input id="lblP1" value="${L.pillar1}" class="w-full border rounded p-1 bg-white" /></div>
+              <div><label class="text-[11px] text-slate-500">顶部支柱2名称</label><input id="lblP2" value="${L.pillar2}" class="w-full border rounded p-1 bg-white" /></div>
+              <div><label class="text-[11px] text-slate-500">顶部支柱3名称</label><input id="lblP3" value="${L.pillar3}" class="w-full border rounded p-1 bg-white" /></div>
+              <div><label class="text-[11px] text-slate-500">顶部支柱4名称</label><input id="lblP4" value="${L.pillar4}" class="w-full border rounded p-1 bg-white" /></div>
+              <div><label class="text-[11px] text-slate-500">线下模式按钮名</label><input id="lblModeOff" value="${L.fitModeOffline}" class="w-full border rounded p-1 bg-white" /></div>
+              <div class="col-span-2"><label class="text-[11px] text-slate-500">线上模式按钮名</label><input id="lblModeOn" value="${L.fitModeOnline}" class="w-full border rounded p-1 bg-white" /></div>
+              <div><label class="text-[11px] text-slate-500">线上子模块1</label><input id="lblOn1" value="${L.onSub1}" class="w-full border rounded p-1 bg-white" /></div>
+              <div><label class="text-[11px] text-slate-500">线上子模块2</label><input id="lblOn2" value="${L.onSub2}" class="w-full border rounded p-1 bg-white" /></div>
+              <div><label class="text-[11px] text-slate-500">线上子模块3</label><input id="lblOn3" value="${L.onSub3}" class="w-full border rounded p-1 bg-white" /></div>
+              <div><label class="text-[11px] text-slate-500">线上子模块4</label><input id="lblOn4" value="${L.onSub4}" class="w-full border rounded p-1 bg-white" /></div>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <div class="font-bold text-forest-900">📚 下拉选项与标签词典（用顿号或逗号分隔）</div>
+            <div><label class="text-slate-600">常用上课地点</label><input id="setLocs" value="${d.locations.join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+            <div><label class="text-slate-600">线上会员常用训练场景</label><input id="setOnlineEnvs" value="${(d.onlineEnvs||[]).join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+            <div><label class="text-slate-600">进食餐次类型标签</label><input id="setMealTypes" value="${(d.mealTypes||[]).join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+            <div><label class="text-slate-600">国内社媒平台池</label><input id="setFitPlats" value="${(d.fitMediaPlatforms||[]).join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+            <div><label class="text-slate-600">海外地接社媒平台池</label><input id="setTourPlats" value="${(d.tourMediaPlatforms||[]).join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+            <div><label class="text-slate-600">我的训练强度标签</label><input id="setIntensities" value="${d.trainingIntensities.join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+            <div><label class="text-slate-600">我的健康状态标签</label><input id="setTagsMe" value="${d.healthTagsMe.join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+            <div><label class="text-slate-600">妻子健康状态标签</label><input id="setTagsWife" value="${d.healthTagsWife.join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          </div>
+
           <div class="pt-2 border-t flex items-center justify-between">
             <label class="flex items-center gap-1.5 font-semibold"><input id="setLockOn" type="checkbox" ${state.lockEnabled?'checked':''} /> 启动密码锁</label>
             <input id="setPin" value="${state.pin}" maxlength="6" class="w-20 border rounded-lg p-1 text-center" />
@@ -2282,13 +2515,27 @@
         </div>
         <div class="flex justify-end gap-2 pt-1">
           <button onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">取消</button>
-          <button onclick="saveDictionaries()" class="btn-primary px-4 py-1.5 rounded-lg text-xs">保存</button>
+          <button onclick="saveDictionaries()" class="btn-primary px-4 py-1.5 rounded-lg text-xs">保存全部设置</button>
         </div>
       `);
     };
 
     window.saveDictionaries = () => {
       const splitList = (id) => document.getElementById(id).value.split(/[,，、]/).map(s => s.trim()).filter(Boolean);
+      state.customLabels = {
+        ...state.customLabels,
+        appTitle: document.getElementById("lblAppTitle").value.trim() || "Leo | Life OS",
+        pillar1: document.getElementById("lblP1").value.trim() || "🏃 体能与顾问",
+        pillar2: document.getElementById("lblP2").value.trim() || "🗺️ 英语地接",
+        pillar3: document.getElementById("lblP3").value.trim() || "🥗 健康饮食",
+        pillar4: document.getElementById("lblP4").value.trim() || "📊 复利总览",
+        fitModeOffline: document.getElementById("lblModeOff").value.trim() || "🌳 线下·双语体能训练",
+        fitModeOnline: document.getElementById("lblModeOn").value.trim() || "🌐 线上·私享健康与训练顾问",
+        onSub1: document.getElementById("lblOn1").value.trim() || "1. 订阅会员表",
+        onSub2: document.getElementById("lblOn2").value.trim() || "2. 定制诊断问卷",
+        onSub3: document.getElementById("lblOn3").value.trim() || "3. 周期计划与答疑",
+        onSub4: document.getElementById("lblOn4").value.trim() || "4. 订阅定价与赠品"
+      };
       state.dictionaries.locations = splitList("setLocs");
       state.dictionaries.onlineEnvs = splitList("setOnlineEnvs");
       state.dictionaries.mealTypes = splitList("setMealTypes");
@@ -2299,7 +2546,7 @@
       state.dictionaries.healthTagsWife = splitList("setTagsWife");
       state.lockEnabled = document.getElementById("setLockOn").checked;
       state.pin = document.getElementById("setPin").value.trim() || "1999";
-      closeModal(); saveState(); showToast("全局字典已更新");
+      closeModal(); saveState(); showToast("模块名称与全局字典已更新");
     };
 
     window.deleteItem = (collection, id) => {
@@ -2327,6 +2574,7 @@
       if (state.lockEnabled && sessionStorage.getItem("leo_unlocked") !== "1") {
         document.getElementById("lockScreen").classList.remove("hidden");
       }
+      applyCustomLabels();
       renderStudents();
       renderRecords();
       renderDrills();
