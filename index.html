@@ -95,7 +95,7 @@
           <button onclick="switchFitSub('drills')" id="fit-sub-drills" class="fit-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">3. 动作库与反馈</button>
           <button onclick="switchFitSub('standards')" id="fit-sub-standards" class="fit-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">4. 评估标准与BMI</button>
           <button onclick="switchFitSub('pricing')" id="fit-sub-pricing" class="fit-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">5. 线下定价</button>
-          <button onclick="switchFitSub('sop')" id="fit-sub-sop" class="fit-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">6. 线下SOP</button>
+          <button onclick="switchFitSub('sop')" id="fit-sub-sop" class="fit-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">6. 线下SOP与话术</button>
           <button onclick="switchFitSub('media')" id="fit-sub-media" class="fit-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">7. 自媒体看板</button>
         </div>
 
@@ -127,7 +127,7 @@
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-3">
             <div class="lg:col-span-7 space-y-2.5">
               <div class="flex items-center justify-between">
-                <h2 class="font-bold text-sm text-forest-900">9大双语动作库</h2>
+                <h2 class="font-bold text-sm text-forest-900">9大双语动作库（支持单条复制与选入备课）</h2>
                 <button onclick="openDrillModal()" class="btn-primary px-2.5 py-1 rounded-md text-xs font-semibold">+ 新增动作</button>
               </div>
               <div id="drillCategoryTabs" class="flex gap-1 overflow-x-auto no-scrollbar pb-0.5"></div>
@@ -137,7 +137,10 @@
               <div class="card p-3 space-y-2.5">
                 <div class="flex items-center justify-between">
                   <h3 class="font-bold text-xs text-forest-900">📋 现场备课单</h3>
-                  <button onclick="clearSelectedDrills()" class="text-[11px] text-slate-400">清空</button>
+                  <div class="flex items-center gap-2">
+                    <button onclick="copySelectedDrillsPlan()" class="text-[11px] text-champagne-600 font-semibold">复制整单动作</button>
+                    <button onclick="clearSelectedDrills()" class="text-[11px] text-slate-400">清空</button>
+                  </div>
                 </div>
                 <select id="lessonStudentSelect" onchange="renderLessonPreview();updateFeedbackText()" class="w-full text-xs border border-slate-200 rounded-lg px-2.5 py-1.5 bg-slate-50"></select>
                 <div id="lessonGoalBanner" class="hidden bg-amber-50 border border-amber-200 rounded-lg p-2 text-[11px] text-amber-900"></div>
@@ -203,13 +206,16 @@
           <div id="pricingList" class="grid grid-cols-1 md:grid-cols-3 gap-2.5"></div>
         </div>
 
-        <!-- 线下 1.6 SOP -->
+        <!-- 线下 1.6 SOP 与环节标准话术库 -->
         <div id="fit-panel-sop" class="fit-panel hidden space-y-2.5">
           <div class="flex items-center justify-between">
-            <h2 class="font-bold text-sm text-forest-900">🌳 线下业务全流程 SOP</h2>
-            <button onclick="openSopModal('offline')" class="btn-primary px-2.5 py-1.5 rounded-lg text-xs font-semibold">+ 新增节点</button>
+            <div>
+              <h2 class="font-bold text-sm text-forest-900">🌳 线下体能全流程 SOP & 环节沟通话术库</h2>
+              <p class="text-[11px] text-slate-500">每个SOP节点均可随时新增、编辑、一键复制对应沟通话术（约体验课、约正常课、促单跟进等）</p>
+            </div>
+            <button onclick="openSopModal('offline')" class="btn-primary px-2.5 py-1.5 rounded-lg text-xs font-semibold shrink-0">+ 新增SOP节点</button>
           </div>
-          <div id="sopOfflineList" class="space-y-2"></div>
+          <div id="sopOfflineList" class="space-y-2.5"></div>
         </div>
 
         <!-- 线下 1.7 自媒体看板 -->
@@ -234,7 +240,7 @@
           <button onclick="switchOnlineSub('intake')" id="on-sub-intake" class="on-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">2. 定制诊断问卷</button>
           <button onclick="switchOnlineSub('plans')" id="on-sub-plans" class="on-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">3. 周期计划与答疑</button>
           <button onclick="switchOnlineSub('pricing')" id="on-sub-pricing" class="on-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">4. 订阅定价与赠品</button>
-          <button onclick="switchOnlineSub('sop')" id="on-sub-sop" class="on-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">5. 线上SOP</button>
+          <button onclick="switchOnlineSub('sop')" id="on-sub-sop" class="on-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">5. 线上SOP与话术</button>
           <button onclick="switchOnlineSub('media')" id="on-sub-media" class="on-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">6. 线上自媒体</button>
         </div>
 
@@ -291,13 +297,16 @@
           <div id="onlinePricingList" class="grid grid-cols-1 md:grid-cols-3 gap-2.5"></div>
         </div>
 
-        <!-- 线上 5. 线上顾问 SOP -->
+        <!-- 线上 5. 线上顾问 SOP 与标准话术库 -->
         <div id="on-panel-sop" class="on-panel hidden space-y-2.5">
           <div class="flex items-center justify-between">
-            <h2 class="font-bold text-sm text-forest-900">🌐 线上私享顾问全漏斗 SOP</h2>
-            <button onclick="openSopModal('online')" class="btn-primary px-2.5 py-1.5 rounded-lg text-xs font-semibold">+ 新增节点</button>
+            <div>
+              <h2 class="font-bold text-sm text-forest-900">🌐 线上私享顾问全漏斗 SOP & 环节沟通话术库</h2>
+              <p class="text-[11px] text-slate-500">沉淀破冰发问卷、诊断锁单、交付双轨计划、集中答疑与续费话术，随时编辑复用</p>
+            </div>
+            <button onclick="openSopModal('online')" class="btn-primary px-2.5 py-1.5 rounded-lg text-xs font-semibold shrink-0">+ 新增SOP节点</button>
           </div>
-          <div id="sopOnlineList" class="space-y-2"></div>
+          <div id="sopOnlineList" class="space-y-2.5"></div>
         </div>
 
         <!-- 线上 6. 线上自媒体引流 -->
@@ -321,7 +330,7 @@
       <div class="flex gap-1 overflow-x-auto no-scrollbar bg-white p-1 rounded-lg border border-slate-200">
         <button onclick="switchTourSub('orders')" id="tour-sub-orders" class="tour-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap bg-forest-900 text-white">1. 游客订单</button>
         <button onclick="switchTourSub('scripts')" id="tour-sub-scripts" class="tour-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">2. 九县市区词库</button>
-        <button onclick="switchTourSub('sop')" id="tour-sub-sop" class="tour-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">3. 地接服务SOP</button>
+        <button onclick="switchTourSub('sop')" id="tour-sub-sop" class="tour-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">3. 地接SOP与话术</button>
         <button onclick="switchTourSub('media')" id="tour-sub-media" class="tour-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">4. 跨海社媒看板</button>
       </div>
 
@@ -344,10 +353,13 @@
 
       <div id="tour-panel-sop" class="tour-panel hidden space-y-2.5">
         <div class="flex items-center justify-between">
-          <h2 class="font-bold text-sm text-forest-900">🗺️ 丽水英语地接全流程标准化 SOP</h2>
-          <button onclick="openSopModal('tour')" class="btn-primary px-2.5 py-1.5 rounded-lg text-xs font-semibold">+ 新增地接SOP节点</button>
+          <div>
+            <h2 class="font-bold text-sm text-forest-900">🗺️ 丽水英语地接全流程标准化 SOP & 英文沟通话术</h2>
+            <p class="text-[11px] text-slate-500">支持每个地接环节沉淀中英文沟通模板（询盘回复、定金确认、接站指引、好评邀请）</p>
+          </div>
+          <button onclick="openSopModal('tour')" class="btn-primary px-2.5 py-1.5 rounded-lg text-xs font-semibold shrink-0">+ 新增地接SOP节点</button>
         </div>
-        <div id="sopTourList" class="space-y-2"></div>
+        <div id="sopTourList" class="space-y-2.5"></div>
       </div>
 
       <div id="tour-panel-media" class="tour-panel hidden space-y-2.5">
@@ -442,15 +454,18 @@
         </div>
 
         <div id="myTrainingCard" class="card p-3 space-y-2.5">
-          <div class="flex items-center justify-between gap-2">
-            <h3 class="font-bold text-xs text-forest-900">2. 当日锻炼计划</h3>
+          <div class="flex items-center justify-between gap-2 flex-wrap">
+            <h3 class="font-bold text-xs text-forest-900">2. 当日锻炼计划（支持单条/批量跨日期复用）</h3>
             <select id="dayIntensity" onchange="saveCurrentDayHealth()" class="text-xs border border-slate-200 rounded-md px-2 py-1 bg-slate-50 font-semibold text-forest-900"></select>
           </div>
           <div id="healthWarningBanner" class="hidden bg-rose-50 border border-rose-200 text-rose-800 text-[11px] p-2 rounded-lg"></div>
           <div class="space-y-1.5">
-            <div class="flex items-center justify-between">
-              <input id="dayTrainTheme" type="text" onchange="saveCurrentDayHealth()" placeholder="今日训练主题（如：足球比赛 / 下肢力量）" class="flex-1 text-xs border border-slate-200 rounded-lg px-2.5 py-1.5 mr-2" />
-              <button onclick="addTrainingItem()" class="btn-primary px-2.5 py-1.5 rounded-lg text-[11px] shrink-0 whitespace-nowrap">+ 加动作</button>
+            <div class="flex flex-wrap sm:flex-nowrap items-center justify-between gap-1.5">
+              <input id="dayTrainTheme" type="text" onchange="saveCurrentDayHealth()" placeholder="今日训练主题（如：足球比赛 / 下肢力量）" class="flex-1 text-xs border border-slate-200 rounded-lg px-2.5 py-1.5 min-w-[180px]" />
+              <div class="flex items-center gap-1 shrink-0">
+                <button type="button" onclick="openReuseTrainingModal()" class="px-2.5 py-1.5 rounded-lg text-[11px] font-semibold bg-amber-100 text-amber-900 border border-amber-200 whitespace-nowrap">📥 从历史复用</button>
+                <button type="button" onclick="addTrainingItem()" class="btn-primary px-2.5 py-1.5 rounded-lg text-[11px] whitespace-nowrap">+ 加动作</button>
+              </div>
             </div>
             <div id="dayTrainItemsList" class="space-y-1"></div>
           </div>
@@ -480,7 +495,7 @@
       </div>
     </section>
 
-    <!-- ==================== 支柱 4：全局复利总看板（新增：长中短期战略焦点 + 日期联动每日To-Do清单） ==================== -->
+    <!-- ==================== 支柱 4：全局复利总看板 ==================== -->
     <section id="view-dashboard" class="pillar-view hidden space-y-3">
       <!-- 顶部倒计时与过渡进度 -->
       <div class="card p-4 bg-forest-900 text-white">
@@ -499,7 +514,7 @@
         </div>
       </div>
 
-      <!-- 新增 1：长 · 中 · 短期战略目标与近期业务重心（随时可编辑，对齐每日行动） -->
+      <!-- 长 · 中 · 短期战略目标与近期业务重心 -->
       <div class="card p-3.5 space-y-2.5 border-champagne-500/40">
         <div class="flex items-center justify-between">
           <h3 class="font-bold text-xs text-forest-900">🎯 战略聚焦罗盘（长·中·短期目标与近期核心重心）</h3>
@@ -521,14 +536,13 @@
         </div>
       </div>
 
-      <!-- 新增 2：按日期选择的每日 To-Do List 行动清单 -->
+      <!-- 按日期选择的每日 To-Do List 行动清单 -->
       <div class="card p-3.5 space-y-3">
         <div class="flex flex-wrap items-center justify-between gap-2">
           <div class="flex items-center gap-1.5">
             <h3 class="font-bold text-xs text-forest-900">✅ 每日聚焦行动清单 (To-Do List)</h3>
             <span id="todoProgressBadge" class="text-[10px] bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded font-bold">0/0 完成</span>
           </div>
-          <!-- 日期选择器 -->
           <div class="flex items-center gap-1 text-xs">
             <button type="button" onclick="stepTodoDate(-1)" class="px-2 py-1 rounded bg-slate-100 text-slate-700 font-bold">◀</button>
             <input type="date" id="todoDateInput" onchange="selectTodoDate(this.value)" class="border border-slate-200 rounded-md px-2 py-1 bg-slate-50 text-xs font-bold text-forest-900" />
@@ -537,7 +551,6 @@
           </div>
         </div>
 
-        <!-- 快速添加 To-Do 输入栏 -->
         <div class="flex flex-wrap sm:flex-nowrap items-center gap-1.5">
           <select id="newTodoTag" class="border border-slate-200 rounded-lg px-2 py-1.5 text-xs bg-slate-50 font-semibold text-forest-900">
             <option value="🔥 核心重心">🔥 核心重心</option>
@@ -550,10 +563,8 @@
           <button type="button" onclick="addTodoItem()" class="btn-primary px-3.5 py-1.5 rounded-lg text-xs font-semibold shrink-0">+ 添加任务</button>
         </div>
 
-        <!-- 当日任务列表 -->
         <div id="todoListContainer" class="space-y-1.5"></div>
 
-        <!-- 底部快捷操作：未完成顺延到明天 -->
         <div class="flex items-center justify-between pt-1 border-t border-slate-100 text-[11px] text-slate-400">
           <span>只列高价值低熵动作，拒绝琐事堆砌</span>
           <button type="button" onclick="rolloverUnfinishedTodos()" class="text-champagne-600 font-semibold hover:underline">⏭️ 将今日未完成任务顺延至明天</button>
@@ -575,7 +586,7 @@
         <div class="card p-3">
           <div class="text-[11px] text-slate-500">全渠道社媒线索</div>
           <div id="dashTotalLeads" class="text-lg font-bold text-emerald-600 mt-0.5">0 人</div>
-          <div class="text-[10px] text-slate-400">线下 + 线上 + 跨海地接</div>
+          <div id="dashTotalLeadsSub" class="text-[10px] text-slate-400">线下 + 线上 + 跨海地接</div>
         </div>
         <div class="card p-3">
           <div class="text-[11px] text-slate-500">总服务活跃客户</div>
@@ -643,7 +654,7 @@
         onSub2: "2. 定制诊断问卷",
         onSub3: "3. 周期计划与答疑",
         onSub4: "4. 订阅定价与赠品",
-        onSub5: "5. 线上SOP",
+        onSub5: "5. 线上SOP与话术",
         onSub6: "6. 线上自媒体"
       },
       strategicFocus: {
@@ -758,25 +769,146 @@
       ],
       sops: {
         online: [
-          { id: "so1", step: "1. 专业内容引流", title: "小红书/视频号输出“反内耗高效居家训练与健康系统”干货", detail: "输出体育硕士视角的“居家25分钟高效燃脂/体态抗衰/精力管理”实操体系，吸引有付费意愿、追求效率的独立思考客群。" },
-          { id: "so2", step: "2. 深度问卷摸底", title: "加微后不推销单节课，先发《私享训练与健康摸底问卷》", detail: "通过5大维度专业提问（场地、时间碎片、体检指标、饮食睡眠），建立专业顾问信任感。" },
-          { id: "so3", step: "3. 方案诊断锁单", title: "输出3点针对性诊断建议，主推季度/月度订阅制方案", detail: "点出其“缺的不是毅力，而是一套适配生活节律的弹性系统”，锁定季度私享陪伴或月度计划。" },
-          { id: "so4", step: "4. 双轨计划交付", title: "48小时内交付《主场A计划 + 出差/疲惫日15分钟B计划》", detail: "每个动作配极简要点与示范说明，确保客户不用动脑、打开手机就能随时练完。" },
-          { id: "so5", step: "5. 低熵异步陪伴", title: "固定每周集中视频/语音复盘答疑 + 周期续费复利", detail: "严格执行异步集中答疑（避免碎片陪聊损耗），每月底对比围度、体态与精力评分，自然续订。" }
+          {
+            id: "so1",
+            step: "1. 专业内容引流",
+            title: "小红书/视频号输出“反内耗高效居家训练与健康系统”干货",
+            detail: "输出体育硕士视角的“居家25分钟高效燃脂/体态抗衰/精力管理”实操体系，吸引有付费意愿、追求效率的独立思考客群。",
+            scripts: [
+              { id: "sos_1", label: "新加微信破冰欢迎语", text: "您好！我是Leo（体育硕士 / 私享体能与健康顾问）。很高兴认识您！请问您目前主要是想改善体态精力、减脂塑形，还是想定制一套适合居家/差旅的高效训练方案呢？" }
+            ]
+          },
+          {
+            id: "so2",
+            step: "2. 深度问卷摸底",
+            title: "加微后不推销单节课，先发《私享训练与健康摸底问卷》",
+            detail: "通过5大维度专业提问（场地、时间碎片、体检指标、饮食睡眠），建立专业顾问信任感。",
+            scripts: [
+              { id: "sos_2", label: "引导填写摸底问卷话术", text: "为了不给您套用千篇一律的模板，确保方案100%贴合您的日常作息和场地条件，我先发您一份简短的《训练与健康背景摸底问卷》。您空闲时随手语音或文字回复我就行，我为您做个针对性评估！" }
+            ]
+          },
+          {
+            id: "so3",
+            step: "3. 方案诊断锁单",
+            title: "输出3点针对性诊断建议，主推季度/月度订阅制方案",
+            detail: "点出其“缺的不是毅力，而是一套适配生活节律的弹性系统”，锁定季度私享陪伴或月度计划。",
+            scripts: [
+              { id: "sos_3", label: "诊断结论+订阅方案锁单话术", text: "仔细看了您的背景，其实您缺的完全不是毅力，而是一套『能兼容您工作强度与出差节奏的弹性系统』。针对您的情况，我建议分三步走：\n1️⃣ 主场25分钟核心与代谢训练（不占整块时间）；\n2️⃣ 疲惫日/差旅15分钟保底B计划（不断档、不内耗）；\n3️⃣ 应酬次日早午餐合并(16:8)的黄金恢复策略。\n\n您可以直接选择我们的【季度蜕变·私享陪伴系统(¥2,980/3个月)】，我还为您附赠专业弹力带套装与控糖饮食速查卡，我们这周就开始第一阶段！" }
+            ]
+          },
+          {
+            id: "so4",
+            step: "4. 双轨计划交付",
+            title: "48小时内交付《主场A计划 + 出差/疲惫日15分钟B计划》",
+            detail: "每个动作配极简要点与示范说明，确保客户不用动脑、打开手机就能随时练完。",
+            scripts: [
+              { id: "sos_4", label: "交付首期双轨计划话术", text: "【您的第1阶段（第1-4周）专属双轨计划已生成】\n我为您配置了『主场A计划（精力充沛时25分钟）』与『差旅/疲惫日B计划（15分钟极简保底）』。前两次训练时，您可以用手机拍15秒侧面动作视频发我，我帮您做生物力学细节校准，确保发力精准安全！" }
+            ]
+          },
+          {
+            id: "so5",
+            step: "5. 低熵异步陪伴",
+            title: "固定每周集中视频/语音复盘答疑 + 周期续费复利",
+            detail: "严格执行异步集中答疑（避免碎片陪聊损耗），每月底对比围度、体态与精力评分，自然续订。",
+            scripts: [
+              { id: "sos_5", label: "每周固定复盘与约答疑话术", text: "本周的训练和饮食节律感觉怎么样？身体有没有哪个部位有异常酸痛？您可以把这周的动作视频或疑问留言给我，今晚20:00我会集中为您做本周的语音复盘与下周负荷微调！" },
+              { id: "sos_6", label: "周期到期续订升级话术", text: "恭喜您顺利完成这一周期的系统训练！对比期初，您的核心稳定性和精力状态都有了非常扎实的跃升。下个阶段我们将进入『进阶抗阻与体态精雕期』，今天续订下一季度我为您额外锁定老会员专属权益，我们继续保持复利状态！" }
+            ]
+          }
         ],
         offline: [
-          { id: "sf1", step: "1. 本地引流", title: "小红书定位丽水/云和发布公园带训实录", detail: "突出体育硕士背景 + 纯正英语口语氛围，吸引注重素质教育的中产家庭。" },
-          { id: "sf2", step: "2. 体验评估", title: "处州/白云山公园 1v1 线下评估体验课", detail: "现场完成8维敏感期评估与动作筛查，让家长直观看到孩子体态与英语反应变化。" },
-          { id: "sf3", step: "3. 课后反馈", title: "课后2小时内发送科学表现反馈", detail: "围绕专注力、RPE疲劳负荷与英语表达亮点，发送结构化微信反馈。" },
-          { id: "sf4", step: "4. 私教续课", title: "锁定12节/24节长期体能与双语课包", detail: "建立专属成长档案，结合孩子长高与体测节点规划周期训练。" },
-          { id: "sf5", step: "5. 团课裂变", title: "老带新组建 1v3 / 1v4 户外双语精品小班", detail: "单小时时薪翻倍（600-800元/小时），实现高毛利规模化放大。" }
+          {
+            id: "sf1",
+            step: "1. 本地引流与破冰",
+            title: "小红书定位丽水/云和发布公园带训实录，私域专业破冰",
+            detail: "突出体育硕士背景 + 纯正英语口语氛围，吸引注重素质教育的中产家庭。",
+            scripts: [
+              { id: "sfs_1", label: "家长加微破冰话术", text: "您好！我是Leo教练（体育硕士 / 户外双语体能教练）。感谢关注！请问孩子今年几岁、目前读几年级呢？您平时更关注孩子的科学长高、体态平衡纠偏，还是体测达标与运动英语敢开口呢？" }
+            ]
+          },
+          {
+            id: "sf2",
+            step: "2. 体验评估邀约",
+            title: "处州/白云山公园 1v1 线下评估体验课",
+            detail: "现场完成8维敏感期评估与动作筛查，让家长直观看到孩子体态与英语反应变化。",
+            scripts: [
+              { id: "sfs_2", label: "约体验课标准话术", text: "针对孩子目前的年龄段，正处于神经协调与下肢力量的关键敏感期。建议我们先约一次【1v1 生物力学评估+双语体能体验课】（¥199 / 含8维体测建档+双语互动实训+纠偏报告）。\n\n📍地点：丽水处州公园 / 白云山公园\n⏰时间：本周六或周日上午 9:30 / 下午 16:00，您看哪个时间段带孩子过来更方便？" },
+              { id: "sfs_2b", label: "体验课行前温馨提醒", text: "【课前温馨提示】明天我们将在处州公园集合开启双语体能评估课！请给孩子穿轻便透气的运动服和运动鞋，备一瓶温水和一个小汗巾。我们明天见！See you tomorrow!" }
+            ]
+          },
+          {
+            id: "sf3",
+            step: "3. 课后反馈与促单",
+            title: "课后2小时内发送科学表现反馈，顺势锁定课包",
+            detail: "围绕专注力、RPE疲劳负荷与英语表达亮点，发送结构化微信反馈。",
+            scripts: [
+              { id: "sfs_3", label: "体验课后促单锁课话术", text: "今天孩子在户外全英文指令下的反应速度非常棒！不过在刚才的单腿闭眼稳定与落地缓冲筛查中，能明显看到左右侧发力不对称（这是导致容易崴脚和体态代偿的隐形原因）。\n\n接下来建议按 12 节一个周期（每周1-2次），先把弱侧臀中肌稳定性和跳绳/跑跳爆发力立起来。您看我们下周固定周六还是周日同一时间开始正式第一课？" }
+            ]
+          },
+          {
+            id: "sf4",
+            step: "4. 正式课排课与消课",
+            title: "锁定12节/24节长期课包，规律推进每周排课",
+            detail: "建立专属成长档案，结合孩子长高与体测节点规划周期训练。",
+            scripts: [
+              { id: "sfs_4", label: "约正常课(日常每周排课)话术", text: "您好！本周的双语体能训练我们预计安排在【周六上午 9:30 · 处州公园】，本节课将重点强化【下肢反应冲刺 + 核心抗旋稳定 + 英文指令快速抢答】。请问孩子这周时间正常吗？确认的话我就为您锁定档期啦！" },
+              { id: "sfs_4b", label: "雨天/天气变化改期备选话术", text: "您好！看气象预报明天户外可能有降雨，为了保障训练质量与孩子防感冒，我们明天的课程有两个备选方案：1️⃣ 移步至半室内遮蔽场地正常进行；2️⃣ 顺延至周日天晴时段。您看哪种更方便？" }
+            ]
+          },
+          {
+            id: "sf5",
+            step: "5. 团课裂变与续费",
+            title: "老带新组建 1v3 / 1v4 户外双语精品小班",
+            detail: "单小时时薪翻倍（600-800元/小时），实现高毛利规模化放大。",
+            scripts: [
+              { id: "sfs_5", label: "邀请老带新组1v3精品小班话术", text: "孩子经过前几节课的打磨，基础动作模式已经非常稳了！接下来如果加入同龄伙伴进行『双人反应追逐与团队英文口令对抗』，孩子的多巴胺和爆发力会再上一个台阶。如果身边有1-2位同龄好朋友想一起练，可以随时邀约过来组1v3精品小班，双方都能享受小班课时优惠！" }
+            ]
+          }
         ],
         tour: [
-          { id: "st1", step: "1. 跨海多端获客", title: "IG/TikTok/小红书海外版发布松阳古村视觉大片与主页挂链", detail: "突出『English-Speaking Private Guide + 理想i6豪华纯电专车 + 深度文化解读』，承接海外游客与归国华侨询盘。" },
-          { id: "st2", step: "2. 需求对齐与定金", title: "24小时内英文响应询盘，确认人数、体能偏好与饮食禁忌", detail: "提供1日/2日松阳+云和精选路线单，收取定金锁定档期，发送丽水高铁站接站指引。" },
-          { id: "st3", step: "3. 理想i6行前准备", title: "出发前一日满电整备、车内备齐矿泉水/充电线/应急雨具", detail: "核对古村落天气与先锋书店/茶园预约状态，以满格低成本电车优势提供头等舱级移动体验。" },
-          { id: "st4", step: "4. 沉浸式文化导览", title: "调取九县市区双语词库，输出有深度的建筑与宗族故事", detail: "不仅带路拍照，更用体育人文硕士视角讲解夯土工艺、风水格局与留守乡村复兴，制造超预期体验。" },
-          { id: "st5", step: "5. 返程好评与裂变", title: "送站途中精选旅拍原片，引导在TripAdvisor/平台留下五星长评", detail: "邀请客户授权合影作为社媒信任背书，沉淀高复利口碑资产。" }
+          {
+            id: "st1",
+            step: "1. 跨海多端获客",
+            title: "IG/TikTok/小红书海外版发布松阳古村视觉大片与主页挂链",
+            detail: "突出『English-Speaking Private Guide + 理想i6豪华纯电专车 + 深度文化解读』，承接海外游客与归国华侨询盘。",
+            scripts: [
+              { id: "sts_1", label: "海外游客首次询盘英文秒回话术", text: "Hi there! Thanks for reaching out! I'm Leo, a Master's graduate & private English-speaking guide based in Lishui. I offer bespoke private tours across Songyang's hidden golden-clay villages and Yunhe Terraces in a spacious, comfortable Li Auto i6 EV. Could you let me know your travel dates, group size, and interests?" }
+            ]
+          },
+          {
+            id: "st2",
+            step: "2. 需求对齐与定金",
+            title: "24小时内英文响应询盘，确认人数、体能偏好与饮食禁忌",
+            detail: "提供1日/2日松阳+云和精选路线单，收取定金锁定档期，发送丽水高铁站接站指引。",
+            scripts: [
+              { id: "sts_2", label: "路线确认与定金锁单英文话术", text: "Here is the tailored itinerary for your Songyang Golden Villages day tour (Yangjiatang + Chenjiapu Cliff Bookstore). Total private package is ¥1,600 (including private EV transport, English guiding, and local tea tasting). A ¥300 deposit will secure your date on my calendar. Let me know if you have any dietary restrictions!" }
+            ]
+          },
+          {
+            id: "st3",
+            step: "3. 理想i6行前准备",
+            title: "出发前一日满电整备、车内备齐矿泉水/充电线/应急雨具",
+            detail: "核对古村落天气与先锋书店/茶园预约状态，以满格低成本电车优势提供头等舱级移动体验。",
+            scripts: [
+              { id: "sts_3", label: "丽水高铁站接站指引英文话术", text: "Good morning! My vehicle (Li Auto i6 EV) is fully charged and stocked with bottled water and chargers. I'll meet you right at the Exit of Lishui High-Speed Railway Station at 9:00 AM. Look for me holding a sign with your name. Safe travels on the train!" }
+            ]
+          },
+          {
+            id: "st4",
+            step: "4. 沉浸式文化导览",
+            title: "调取九县市区双语词库，输出有深度的建筑与宗族故事",
+            detail: "不仅带路拍照，更用体育人文硕士视角讲解夯土工艺、风水格局与留守乡村复兴，制造超预期体验。",
+            scripts: []
+          },
+          {
+            id: "st5",
+            step: "5. 返程好评与裂变",
+            title: "送站途中精选旅拍原片，引导在TripAdvisor/平台留下五星长评",
+            detail: "邀请客户授权合影作为社媒信任背书，沉淀高复利口碑资产。",
+            scripts: [
+              { id: "sts_5", label: "送站致谢与好评邀约英文话术", text: "It was an absolute pleasure showing you around Lishui's hidden ancient villages today! I've just shared all the high-res photos we took. If you enjoyed the trip, a short review of your experience would mean the world to my independent guiding studio. Wishing you an amazing journey ahead in China!" }
+            ]
+          }
         ]
       },
       mediaPosts: [
@@ -791,7 +923,7 @@
         { id: "sc1", county: "松阳", spot: "杨家堂村 (金色布达拉宫)", cn: "这座建于1655年的黄泥土坯古村依山而建，夕阳照射时整片夯土墙呈金黄色。", en: "Built in 1655, this rammed-earth village cascades down the hillside like a golden Potala Palace when bathed in late afternoon sunlight." },
         { id: "sc2", county: "松阳", spot: "陈家铺村 (悬崖先锋书店)", cn: "海拔800米的悬崖古村，传统民居与现代乡村美学书店在此共生。", en: "Perched on an 800-meter cliffside, Chenjiapu blends centuries-old vernacular architecture with one of China's most breathtaking rural bookstores." },
         { id: "sc3", county: "云和", spot: "云和梯田 (七星墩云海)", cn: "华东最大的梯田群，拥有超过千年农耕历史，四季呈现截然不同的水墨画卷。", en: "As the largest terraced field complex in East China with over a millennium of farming heritage, Yunhe Terraces transforms into a living ink-wash painting across the seasons." },
-        { id: "sc4", county: "莲都", spot: "古堰画乡 (通济堰)", cn: "建于公元505年的世界灌溉工程遗产，至今仍在滋养着瓯江两岸的良田。", en: "Constructed in 505 AD, Tongji Weir is a World Heritage Irrigation Structure that still nourishes the fertile plains along the Oujiang River today." },
+        { id: "sc4", county: "莲都", spot: "古堰画乡 (通济堰)", cn: "建于公元505年的世界灌溉遗产，至今仍在滋养着瓯江两岸的良田。", en: "Constructed in 505 AD, Tongji Weir is a World Heritage Irrigation Structure that still nourishes the fertile plains along the Oujiang River today." },
         { id: "sc5", county: "缙云", spot: "仙都鼎湖峰", cn: "高达170.8米的单体石柱拔地而起，是黄帝文化与自然奇观的完美交汇。", en: "Rising 170.8 meters straight from the valley floor, Dinghu Peak stands as a dramatic monolithic pillar steeped in ancient Taoist and Yellow Emperor legends." }
       ],
       healthMeta: {
@@ -800,6 +932,19 @@
       },
       healthLogs: { me: {}, wife: {} }
     };
+    // 自动将旧版SOP节点平滑升级为带 scripts 话术数组的结构
+    function upgradeSopList(rawList, defaultList) {
+      if (!Array.isArray(rawList) || !rawList.length) return structuredClone(defaultList);
+      return rawList.map((item, idx) => {
+        const matchedDefault = defaultList.find(d => d.id === item.id) || defaultList[idx];
+        return {
+          ...item,
+          scripts: Array.isArray(item.scripts)
+            ? item.scripts
+            : (matchedDefault?.scripts ? structuredClone(matchedDefault.scripts) : [])
+        };
+      });
+    }
 
     function mergeStateWithDefaults(raw) {
       if (!raw) return structuredClone(DEFAULT_STATE);
@@ -811,9 +956,9 @@
         todosByDate: raw.todosByDate || {},
         dictionaries: { ...DEFAULT_STATE.dictionaries, ...(raw.dictionaries || {}) },
         sops: {
-          online: raw.sops?.online || structuredClone(DEFAULT_STATE.sops.online),
-          offline: raw.sops?.offline || structuredClone(DEFAULT_STATE.sops.offline),
-          tour: raw.sops?.tour || structuredClone(DEFAULT_STATE.sops.tour)
+          online: upgradeSopList(raw.sops?.online, DEFAULT_STATE.sops.online),
+          offline: upgradeSopList(raw.sops?.offline, DEFAULT_STATE.sops.offline),
+          tour: upgradeSopList(raw.sops?.tour, DEFAULT_STATE.sops.tour)
         },
         onlineClients: raw.onlineClients || structuredClone(DEFAULT_STATE.onlineClients),
         onlineIntakeQuestions: raw.onlineIntakeQuestions || structuredClone(DEFAULT_STATE.onlineIntakeQuestions),
@@ -861,7 +1006,7 @@
       document.getElementById("on-sub-intake").textContent = L.onSub2 || "2. 定制诊断问卷";
       document.getElementById("on-sub-plans").textContent = L.onSub3 || "3. 周期计划与答疑";
       document.getElementById("on-sub-pricing").textContent = L.onSub4 || "4. 订阅定价与赠品";
-      document.getElementById("on-sub-sop").textContent = L.onSub5 || "5. 线上SOP";
+      document.getElementById("on-sub-sop").textContent = L.onSub5 || "5. 线上SOP与话术";
       document.getElementById("on-sub-media").textContent = L.onSub6 || "6. 线上自媒体";
     }
 
@@ -1236,6 +1381,22 @@
     const DRILL_CATS = ["全部", "动态热身", "力量", "速度", "耐力", "柔韧", "灵敏", "协调", "平衡", "拉伸恢复"];
     window.setDrillCat = (c) => { ui.drillCat = c; renderDrills(); };
 
+    window.copySingleDrill = (id) => {
+      const d = state.drills.find(x => x.id === id);
+      if (!d) return;
+      const txt = `[${d.cat}] ${d.name} (${d.enName}) · ${d.dose} | Cue: "${d.cue}"`;
+      window.copyRaw(txt, "训练动作已复制");
+    };
+
+    window.copySelectedDrillsPlan = () => {
+      if (!ui.selectedDrills.length) {
+        showToast("请先从左侧选入动作");
+        return;
+      }
+      const lines = ui.selectedDrills.map((d, i) => `${i+1}. [${d.cat}] ${d.name} (${d.dose}) — "${d.cue}"`).join("\n");
+      window.copyRaw(`【今日备课训练单】\n${lines}`, "整张备课动作单已复制");
+    };
+
     function renderDrills() {
       document.getElementById("drillCategoryTabs").innerHTML = DRILL_CATS.map(c => `
         <button onclick="setDrillCat('${c}')" class="px-2.5 py-1 rounded-md text-xs whitespace-nowrap font-medium ${ui.drillCat===c ? 'bg-forest-900 text-white' : 'bg-white border border-slate-200 text-slate-600'}">${c}</button>
@@ -1252,8 +1413,11 @@
             </div>
             <div class="text-[11px] text-slate-600 mt-1">剂量：<strong>${d.dose}</strong> · <span class="italic text-forest-800">"${d.cue}"</span></div>
           </div>
-          <div class="flex flex-col gap-1 shrink-0">
-            <button onclick="addDrillToLesson('${d.id}')" class="btn-gold px-2 py-1 rounded text-[11px]">+ 选入</button>
+          <div class="flex flex-col gap-1 shrink-0 items-end">
+            <div class="flex gap-1">
+              <button onclick="copySingleDrill('${d.id}')" class="px-2 py-1 rounded text-[11px] bg-slate-100 text-slate-700 font-medium">复制</button>
+              <button onclick="addDrillToLesson('${d.id}')" class="btn-gold px-2 py-1 rounded text-[11px]">+ 选入</button>
+            </div>
             <div class="flex justify-end gap-1.5 text-[10px]">
               <button onclick="openDrillModal('${d.id}')" class="text-slate-400">改</button>
               <button onclick="deleteItem('drills', '${d.id}')" class="text-rose-400">删</button>
@@ -1464,7 +1628,7 @@
       closeModal(); saveState();
     };
 
-    // ==================== 1B. 线上私享健康与训练顾问模块（无特定人群限制标签） ====================
+    // ==================== 1B. 线上私享健康与训练顾问模块 ====================
     function renderOnlineFitness() {
       const clients = state.onlineClients || [];
       const now = new Date();
@@ -1716,35 +1880,124 @@
       closeModal(); saveState();
     };
 
-    // ==================== 三大业务线 SOP ====================
+    // ==================== 三大业务线 SOP & 环节标准话术库 ====================
     function renderSops() {
       const renderChannel = (channel, containerId) => {
         const list = state.sops[channel] || [];
         const el = document.getElementById(containerId);
         if (!el) return;
-        el.innerHTML = list.map((item, idx) => `
-          <div class="card p-3 flex items-start justify-between gap-2">
-            <div>
-              <div class="flex items-center gap-1.5">
-                <span class="text-[10px] bg-champagne-500 text-forest-900 font-bold px-1.5 py-0.5 rounded">${item.step}</span>
-                <span class="font-bold text-xs text-forest-900">${item.title}</span>
+        el.innerHTML = list.map((item, idx) => {
+          const scripts = Array.isArray(item.scripts) ? item.scripts : [];
+          const scriptsHtml = scripts.length
+            ? `<div class="mt-2 pt-2 border-t border-slate-100 space-y-1.5">
+                <div class="text-[11px] font-bold text-forest-900 flex items-center justify-between">
+                  <span>💬 本环节标准化沟通话术 (${scripts.length})</span>
+                  <button onclick="openSopScriptModal('${channel}', '${item.id}')" class="text-champagne-600 hover:underline">+ 加话术</button>
+                </div>
+                ${scripts.map(sc => `
+                  <div class="bg-slate-50 border border-slate-200/80 rounded-lg p-2 space-y-1">
+                    <div class="flex items-center justify-between gap-2">
+                      <span class="text-[11px] font-bold text-forest-900">🏷️ ${sc.label}</span>
+                      <div class="flex items-center gap-2 shrink-0 text-[11px]">
+                        <button onclick="copySopScript('${channel}', '${item.id}', '${sc.id}')" class="px-2 py-0.5 rounded bg-champagne-500 text-forest-900 font-bold">复制话术</button>
+                        <button onclick="openSopScriptModal('${channel}', '${item.id}', '${sc.id}')" class="text-slate-500">编辑</button>
+                        <button onclick="deleteSopScript('${channel}', '${item.id}', '${sc.id}')" class="text-rose-400">删</button>
+                      </div>
+                    </div>
+                    <p class="text-xs text-slate-700 whitespace-pre-line leading-relaxed">${sc.text}</p>
+                  </div>
+                `).join("")}
+              </div>`
+            : `<div class="mt-2 pt-1.5 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-400">
+                <span>暂未配置该环节标准话术（可随实战随时补充）</span>
+                <button onclick="openSopScriptModal('${channel}', '${item.id}')" class="text-forest-900 font-bold hover:underline">+ 新增此环节话术</button>
+              </div>`;
+
+          return `
+            <div class="card p-3 space-y-1">
+              <div class="flex items-start justify-between gap-2">
+                <div>
+                  <div class="flex items-center gap-1.5 flex-wrap">
+                    <span class="text-[10px] bg-champagne-500 text-forest-900 font-bold px-1.5 py-0.5 rounded">${item.step}</span>
+                    <span class="font-bold text-xs text-forest-900">${item.title}</span>
+                  </div>
+                  <p class="text-[11px] text-slate-600 mt-1 leading-relaxed">${item.detail}</p>
+                </div>
+                <div class="flex items-center gap-1 shrink-0 text-[11px]">
+                  <button onclick="moveSop('${channel}', ${idx}, -1)" class="px-1.5 py-0.5 bg-slate-100 rounded">↑</button>
+                  <button onclick="moveSop('${channel}', ${idx}, 1)" class="px-1.5 py-0.5 bg-slate-100 rounded">↓</button>
+                  <button onclick="openSopModal('${channel}', '${item.id}')" class="px-1.5 py-0.5 text-slate-500">改节点</button>
+                  <button onclick="deleteSop('${channel}', '${item.id}')" class="px-1 py-0.5 text-rose-400">删</button>
+                </div>
               </div>
-              <p class="text-[11px] text-slate-600 mt-1 leading-relaxed">${item.detail}</p>
+              ${scriptsHtml}
             </div>
-            <div class="flex items-center gap-1 shrink-0 text-[11px]">
-              <button onclick="moveSop('${channel}', ${idx}, -1)" class="px-1.5 py-0.5 bg-slate-100 rounded">↑</button>
-              <button onclick="moveSop('${channel}', ${idx}, 1)" class="px-1.5 py-0.5 bg-slate-100 rounded">↓</button>
-              <button onclick="openSopModal('${channel}', '${item.id}')" class="px-1.5 py-0.5 text-slate-500">改</button>
-              <button onclick="deleteSop('${channel}', '${item.id}')" class="px-1 py-0.5 text-rose-400">删</button>
-            </div>
-          </div>
-        `).join("");
+          `;
+        }).join("");
       };
 
       renderChannel("offline", "sopOfflineList");
       renderChannel("online", "sopOnlineList");
       renderChannel("tour", "sopTourList");
     }
+
+    window.copySopScript = (channel, sopId, scriptId) => {
+      const sop = (state.sops[channel] || []).find(x => x.id === sopId);
+      const sc = (sop?.scripts || []).find(x => x.id === scriptId);
+      if (sc) window.copyRaw(sc.text, `「${sc.label}」话术已复制`);
+    };
+
+    window.openSopScriptModal = (channel, sopId, scriptId = null) => {
+      const sop = (state.sops[channel] || []).find(x => x.id === sopId);
+      if (!sop) return;
+      if (!Array.isArray(sop.scripts)) sop.scripts = [];
+      const sc = scriptId ? sop.scripts.find(x => x.id === scriptId) : { label: "", text: "" };
+
+      openModal(`
+        <h3 class="font-bold text-sm text-forest-900">${scriptId ? '编辑环节标准话术' : `新增话术 · ${sop.step}`}</h3>
+        <div class="space-y-2.5 text-xs">
+          <div>
+            <label class="text-slate-500">话术场景名称（如：约体验课话术 / 约正常课话术 / 价格异议解答）</label>
+            <input id="mScpLabel" value="${sc.label}" placeholder="输入话术标签..." class="w-full border rounded-lg p-1.5 mt-0.5 font-semibold" />
+          </div>
+          <div>
+            <label class="text-slate-500">标准沟通话术正文（支持换行，可直接复制发微信）</label>
+            <textarea id="mScpText" rows="5" placeholder="输入跟客户沟通的标准话术内容，后续可随时迭代修改..." class="w-full border rounded-lg p-2 mt-0.5 leading-relaxed">${sc.text}</textarea>
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 pt-1">
+          <button onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">取消</button>
+          <button onclick="saveSopScript('${channel}', '${sopId}', '${scriptId || ''}')" class="btn-primary px-4 py-1.5 rounded-lg text-xs">保存话术</button>
+        </div>
+      `);
+    };
+
+    window.saveSopScript = (channel, sopId, scriptId) => {
+      const sop = (state.sops[channel] || []).find(x => x.id === sopId);
+      if (!sop) return;
+      if (!Array.isArray(sop.scripts)) sop.scripts = [];
+      const obj = {
+        id: scriptId || "scs_" + Date.now(),
+        label: document.getElementById("mScpLabel").value.trim() || "沟通话术",
+        text: document.getElementById("mScpText").value.trim()
+      };
+      if (!obj.text) return;
+      if (scriptId) {
+        const idx = sop.scripts.findIndex(x => x.id === scriptId);
+        if (idx >= 0) sop.scripts[idx] = obj;
+      } else {
+        sop.scripts.push(obj);
+      }
+      closeModal(); saveState(); showToast("SOP环节话术已保存");
+    };
+
+    window.deleteSopScript = (channel, sopId, scriptId) => {
+      if (!confirm("确定删除该条话术？")) return;
+      const sop = (state.sops[channel] || []).find(x => x.id === sopId);
+      if (!sop || !Array.isArray(sop.scripts)) return;
+      sop.scripts = sop.scripts.filter(x => x.id !== scriptId);
+      saveState(); showToast("话术已删除");
+    };
 
     window.moveSop = (channel, idx, dir) => {
       const arr = state.sops[channel];
@@ -1780,7 +2033,14 @@
     window.saveSop = (channel, id) => {
       if (!state.sops[channel]) state.sops[channel] = [];
       const list = state.sops[channel];
-      const obj = { id: id || "sop_" + Date.now(), step: document.getElementById("mSopStep").value, title: document.getElementById("mSopTitle").value, detail: document.getElementById("mSopDet").value };
+      const existing = id ? list.find(x => x.id === id) : null;
+      const obj = {
+        id: id || "sop_" + Date.now(),
+        step: document.getElementById("mSopStep").value,
+        title: document.getElementById("mSopTitle").value,
+        detail: document.getElementById("mSopDet").value,
+        scripts: existing?.scripts || []
+      };
       if (id) list[list.findIndex(x => x.id === id)] = obj;
       else list.push(obj);
       closeModal(); saveState();
@@ -1978,7 +2238,7 @@
       closeModal(); saveState();
     };
 
-    // ==================== 3. 健康饮食锻炼系统 ====================
+    // ==================== 3. 健康饮食锻炼系统（新增训练动作单条复制/跨日期任意复用） ====================
     function getDatesInRange(startStr, endStr) {
       const dates = [];
       const [sy, sm, sd] = startStr.split("-").map(Number);
@@ -2127,7 +2387,7 @@
         const shortD = d.slice(5);
         const active = d === ui.activeDate;
         const l = logs[d];
-        const hasData = l && (l.weight || (l.tags && l.tags.length) || (l.mealEntries && l.mealEntries.length) || l.breakfast || l.lunch || l.dinner);
+        const hasData = l && (l.weight || (l.tags && l.tags.length) || (l.trainItems && l.trainItems.length) || (l.mealEntries && l.mealEntries.length) || l.breakfast || l.lunch || l.dinner);
         return `<button type="button" onclick="selectHealthDate('${d}')" class="py-1.5 px-1 rounded-md text-xs font-semibold text-center border ${active ? 'bg-champagne-500 text-forest-900 border-champagne-600' : 'bg-slate-50 text-slate-700 border-slate-200'}">${shortD}${hasData ? '<span class="text-emerald-600 ml-0.5">●</span>' : ''}</button>`;
       }).join("");
 
@@ -2182,11 +2442,15 @@
         }
 
         document.getElementById("dayTrainItemsList").innerHTML = (cur.trainItems || []).map((item, idx) => `
-          <div class="flex items-center justify-between bg-slate-50 px-2.5 py-1.5 rounded-md text-xs border border-slate-100">
-            <span><strong>${idx+1}.</strong> ${item}</span>
-            <button type="button" onclick="removeTrainItem(${idx})" class="text-rose-400 text-[11px]">移除</button>
+          <div class="flex items-center justify-between gap-2 bg-slate-50 px-2.5 py-1.5 rounded-md text-xs border border-slate-100">
+            <span class="truncate"><strong>${idx+1}.</strong> ${item}</span>
+            <div class="flex items-center gap-1.5 shrink-0 text-[11px]">
+              <button type="button" onclick="copyTrainItemText(${idx})" class="px-1.5 py-0.5 rounded bg-white border border-slate-200 text-slate-600">复制</button>
+              <button type="button" onclick="openCopySingleTrainToDateModal(${idx})" class="px-1.5 py-0.5 rounded bg-amber-50 border border-amber-200 text-amber-900 font-medium">复用至他日</button>
+              <button type="button" onclick="removeTrainItem(${idx})" class="text-rose-400">删</button>
+            </div>
           </div>
-        `).join("");
+        `).join("") || `<div class="text-[11px] text-slate-400 py-1.5">今日暂未添加具体训练动作，可点右上角「📥 从历史复用」或「+ 加动作」。</div>`;
       }
 
       const adviceBox = document.getElementById("smartNutritionAdvice");
@@ -2231,6 +2495,118 @@
         </div>
       `).join("");
     }
+
+    // 复制单条训练动作文本
+    window.copyTrainItemText = (idx) => {
+      const item = getDayLog("me", ui.activeDate).trainItems[idx];
+      if (item) window.copyRaw(item, "训练动作已复制");
+    };
+
+    // 将单条训练动作复用到任意指定日期
+    window.openCopySingleTrainToDateModal = (idx) => {
+      const item = getDayLog("me", ui.activeDate).trainItems[idx];
+      if (!item) return;
+      openModal(`
+        <h3 class="font-bold text-sm text-forest-900">复用训练动作至其他日期</h3>
+        <div class="space-y-2.5 text-xs">
+          <div class="p-2 bg-slate-50 rounded border border-slate-200 font-semibold text-forest-900">${item}</div>
+          <div>
+            <label class="text-slate-500">选择要复用的目标日期（不局限于明天，可任意指定）</label>
+            <input id="mTargetTrainDate" type="date" value="${getOffsetDate(1)}" class="w-full border rounded-lg p-1.5 mt-0.5 font-bold" />
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 pt-1">
+          <button onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">取消</button>
+          <button onclick="confirmCopySingleTrainToDate(${idx})" class="btn-primary px-4 py-1.5 rounded-lg text-xs">确认复用</button>
+        </div>
+      `);
+    };
+
+    window.confirmCopySingleTrainToDate = (idx) => {
+      const item = getDayLog("me", ui.activeDate).trainItems[idx];
+      const targetDate = document.getElementById("mTargetTrainDate").value;
+      if (!item || !targetDate) return;
+      const targetLog = getDayLog("me", targetDate);
+      targetLog.trainItems.push(item);
+      closeModal(); saveState();
+      showToast(`已将该动作复用至 ${targetDate}`);
+    };
+
+    // 从过往任意历史训练日中勾选部分或全部动作复用到当前日期
+    window.openReuseTrainingModal = () => {
+      const meLogs = state.healthLogs.me || {};
+      const historyDates = Object.keys(meLogs)
+        .filter(d => d !== ui.activeDate && ((meLogs[d].trainItems && meLogs[d].trainItems.length > 0) || meLogs[d].trainTheme))
+        .sort((a, b) => b.localeCompare(a));
+
+      if (!historyDates.length) {
+        showToast("暂无其他日期的历史训练动作可供复用");
+        return;
+      }
+
+      const dateOpts = historyDates.map(d => {
+        const l = meLogs[d];
+        return `<option value="${d}">${d} ｜ ${l.trainTheme || l.intensity || '训练'} (${(l.trainItems||[]).length}个动作)</option>`;
+      }).join("");
+
+      openModal(`
+        <h3 class="font-bold text-sm text-forest-900">📥 从历史日期复用训练动作至 ${ui.activeDate}</h3>
+        <div class="space-y-2.5 text-xs">
+          <div>
+            <label class="text-slate-500">1. 选择历史训练日期</label>
+            <select id="mReuseSourceDate" onchange="renderReuseSourceItems()" class="w-full border rounded-lg p-1.5 mt-0.5 bg-slate-50 font-semibold">${dateOpts}</select>
+          </div>
+          <label class="flex items-center gap-1.5 text-[11px] text-amber-900 bg-amber-50 p-2 rounded border border-amber-200 cursor-pointer">
+            <input type="checkbox" id="mReuseThemeCheck" checked /> 同时复用该日的训练主题与强度标签
+          </label>
+          <div>
+            <label class="text-slate-500 block mb-1">2. 勾选需要复用的具体动作（可全选或只选部分）：</label>
+            <div id="mReuseItemsBox" class="space-y-1 max-h-48 overflow-y-auto p-1 bg-slate-50 rounded border border-slate-200"></div>
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 pt-1">
+          <button onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">取消</button>
+          <button onclick="confirmReuseTraining()" class="btn-primary px-4 py-1.5 rounded-lg text-xs">导入所选动作</button>
+        </div>
+      `);
+      renderReuseSourceItems();
+    };
+
+    window.renderReuseSourceItems = () => {
+      const srcDate = document.getElementById("mReuseSourceDate").value;
+      const srcLog = getDayLog("me", srcDate);
+      const box = document.getElementById("mReuseItemsBox");
+      if (!srcLog.trainItems || !srcLog.trainItems.length) {
+        box.innerHTML = `<div class="text-slate-400 p-2">该日仅记录了训练主题「${srcLog.trainTheme || '无'}」，无细分动作条目。</div>`;
+        return;
+      }
+      box.innerHTML = srcLog.trainItems.map((it, i) => `
+        <label class="flex items-center gap-2 bg-white p-2 rounded border border-slate-100 cursor-pointer">
+          <input type="checkbox" name="mReuseItemChk" value="${i}" checked class="accent-forest-900" />
+          <span>${it}</span>
+        </label>
+      `).join("");
+    };
+
+    window.confirmReuseTraining = () => {
+      const srcDate = document.getElementById("mReuseSourceDate").value;
+      const srcLog = getDayLog("me", srcDate);
+      const curLog = getDayLog("me", ui.activeDate);
+
+      if (document.getElementById("mReuseThemeCheck").checked) {
+        if (srcLog.trainTheme) curLog.trainTheme = srcLog.trainTheme;
+        if (srcLog.intensity) curLog.intensity = srcLog.intensity;
+      }
+
+      const checkedIndices = Array.from(document.querySelectorAll('input[name="mReuseItemChk"]:checked')).map(el => parseInt(el.value));
+      checkedIndices.forEach(idx => {
+        const item = srcLog.trainItems[idx];
+        if (item) curLog.trainItems.push(item);
+      });
+
+      closeModal(); saveState();
+      showToast(`已成功复用 ${checkedIndices.length} 个训练动作至 ${ui.activeDate}`);
+    };
 
     window.openMealEntryModal = (entryId = null, presetTime = null, presetType = null) => {
       const cur = getDayLog(ui.healthPerson, ui.activeDate);
@@ -2296,9 +2672,19 @@
     };
 
     window.addTrainingItem = () => {
+      const quickDrills = (state.drills || []).slice(0, 6).map(d =>
+        `<button type="button" onclick="document.getElementById('mTrItem').value='${d.name} (${d.dose})'" class="px-2 py-0.5 bg-slate-100 rounded text-[11px] hover:bg-champagne-400/30">+ ${d.name}</button>`
+      ).join("");
+
       openModal(`
-        <h3 class="font-bold text-sm text-forest-900">添加具体训练动作</h3>
-        <input id="mTrItem" placeholder="如：杠铃深蹲 80kg 8次×4组 / 绳梯敏捷 5组" class="w-full border rounded-lg p-2 text-xs" />
+        <h3 class="font-bold text-sm text-forest-900">添加具体训练动作 (${ui.activeDate})</h3>
+        <div class="space-y-2 text-xs">
+          <div>
+            <label class="text-slate-500 block mb-1">从动作库快捷点选：</label>
+            <div class="flex flex-wrap gap-1">${quickDrills}</div>
+          </div>
+          <input id="mTrItem" placeholder="如：杠铃深蹲 80kg 8次×4组 / 绳梯敏捷 5组" class="w-full border rounded-lg p-2 text-xs" />
+        </div>
         <div class="flex justify-end gap-2 pt-1">
           <button onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">取消</button>
           <button onclick="confirmAddTrainItem()" class="btn-primary px-4 py-1.5 rounded-lg text-xs">加入</button>
@@ -2330,7 +2716,7 @@
       saveState();
     };
 
-    // ==================== 4. 全局复利总看板（战略聚焦 + 日期联动每日 To-Do List） ====================
+    // ==================== 4. 全局复利总看板 ====================
     window.saveStrategicFocus = () => {
       state.strategicFocus = {
         longTerm: document.getElementById("focusLong").value,
@@ -2431,13 +2817,11 @@
       const diffDays = Math.max(0, Math.ceil((target - new Date()) / (1000 * 60 * 60 * 24)));
       document.getElementById("countdownDays").textContent = `${diffDays} 天`;
 
-      // 填充长中短期战略重心
       const sf = state.strategicFocus || DEFAULT_STATE.strategicFocus;
       document.getElementById("focusLong").value = sf.longTerm || "";
       document.getElementById("focusMid").value = sf.midTerm || "";
       document.getElementById("focusShort").value = sf.shortTerm || "";
 
-      // 渲染每日 To-Do List
       document.getElementById("todoDateInput").value = ui.todoDate;
       const todos = state.todosByDate?.[ui.todoDate] || [];
       const doneCount = todos.filter(t => t.done).length;
