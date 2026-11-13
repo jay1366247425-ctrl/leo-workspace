@@ -29,6 +29,26 @@
     .btn-primary:active { opacity: 0.85; }
     .btn-gold { background: #C5A059; color: #0F291E; font-weight: 600; transition: opacity 0.15s; }
     .btn-gold:active { opacity: 0.85; }
+    /* 微信小程序风格丝滑拖拽滑块 */
+    input[type="range"].mp-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      height: 6px;
+      border-radius: 999px;
+      background: #E2E8F0;
+      outline: none;
+    }
+    input[type="range"].mp-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #0F291E;
+      border: 2px solid #C5A059;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.25);
+      cursor: pointer;
+    }
   </style>
 </head>
 <body class="pb-16 text-[13px]">
@@ -197,13 +217,164 @@
           <div id="bmiTableContainer" class="card p-3 hidden overflow-x-auto"></div>
         </div>
 
-        <!-- 线下 1.5 定价体系 -->
-        <div id="fit-panel-pricing" class="fit-panel hidden space-y-2.5">
+        <!-- 线下 1.5 定价体系 + 【新增：1v1~1v4 动态定价与升舱时薪测算器】 -->
+        <div id="fit-panel-pricing" class="fit-panel hidden space-y-3">
           <div class="flex items-center justify-between">
             <h2 class="font-bold text-sm text-forest-900">线下课包定价体系</h2>
             <button onclick="openPricingModal('offline')" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-semibold">+ 新增线下课包</button>
           </div>
           <div id="pricingList" class="grid grid-cols-1 md:grid-cols-3 gap-2.5"></div>
+
+          <!-- ==================== 新增组件一：线下 1v1~1v4 动态定价与升舱时薪测算器 ==================== -->
+          <div class="card p-3.5 space-y-3.5 border-champagne-500/50 shadow-xs">
+            <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-2.5">
+              <div>
+                <div class="flex items-center gap-1.5">
+                  <span class="px-1.5 py-0.5 rounded bg-champagne-500 text-forest-900 font-extrabold text-[10px]">PRO 测算器</span>
+                  <h3 class="font-bold text-sm text-forest-900">🧮 1v1~1v4 动态定价与升舱时薪测算器</h3>
+                </div>
+                <p class="text-[11px] text-slate-500 mt-0.5">小程序滑块交互 · 拖动参数实时测算教练时薪杠杆、家长省钱账单与 1v1 余额无损升舱方案</p>
+              </div>
+              <button type="button" onclick="resetOfflineCalcDefaults()" class="text-[11px] text-slate-400 hover:text-forest-900 shrink-0">重置默认</button>
+            </div>
+
+            <!-- 1. 班型人数选择器（支持点击与横向滑动） -->
+            <div class="space-y-1.5">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-bold text-slate-700">1. 选择当前测算班型人数</span>
+                <span id="offCalcGroupTag" class="text-[11px] font-bold text-champagne-600">当前：1v3 精品小班 (3人)</span>
+              </div>
+              <div class="grid grid-cols-4 gap-1.5 bg-slate-100 p-1 rounded-xl">
+                <button type="button" onclick="setOfflineCalcGroup(1)" id="off-grp-1" class="py-2 rounded-lg text-xs font-bold transition-all text-slate-600">👤 1v1 私教</button>
+                <button type="button" onclick="setOfflineCalcGroup(2)" id="off-grp-2" class="py-2 rounded-lg text-xs font-bold transition-all text-slate-600">👥 1v2 双人</button>
+                <button type="button" onclick="setOfflineCalcGroup(3)" id="off-grp-3" class="py-2 rounded-lg text-xs font-bold transition-all bg-forest-900 text-white shadow-2xs">👨‍👩‍👦 1v3 小班</button>
+                <button type="button" onclick="setOfflineCalcGroup(4)" id="off-grp-4" class="py-2 rounded-lg text-xs font-bold transition-all text-slate-600">👨‍👩‍👧‍👦 1v4 战队</button>
+              </div>
+            </div>
+
+            <!-- 2. 核心参数滑块 & 可输入框 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200/80">
+              <!-- 左列：滑块控制 -->
+              <div class="space-y-3">
+                <div class="space-y-1">
+                  <div class="flex items-center justify-between text-xs">
+                    <span class="font-semibold text-slate-700">🎯 1v1 单节基准锚点价</span>
+                    <div class="flex items-center gap-1">
+                      <span class="text-slate-400 text-[11px]">¥</span>
+                      <input id="offBase1v1Input" type="number" min="150" max="800" step="10" oninput="updateOfflineCalc('base1v1', this.value)" class="w-16 text-right font-extrabold text-forest-900 bg-white border border-slate-200 rounded px-1.5 py-0.5 text-xs" />
+                      <span class="text-[11px] text-slate-500">/节</span>
+                    </div>
+                  </div>
+                  <input id="offBase1v1Slider" type="range" min="200" max="500" step="10" oninput="updateOfflineCalc('base1v1', this.value)" class="w-full mp-slider" />
+                  <div class="flex justify-between text-[10px] text-slate-400"><span>¥200</span><span>默认 ¥320</span><span>¥500</span></div>
+                </div>
+
+                <div class="grid grid-cols-2 gap-2.5 pt-1 border-t border-slate-200/60">
+                  <div class="space-y-1">
+                    <div class="flex items-center justify-between text-[11px]">
+                      <span class="font-semibold text-slate-600">10节包折扣率</span>
+                      <span id="offDisc10Label" class="font-extrabold text-forest-900">88% (88折)</span>
+                    </div>
+                    <input id="offDisc10Slider" type="range" min="75" max="98" step="1" oninput="updateOfflineCalc('disc10', this.value)" class="w-full mp-slider" />
+                    <div class="text-[10px] text-slate-400" id="offDisc10PriceHint">1v1折后: ¥282/节</div>
+                  </div>
+                  <div class="space-y-1">
+                    <div class="flex items-center justify-between text-[11px]">
+                      <span class="font-semibold text-slate-600">20节包折扣率</span>
+                      <span id="offDisc20Label" class="font-extrabold text-emerald-700">78% (78折)</span>
+                    </div>
+                    <input id="offDisc20Slider" type="range" min="65" max="95" step="1" oninput="updateOfflineCalc('disc20', this.value)" class="w-full mp-slider" />
+                    <div class="text-[10px] text-slate-400" id="offDisc20PriceHint">1v1折后: ¥250/节</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- 右列：各班型单人单节优惠梯度（支持滑块+直接输入） -->
+              <div class="space-y-2">
+                <div class="text-xs font-semibold text-slate-700 flex items-center justify-between">
+                  <span>🏷️ 各班型单人单节实收价 (可输入/拖动)</span>
+                  <span class="text-[10px] text-slate-400">自动记住设定值</span>
+                </div>
+                <div class="grid grid-cols-3 gap-2">
+                  <div class="bg-white p-2 rounded-lg border border-slate-200 space-y-1">
+                    <div class="text-[10px] text-slate-500 font-semibold">👥 1v2 单人/节</div>
+                    <div class="flex items-center">
+                      <span class="text-xs font-bold text-slate-400 mr-0.5">¥</span>
+                      <input id="offPrice1v2" type="number" step="5" oninput="updateOfflineCalc('p1v2', this.value)" class="w-full font-extrabold text-sm text-forest-900 focus:outline-none" />
+                    </div>
+                    <input id="offSlide1v2" type="range" min="100" max="400" step="5" oninput="updateOfflineCalc('p1v2', this.value)" class="w-full mp-slider" />
+                  </div>
+                  <div class="bg-white p-2 rounded-lg border border-amber-300 space-y-1">
+                    <div class="text-[10px] text-amber-900 font-bold">👨‍👩‍👦 1v3 单人/节</div>
+                    <div class="flex items-center">
+                      <span class="text-xs font-bold text-slate-400 mr-0.5">¥</span>
+                      <input id="offPrice1v3" type="number" step="5" oninput="updateOfflineCalc('p1v3', this.value)" class="w-full font-extrabold text-sm text-forest-900 focus:outline-none" />
+                    </div>
+                    <input id="offSlide1v3" type="range" min="80" max="350" step="5" oninput="updateOfflineCalc('p1v3', this.value)" class="w-full mp-slider" />
+                  </div>
+                  <div class="bg-white p-2 rounded-lg border border-slate-200 space-y-1">
+                    <div class="text-[10px] text-slate-500 font-semibold">👨‍👩‍👧‍👦 1v4 单人/节</div>
+                    <div class="flex items-center">
+                      <span class="text-xs font-bold text-slate-400 mr-0.5">¥</span>
+                      <input id="offPrice1v4" type="number" step="5" oninput="updateOfflineCalc('p1v4', this.value)" class="w-full font-extrabold text-sm text-forest-900 focus:outline-none" />
+                    </div>
+                    <input id="offSlide1v4" type="range" min="60" max="300" step="5" oninput="updateOfflineCalc('p1v4', this.value)" class="w-full mp-slider" />
+                  </div>
+                </div>
+                <div id="offPackageQuickTable" class="text-[11px] text-slate-600 bg-white px-2.5 py-1.5 rounded-lg border border-slate-200/80"></div>
+              </div>
+            </div>
+
+            <!-- 3. 实时盈利与双赢模型计算面板（大字高亮卡片） -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              <div class="bg-forest-900 text-white p-3 rounded-xl space-y-1">
+                <div class="text-[11px] text-champagne-400 font-semibold">💰 教练单节时薪产出 (60-90min)</div>
+                <div id="offOutHourly" class="text-2xl font-extrabold tracking-tight">¥510 <span class="text-xs font-normal text-slate-300">/节</span></div>
+                <div id="offOutHourlyFormula" class="text-[11px] text-slate-300">¥170/人 × 3人同时消课</div>
+              </div>
+              <div class="bg-emerald-50 border border-emerald-200 p-3 rounded-xl space-y-1">
+                <div class="text-[11px] text-emerald-800 font-semibold">🚀 对比 1v1 收益放大倍数</div>
+                <div id="offOutBoost" class="text-2xl font-extrabold text-emerald-700">+104%</div>
+                <div id="offOutBoostSub" class="text-[11px] text-emerald-800/80">对比 1v1 20节折后价(¥250) 净增 ¥260/h</div>
+              </div>
+              <div class="bg-amber-50 border border-amber-200 p-3 rounded-xl space-y-1">
+                <div class="text-[11px] text-amber-900 font-semibold">🎁 家长单人立省 (双赢视角)</div>
+                <div id="offOutParentSave" class="text-2xl font-extrabold text-amber-900">省 ¥150 <span class="text-xs font-normal">/节</span></div>
+                <div id="offOutParentSaveTotal" class="text-[11px] text-amber-800">10节立省 ¥1,500 ｜ 20节立省 ¥3,000</div>
+              </div>
+            </div>
+
+            <!-- 4. 内置：1v1 无损升舱快速折算工具 -->
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2.5">
+              <div class="flex items-center justify-between flex-wrap gap-1">
+                <h4 class="font-bold text-xs text-forest-900">🔄 【1v1 无损升舱小班】快速折算 & 微信话术生成器</h4>
+                <span class="text-[10px] text-slate-500">自动计算剩余金额折算团课节数，并给出凑整/赠课促单建议</span>
+              </div>
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+                <div>
+                  <label class="text-[11px] text-slate-500 block mb-0.5">客户当前 1v1 剩余总额 (元)</label>
+                  <input id="offUpBalance" type="number" step="50" oninput="updateOfflineCalc('upBalance', this.value)" placeholder="如：1440" class="w-full border border-slate-200 rounded-lg p-1.5 bg-white font-bold text-forest-900" />
+                </div>
+                <div>
+                  <label class="text-[11px] text-slate-500 block mb-0.5">快速填入在读学员剩余学费</label>
+                  <select id="offUpStuSelect" onchange="fillUpgradeFromStudent(this.value)" class="w-full border border-slate-200 rounded-lg p-1.5 bg-white text-slate-700"></select>
+                </div>
+                <div>
+                  <label class="text-[11px] text-slate-500 block mb-0.5">目标转入团课班型</label>
+                  <select id="offUpTargetGroup" onchange="updateOfflineCalc('upTarget', this.value)" class="w-full border border-slate-200 rounded-lg p-1.5 bg-white font-bold text-forest-900">
+                    <option value="2">转入 1v2 双人班</option>
+                    <option value="3" selected>转入 1v3 精品小班 (推荐)</option>
+                    <option value="4">转入 1v4 竞技战队</option>
+                  </select>
+                </div>
+              </div>
+              <div id="offUpgradeResultBanner" class="bg-white p-2.5 rounded-lg border border-champagne-500/40 text-xs text-slate-700 space-y-1"></div>
+              <div class="flex flex-col sm:flex-row gap-2 items-stretch sm:items-center">
+                <textarea id="offUpgradeScriptBox" rows="3" class="flex-1 text-xs bg-forest-900 text-slate-100 rounded-lg p-2.5 leading-relaxed"></textarea>
+                <button type="button" onclick="copyText('offUpgradeScriptBox', '微信升舱方案已复制')" class="btn-gold px-4 py-2.5 rounded-lg text-xs shrink-0">一键复制升舱方案</button>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- 线下 1.6 SOP 与环节标准话术库 -->
@@ -288,13 +459,132 @@
           <div id="onlinePlanLogList" class="space-y-2"></div>
         </div>
 
-        <!-- 线上 4. 月/季订阅定价与附赠权益 -->
-        <div id="on-panel-pricing" class="on-panel hidden space-y-2.5">
+        <!-- 线上 4. 月/季订阅定价与附赠权益 + 【新增：线上订阅客单与规模化盈利测算器】 -->
+        <div id="on-panel-pricing" class="on-panel hidden space-y-3">
           <div class="flex items-center justify-between">
             <h2 class="font-bold text-sm text-forest-900">线上月度/季度订阅制方案（含附赠权益）</h2>
             <button onclick="openPricingModal('online')" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-semibold">+ 新增订阅方案</button>
           </div>
           <div id="onlinePricingList" class="grid grid-cols-1 md:grid-cols-3 gap-2.5"></div>
+
+          <!-- ==================== 新增组件二：线上月/季/年订阅客单与规模化盈利测算器 ==================== -->
+          <div class="card p-3.5 space-y-3.5 border-champagne-500/50 shadow-xs">
+            <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-2.5">
+              <div>
+                <div class="flex items-center gap-1.5">
+                  <span class="px-1.5 py-0.5 rounded bg-champagne-500 text-forest-900 font-extrabold text-[10px]">MRR 杠杆引擎</span>
+                  <h3 class="font-bold text-sm text-forest-900">🌐 月/季/年订阅客单与规模化盈利测算器</h3>
+                </div>
+                <p class="text-[11px] text-slate-500 mt-0.5">测算不同在服会员规模下的月度常态化现金流 (MRR)、每周异步答疑工时与等效折合时薪</p>
+              </div>
+              <button type="button" onclick="resetOnlineCalcDefaults()" class="text-[11px] text-slate-400 hover:text-forest-900 shrink-0">重置默认</button>
+            </div>
+
+            <!-- 1. 订阅周期切换器 -->
+            <div class="space-y-1.5">
+              <div class="flex items-center justify-between text-xs">
+                <span class="font-bold text-slate-700">1. 切换主打订阅周期模型</span>
+                <span id="onCalcCycleTag" class="text-[11px] font-bold text-champagne-600">当前主推：季度私享陪伴 (3个月)</span>
+              </div>
+              <div class="grid grid-cols-3 gap-1.5 bg-slate-100 p-1 rounded-xl">
+                <button type="button" onclick="setOnlineCalcCycle('monthly')" id="on-cyc-monthly" class="py-2 px-1 rounded-lg text-xs font-bold transition-all text-slate-600">📅 月度轻享 (1个月)</button>
+                <button type="button" onclick="setOnlineCalcCycle('quarterly')" id="on-cyc-quarterly" class="py-2 px-1 rounded-lg text-xs font-bold transition-all bg-forest-900 text-white shadow-2xs">🔥 季度私享陪伴 (3个月)</button>
+                <button type="button" onclick="setOnlineCalcCycle('yearly')" id="on-cyc-yearly" class="py-2 px-1 rounded-lg text-xs font-bold transition-all text-slate-600">👑 年度首席顾问 (12个月)</button>
+              </div>
+            </div>
+
+            <!-- 2. 三档客单价 + 在服人数 + 答疑耗时滑块 -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200/80">
+              <!-- 左列：三档订阅定价调整 -->
+              <div class="space-y-2.5">
+                <div class="text-xs font-semibold text-slate-700">🏷️ 三档订阅客单价设定 (可拖动/输入)</div>
+                <div class="space-y-2">
+                  <div class="bg-white p-2 rounded-lg border border-slate-200 space-y-1">
+                    <div class="flex items-center justify-between text-xs">
+                      <span class="text-slate-600 font-semibold">月度轻享客单价 (1个月)</span>
+                      <div class="flex items-center gap-0.5">
+                        <span class="text-slate-400 text-[11px]">¥</span>
+                        <input id="onPriceMonthly" type="number" step="50" oninput="updateOnlineCalc('pMonth', this.value)" class="w-16 text-right font-extrabold text-forest-900 border border-slate-200 rounded px-1 py-0.5 text-xs" />
+                      </div>
+                    </div>
+                    <input id="onSlideMonthly" type="range" min="580" max="2580" step="20" oninput="updateOnlineCalc('pMonth', this.value)" class="w-full mp-slider" />
+                  </div>
+
+                  <div class="bg-white p-2 rounded-lg border border-amber-300 space-y-1">
+                    <div class="flex items-center justify-between text-xs">
+                      <span class="text-amber-900 font-bold">季度私享陪伴客单价 (3个月)</span>
+                      <div class="flex items-center gap-0.5">
+                        <span class="text-slate-400 text-[11px]">¥</span>
+                        <input id="onPriceQuarterly" type="number" step="100" oninput="updateOnlineCalc('pQuarter', this.value)" class="w-16 text-right font-extrabold text-forest-900 border border-slate-200 rounded px-1 py-0.5 text-xs" />
+                      </div>
+                    </div>
+                    <input id="onSlideQuarterly" type="range" min="1580" max="5980" step="20" oninput="updateOnlineCalc('pQuarter', this.value)" class="w-full mp-slider" />
+                  </div>
+
+                  <div class="bg-white p-2 rounded-lg border border-slate-200 space-y-1">
+                    <div class="flex items-center justify-between text-xs">
+                      <span class="text-slate-600 font-semibold">年度首席顾问客单价 (12个月)</span>
+                      <div class="flex items-center gap-0.5">
+                        <span class="text-slate-400 text-[11px]">¥</span>
+                        <input id="onPriceYearly" type="number" step="200" oninput="updateOnlineCalc('pYear', this.value)" class="w-20 text-right font-extrabold text-forest-900 border border-slate-200 rounded px-1 py-0.5 text-xs" />
+                      </div>
+                    </div>
+                    <input id="onSlideYearly" type="range" min="4800" max="19800" step="100" oninput="updateOnlineCalc('pYear', this.value)" class="w-full mp-slider" />
+                  </div>
+                </div>
+              </div>
+
+              <!-- 右列：会员人数规模 & 异步答疑耗时滑块 -->
+              <div class="space-y-3 flex flex-col justify-between">
+                <div class="space-y-3">
+                  <div class="bg-white p-2.5 rounded-lg border border-slate-200 space-y-1.5">
+                    <div class="flex items-center justify-between text-xs">
+                      <span class="font-semibold text-slate-700">👥 当前在服会员人数规模</span>
+                      <div class="flex items-center gap-1">
+                        <input id="onActiveClientsInput" type="number" min="1" max="100" oninput="updateOnlineCalc('clients', this.value)" class="w-14 text-right font-extrabold text-forest-900 border border-slate-200 rounded px-1.5 py-0.5 text-xs" />
+                        <span class="text-xs font-bold text-forest-900">人</span>
+                      </div>
+                    </div>
+                    <input id="onActiveClientsSlider" type="range" min="1" max="50" step="1" oninput="updateOnlineCalc('clients', this.value)" class="w-full mp-slider" />
+                    <div class="flex justify-between text-[10px] text-slate-400"><span>1人 (起步)</span><span>15人 (稳态)</span><span>30人</span><span>50人 (满载)</span></div>
+                  </div>
+
+                  <div class="bg-white p-2.5 rounded-lg border border-slate-200 space-y-1.5">
+                    <div class="flex items-center justify-between text-xs">
+                      <span class="font-semibold text-slate-700">⏱️ 平均每周每人异步答疑耗时</span>
+                      <div class="flex items-center gap-1">
+                        <input id="onWeeklyMinsInput" type="number" min="5" max="120" step="5" oninput="updateOnlineCalc('mins', this.value)" class="w-14 text-right font-extrabold text-emerald-700 border border-slate-200 rounded px-1.5 py-0.5 text-xs" />
+                        <span class="text-xs font-bold text-emerald-700">分钟/周</span>
+                      </div>
+                    </div>
+                    <input id="onWeeklyMinsSlider" type="range" min="5" max="60" step="5" oninput="updateOnlineCalc('mins', this.value)" class="w-full mp-slider" />
+                    <div class="flex justify-between text-[10px] text-slate-400"><span>5min (极简)</span><span>默认 15min</span><span>30min</span><span>60min</span></div>
+                  </div>
+                </div>
+
+                <div id="onCycleCompareBox" class="bg-amber-50/80 border border-amber-200 rounded-lg p-2 text-[11px] text-amber-900 leading-relaxed"></div>
+              </div>
+            </div>
+
+            <!-- 3. 线上盈利模型实时仪表盘 -->
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              <div class="bg-forest-900 text-white p-3 rounded-xl space-y-1">
+                <div class="text-[11px] text-champagne-400 font-semibold">🌊 月度常态化订阅流水 (MRR)</div>
+                <div id="onOutMrr" class="text-2xl font-extrabold tracking-tight">¥14,900 <span class="text-xs font-normal text-slate-300">/月</span></div>
+                <div id="onOutMrrSub" class="text-[11px] text-slate-300">季度总收款 ¥44,700 ｜ 年化流水 ¥178,800</div>
+              </div>
+              <div class="bg-slate-100 border border-slate-200 p-3 rounded-xl space-y-1">
+                <div class="text-[11px] text-slate-600 font-semibold">⏳ 实际每周交付时间成本</div>
+                <div id="onOutWeeklyHours" class="text-2xl font-extrabold text-slate-800">3.8 小时 <span class="text-xs font-normal text-slate-500">/周</span></div>
+                <div id="onOutMonthlyHours" class="text-[11px] text-slate-500">每月累计仅需约 16.3 小时异步集中答疑</div>
+              </div>
+              <div class="bg-emerald-50 border border-emerald-200 p-3 rounded-xl space-y-1">
+                <div class="text-[11px] text-emerald-800 font-semibold">⚡ 等效折合时薪 (高毛利杠杆)</div>
+                <div id="onOutEqHourly" class="text-2xl font-extrabold text-emerald-700">¥917 <span class="text-xs font-normal">/小时</span></div>
+                <div id="onOutEqHourlySub" class="text-[11px] text-emerald-800/80">不受地域与天气限制 · 零场地通勤损耗</div>
+              </div>
+            </div>
+          </div>
         </div>
 
         <!-- 线上 5. 线上顾问 SOP 与标准话术库 -->
@@ -655,6 +945,28 @@
         onSub5: "5. 线上SOP与话术",
         onSub6: "6. 线上自媒体"
       },
+      // 新增：线下与线上动态定价测算器持久化配置
+      pricingCalc: {
+        offline: {
+          groupSize: 3,
+          base1v1: 320,
+          disc10: 88,
+          disc20: 78,
+          p1v2: 210,
+          p1v3: 170,
+          p1v4: 145,
+          upBalance: 1440,
+          upTarget: 3
+        },
+        online: {
+          cycle: "quarterly",
+          pMonth: 1280,
+          pQuarter: 2980,
+          pYear: 9800,
+          activeClients: 15,
+          weeklyMinsPerClient: 15
+        }
+      },
       strategicFocus: {
         longTerm: "2027.03.31合同到期无缝切换全职高毛利独立商业；专注资产复利；保障家庭低熵和谐与江南景苑新房顺利落地。",
         midTerm: "跑通线上定制训练与健康顾问首批发客闭环；完成江南景苑吊顶施工节点；持续沉淀丽水地接海外社媒内容。",
@@ -955,6 +1267,10 @@
         ...structuredClone(DEFAULT_STATE),
         ...raw,
         customLabels: { ...DEFAULT_STATE.customLabels, ...(raw.customLabels || {}) },
+        pricingCalc: {
+          offline: { ...DEFAULT_STATE.pricingCalc.offline, ...(raw.pricingCalc?.offline || {}) },
+          online: { ...DEFAULT_STATE.pricingCalc.online, ...(raw.pricingCalc?.online || {}) }
+        },
         strategicFocus: { ...DEFAULT_STATE.strategicFocus, ...(raw.strategicFocus || {}) },
         todosByDate: raw.todosByDate || {},
         dictionaries: mergedDict,
@@ -1085,6 +1401,17 @@
       try { await setDoc(DOC_REF, state); } catch (e) {}
     }
 
+    // 滑块防抖云端保存（保证拖动时60fps丝滑不卡顿，松手后自动同步Firebase）
+    let calcSyncTimer = null;
+    function saveCalcStateDebounced() {
+      localStorage.setItem(LOCAL_KEY, JSON.stringify(state));
+      if (isRemoteUpdating) return;
+      clearTimeout(calcSyncTimer);
+      calcSyncTimer = setTimeout(async () => {
+        try { await setDoc(DOC_REF, state); } catch (e) {}
+      }, 450);
+    }
+
     window.showToast = (msg) => {
       const t = document.getElementById("toast");
       t.textContent = msg;
@@ -1170,6 +1497,7 @@
       });
       document.getElementById(`fit-sub-${sub}`).className = "fit-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap bg-forest-900 text-white";
       if (sub === "standards") renderStandards();
+      if (sub === "pricing") renderPricing();
     };
 
     window.switchOnlineSub = (sub) => {
@@ -1180,6 +1508,7 @@
         btn.className = "on-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600";
       });
       document.getElementById(`on-sub-${sub}`).className = "on-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap bg-forest-900 text-white";
+      if (sub === "pricing") renderPricing();
     };
 
     window.switchTourSub = (sub) => {
@@ -1660,7 +1989,6 @@
     };
 
     // ==================== 1B. 线上私享健康与训练顾问模块 ====================
-    // 通过 ID 安全复制诊断问题与周期方案（彻底杜绝换行或引号导致按钮失灵）
     window.copyIntakeById = (id) => {
       const item = (state.onlineIntakeQuestions || []).find(x => x.id === id);
       if (!item) return;
@@ -1872,13 +2200,273 @@
       closeModal(); saveState(); showToast("计划与答疑记录已归档");
     };
 
-    // ==================== 定价体系（已修复修改后包含换行/引号无法复制的问题） ====================
+    // ==================== 定价体系 + 线下/线上动态定价与盈利测算器 ====================
     window.copyPricingById = (id) => {
       const p = (state.pricing || []).find(x => x.id === id);
       if (!p) return;
       const txt = `【Leo定制方案】${p.title}：${p.price}（${p.unit}）\n包含内容：\n${p.desc}`;
       window.copyRaw(txt, `「${p.title}」报价话术已复制`);
     };
+
+    // --- 线下 1v1~1v4 动态定价与升舱测算器交互逻辑 ---
+    function ensurePricingCalcState() {
+      if (!state.pricingCalc) state.pricingCalc = structuredClone(DEFAULT_STATE.pricingCalc);
+      if (!state.pricingCalc.offline) state.pricingCalc.offline = structuredClone(DEFAULT_STATE.pricingCalc.offline);
+      if (!state.pricingCalc.online) state.pricingCalc.online = structuredClone(DEFAULT_STATE.pricingCalc.online);
+    }
+
+    window.setOfflineCalcGroup = (size) => {
+      ensurePricingCalcState();
+      state.pricingCalc.offline.groupSize = size;
+      renderOfflineCalculator();
+      saveCalcStateDebounced();
+    };
+
+    window.updateOfflineCalc = (field, rawVal) => {
+      ensurePricingCalcState();
+      const num = parseFloat(rawVal);
+      if (isNaN(num)) return;
+      state.pricingCalc.offline[field] = num;
+      renderOfflineCalculator();
+      saveCalcStateDebounced();
+    };
+
+    window.fillUpgradeFromStudent = (stuId) => {
+      if (!stuId) return;
+      const stu = state.students.find(s => s.id === stuId);
+      if (!stu) return;
+      const bal = Math.round((stu.remainingLessons || 0) * (stu.unitPrice || 200));
+      state.pricingCalc.offline.upBalance = bal;
+      renderOfflineCalculator();
+      saveCalcStateDebounced();
+      showToast(`已填入 ${stu.name} 剩余学费 ¥${bal}`);
+    };
+
+    window.resetOfflineCalcDefaults = () => {
+      state.pricingCalc.offline = structuredClone(DEFAULT_STATE.pricingCalc.offline);
+      renderOfflineCalculator();
+      saveState();
+      showToast("线下测算器已恢复默认锚点");
+    };
+
+    function renderOfflineCalculator() {
+      ensurePricingCalcState();
+      const cfg = state.pricingCalc.offline;
+      const gSize = cfg.groupSize || 3;
+      const base1v1 = cfg.base1v1 || 320;
+      const disc10 = cfg.disc10 || 88;
+      const disc20 = cfg.disc20 || 78;
+      const p1v2 = cfg.p1v2 || 210;
+      const p1v3 = cfg.p1v3 || 170;
+      const p1v4 = cfg.p1v4 || 145;
+
+      // 班型按钮高亮
+      const groupNames = { 1: "1v1 私教 (1人)", 2: "1v2 双人同训 (2人)", 3: "1v3 精品小班 (3人)", 4: "1v4 竞技战队 (4人)" };
+      document.getElementById("offCalcGroupTag").textContent = `当前：${groupNames[gSize]}`;
+      [1, 2, 3, 4].forEach(n => {
+        const btn = document.getElementById(`off-grp-${n}`);
+        if (btn) {
+          btn.className = n === gSize
+            ? "py-2 rounded-lg text-xs font-bold transition-all bg-forest-900 text-white shadow-2xs"
+            : "py-2 rounded-lg text-xs font-bold transition-all text-slate-600";
+        }
+      });
+
+      // 同步输入框与滑块值
+      document.getElementById("offBase1v1Input").value = base1v1;
+      document.getElementById("offBase1v1Slider").value = Math.min(500, Math.max(200, base1v1));
+      document.getElementById("offDisc10Slider").value = disc10;
+      document.getElementById("offDisc20Slider").value = disc20;
+
+      const p1v1_10 = Math.round(base1v1 * (disc10 / 100));
+      const p1v1_20 = Math.round(base1v1 * (disc20 / 100));
+      document.getElementById("offDisc10Label").textContent = `${disc10}% (${(disc10/10).toFixed(1)}折)`;
+      document.getElementById("offDisc20Label").textContent = `${disc20}% (${(disc20/10).toFixed(1)}折)`;
+      document.getElementById("offDisc10PriceHint").textContent = `1v1 10节包：¥${p1v1_10}/节 (总¥${p1v1_10 * 10})`;
+      document.getElementById("offDisc20PriceHint").textContent = `1v1 20节包：¥${p1v1_20}/节 (总¥${p1v1_20 * 20})`;
+
+      document.getElementById("offPrice1v2").value = p1v2;
+      document.getElementById("offSlide1v2").value = Math.min(400, Math.max(100, p1v2));
+      document.getElementById("offPrice1v3").value = p1v3;
+      document.getElementById("offSlide1v3").value = Math.min(350, Math.max(80, p1v3));
+      document.getElementById("offPrice1v4").value = p1v4;
+      document.getElementById("offSlide1v4").value = Math.min(300, Math.max(60, p1v4));
+
+      // 计算当前选中班型的单人价格与教练总时薪
+      const unitMap = { 1: p1v1_20, 2: p1v2, 3: p1v3, 4: p1v4 };
+      const curUnitPrice = unitMap[gSize];
+      const coachHourly = curUnitPrice * gSize;
+
+      // 对比 1v1 20节包折后价 & 基准单节价的放大比例
+      const boostVs20 = Math.round(((coachHourly - p1v1_20) / p1v1_20) * 100);
+      const boostVsBase = Math.round(((coachHourly - base1v1) / base1v1) * 100);
+      const parentSaveVsBase = Math.max(0, base1v1 - curUnitPrice);
+      const parentSaveVs10 = Math.max(0, p1v1_10 - curUnitPrice);
+
+      document.getElementById("offPackageQuickTable").innerHTML = `
+        <div class="flex flex-wrap items-center justify-between gap-1">
+          <span>📊 <strong>当前 ${gSize}人班 课包总价速查：</strong></span>
+          <span>10节包/人：<strong>¥${(curUnitPrice * 10).toLocaleString()}</strong></span>
+          <span>20节包/人：<strong>¥${(curUnitPrice * 20).toLocaleString()}</strong></span>
+        </div>
+      `;
+
+      document.getElementById("offOutHourly").innerHTML = `¥${coachHourly.toLocaleString()} <span class="text-xs font-normal text-slate-300">/节</span>`;
+      document.getElementById("offOutHourlyFormula").textContent = gSize === 1
+        ? `1v1 20节折后单价 ¥${curUnitPrice}/人 × 1人 (单次原价 ¥${base1v1})`
+        : `每人 ¥${curUnitPrice}/节 × ${gSize}人同时消课 (20节总收款 ¥${(coachHourly * 20).toLocaleString()})`;
+
+      document.getElementById("offOutBoost").textContent = `${boostVs20 >= 0 ? '+' : ''}${boostVs20}%`;
+      document.getElementById("offOutBoostSub").textContent = `对比1v1课包价(¥${p1v1_20})净增 ¥${coachHourly - p1v1_20}/h ｜ 对比基准价(${boostVsBase >= 0 ? '+' : ''}${boostVsBase}%)`;
+
+      document.getElementById("offOutParentSave").innerHTML = `省 ¥${parentSaveVsBase} <span class="text-xs font-normal">/节</span>`;
+      document.getElementById("offOutParentSaveTotal").textContent = `对比单节基准20节立省 ¥${(parentSaveVsBase * 20).toLocaleString()} ｜ 对比10节包每节省 ¥${parentSaveVs10}`;
+
+      // 4. 1v1 无损升舱折算逻辑
+      const stuSel = document.getElementById("offUpStuSelect");
+      const curStuVal = stuSel.value;
+      stuSel.innerHTML = `<option value="">-- 点选学员自动算余额 --</option>` + state.students.map(s => {
+        const b = Math.round((s.remainingLessons || 0) * (s.unitPrice || 200));
+        return `<option value="${s.id}">${s.name} (余${s.remainingLessons}节 · ¥${b})</option>`;
+      }).join("");
+      if (curStuVal) stuSel.value = curStuVal;
+
+      const upBalance = cfg.upBalance ?? 1440;
+      const upTarget = parseInt(cfg.upTarget) || 3;
+      document.getElementById("offUpBalance").value = upBalance;
+      document.getElementById("offUpTargetGroup").value = upTarget;
+
+      const targetUnitPrice = unitMap[upTarget] || p1v3;
+      const rawLessons = upBalance / targetUnitPrice;
+      const floorLessons = Math.floor(rawLessons);
+      const remainderYuan = Math.round(upBalance - floorLessons * targetUnitPrice);
+      const ceilLessons = Math.ceil(rawLessons);
+      const topUpNeeded = Math.max(0, ceilLessons * targetUnitPrice - upBalance);
+
+      let adviceHtml = "";
+      let finalLessonsForScript = floorLessons;
+      let giftNoteForScript = "";
+
+      if (remainderYuan === 0) {
+        adviceHtml = `✅ <strong>整除无零头：</strong>剩余 <strong>¥${upBalance}</strong> 按 1v${upTarget} 单价(¥${targetUnitPrice}/节) 刚好无损折算为 <strong>${floorLessons} 节</strong> 小班课！`;
+        finalLessonsForScript = floorLessons;
+        giftNoteForScript = `刚好完整折算为 ${floorLessons} 节 1v${upTarget} 双语小班课`;
+      } else if (remainderYuan >= targetUnitPrice * 0.6) {
+        finalLessonsForScript = ceilLessons;
+        adviceHtml = `💡 <strong>促单凑整建议（推荐免补差额送半节）：</strong>精确折合 <strong>${rawLessons.toFixed(1)} 节</strong>（${floorLessons}节余¥${remainderYuan}）。建议直接<strong>抹零免收 ¥${topUpNeeded} 差价，大气凑整按 ${ceilLessons} 节</strong>交付，家长好感度拉满！`;
+        giftNoteForScript = `原可折合 ${floorLessons} 节余 ¥${remainderYuan}，我直接帮您免去 ¥${topUpNeeded} 差额凑整升级为 ${ceilLessons} 节`;
+      } else {
+        finalLessonsForScript = floorLessons + 1;
+        adviceHtml = `💡 <strong>抹零赠课建议：</strong>精确折合 <strong>${rawLessons.toFixed(1)} 节</strong>（${floorLessons}节余¥${remainderYuan}）。方案A：退还/抵扣尾款 ¥${remainderYuan} 记 <strong>${floorLessons} 节</strong>；方案B（推荐）：若家长成功邀约1位同伴组班，直接<strong>抹零额外赠送1节，记为 ${floorLessons + 1} 节</strong>！`;
+        giftNoteForScript = `折算为 ${floorLessons} 节后还余 ¥${remainderYuan}，作为老学员升舱福利，我直接为您额外加赠补齐至 ${floorLessons + 1} 节`;
+      }
+
+      document.getElementById("offUpgradeResultBanner").innerHTML = `
+        <div class="flex flex-wrap items-center justify-between gap-1 font-bold text-forest-900">
+          <span>📊 折算结果：¥${upBalance} ÷ ¥${targetUnitPrice}/节(1v${upTarget}) = <strong>${rawLessons.toFixed(2)} 节</strong></span>
+          <span class="text-emerald-700">升舱后你的单节时薪从 1v1 跃升至 ¥${targetUnitPrice * upTarget}/节</span>
+        </div>
+        <div class="text-[11px] text-amber-900 bg-amber-50 p-1.5 rounded">${adviceHtml}</div>
+      `;
+
+      document.getElementById("offUpgradeScriptBox").value = `【1v1 专属无损升舱 1v${upTarget} 精品小班方案】\n您好！目前咱们账户还剩余 1v1 学费余额 ¥${upBalance}。升级进入 1v${upTarget} 户外双语体能小班后，既能增加同龄伙伴的反应追逐对抗与英文口令互动，单节课时费也从原基准价降至 ¥${targetUnitPrice}/节（每节课立省 ¥${Math.max(0, base1v1 - targetUnitPrice)}）。\n\n🎁 专属折算福利：您的剩余学费 ¥${upBalance}，${giftNoteForScript}！确认升舱后我们下周即可按新班型为您排课。`;
+    }
+
+    // --- 线上月/季/年订阅客单与规模化盈利测算器交互逻辑 ---
+    window.setOnlineCalcCycle = (cyc) => {
+      ensurePricingCalcState();
+      state.pricingCalc.online.cycle = cyc;
+      renderOnlineCalculator();
+      saveCalcStateDebounced();
+    };
+
+    window.updateOnlineCalc = (field, rawVal) => {
+      ensurePricingCalcState();
+      const num = parseFloat(rawVal);
+      if (isNaN(num)) return;
+      if (field === "clients") state.pricingCalc.online.activeClients = num;
+      else if (field === "mins") state.pricingCalc.online.weeklyMinsPerClient = num;
+      else state.pricingCalc.online[field] = num;
+      renderOnlineCalculator();
+      saveCalcStateDebounced();
+    };
+
+    window.resetOnlineCalcDefaults = () => {
+      state.pricingCalc.online = structuredClone(DEFAULT_STATE.pricingCalc.online);
+      renderOnlineCalculator();
+      saveState();
+      showToast("线上订阅测算器已恢复默认");
+    };
+
+    function renderOnlineCalculator() {
+      ensurePricingCalcState();
+      const cfg = state.pricingCalc.online;
+      const cyc = cfg.cycle || "quarterly";
+      const pMonth = cfg.pMonth || 1280;
+      const pQuarter = cfg.pQuarter || 2980;
+      const pYear = cfg.pYear || 9800;
+      const clients = cfg.activeClients || 15;
+      const weeklyMins = cfg.weeklyMinsPerClient || 15;
+
+      const cycLabels = {
+        monthly: "月度轻享计划 (1个月)",
+        quarterly: "季度私享陪伴 (3个月)",
+        yearly: "年度首席顾问 (12个月)"
+      };
+      document.getElementById("onCalcCycleTag").textContent = `当前主推：${cycLabels[cyc]}`;
+      ["monthly", "quarterly", "yearly"].forEach(k => {
+        const btn = document.getElementById(`on-cyc-${k}`);
+        if (btn) {
+          btn.className = k === cyc
+            ? "py-2 px-1 rounded-lg text-xs font-bold transition-all bg-forest-900 text-white shadow-2xs"
+            : "py-2 px-1 rounded-lg text-xs font-bold transition-all text-slate-600";
+        }
+      });
+
+      document.getElementById("onPriceMonthly").value = pMonth;
+      document.getElementById("onSlideMonthly").value = Math.min(2580, Math.max(580, pMonth));
+      document.getElementById("onPriceQuarterly").value = pQuarter;
+      document.getElementById("onSlideQuarterly").value = Math.min(5980, Math.max(1580, pQuarter));
+      document.getElementById("onPriceYearly").value = pYear;
+      document.getElementById("onSlideYearly").value = Math.min(19800, Math.max(4800, pYear));
+
+      document.getElementById("onActiveClientsInput").value = clients;
+      document.getElementById("onActiveClientsSlider").value = Math.min(50, Math.max(1, clients));
+      document.getElementById("onWeeklyMinsInput").value = weeklyMins;
+      document.getElementById("onWeeklyMinsSlider").value = Math.min(60, Math.max(5, weeklyMins));
+
+      // 计算各档位折合月均单价
+      const eqMonthMap = {
+        monthly: pMonth,
+        quarterly: Math.round(pQuarter / 3),
+        yearly: Math.round(pYear / 12)
+      };
+      const curMonthlyPerClient = eqMonthMap[cyc];
+      const mrr = curMonthlyPerClient * clients;
+      const arr = mrr * 12;
+
+      const weeklyHours = +((clients * weeklyMins) / 60).toFixed(1);
+      const monthlyHours = +(weeklyHours * 4.33).toFixed(1);
+      const eqHourly = monthlyHours > 0 ? Math.round(mrr / monthlyHours) : 0;
+
+      const qSavePerMonth = Math.max(0, pMonth - Math.round(pQuarter / 3));
+      const ySavePerMonth = Math.max(0, pMonth - Math.round(pYear / 12));
+
+      document.getElementById("onCycleCompareBox").innerHTML = `
+        <div>💡 <strong>客户梯度锚点效应：</strong>月度 ¥${pMonth}/月 ｜ 季度折合 <strong>¥${Math.round(pQuarter/3)}/月</strong> (每月省¥${qSavePerMonth}，3个月立省¥${qSavePerMonth*3}) ｜ 年度折合 <strong>¥${Math.round(pYear/12)}/月</strong> (每月省¥${ySavePerMonth})。</div>
+      `;
+
+      document.getElementById("onOutMrr").innerHTML = `¥${mrr.toLocaleString()} <span class="text-xs font-normal text-slate-300">/月</span>`;
+      document.getElementById("onOutMrrSub").textContent = cyc === "quarterly"
+        ? `${clients}人单季总收款 ¥${(pQuarter * clients).toLocaleString()} ｜ 年化订阅流水 ¥${arr.toLocaleString()}`
+        : `每人月均 ¥${curMonthlyPerClient} × ${clients}人 ｜ 年化订阅流水 ¥${arr.toLocaleString()}`;
+
+      document.getElementById("onOutWeeklyHours").innerHTML = `${weeklyHours} 小时 <span class="text-xs font-normal text-slate-500">/周</span>`;
+      document.getElementById("onOutMonthlyHours").textContent = `每月累计仅需约 ${monthlyHours} 小时集中异步答疑 (${clients}人 × ${weeklyMins}min/周)`;
+
+      document.getElementById("onOutEqHourly").innerHTML = `¥${eqHourly.toLocaleString()} <span class="text-xs font-normal">/小时</span>`;
+      document.getElementById("onOutEqHourlySub").textContent = `每服务 1 位会员每月仅耗时 ${+((weeklyMins * 4.33) / 60).toFixed(1)}h · 纯高毛利知识复利`;
+    }
 
     function renderPricing() {
       const offlineItems = state.pricing.filter(p => (p.mode || "offline") === "offline");
@@ -1904,6 +2492,8 @@
 
       document.getElementById("pricingList").innerHTML = offlineItems.map(renderCard).join("");
       document.getElementById("onlinePricingList").innerHTML = onlineItems.map(renderCard).join("");
+      renderOfflineCalculator();
+      renderOnlineCalculator();
     }
 
     window.openPricingModal = (mode = "offline", id = null) => {
