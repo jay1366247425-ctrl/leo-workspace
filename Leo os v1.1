@@ -1092,11 +1092,39 @@
       setTimeout(() => t.classList.add("hidden"), 2200);
     };
 
-    window.copyText = (elId, msg) => {
-      navigator.clipboard.writeText(document.getElementById(elId).value).then(() => showToast(msg || "已复制"));
-    };
+    // 增强版通用剪贴板复制（支持移动端 WebView 降级兜底，防止权限拦截）
     window.copyRaw = (txt, msg) => {
-      navigator.clipboard.writeText(txt).then(() => showToast(msg || "已复制"));
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(txt).then(() => {
+          showToast(msg || "已复制");
+        }).catch(() => {
+          fallbackCopyText(txt, msg);
+        });
+      } else {
+        fallbackCopyText(txt, msg);
+      }
+    };
+
+    function fallbackCopyText(txt, msg) {
+      const ta = document.createElement("textarea");
+      ta.value = txt;
+      ta.style.position = "fixed";
+      ta.style.opacity = "0";
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      try {
+        document.execCommand("copy");
+        showToast(msg || "已复制");
+      } catch (e) {
+        showToast("复制失败，请手动长按复制");
+      }
+      document.body.removeChild(ta);
+    }
+
+    window.copyText = (elId, msg) => {
+      const val = document.getElementById(elId)?.value || "";
+      window.copyRaw(val, msg || "已复制");
     };
 
     window.unlockApp = () => {
@@ -1632,6 +1660,20 @@
     };
 
     // ==================== 1B. 线上私享健康与训练顾问模块 ====================
+    // 通过 ID 安全复制诊断问题与周期方案（彻底杜绝换行或引号导致按钮失灵）
+    window.copyIntakeById = (id) => {
+      const item = (state.onlineIntakeQuestions || []).find(x => x.id === id);
+      if (!item) return;
+      window.copyRaw(`${item.cat}\n${item.q}`, "单条问题已复制");
+    };
+
+    window.copyOnlineLogById = (id) => {
+      const l = (state.onlinePlanLogs || []).find(x => x.id === id);
+      if (!l) return;
+      const txt = `【${l.clientName} · ${l.phase}】\n场景：${l.envUsed}\n计划内容：\n${l.planDetail}\n\n本周答疑与建议：\n${l.qaSummary}`;
+      window.copyRaw(txt, "周期方案已复制，可发给客户");
+    };
+
     function renderOnlineFitness() {
       const clients = state.onlineClients || [];
       const now = new Date();
@@ -1683,13 +1725,13 @@
         <div class="card p-3 space-y-1.5 flex flex-col justify-between">
           <div>
             <div class="font-bold text-xs text-forest-900">${item.cat}</div>
-            <p class="text-xs text-slate-600 mt-1 leading-relaxed">${item.q}</p>
+            <p class="text-xs text-slate-600 mt-1 leading-relaxed whitespace-pre-line">${item.q}</p>
           </div>
           <div class="flex justify-between items-center pt-2 border-t border-slate-100 text-[11px]">
-            <button onclick="copyRaw(\`${item.cat}\\n${item.q}\`, '单条问题已复制')" class="text-champagne-600 font-semibold">复制此题</button>
+            <button type="button" onclick="copyIntakeById('${item.id}')" class="text-champagne-600 font-semibold">复制此题</button>
             <div class="space-x-2">
-              <button onclick="openIntakeModal('${item.id}')" class="text-slate-400">编辑</button>
-              <button onclick="deleteItem('onlineIntakeQuestions', '${item.id}')" class="text-rose-400">删除</button>
+              <button type="button" onclick="openIntakeModal('${item.id}')" class="text-slate-400">编辑</button>
+              <button type="button" onclick="deleteItem('onlineIntakeQuestions', '${item.id}')" class="text-rose-400">删除</button>
             </div>
           </div>
         </div>
@@ -1704,8 +1746,8 @@
               <span class="text-xs font-semibold text-slate-700">${l.phase}</span>
             </div>
             <div class="space-x-2 text-[11px] shrink-0">
-              <button onclick="copyRaw(\`【${l.clientName} · ${l.phase}】\\n场景：${l.envUsed}\\n计划内容：\\n${l.planDetail}\\n\\n本周答疑与建议：\\n${l.qaSummary}\`, '周期方案已复制，可发给客户')" class="text-champagne-600 font-semibold">复制发给客户</button>
-              <button onclick="deleteItem('onlinePlanLogs', '${l.id}')" class="text-rose-400">删除</button>
+              <button type="button" onclick="copyOnlineLogById('${l.id}')" class="text-champagne-600 font-semibold">复制发给客户</button>
+              <button type="button" onclick="deleteItem('onlinePlanLogs', '${l.id}')" class="text-rose-400">删除</button>
             </div>
           </div>
           <div class="text-[11px] text-slate-500">适配场景：${l.envUsed}</div>
@@ -1830,7 +1872,14 @@
       closeModal(); saveState(); showToast("计划与答疑记录已归档");
     };
 
-    // ==================== 定价体系 ====================
+    // ==================== 定价体系（已修复修改后包含换行/引号无法复制的问题） ====================
+    window.copyPricingById = (id) => {
+      const p = (state.pricing || []).find(x => x.id === id);
+      if (!p) return;
+      const txt = `【Leo定制方案】${p.title}：${p.price}（${p.unit}）\n包含内容：\n${p.desc}`;
+      window.copyRaw(txt, `「${p.title}」报价话术已复制`);
+    };
+
     function renderPricing() {
       const offlineItems = state.pricing.filter(p => (p.mode || "offline") === "offline");
       const onlineItems = state.pricing.filter(p => p.mode === "online");
@@ -1841,13 +1890,13 @@
             <div class="text-[11px] text-champagne-600 font-semibold">${p.unit}</div>
             <h3 class="font-bold text-xs text-forest-900 mt-0.5">${p.title}</h3>
             <div class="text-xl font-extrabold text-forest-900 my-1.5">${p.price}</div>
-            <p class="text-[11px] text-slate-600 leading-relaxed">${p.desc}</p>
+            <p class="text-[11px] text-slate-600 leading-relaxed whitespace-pre-line break-words">${p.desc}</p>
           </div>
           <div class="flex justify-between items-center pt-2 border-t border-slate-100 text-[11px]">
-            <button onclick="copyRaw('【Leo定制方案】${p.title}：${p.price}（${p.unit}），包含：${p.desc}', '报价话术已复制')" class="text-forest-900 font-semibold">复制报价</button>
+            <button type="button" onclick="copyPricingById('${p.id}')" class="px-2.5 py-1 rounded bg-champagne-500 text-forest-900 font-bold active:opacity-80">复制报价</button>
             <div class="space-x-2">
-              <button onclick="openPricingModal('${p.mode || 'offline'}', '${p.id}')" class="text-slate-400">改</button>
-              <button onclick="deleteItem('pricing', '${p.id}')" class="text-rose-400">删</button>
+              <button type="button" onclick="openPricingModal('${p.mode || 'offline'}', '${p.id}')" class="text-slate-500 hover:text-forest-900">改</button>
+              <button type="button" onclick="deleteItem('pricing', '${p.id}')" class="text-rose-400">删</button>
             </div>
           </div>
         </div>
@@ -1862,12 +1911,12 @@
       openModal(`
         <h3 class="font-bold text-sm text-forest-900">${id ? '编辑产品定价' : (mode==='online' ? '新增线上订阅方案' : '新增线下课包')}</h3>
         <div class="space-y-2 text-xs">
-          <div><label class="text-slate-500">方案名称</label><input id="mPrTitle" value="${p.title}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          <div><label class="text-slate-500">方案名称</label><input id="mPrTitle" value="${(p.title || '').replace(/"/g, '"')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
           <div class="grid grid-cols-2 gap-2">
-            <div><label class="text-slate-500">价格</label><input id="mPrPrice" value="${p.price}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
-            <div><label class="text-slate-500">周期/规格</label><input id="mPrUnit" value="${p.unit}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+            <div><label class="text-slate-500">价格</label><input id="mPrPrice" value="${(p.price || '').replace(/"/g, '"')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+            <div><label class="text-slate-500">周期/规格</label><input id="mPrUnit" value="${(p.unit || '').replace(/"/g, '"')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
           </div>
-          <div><label class="text-slate-500">核心服务与🎁附赠内容描述</label><textarea id="mPrDesc" rows="3" class="w-full border rounded-lg p-1.5 mt-0.5">${p.desc}</textarea></div>
+          <div><label class="text-slate-500">核心服务与🎁附赠内容描述（支持随意换行与标点）</label><textarea id="mPrDesc" rows="4" class="w-full border rounded-lg p-1.5 mt-0.5">${p.desc || ''}</textarea></div>
         </div>
         <div class="flex justify-end gap-2 pt-1">
           <button onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">取消</button>
@@ -1877,10 +1926,17 @@
     };
 
     window.savePricing = (mode, id) => {
-      const obj = { id: id || "p_" + Date.now(), mode, title: document.getElementById("mPrTitle").value, price: document.getElementById("mPrPrice").value, unit: document.getElementById("mPrUnit").value, desc: document.getElementById("mPrDesc").value };
+      const obj = {
+        id: id || "p_" + Date.now(),
+        mode,
+        title: document.getElementById("mPrTitle").value.trim(),
+        price: document.getElementById("mPrPrice").value.trim(),
+        unit: document.getElementById("mPrUnit").value.trim(),
+        desc: document.getElementById("mPrDesc").value.trim()
+      };
       if (id) state.pricing[state.pricing.findIndex(x => x.id === id)] = obj;
       else state.pricing.push(obj);
-      closeModal(); saveState();
+      closeModal(); saveState(); showToast("定价方案已保存");
     };
 
     // ==================== 三大业务线 SOP & 环节标准话术库 ====================
@@ -2154,6 +2210,12 @@
     const LISHUI_COUNTIES = ["全部", "松阳", "云和", "莲都", "缙云", "景宁", "龙泉", "遂昌", "青田", "庆元"];
     window.setCounty = (c) => { ui.county = c; renderTour(); };
 
+    window.copyTourScriptById = (id) => {
+      const s = (state.scripts || []).find(x => x.id === id);
+      if (!s) return;
+      window.copyRaw(s.en, "英文讲解词已复制");
+    };
+
     function renderTour() {
       document.getElementById("tourOrderList").innerHTML = state.tourOrders.map(o => `
         <div class="card p-3 flex items-center justify-between gap-2">
@@ -2182,7 +2244,7 @@
         <div class="card p-3 space-y-1.5">
           <div class="flex items-center justify-between">
             <span class="font-bold text-xs text-forest-900">📍 [${s.county}] ${s.spot}</span>
-            <button onclick="copyRaw(\`${s.en.replace(/`/g, '')}\`, '英文讲解词已复制')" class="text-[11px] text-champagne-600 font-semibold">复制英文</button>
+            <button type="button" onclick="copyTourScriptById('${s.id}')" class="text-[11px] text-champagne-600 font-semibold">复制英文</button>
           </div>
           <p class="text-[11px] text-slate-500">${s.cn}</p>
           <p class="text-xs text-forest-900 bg-slate-50 p-2 rounded-md italic leading-relaxed">"${s.en}"</p>
@@ -2242,7 +2304,6 @@
     };
 
     // ==================== 3. 健康饮食锻炼系统 ====================
-    // 兼容旧版纯文本训练条目与新版可勾选对象格式
     function normalizeTrainItem(raw) {
       if (typeof raw === "string") return { text: raw, done: false };
       if (raw && typeof raw === "object") return { text: raw.text || "", done: !!raw.done };
@@ -2464,7 +2525,7 @@
           trainBadge.textContent = `${doneTrainCount}/${trainList.length} 完成`;
         }
 
-        // 【优化点 1】移除训练动作的 truncate，支持手机端自适应多行完整显示，不再出现 ... 省略号
+        // 训练动作自适应多行完整展示
         document.getElementById("dayTrainItemsList").innerHTML = trainList.map((rawItem, idx) => {
           const item = normalizeTrainItem(rawItem);
           return `
@@ -2526,7 +2587,6 @@
       `).join("");
     }
 
-    // 勾选/取消勾选训练动作完成状态
     window.toggleTrainItemDone = (idx) => {
       const log = getDayLog("me", ui.activeDate);
       const item = normalizeTrainItem(log.trainItems[idx]);
@@ -2535,7 +2595,6 @@
       saveState();
     };
 
-    // 弹窗修改训练动作文字
     window.openEditTrainItemModal = (idx) => {
       const log = getDayLog("me", ui.activeDate);
       const item = normalizeTrainItem(log.trainItems[idx]);
@@ -2981,7 +3040,7 @@
       const doneCount = todos.filter(t => t.done).length;
       document.getElementById("todoProgressBadge").textContent = `${doneCount}/${todos.length} 完成`;
 
-      // 【优化点 2】移除每日聚焦行动的 truncate 截断，并升级为响应式双端布局（手机端内容完整自动换行，电脑端保持单行紧凑对齐）
+      // 每日聚焦行动响应式多行完整展示
       document.getElementById("todoListContainer").innerHTML = todos.map((t, idx) => `
         <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-2.5 rounded-lg border ${t.done ? 'bg-slate-50 border-slate-100 opacity-60' : 'bg-white border-slate-200'}">
           <div class="flex items-start gap-2 flex-1 min-w-0">
