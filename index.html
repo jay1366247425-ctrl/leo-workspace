@@ -1421,7 +1421,7 @@
     };
     window.ui = ui;
 // === PART 1 END ===
-    // === PART 2 START ===
+   // === PART 2 START ===
     function applyCustomLabels() {
       const L = state.customLabels || DEFAULT_STATE.customLabels;
       document.getElementById("navAppTitle").textContent = L.appTitle || "Leo | Life OS";
@@ -3906,4 +3906,650 @@
         const [h1, m1] = entries[0].time.split(":").map(Number);
         const [h2, m2] = entries[entries.length - 1].time.split(":").map(Number);
         const spanHours = +(((h2 * 60 + m2) - (h1 * 60 + m1)) / 60).toFixed(1);
-        winEl.innerHTML = `⏱️ 首餐 <strong>${entries[0].
+        winEl.innerHTML = `⏱️ 首餐 <strong>${entries[0].time}</strong> → 末餐 <strong>${entries[entries.length - 1].time}</strong>（进食窗口 <strong>${spanHours}h</strong> / 空腹窗 <strong>${+(24 - spanHours).toFixed(1)}h</strong>）`;
+      } else if (entries.length === 1) {
+        winEl.innerHTML = `⏱️ 已记录 1 餐（<strong>${entries[0].time} ${entries[0].type}</strong>）`;
+      } else {
+        winEl.textContent = "⏱️ 今日暂未记录进食时间点，点击下方快捷按钮或“+ 记一餐”";
+      }
+
+      document.getElementById("mealTimelineList").innerHTML = entries.map(item => `
+        <div class="flex items-start justify-between gap-2 bg-slate-50 p-2.5 rounded-lg border border-slate-100">
+          <div class="space-y-0.5">
+            <div class="flex items-center gap-1.5">
+              <span class="text-xs font-extrabold text-forest-900 bg-champagne-400/30 px-1.5 py-0.5 rounded">🕒 ${item.time}</span>
+              <span class="text-xs font-bold text-slate-700">${item.type}</span>
+            </div>
+            <p class="text-xs text-slate-600 pl-0.5">${item.content}</p>
+          </div>
+          <div class="flex items-center gap-2 shrink-0 text-[11px]">
+            <button type="button" onclick="openMealEntryModal('${item.id}')" class="text-slate-500">改</button>
+            <button type="button" onclick="deleteMealEntry('${item.id}')" class="text-rose-400">删</button>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    window.toggleTrainItemDone = (idx) => {
+      const log = getDayLog("me", ui.activeDate);
+      const item = normalizeTrainItem(log.trainItems[idx]);
+      item.done = !item.done;
+      log.trainItems[idx] = item;
+      saveState();
+    };
+
+    window.openEditTrainItemModal = (idx) => {
+      const log = getDayLog("me", ui.activeDate);
+      const item = normalizeTrainItem(log.trainItems[idx]);
+      if (!item.text) return;
+      openModal(`
+        <h3 class="font-bold text-sm text-forest-900">✏️ 修改训练动作内容</h3>
+        <div class="space-y-2 text-xs">
+          <input id="mEditTrainText" value="${item.text.replace(/"/g, '"')}" onkeydown="if(event.key==='Enter')saveEditedTrainItem(${idx})" class="w-full border rounded-lg p-2 text-xs font-medium text-forest-900" />
+        </div>
+        <div class="flex justify-end gap-2 pt-1">
+          <button onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">取消</button>
+          <button onclick="saveEditedTrainItem(${idx})" class="btn-primary px-4 py-1.5 rounded-lg text-xs">保存修改</button>
+        </div>
+      `);
+    };
+
+    window.saveEditedTrainItem = (idx) => {
+      const log = getDayLog("me", ui.activeDate);
+      const item = normalizeTrainItem(log.trainItems[idx]);
+      const newVal = document.getElementById("mEditTrainText").value.trim();
+      if (!newVal) return;
+      item.text = newVal;
+      log.trainItems[idx] = item;
+      closeModal(); saveState();
+      showToast("动作内容已修改");
+    };
+
+    window.openCopySingleTrainToDateModal = (idx) => {
+      const rawItem = getDayLog("me", ui.activeDate).trainItems[idx];
+      const item = normalizeTrainItem(rawItem);
+      if (!item.text) return;
+      openModal(`
+        <h3 class="font-bold text-sm text-forest-900">复用训练动作至其他日期</h3>
+        <div class="space-y-2.5 text-xs">
+          <div class="p-2 bg-slate-50 rounded border border-slate-200 font-semibold text-forest-900">${item.text}</div>
+          <div>
+            <label class="text-slate-500">选择要复用的目标日期（可任意指定日期）</label>
+            <input id="mTargetTrainDate" type="date" value="${getOffsetDate(1)}" class="w-full border rounded-lg p-1.5 mt-0.5 font-bold" />
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 pt-1">
+          <button onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">取消</button>
+          <button onclick="confirmCopySingleTrainToDate(${idx})" class="btn-primary px-4 py-1.5 rounded-lg text-xs">确认复用</button>
+        </div>
+      `);
+    };
+
+    window.confirmCopySingleTrainToDate = (idx) => {
+      const rawItem = getDayLog("me", ui.activeDate).trainItems[idx];
+      const item = normalizeTrainItem(rawItem);
+      const targetDate = document.getElementById("mTargetTrainDate").value;
+      if (!item.text || !targetDate) return;
+      const targetLog = getDayLog("me", targetDate);
+      targetLog.trainItems.push({ text: item.text, done: false });
+      closeModal(); saveState();
+      showToast(`已复用至 ${targetDate}`);
+    };
+
+    window.openReuseTrainingModal = () => {
+      const meLogs = state.healthLogs.me || {};
+      const historyDates = Object.keys(meLogs)
+        .filter(d => d !== ui.activeDate && ((meLogs[d].trainItems && meLogs[d].trainItems.length > 0) || meLogs[d].trainTheme))
+        .sort((a, b) => b.localeCompare(a));
+
+      if (!historyDates.length) {
+        showToast("暂无其他日期的历史训练动作可供复用");
+        return;
+      }
+
+      const dateOpts = historyDates.map(d => {
+        const l = meLogs[d];
+        return `<option value="${d}">${d} ｜ ${l.trainTheme || l.intensity || '训练'} (${(l.trainItems||[]).length}个动作)</option>`;
+      }).join("");
+
+      openModal(`
+        <h3 class="font-bold text-sm text-forest-900">📥 从历史日期复用训练动作至 ${ui.activeDate}</h3>
+        <div class="space-y-2.5 text-xs">
+          <div>
+            <label class="text-slate-500">1. 选择历史训练日期</label>
+            <select id="mReuseSourceDate" onchange="renderReuseSourceItems()" class="w-full border rounded-lg p-1.5 mt-0.5 bg-slate-50 font-semibold">${dateOpts}</select>
+          </div>
+          <label class="flex items-center gap-1.5 text-[11px] text-amber-900 bg-amber-50 p-2 rounded border border-amber-200 cursor-pointer">
+            <input type="checkbox" id="mReuseThemeCheck" checked /> 同时复用该日的训练主题与强度标签
+          </label>
+          <div>
+            <label class="text-slate-500 block mb-1">2. 勾选需要复用的具体动作（可全选或只选部分）：</label>
+            <div id="mReuseItemsBox" class="space-y-1 max-h-48 overflow-y-auto p-1 bg-slate-50 rounded border border-slate-200"></div>
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 pt-1">
+          <button onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">取消</button>
+          <button onclick="confirmReuseTraining()" class="btn-primary px-4 py-1.5 rounded-lg text-xs">导入所选动作</button>
+        </div>
+      `);
+      renderReuseSourceItems();
+    };
+
+    window.renderReuseSourceItems = () => {
+      const srcDate = document.getElementById("mReuseSourceDate").value;
+      const srcLog = getDayLog("me", srcDate);
+      const box = document.getElementById("mReuseItemsBox");
+      if (!srcLog.trainItems || !srcLog.trainItems.length) {
+        box.innerHTML = `<div class="text-slate-400 p-2">该日仅记录了训练主题「${srcLog.trainTheme || '无'}」，无细分动作条目。</div>`;
+        return;
+      }
+      box.innerHTML = srcLog.trainItems.map((rawIt, i) => {
+        const it = normalizeTrainItem(rawIt);
+        return `
+          <label class="flex items-center gap-2 bg-white p-2 rounded border border-slate-100 cursor-pointer">
+            <input type="checkbox" name="mReuseItemChk" value="${i}" checked class="accent-forest-900" />
+            <span>${it.text}</span>
+          </label>
+        `;
+      }).join("");
+    };
+
+    window.confirmReuseTraining = () => {
+      const srcDate = document.getElementById("mReuseSourceDate").value;
+      const srcLog = getDayLog("me", srcDate);
+      const curLog = getDayLog("me", ui.activeDate);
+
+      if (document.getElementById("mReuseThemeCheck").checked) {
+        if (srcLog.trainTheme) curLog.trainTheme = srcLog.trainTheme;
+        if (srcLog.intensity) curLog.intensity = srcLog.intensity;
+      }
+
+      const checkedIndices = Array.from(document.querySelectorAll('input[name="mReuseItemChk"]:checked')).map(el => parseInt(el.value));
+      checkedIndices.forEach(idx => {
+        const rawIt = srcLog.trainItems[idx];
+        const it = normalizeTrainItem(rawIt);
+        if (it.text) curLog.trainItems.push({ text: it.text, done: false });
+      });
+
+      closeModal(); saveState();
+      showToast(`已成功复用 ${checkedIndices.length} 个训练动作至 ${ui.activeDate}`);
+    };
+
+    window.openMealEntryModal = (entryId = null, presetTime = null, presetType = null) => {
+      const cur = getDayLog(ui.healthPerson, ui.activeDate);
+      const existing = entryId ? cur.mealEntries.find(x => x.id === entryId) : null;
+      const nowTime = new Date().toTimeString().slice(0, 5);
+      const item = existing || { time: presetTime || nowTime, type: presetType || "早午餐合并(Brunch)", content: "" };
+      const typeOpts = state.dictionaries.mealTypes.map(t => `<option ${item.type===t?'selected':''}>${t}</option>`).join("");
+
+      openModal(`
+        <h3 class="font-bold text-sm text-forest-900">${entryId ? '编辑进食记录' : `记录进食 (${ui.activeDate})`}</h3>
+        <div class="space-y-2.5 text-xs">
+          <div class="grid grid-cols-2 gap-2">
+            <div><label class="text-slate-500">进食时间点</label><input id="mMealTime" type="time" value="${item.time}" class="w-full border rounded-lg p-1.5 mt-0.5 font-bold" /></div>
+            <div><label class="text-slate-500">餐次类型 (支持早中餐合并)</label><select id="mMealType" class="w-full border rounded-lg p-1.5 mt-0.5">${typeOpts}</select></div>
+          </div>
+          <div>
+            <label class="text-slate-500 block mb-1">快捷食材点选（点击自动填入下方）：</label>
+            <div class="flex flex-wrap gap-1">
+              ${["山姆三色糙米饭150g", "去皮鸡腿肉", "纯瘦牛肉", "即食鸡胸肉", "水煮蛋2个", "黑咖啡", "清炒时蔬", "全麦欧包"].map(food =>
+                `<button type="button" onclick="appendFoodText('${food}')" class="px-2 py-0.5 bg-slate-100 rounded text-[11px] hover:bg-champagne-400/30">+ ${food}</button>`
+              ).join("")}
+            </div>
+          </div>
+          <div><label class="text-slate-500">具体吃了什么</label><textarea id="mMealContent" rows="2" placeholder="输入食物内容..." class="w-full border rounded-lg p-2 mt-0.5">${item.content}</textarea></div>
+        </div>
+        <div class="flex justify-end gap-2 pt-1">
+          <button onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">取消</button>
+          <button onclick="saveMealEntry('${entryId || ''}')" class="btn-primary px-4 py-1.5 rounded-lg text-xs">保存同步</button>
+        </div>
+      `);
+    };
+
+    window.appendFoodText = (food) => {
+      const box = document.getElementById("mMealContent");
+      box.value = box.value ? `${box.value} + ${food}` : food;
+    };
+
+    window.saveMealEntry = (entryId) => {
+      const cur = getDayLog(ui.healthPerson, ui.activeDate);
+      const obj = {
+        id: entryId || "me_" + Date.now(),
+        time: document.getElementById("mMealTime").value || "12:00",
+        type: document.getElementById("mMealType").value,
+        content: document.getElementById("mMealContent").value.trim() || "常规进食"
+      };
+      if (entryId) cur.mealEntries[cur.mealEntries.findIndex(x => x.id === entryId)] = obj;
+      else cur.mealEntries.push(obj);
+      closeModal(); saveState(); showToast("进食时间记录已同步");
+    };
+
+    window.deleteMealEntry = (entryId) => {
+      const cur = getDayLog(ui.healthPerson, ui.activeDate);
+      cur.mealEntries = cur.mealEntries.filter(x => x.id !== entryId);
+      saveState();
+    };
+
+    window.toggleHealthTag = (tag) => {
+      const cur = getDayLog(ui.healthPerson, ui.activeDate);
+      const idx = cur.tags.indexOf(tag);
+      if (idx >= 0) cur.tags.splice(idx, 1);
+      else cur.tags.push(tag);
+      saveState();
+    };
+
+    window.addTrainingItem = () => {
+      const quickDrills = (state.drills || []).slice(0, 6).map(d =>
+        `<button type="button" onclick="document.getElementById('mTrItem').value='${d.name} (${d.dose})'" class="px-2 py-0.5 bg-slate-100 rounded text-[11px] hover:bg-champagne-400/30">+ ${d.name}</button>`
+      ).join("");
+
+      openModal(`
+        <h3 class="font-bold text-sm text-forest-900">添加具体训练动作 (${ui.activeDate})</h3>
+        <div class="space-y-2 text-xs">
+          <div>
+            <label class="text-slate-500 block mb-1">从动作库快捷点选：</label>
+            <div class="flex flex-wrap gap-1">${quickDrills}</div>
+          </div>
+          <input id="mTrItem" onkeydown="if(event.key==='Enter')confirmAddTrainItem()" placeholder="如：杠铃深蹲 80kg 8次×4组 / 绳梯敏捷 5组" class="w-full border rounded-lg p-2 text-xs" />
+        </div>
+        <div class="flex justify-end gap-2 pt-1">
+          <button onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">取消</button>
+          <button onclick="confirmAddTrainItem()" class="btn-primary px-4 py-1.5 rounded-lg text-xs">加入</button>
+        </div>
+      `);
+    };
+
+    window.confirmAddTrainItem = () => {
+      const val = document.getElementById("mTrItem").value.trim();
+      if (val) {
+        getDayLog("me", ui.activeDate).trainItems.push({ text: val, done: false });
+        closeModal(); saveState();
+      }
+    };
+
+    window.removeTrainItem = (idx) => {
+      getDayLog("me", ui.activeDate).trainItems.splice(idx, 1);
+      saveState();
+    };
+
+    window.saveCurrentDayHealth = () => {
+      const cur = getDayLog(ui.healthPerson, ui.activeDate);
+      cur.weight = document.getElementById("dayWeight").value;
+      cur.note = document.getElementById("dayHealthNote").value;
+      if (ui.healthPerson === "me") {
+        cur.intensity = document.getElementById("dayIntensity").value;
+        cur.trainTheme = document.getElementById("dayTrainTheme").value;
+      }
+      saveState();
+    };
+
+    // ==================== 4. 全局复利总看板 ====================
+    window.saveStrategicFocus = () => {
+      state.strategicFocus = {
+        longTerm: document.getElementById("focusLong").value,
+        midTerm: document.getElementById("focusMid").value,
+        shortTerm: document.getElementById("focusShort").value
+      };
+      saveState();
+      showToast("长中短期战略重心已同步");
+    };
+
+    window.selectTodoDate = (dStr) => {
+      if (dStr) ui.todoDate = dStr;
+      renderDashboard();
+    };
+
+    window.stepTodoDate = (delta) => {
+      const [y, m, d] = ui.todoDate.split("-").map(Number);
+      const dt = new Date(y, m - 1, d);
+      dt.setDate(dt.getDate() + delta);
+      const ny = dt.getFullYear();
+      const nm = String(dt.getMonth() + 1).padStart(2, "0");
+      const nd = String(dt.getDate()).padStart(2, "0");
+      ui.todoDate = `${ny}-${nm}-${nd}`;
+      renderDashboard();
+    };
+
+    window.openTodoTagManagerModal = () => {
+      const currentTags = (state.dictionaries.todoTags || DEFAULT_STATE.dictionaries.todoTags).join("、");
+      openModal(`
+        <h3 class="font-bold text-sm text-forest-900">🏷️ 编辑每日行动 (To-Do) 预设标签库</h3>
+        <div class="space-y-2 text-xs">
+          <p class="text-slate-500">用顿号（、）或逗号分隔，可自由增删改属于你的任务分类标签：</p>
+          <textarea id="mTodoTagsInput" rows="3" class="w-full border rounded-lg p-2 font-medium text-forest-900">${currentTags}</textarea>
+        </div>
+        <div class="flex justify-end gap-2 pt-1">
+          <button onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">取消</button>
+          <button onclick="saveTodoTagPool()" class="btn-primary px-4 py-1.5 rounded-lg text-xs">保存标签库</button>
+        </div>
+      `);
+    };
+
+    window.saveTodoTagPool = () => {
+      const list = document.getElementById("mTodoTagsInput").value.split(/[,，、\n]/).map(s => s.trim()).filter(Boolean);
+      if (list.length) {
+        state.dictionaries.todoTags = list;
+        closeModal(); saveState();
+        showToast("预设标签库已更新");
+      }
+    };
+
+    window.addTodoItem = () => {
+      const input = document.getElementById("newTodoText");
+      const text = input.value.trim();
+      if (!text) return;
+      const tag = document.getElementById("newTodoTag").value || "🔥 核心重心";
+      if (!state.todosByDate) state.todosByDate = {};
+      if (!state.todosByDate[ui.todoDate]) state.todosByDate[ui.todoDate] = [];
+      state.todosByDate[ui.todoDate].push({
+        id: "td_" + Date.now(),
+        tag,
+        text,
+        done: false
+      });
+      input.value = "";
+      saveState();
+    };
+
+    window.toggleTodoDone = (id) => {
+      const list = state.todosByDate?.[ui.todoDate] || [];
+      const item = list.find(x => x.id === id);
+      if (item) {
+        item.done = !item.done;
+        saveState();
+      }
+    };
+
+    window.moveTodoItem = (idx, dir) => {
+      const list = state.todosByDate?.[ui.todoDate];
+      if (!Array.isArray(list)) return;
+      const target = idx + dir;
+      if (target < 0 || target >= list.length) return;
+      [list[idx], list[target]] = [list[target], list[idx]];
+      saveState();
+    };
+
+    window.pinTodoItemTop = (idx) => {
+      const list = state.todosByDate?.[ui.todoDate];
+      if (!Array.isArray(list) || idx <= 0 || idx >= list.length) return;
+      const [item] = list.splice(idx, 1);
+      list.unshift(item);
+      saveState();
+      showToast("⚡ 已置顶到第一顺位");
+    };
+
+    window.editTodoItem = (id) => {
+      const list = state.todosByDate?.[ui.todoDate] || [];
+      const item = list.find(x => x.id === id);
+      if (!item) return;
+      const tagPool = state.dictionaries.todoTags || DEFAULT_STATE.dictionaries.todoTags;
+      const tagChips = tagPool.map(t =>
+        `<button type="button" onclick="document.getElementById('mEditTodoTag').value='${t}'" class="px-2 py-1 rounded bg-slate-100 text-[11px] hover:bg-champagne-400/30">${t}</button>`
+      ).join("");
+
+      openModal(`
+        <h3 class="font-bold text-sm text-forest-900">✏️ 编辑行动标签与任务内容</h3>
+        <div class="space-y-2.5 text-xs">
+          <div>
+            <label class="text-slate-500 block mb-1">1. 任务分类标签（可直接自由输入自定义文字，或点选下方常用标签）：</label>
+            <input id="mEditTodoTag" value="${item.tag || ''}" placeholder="输入自定义标签..." class="w-full border rounded-lg p-1.5 font-bold text-forest-900 mb-1.5" />
+            <div class="flex flex-wrap gap-1">${tagChips}</div>
+          </div>
+          <div>
+            <label class="text-slate-500 block mb-1">2. 具体行动内容：</label>
+            <textarea id="mEditTodoText" rows="2" class="w-full border rounded-lg p-2">${item.text}</textarea>
+          </div>
+          <label class="flex items-center gap-1.5 text-[11px] text-amber-900 bg-amber-50 p-2 rounded border border-amber-200 cursor-pointer">
+            <input type="checkbox" id="mSaveNewTagToPool" checked /> 若输入了新标签，自动保存到预设标签库供以后使用
+          </label>
+        </div>
+        <div class="flex justify-end gap-2 pt-1">
+          <button onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">取消</button>
+          <button onclick="saveEditedTodoItem('${id}')" class="btn-primary px-4 py-1.5 rounded-lg text-xs">保存修改</button>
+        </div>
+      `);
+    };
+
+    window.saveEditedTodoItem = (id) => {
+      const list = state.todosByDate?.[ui.todoDate] || [];
+      const item = list.find(x => x.id === id);
+      if (!item) return;
+      const newTag = document.getElementById("mEditTodoTag").value.trim() || "🔥 核心重心";
+      const newText = document.getElementById("mEditTodoText").value.trim();
+      if (!newText) return;
+      item.tag = newTag;
+      item.text = newText;
+
+      if (document.getElementById("mSaveNewTagToPool").checked) {
+        if (!Array.isArray(state.dictionaries.todoTags)) state.dictionaries.todoTags = [];
+        if (!state.dictionaries.todoTags.includes(newTag)) {
+          state.dictionaries.todoTags.push(newTag);
+        }
+      }
+      closeModal(); saveState();
+      showToast("任务标签与内容已更新");
+    };
+
+    window.deleteTodoItem = (id) => {
+      if (!state.todosByDate?.[ui.todoDate]) return;
+      state.todosByDate[ui.todoDate] = state.todosByDate[ui.todoDate].filter(x => x.id !== id);
+      saveState();
+    };
+
+    window.rolloverUnfinishedTodos = () => {
+      const list = state.todosByDate?.[ui.todoDate] || [];
+      const unfinished = list.filter(x => !x.done);
+      if (!unfinished.length) {
+        showToast("今日任务已全部完成，无需顺延！");
+        return;
+      }
+      const [y, m, d] = ui.todoDate.split("-").map(Number);
+      const dt = new Date(y, m - 1, d);
+      dt.setDate(dt.getDate() + 1);
+      const nextDate = `${dt.getFullYear()}-${String(dt.getMonth()+1).padStart(2,'0')}-${String(dt.getDate()).padStart(2,'0')}`;
+      if (!state.todosByDate[nextDate]) state.todosByDate[nextDate] = [];
+      unfinished.forEach(item => {
+        state.todosByDate[nextDate].push({
+          id: "td_" + Date.now() + Math.random().toString(36).slice(2, 5),
+          tag: item.tag,
+          text: item.text,
+          done: false
+        });
+      });
+      state.todosByDate[ui.todoDate] = list.filter(x => x.done);
+      ui.todoDate = nextDate;
+      saveState();
+      showToast(`已将 ${unfinished.length} 项未完成任务顺延至 ${nextDate}`);
+    };
+
+    function renderDashboard() {
+      const target = new Date("2027-03-31");
+      const diffDays = Math.max(0, Math.ceil((target - new Date()) / (1000 * 60 * 60 * 24)));
+      document.getElementById("countdownDays").textContent = `${diffDays} 天`;
+
+      const sf = state.strategicFocus || DEFAULT_STATE.strategicFocus;
+      document.getElementById("focusLong").value = sf.longTerm || "";
+      document.getElementById("focusMid").value = sf.midTerm || "";
+      document.getElementById("focusShort").value = sf.shortTerm || "";
+
+      const tagSel = document.getElementById("newTodoTag");
+      const curTagVal = tagSel.value;
+      const tagPool = state.dictionaries.todoTags || DEFAULT_STATE.dictionaries.todoTags;
+      tagSel.innerHTML = tagPool.map(t => `<option value="${t}">${t}</option>`).join("");
+      if (curTagVal && tagPool.includes(curTagVal)) tagSel.value = curTagVal;
+
+      document.getElementById("todoDateInput").value = ui.todoDate;
+      const todos = state.todosByDate?.[ui.todoDate] || [];
+      const doneCount = todos.filter(t => t.done).length;
+      document.getElementById("todoProgressBadge").textContent = `${doneCount}/${todos.length} 完成`;
+
+      document.getElementById("todoListContainer").innerHTML = todos.map((t, idx) => `
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-2.5 rounded-lg border ${t.done ? 'bg-slate-50 border-slate-100 opacity-60' : 'bg-white border-slate-200'}">
+          <div class="flex items-start gap-2 flex-1 min-w-0">
+            <input type="checkbox" ${t.done ? 'checked' : ''} onchange="toggleTodoDone('${t.id}')" class="w-4 h-4 mt-0.5 accent-forest-900 rounded shrink-0 cursor-pointer" />
+            <span class="text-[10px] text-slate-400 font-bold w-4 mt-0.5 shrink-0">${idx + 1}.</span>
+            <div class="flex-1 min-w-0">
+              <button type="button" onclick="editTodoItem('${t.id}')" title="点击修改标签" class="inline-block text-[10px] bg-amber-50 border border-amber-200 text-forest-900 font-semibold px-1.5 py-0.5 rounded mr-1.5 mb-0.5 hover:bg-amber-100 align-middle">${t.tag}</button>
+              <span onclick="toggleTodoDone('${t.id}')" class="text-xs whitespace-normal break-words leading-relaxed cursor-pointer align-middle ${t.done ? 'line-through text-slate-400' : 'text-slate-800 font-medium'}">${t.text}</span>
+            </div>
+          </div>
+          <div class="flex items-center justify-end gap-1 shrink-0 text-[11px] pt-1 sm:pt-0 border-t sm:border-t-0 border-slate-100">
+            ${idx > 0 ? `<button type="button" onclick="pinTodoItemTop(${idx})" title="一键排到最前" class="px-1.5 py-0.5 bg-amber-100 text-amber-900 rounded font-bold">⚡置顶</button>` : ''}
+            <button type="button" onclick="moveTodoItem(${idx}, -1)" ${idx === 0 ? 'disabled' : ''} class="px-1.5 py-0.5 bg-slate-100 rounded ${idx === 0 ? 'opacity-30' : 'hover:bg-slate-200'}">↑</button>
+            <button type="button" onclick="moveTodoItem(${idx}, 1)" ${idx === todos.length - 1 ? 'disabled' : ''} class="px-1.5 py-0.5 bg-slate-100 rounded ${idx === todos.length - 1 ? 'opacity-30' : 'hover:bg-slate-200'}">↓</button>
+            <button type="button" onclick="editTodoItem('${t.id}')" class="px-1.5 py-0.5 text-slate-500 hover:text-forest-900">改</button>
+            <button type="button" onclick="deleteTodoItem('${t.id}')" class="px-1 py-0.5 text-rose-400">删</button>
+          </div>
+        </div>
+      `).join("") || `<div class="text-xs text-slate-400 py-3 text-center bg-slate-50 rounded-lg">当日暂无待办事项，对照上方【近期核心业务重心】添加 3~5 件关键行动吧。</div>`;
+
+      const offlineFitRev = state.records.reduce((a, r) => a + (r.fee || 0), 0);
+      const onlineFitRev = (state.onlineClients || []).reduce((a, c) => a + (parseFloat(c.fee) || 0), 0);
+      const totalFitRev = offlineFitRev + onlineFitRev;
+      const remLessons = state.students.reduce((a, s) => a + (s.remainingLessons || 0), 0);
+      const tourRev = state.tourOrders.reduce((a, o) => a + ((o.gross || 0) - (o.cost || 0)), 0);
+      const totalLeads = state.mediaPosts.reduce((a, m) => a + (m.leads || 0), 0);
+
+      document.getElementById("dashFitRev").textContent = `¥${totalFitRev.toLocaleString()}`;
+      document.getElementById("dashFitLessons").textContent = `线下余${remLessons}节 | 线上${(state.onlineClients||[]).length}人`;
+      document.getElementById("dashTourRev").textContent = `¥${tourRev.toLocaleString()}`;
+      document.getElementById("dashTourOrders").textContent = `成团: ${state.tourOrders.length} 单`;
+      document.getElementById("dashTotalLeads").textContent = `${totalLeads} 人`;
+      document.getElementById("dashActiveStudents").textContent = `${state.students.length + (state.onlineClients||[]).length} 人`;
+    }
+
+    // ==================== 设置：全模块自定义命名 + 选项词典（含上课勾选标签自定义） ====================
+    window.openSettingsModal = () => {
+      const d = state.dictionaries;
+      const L = state.customLabels || DEFAULT_STATE.customLabels;
+      openModal(`
+        <h3 class="font-bold text-sm text-forest-900">⚙️ 全局模块命名与勾选词典设置</h3>
+        <div class="space-y-3 text-xs">
+          <div class="p-2.5 bg-amber-50/70 border border-amber-200 rounded-lg space-y-2">
+            <div class="font-bold text-amber-900">🏷️ 自定义各模块名称（随时改名，保存即生效）</div>
+            <div class="grid grid-cols-2 gap-2">
+              <div><label class="text-[11px] text-slate-500">系统总标题</label><input id="lblAppTitle" value="${L.appTitle}" class="w-full border rounded p-1 bg-white" /></div>
+              <div><label class="text-[11px] text-slate-500">顶部支柱1名称</label><input id="lblP1" value="${L.pillar1}" class="w-full border rounded p-1 bg-white" /></div>
+              <div><label class="text-[11px] text-slate-500">顶部支柱2名称</label><input id="lblP2" value="${L.pillar2}" class="w-full border rounded p-1 bg-white" /></div>
+              <div><label class="text-[11px] text-slate-500">顶部支柱3名称</label><input id="lblP3" value="${L.pillar3}" class="w-full border rounded p-1 bg-white" /></div>
+              <div><label class="text-[11px] text-slate-500">顶部支柱4名称</label><input id="lblP4" value="${L.pillar4}" class="w-full border rounded p-1 bg-white" /></div>
+              <div><label class="text-[11px] text-slate-500">线下模式按钮名</label><input id="lblModeOff" value="${L.fitModeOffline}" class="w-full border rounded p-1 bg-white" /></div>
+              <div class="col-span-2"><label class="text-[11px] text-slate-500">线上模式按钮名</label><input id="lblModeOn" value="${L.fitModeOnline}" class="w-full border rounded p-1 bg-white" /></div>
+              <div><label class="text-[11px] text-slate-500">线上子模块1</label><input id="lblOn1" value="${L.onSub1}" class="w-full border rounded p-1 bg-white" /></div>
+              <div><label class="text-[11px] text-slate-500">线上子模块2</label><input id="lblOn2" value="${L.onSub2}" class="w-full border rounded p-1 bg-white" /></div>
+              <div><label class="text-[11px] text-slate-500">线上子模块3</label><input id="lblOn3" value="${L.onSub3}" class="w-full border rounded p-1 bg-white" /></div>
+              <div><label class="text-[11px] text-slate-500">线上子模块4</label><input id="lblOn4" value="${L.onSub4}" class="w-full border rounded p-1 bg-white" /></div>
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <div class="font-bold text-forest-900">⚡ 上课消课与反馈快捷勾选词典（用 || 分隔不同选项）</div>
+            <div><label class="text-slate-600">课堂专注度点选库</label><input id="setClsFocus" value="${(d.classFocusTags||[]).join(' || ')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+            <div><label class="text-slate-600">课后疲劳度(RPE)点选库</label><input id="setClsFatigue" value="${(d.classFatigueTags||[]).join(' || ')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+            <div><label class="text-slate-600">英语表现亮点多选库</label><input id="setClsEngGood" value="${(d.classEngGoodTags||[]).join(' || ')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+            <div><label class="text-slate-600">英语下节突破建议多选库</label><input id="setClsEngImp" value="${(d.classEngImproveTags||[]).join(' || ')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          </div>
+
+          <div class="space-y-2 pt-2 border-t">
+            <div class="font-bold text-forest-900">📚 通用下拉选项与标签词典（用顿号或逗号分隔）</div>
+            <div><label class="text-slate-600">每日To-Do行动分类标签</label><input id="setTodoTags" value="${(d.todoTags||DEFAULT_STATE.dictionaries.todoTags).join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+            <div><label class="text-slate-600">常用上课地点</label><input id="setLocs" value="${d.locations.join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+            <div><label class="text-slate-600">线上会员常用训练场景</label><input id="setOnlineEnvs" value="${(d.onlineEnvs||[]).join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+            <div><label class="text-slate-600">进食餐次类型标签</label><input id="setMealTypes" value="${(d.mealTypes||[]).join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+            <div><label class="text-slate-600">国内社媒平台池</label><input id="setFitPlats" value="${(d.fitMediaPlatforms||[]).join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+            <div><label class="text-slate-600">海外地接社媒平台池</label><input id="setTourPlats" value="${(d.tourMediaPlatforms||[]).join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+            <div><label class="text-slate-600">我的训练强度标签</label><input id="setIntensities" value="${d.trainingIntensities.join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+            <div><label class="text-slate-600">我的健康状态标签</label><input id="setTagsMe" value="${d.healthTagsMe.join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+            <div><label class="text-slate-600">妻子健康状态标签</label><input id="setTagsWife" value="${d.healthTagsWife.join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          </div>
+
+          <div class="pt-2 border-t flex items-center justify-between">
+            <label class="flex items-center gap-1.5 font-semibold"><input id="setLockOn" type="checkbox" ${state.lockEnabled?'checked':''} /> 启动密码锁</label>
+            <input id="setPin" value="${state.pin}" maxlength="6" class="w-20 border rounded-lg p-1 text-center" />
+          </div>
+        </div>
+        <div class="flex justify-end gap-2 pt-1">
+          <button onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">取消</button>
+          <button onclick="saveDictionaries()" class="btn-primary px-4 py-1.5 rounded-lg text-xs">保存全部设置</button>
+        </div>
+      `);
+    };
+
+    window.saveDictionaries = () => {
+      const splitList = (id) => document.getElementById(id).value.split(/[,，、]/).map(s => s.trim()).filter(Boolean);
+      const splitPipe = (id) => document.getElementById(id).value.split("||").map(s => s.trim()).filter(Boolean);
+      state.customLabels = {
+        ...state.customLabels,
+        appTitle: document.getElementById("lblAppTitle").value.trim() || "Leo | Life OS",
+        pillar1: document.getElementById("lblP1").value.trim() || "🏃 体能与顾问",
+        pillar2: document.getElementById("lblP2").value.trim() || "🗺️ 英语地接",
+        pillar3: document.getElementById("lblP3").value.trim() || "🥗 健康饮食",
+        pillar4: document.getElementById("lblP4").value.trim() || "📊 复利总览",
+        fitModeOffline: document.getElementById("lblModeOff").value.trim() || "🌳 线下·双语体能训练",
+        fitModeOnline: document.getElementById("lblModeOn").value.trim() || "🌐 线上·私享健康与训练顾问",
+        onSub1: document.getElementById("lblOn1").value.trim() || "1. 订阅会员表",
+        onSub2: document.getElementById("lblOn2").value.trim() || "2. 定制诊断问卷",
+        onSub3: document.getElementById("lblOn3").value.trim() || "3. 周期计划与答疑",
+        onSub4: document.getElementById("lblOn4").value.trim() || "4. 订阅定价与赠品"
+      };
+      state.dictionaries.classFocusTags = splitPipe("setClsFocus");
+      state.dictionaries.classFatigueTags = splitPipe("setClsFatigue");
+      state.dictionaries.classEngGoodTags = splitPipe("setClsEngGood");
+      state.dictionaries.classEngImproveTags = splitPipe("setClsEngImp");
+      state.dictionaries.todoTags = splitList("setTodoTags");
+      state.dictionaries.locations = splitList("setLocs");
+      state.dictionaries.onlineEnvs = splitList("setOnlineEnvs");
+      state.dictionaries.mealTypes = splitList("setMealTypes");
+      state.dictionaries.fitMediaPlatforms = splitList("setFitPlats");
+      state.dictionaries.tourMediaPlatforms = splitList("setTourPlats");
+      state.dictionaries.trainingIntensities = splitList("setIntensities");
+      state.dictionaries.healthTagsMe = splitList("setTagsMe");
+      state.dictionaries.healthTagsWife = splitList("setTagsWife");
+      state.lockEnabled = document.getElementById("setLockOn").checked;
+      state.pin = document.getElementById("setPin").value.trim() || "1999";
+      closeModal(); saveState(); showToast("模块名称与全局勾选词典已更新");
+    };
+
+    window.deleteItem = (collection, id) => {
+      if (!confirm("确定删除？")) return;
+      state[collection] = state[collection].filter(x => x.id !== id);
+      saveState(); showToast("已删除");
+    };
+
+    window.exportBackup = () => {
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `Leo_Life_OS_${getOffsetDate(0)}.json`;
+      a.click();
+      showToast("备份已导出");
+    };
+
+    window.openModal = (html) => {
+      document.getElementById("modalBox").innerHTML = html;
+      document.getElementById("modalOverlay").classList.remove("hidden");
+    };
+    window.closeModal = () => document.getElementById("modalOverlay").classList.add("hidden");
+
+    function renderAll() {
+      if (state.lockEnabled && sessionStorage.getItem("leo_unlocked") !== "1") {
+        document.getElementById("lockScreen").classList.remove("hidden");
+      }
+      applyCustomLabels();
+      renderStudents();
+      renderRecords();
+      renderDrills();
+      renderStandards();
+      renderOnlineFitness();
+      renderPricing();
+      renderSops();
+      renderMedia();
+      renderTour();
+      renderHealth();
+      renderDashboard();
+    }
+
+    renderAll();
+  </script>
+</body>
+</html>
