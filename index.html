@@ -1754,7 +1754,280 @@
       window.copyRaw(textToCopy, "该节微信家长反馈已复制");
     };
 
+    function renderRecords() {
+      const formal = state.records.filter(r => r.type === "formal");
+      const trials = state.records.filter(r => r.type === "trial");
+      const convTrials = trials.filter(r => r.converted);
+      const rate = trials.length ? Math.round((convTrials.length / trials.length) * 100) : 0;
+
+      document.getElementById("statFormalCount").textContent = `${formal.length} 节`;
+      document.getElementById("statTrialCount").textContent = `${trials.length} 人`;
+      document.getElementById("statTrialRate").textContent = `${rate}%`;
+
+      document.getElementById("recordList").innerHTML = state.records.map(r => {
+        const drillsBadges = (r.drillsDone || []).map(dn => `<span class="text-[10px] bg-slate-100 text-forest-900 px-1.5 py-0.5 rounded font-medium">${dn}</span>`).join("");
+        const tagsBadges = [
+          r.focusTag ? `<span class="text-[10px] bg-emerald-50 text-emerald-800 border border-emerald-200 px-1.5 py-0.5 rounded">${r.focusTag.split('（')[0]}</span>` : '',
+          r.fatigueTag ? `<span class="text-[10px] bg-amber-50 text-amber-900 border border-amber-200 px-1.5 py-0.5 rounded">${r.fatigueTag.split('（')[0]}</span>` : ''
+        ].filter(Boolean).join("");
+
+        return `
+          <div class="card p-3 space-y-2">
+            <div class="flex items-start justify-between gap-2">
+              <div class="space-y-1 flex-1 min-w-0">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <span class="text-xs font-bold text-forest-900">${r.date}</span>
+                  <span class="font-bold text-xs">${r.studentName}</span>
+                  <span class="text-[10px] px-1.5 py-0.5 rounded font-semibold ${r.type==='formal' ? 'bg-forest-900 text-white' : 'bg-amber-100 text-amber-900'}">
+                    ${r.type === 'formal' ? '正式消课(-1)' : (r.converted ? '体验·已转化✅' : '体验·未转化⚠️')}
+                  </span>
+                  <span class="text-[10px] text-slate-400">📍${r.location}</span>
+                </div>
+                ${drillsBadges ? `<div class="flex flex-wrap gap-1 pt-0.5"><span class="text-[10px] text-slate-400">实训动作/游戏:</span>${drillsBadges}</div>` : ''}
+                ${tagsBadges ? `<div class="flex flex-wrap gap-1">${tagsBadges}</div>` : ''}
+                <p class="text-xs text-slate-600 leading-relaxed">${r.summary || ''}</p>
+                ${r.type === 'trial' && !r.converted && r.failReason ? `<div class="text-[11px] text-rose-600">未转化原因：${r.failReason}</div>` : ''}
+              </div>
+              <div class="text-right shrink-0 space-y-1">
+                <div class="text-xs font-bold text-emerald-700">+¥${r.fee || 0}</div>
+                <div class="flex flex-col gap-1 items-end">
+                  <button type="button" onclick="copyRecordFeedbackById('${r.id}')" class="px-2 py-0.5 rounded bg-champagne-500 text-forest-900 text-[10px] font-bold">复制微信反馈</button>
+                  <button type="button" onclick="deleteItem('records', '${r.id}')" class="text-[10px] text-rose-400">删除</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+
+    // ==================== 全勾选式【上课消课 + 动作/游戏关联 + 微信反馈】一体化弹窗 ====================
+    window.launchRecordFromLessonPlan = () => {
+      const stuId = document.getElementById("lessonStudentSelect").value || (state.students[0]?.id || null);
+      openRecordModal(stuId, true);
+    };
+
+    window.onRecordStudentChange = () => {
+      const stuId = document.getElementById("mRecStu").value;
+      const stu = state.students.find(s => s.id === stuId);
+      const hint = document.getElementById("mRecStuHint");
+      if (stu) {
+        document.getElementById("mRecFee").value = stu.unitPrice || 200;
+        hint.textContent = `当前余 ${stu.remainingLessons} 节 | 核心诉求：${(stu.goals||[]).join('、') || '暂无'}`;
+      } else {
+        hint.textContent = "新体验学员记录（不扣减正式课时）";
+      }
+      refreshModalRecordPreview();
+    };
+
+    window.refreshModalRecordPreview = () => {
+      const stuId = document.getElementById("mRecStu")?.value;
+      const tempName = document.getElementById("mRecTempName")?.value?.trim();
+      const stu = state.students.find(s => s.id === stuId);
+      const stuName = stu ? stu.name.split(" ")[0] : (tempName || "学员");
+
+      const checkedDrills = Array.from(document.querySelectorAll('input[name="mRecDrillChk"]:checked')).map(el => el.value);
+      const focusVal = document.querySelector('input[name="mRecFocusRadio"]:checked')?.value || "";
+      const fatigueVal = document.querySelector('input[name="mRecFatigueRadio"]:checked')?.value || "";
+      const engGoodVals = Array.from(document.querySelectorAll('input[name="mRecEngGoodChk"]:checked')).map(el => el.value);
+      const engImpVals = Array.from(document.querySelectorAll('input[name="mRecEngImpChk"]:checked')).map(el => el.value);
+      const customNote = document.getElementById("mRecSum")?.value?.trim() || "";
+
+      const goalLine = (stu && stu.goals && stu.goals.length) ? `\n🎯 周期对齐目标：${stu.goals.join("、")}` : "";
+      const drillLine = checkedDrills.length ? `\n🏃 今日实训动作与游戏：${checkedDrills.join(" + ")}` : "";
+      const noteLine = customNote ? `\n💡 教练针对性观察与建议：${customNote}` : "";
+
+      const fbText = `【Leo双语体能 · 课后科学表现反馈】\n您好！今天 ${stuName} 的户外训练状态非常棒，跟您同步一下本节课的核心观察维度：${goalLine}${drillLine}\n\n1️⃣ 课堂专注力与投入度：\n${focusVal}\n\n2️⃣ 身体疲劳度与负荷评估(RPE)：\n${fatigueVal}\n\n3️⃣ 纯英指令反应与开口表现：\n• 表现亮点：${engGoodVals.join("；") || "积极配合英文指令互动"}\n• 下节突破：${engImpVals.join("；") || "继续强化运动短句主动输出"}${noteLine}\n\n回去记得及时补充温水与优质蛋白（牛肉/鸡蛋/牛奶），今晚早点休息让生长激素与神经系统充分超量恢复！💪`;
+
+      const previewBox = document.getElementById("mRecFeedbackPreview");
+      if (previewBox) previewBox.value = fbText;
+    };
+
+    window.openRecordModal = (preselectedStuId = null, useSelectedDrills = false) => {
+      const stuOpts = state.students.map(s => `<option value="${s.id}" ${preselectedStuId===s.id?'selected':''}>${s.name} (余${s.remainingLessons}节)</option>`).join("") + `<option value="new_trial">+ 临时体验新学员</option>`;
+      const locOpts = state.dictionaries.locations.map(l => `<option>${l}</option>`).join("");
+      const failOpts = state.dictionaries.trialFailReasons.map(f => `<option>${f}</option>`).join("");
+
+      // 优先勾上备课单中已选的动作/游戏
+      const preDrillNames = (useSelectedDrills && ui.selectedDrills.length)
+        ? ui.selectedDrills.map(d => d.name)
+        : (ui.selectedDrills.length ? ui.selectedDrills.map(d => d.name) : [state.drills[0]?.name, state.drills[5]?.name].filter(Boolean));
+
+      const drillChecksHtml = state.drills.map(d => {
+        const isGame = d.cat === "🎲 趣味游戏";
+        const checked = preDrillNames.includes(d.name) ? "checked" : "";
+        return `<label class="flex items-center gap-1 text-[11px] px-2 py-1 rounded-md border cursor-pointer ${isGame ? 'bg-amber-50 border-amber-300 text-amber-900 font-semibold' : 'bg-white border-slate-200 text-slate-700'}">
+          <input type="checkbox" name="mRecDrillChk" value="${d.name}" ${checked} onchange="refreshModalRecordPreview()" class="accent-forest-900" />
+          <span>${isGame ? '🎲 ' : ''}${d.name}</span>
+        </label>`;
+      }).join("");
+
+      const focusRadios = (state.dictionaries.classFocusTags || []).map((t, idx) => `
+        <label class="flex items-center gap-1.5 text-[11px] bg-white border border-slate-200 px-2 py-1 rounded-md cursor-pointer">
+          <input type="radio" name="mRecFocusRadio" value="${t}" ${idx===0?'checked':''} onchange="refreshModalRecordPreview()" class="accent-forest-900" />
+          <span>${t}</span>
+        </label>
+      `).join("");
+
+      const fatigueRadios = (state.dictionaries.classFatigueTags || []).map((t, idx) => `
+        <label class="flex items-center gap-1.5 text-[11px] bg-white border border-slate-200 px-2 py-1 rounded-md cursor-pointer">
+          <input type="radio" name="mRecFatigueRadio" value="${t}" ${idx===0?'checked':''} onchange="refreshModalRecordPreview()" class="accent-forest-900" />
+          <span>${t}</span>
+        </label>
+      `).join("");
+
+      const engGoodChecks = (state.dictionaries.classEngGoodTags || []).map((t, idx) => `
+        <label class="flex items-center gap-1.5 text-[11px] bg-white border border-slate-200 px-2 py-1 rounded-md cursor-pointer">
+          <input type="checkbox" name="mRecEngGoodChk" value="${t}" ${idx<2?'checked':''} onchange="refreshModalRecordPreview()" class="accent-forest-900" />
+          <span>${t}</span>
+        </label>
+      `).join("");
+
+      const engImpChecks = (state.dictionaries.classEngImproveTags || []).map((t, idx) => `
+        <label class="flex items-center gap-1.5 text-[11px] bg-white border border-slate-200 px-2 py-1 rounded-md cursor-pointer">
+          <input type="checkbox" name="mRecEngImpChk" value="${t}" ${idx===0?'checked':''} onchange="refreshModalRecordPreview()" class="accent-forest-900" />
+          <span>${t}</span>
+        </label>
+      `).join("");
+
+      openModal(`
+        <div class="flex items-center justify-between border-b pb-2">
+          <div>
+            <h3 class="font-bold text-sm text-forest-900">⚡ 全勾选式上课消课 & 微信反馈一体机</h3>
+            <p class="text-[10px] text-slate-500">直接勾选今日动作/游戏、疲劳度与英语表现，一键完成扣课并复制家长反馈</p>
+          </div>
+          <button onclick="closeModal()" class="text-xs text-slate-400">✕</button>
+        </div>
+
+        <div class="space-y-3 text-xs">
+          <div class="grid grid-cols-2 gap-2">
+            <div><label class="text-slate-500">上课日期</label><input id="mRecDate" type="date" value="${getOffsetDate(0)}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+            <div><label class="text-slate-500">课程类型</label>
+              <select id="mRecType" onchange="document.getElementById('trialBox').classList.toggle('hidden', this.value==='formal')" class="w-full border rounded-lg p-1.5 mt-0.5 font-semibold">
+                <option value="formal">正式课 (自动扣1节)</option>
+                <option value="trial">体验课 (不扣课)</option>
+              </select>
+            </div>
+            <div><label class="text-slate-500">选择学员</label><select id="mRecStu" onchange="onRecordStudentChange()" class="w-full border rounded-lg p-1.5 mt-0.5 font-bold text-forest-900">${stuOpts}</select></div>
+            <div><label class="text-slate-500">新体验姓名(选填)</label><input id="mRecTempName" oninput="refreshModalRecordPreview()" placeholder="体验学员名" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+            <div class="col-span-2 text-[11px] text-amber-900 bg-amber-50 px-2 py-1 rounded border border-amber-200" id="mRecStuHint"></div>
+            <div><label class="text-slate-500">上课场地</label><select id="mRecLoc" class="w-full border rounded-lg p-1.5 mt-0.5">${locOpts}</select></div>
+            <div><label class="text-slate-500">本节实收课时费 (元)</label><input id="mRecFee" type="number" value="200" class="w-full border rounded-lg p-1.5 mt-0.5 font-bold" /></div>
+          </div>
+
+          <div id="trialBox" class="hidden bg-amber-50 p-2.5 rounded-lg border border-amber-200 space-y-1.5 text-xs">
+            <div class="flex items-center gap-3">
+              <span class="font-semibold">体验转化结果：</span>
+              <label><input type="radio" name="mRecConv" value="1" checked /> 已转化锁单</label>
+              <label><input type="radio" name="mRecConv" value="0" /> 暂未转化</label>
+            </div>
+            <div><select id="mRecFail" class="w-full border rounded-md p-1.5 bg-white">${failOpts}</select></div>
+          </div>
+
+          <!-- 勾选1：本节实训动作与趣味游戏 -->
+          <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200 space-y-1.5">
+            <div class="flex items-center justify-between">
+              <label class="font-bold text-forest-900">1. 勾选本节完成的动作 / 🎲趣味游戏（联动动作库）</label>
+              <span class="text-[10px] text-slate-400">可多选</span>
+            </div>
+            <div class="flex flex-wrap gap-1 max-h-28 overflow-y-auto p-0.5">${drillChecksHtml}</div>
+          </div>
+
+          <!-- 勾选2：课堂专注力表现 -->
+          <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200 space-y-1">
+            <label class="font-bold text-forest-900 block">2. 点选课堂专注力表现</label>
+            <div class="grid grid-cols-1 gap-1">${focusRadios}</div>
+          </div>
+
+          <!-- 勾选3：课后疲劳度 RPE 表现 -->
+          <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200 space-y-1">
+            <label class="font-bold text-forest-900 block">3. 点选课后身体疲劳度 (RPE) 表现</label>
+            <div class="grid grid-cols-1 gap-1">${fatigueRadios}</div>
+          </div>
+
+          <!-- 勾选4：英语表现亮点与突破点 -->
+          <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200 space-y-1.5">
+            <label class="font-bold text-forest-900 block">4. 勾选英语沟通表现亮点（可多选）</label>
+            <div class="grid grid-cols-1 gap-1">${engGoodChecks}</div>
+            <label class="font-bold text-amber-900 block pt-1">5. 勾选下节课突破建议（可多选）</label>
+            <div class="grid grid-cols-1 gap-1">${engImpChecks}</div>
+          </div>
+
+          <!-- 选填：一句话个性化数字补充 -->
+          <div>
+            <label class="text-slate-500">6. 一句话数据/细节补充（选填，如：左脚单站提升至32秒 / 跳绳破175个）</label>
+            <input id="mRecSum" oninput="refreshModalRecordPreview()" placeholder="免打字可直接留空，或填1个关键数字..." class="w-full border rounded-lg p-1.5 mt-0.5" />
+          </div>
+
+          <!-- 自动合成的微信反馈预览 -->
+          <div>
+            <label class="text-slate-500 block mb-1">💬 实时合成的家长微信反馈（保存时可一键自动复制）</label>
+            <textarea id="mRecFeedbackPreview" rows="4" class="w-full text-[11px] bg-forest-900 text-slate-100 rounded-lg p-2 leading-relaxed"></textarea>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap justify-end gap-2 pt-2 border-t">
+          <button onclick="closeModal()" class="px-3 py-2 rounded-lg text-xs text-slate-500">取消</button>
+          <button onclick="saveRecord(false)" class="px-3 py-2 rounded-lg text-xs bg-slate-200 text-slate-800 font-semibold">仅保存消课</button>
+          <button onclick="saveRecord(true)" class="btn-gold px-4 py-2 rounded-lg text-xs font-extrabold">✅ 确认消课并复制微信反馈</button>
+        </div>
+      `);
+      onRecordStudentChange();
+    };
+
     window.saveRecord = (autoCopyFeedback = true) => {
+      const type = document.getElementById("mRecType").value;
+      const stuId = document.getElementById("mRecStu").value;
+      let stuName = document.getElementById("mRecTempName").value.trim() || "体验新学员";
+      if (stuId !== "new_trial") {
+        const stu = state.students.find(s => s.id === stuId);
+        if (stu) {
+          stuName = stu.name;
+          if (type === "formal" && stu.remainingLessons > 0) stu.remainingLessons -= 1;
+        }
+      }
+      const converted = document.querySelector('input[name="mRecConv"]:checked')?.value === "1";
+      const drillsDone = Array.from(document.querySelectorAll('input[name="mRecDrillChk"]:checked')).map(el => el.value);
+      const focusTag = document.querySelector('input[name="mRecFocusRadio"]:checked')?.value || "";
+      const fatigueTag = document.querySelector('input[name="mRecFatigueRadio"]:checked')?.value || "";
+      const engGoodTags = Array.from(document.querySelectorAll('input[name="mRecEngGoodChk"]:checked')).map(el => el.value);
+      const engImpTags = Array.from(document.querySelectorAll('input[name="mRecEngImpChk"]:checked')).map(el => el.value);
+      const customNote = document.getElementById("mRecSum").value.trim();
+      const feedbackText = document.getElementById("mRecFeedbackPreview").value;
+
+      const autoSummary = [
+        customNote,
+        drillsDone.length ? `实练：${drillsDone.join('、')}` : '',
+        engGoodTags[0] || ''
+      ].filter(Boolean).join(" ｜ ") || "完成双语体能标准课时训练";
+
+      state.records.unshift({
+        id: "rec_" + Date.now(),
+        date: document.getElementById("mRecDate").value,
+        studentId: stuId,
+        studentName: stuName,
+        type,
+        location: document.getElementById("mRecLoc").value,
+        fee: parseFloat(document.getElementById("mRecFee").value) || 0,
+        converted,
+        failReason: converted ? "" : document.getElementById("mRecFail").value,
+        drillsDone,
+        focusTag,
+        fatigueTag,
+        engGoodTags,
+        engImpTags,
+        summary: autoSummary,
+        feedbackText
+      });
+
+      closeModal();
+      saveState();
+      if (autoCopyFeedback) {
+        window.copyRaw(feedbackText, "✅ 已扣减课时并复制微信反馈，可直接去微信粘贴！");
+      } else {
+        showToast("上课消课记录已归档");
+      }
+    };
 
     // ==================== 10大双语动作与游戏库（免左右滑动折叠网格 + 备课反馈联动） ====================
     const DRILL_CATS = ["全部", "🎲 趣味游戏", "动态热身", "灵敏", "协调", "平衡", "速度", "力量", "耐力", "柔韧", "拉伸恢复"];
@@ -2363,7 +2636,7 @@
       closeModal(); saveState(); showToast("计划与答疑记录已归档");
     };
 
-   // ==================== 全盘定价体系（整体模块全景矩阵表【支持表内直接编辑】 + 动态测算器双向联动） ====================
+    // ==================== 全盘定价体系（整体模块全景矩阵表 + 动态测算器） ====================
     window.copyPricingById = (id) => {
       const p = (state.pricing || []).find(x => x.id === id);
       if (!p) return;
@@ -2375,15 +2648,12 @@
       if (!state.pricingCalc) state.pricingCalc = structuredClone(DEFAULT_STATE.pricingCalc);
       if (!state.pricingCalc.offline) state.pricingCalc.offline = structuredClone(DEFAULT_STATE.pricingCalc.offline);
       if (!state.pricingCalc.online) state.pricingCalc.online = structuredClone(DEFAULT_STATE.pricingCalc.online);
-      if (!state.pricingCalc.offline.matrixCustom) state.pricingCalc.offline.matrixCustom = {};
-      if (!state.pricingCalc.online.matrixCustom) state.pricingCalc.online.matrixCustom = {};
     }
 
-    // 计算线下全盘 1v1~1v4 各梯度价格数据（支持矩阵表自定义覆盖与下方PRO测算器双向同步）
+    // 计算线下全盘 1v1~1v4 各梯度价格数据（供全景矩阵表与复制报价共用）
     function getOfflineMatrixRows() {
       ensurePricingCalcState();
       const cfg = state.pricingCalc.offline;
-      const mc = cfg.matrixCustom || {};
       const base1v1 = cfg.base1v1 || 320;
       const disc10 = cfg.disc10 || 88;
       const disc20 = cfg.disc20 || 78;
@@ -2394,62 +2664,23 @@
       const p1v3_20 = cfg.p1v3 || 170;
       const p1v4_20 = cfg.p1v4 || 145;
 
+      // 10节包单节价按与20节包同比例微浮（约+12%，保持10节包与20节包清晰梯度）
       const ratio10vs20 = disc10 / disc20;
-      const p1v2_10 = mc.u10_2 ?? (Math.round((p1v2_20 * ratio10vs20) / 5) * 5);
-      const p1v3_10 = mc.u10_3 ?? (Math.round((p1v3_20 * ratio10vs20) / 5) * 5);
-      const p1v4_10 = mc.u10_4 ?? (Math.round((p1v4_20 * ratio10vs20) / 5) * 5);
+      const p1v2_10 = Math.round((p1v2_20 * ratio10vs20) / 5) * 5;
+      const p1v3_10 = Math.round((p1v3_20 * ratio10vs20) / 5) * 5;
+      const p1v4_10 = Math.round((p1v4_20 * ratio10vs20) / 5) * 5;
 
-      const p1v2_single = mc.single_2 ?? (Math.round((p1v2_10 * 1.12) / 5) * 5);
-      const p1v3_single = mc.single_3 ?? (Math.round((p1v3_10 * 1.12) / 5) * 5);
-      const p1v4_single = mc.single_4 ?? (Math.round((p1v4_10 * 1.12) / 5) * 5);
+      const p1v2_single = Math.round((p1v2_10 * 1.12) / 5) * 5;
+      const p1v3_single = Math.round((p1v3_10 * 1.12) / 5) * 5;
+      const p1v4_single = Math.round((p1v4_10 * 1.12) / 5) * 5;
 
       return [
-        { size: 1, name: mc.name_1 || "👤 1v1 私享定制", tag: mc.tag_1 || "靶向突破", single: base1v1, u10: p1v1_10, t10: p1v1_10 * 10, u20: p1v1_20, t20: p1v1_20 * 20, save20: Math.max(0, (base1v1 - p1v1_20) * 20), coachOut: p1v1_20 * 1 },
-        { size: 2, name: mc.name_2 || "👥 1v2 双人同训", tag: mc.tag_2 || "伙伴激励", single: p1v2_single, u10: p1v2_10, t10: p1v2_10 * 10, u20: p1v2_20, t20: p1v2_20 * 20, save20: Math.max(0, (base1v1 - p1v2_20) * 20), coachOut: p1v2_20 * 2 },
-        { size: 3, name: mc.name_3 || "👨‍👩‍👦 1v3 精品小班", tag: mc.tag_3 || "🔥黄金主推", single: p1v3_single, u10: p1v3_10, t10: p1v3_10 * 10, u20: p1v3_20, t20: p1v3_20 * 20, save20: Math.max(0, (base1v1 - p1v3_20) * 20), coachOut: p1v3_20 * 3 },
-        { size: 4, name: mc.name_4 || "👨‍👩‍👧‍👦 1v4 竞技战队", tag: mc.tag_4 || "团队对抗", single: p1v4_single, u10: p1v4_10, t10: p1v4_10 * 10, u20: p1v4_20, t20: p1v4_20 * 20, save20: Math.max(0, (base1v1 - p1v4_20) * 20), coachOut: p1v4_20 * 4 }
+        { size: 1, name: "👤 1v1 私享定制", tag: "靶向突破", single: base1v1, u10: p1v1_10, t10: p1v1_10 * 10, u20: p1v1_20, t20: p1v1_20 * 20, save20: (base1v1 - p1v1_20) * 20, coachOut: p1v1_20 * 1 },
+        { size: 2, name: "👥 1v2 双人同训", tag: "伙伴激励", single: p1v2_single, u10: p1v2_10, t10: p1v2_10 * 10, u20: p1v2_20, t20: p1v2_20 * 20, save20: (base1v1 - p1v2_20) * 20, coachOut: p1v2_20 * 2 },
+        { size: 3, name: "👨‍👩‍👦 1v3 精品小班", tag: "🔥黄金主推", single: p1v3_single, u10: p1v3_10, t10: p1v3_10 * 10, u20: p1v3_20, t20: p1v3_20 * 20, save20: (base1v1 - p1v3_20) * 20, coachOut: p1v3_20 * 3 },
+        { size: 4, name: "👨‍👩‍👧‍👦 1v4 竞技战队", tag: "团队对抗", single: p1v4_single, u10: p1v4_10, t10: p1v4_10 * 10, u20: p1v4_20, t20: p1v4_20 * 20, save20: (base1v1 - p1v4_20) * 20, coachOut: p1v4_20 * 4 }
       ];
     }
-
-    // 在全景价格矩阵表中直接修改文字或价格 -> 实时反向联动下方 PRO 测算器
-    window.onOfflineMatrixEdit = (size, field, rawVal) => {
-      ensurePricingCalcState();
-      const cfg = state.pricingCalc.offline;
-      const mc = cfg.matrixCustom;
-
-      if (field === "name" || field === "tag") {
-        mc[`${field}_${size}`] = rawVal.trim();
-        saveCalcStateDebounced();
-        return;
-      }
-
-      const num = parseFloat(rawVal);
-      if (isNaN(num) || num <= 0) return;
-
-      if (field === "single") {
-        if (size === 1) cfg.base1v1 = num;
-        else mc[`single_${size}`] = num;
-      } else if (field === "u10") {
-        if (size === 1) {
-          cfg.disc10 = Math.min(99, Math.max(50, Math.round((num / (cfg.base1v1 || 320)) * 100)));
-        } else {
-          mc[`u10_${size}`] = num;
-        }
-      } else if (field === "u20") {
-        if (size === 1) {
-          cfg.disc20 = Math.min(98, Math.max(40, Math.round((num / (cfg.base1v1 || 320)) * 100)));
-        } else if (size === 2) {
-          cfg.p1v2 = num;
-        } else if (size === 3) {
-          cfg.p1v3 = num;
-        } else if (size === 4) {
-          cfg.p1v4 = num;
-        }
-      }
-
-      renderOfflineCalculator();
-      saveCalcStateDebounced();
-    };
 
     window.copyFullOfflineMatrixText = () => {
       const rows = getOfflineMatrixRows();
@@ -2463,14 +2694,10 @@
     window.copyFullOnlineMatrixText = () => {
       ensurePricingCalcState();
       const cfg = state.pricingCalc.online;
-      const mc = cfg.matrixCustom || {};
       const pM = cfg.pMonth || 1280;
       const pQ = cfg.pQuarter || 2980;
       const pY = cfg.pYear || 9800;
-      const nM = mc.name_monthly || "月度轻享计划 (1个月)";
-      const nQ = mc.name_quarterly || "季度蜕变陪伴 (3个月·主推)";
-      const nY = mc.name_yearly || "年度首席顾问 (12个月)";
-      const txt = `【Leo 私享健康与训练顾问 · 线上订阅价格体系总表】\n1️⃣ ${nM}：¥${pM.toLocaleString()}（折合 ¥${pM}/月）\n   - 含：深度健康摸底建档 + 4周双轨定制训练处方(主场A+差旅B) + 每周异步视频诊断答疑\n2️⃣ ${nQ}：¥${pQ.toLocaleString()}（折合 ¥${Math.round(pQ/3)}/月 · 立省 ¥${Math.max(0, pM*3 - pQ)}）\n   - 含：12周动态进阶周期表 + 每周深度复盘 + 附赠专业弹力带套装与控糖饮食指南\n3️⃣ ${nY}：¥${pY.toLocaleString()}（折合 ¥${Math.round(pY/12)}/月 · 立省 ¥${Math.max(0, pM*12 - pY)}）\n   - 含：全年体能形体统筹 + 伤病预防处方 + 家属共享咨询权益`;
+      const txt = `【Leo 私享健康与训练顾问 · 线上订阅价格体系总表】\n1️⃣ 月度轻享计划（1个月）：¥${pM.toLocaleString()}（折合 ¥${pM}/月）\n   - 含：深度健康摸底建档 + 4周双轨定制训练处方(主场A+差旅B) + 每周异步视频诊断答疑\n2️⃣ 季度蜕变私享陪伴（3个月 · 主推🔥）：¥${pQ.toLocaleString()}（折合 ¥${Math.round(pQ/3)}/月 · 立省 ¥${pM*3 - pQ}）\n   - 含：12周动态进阶周期表 + 每周深度复盘 + 附赠专业弹力带套装与控糖饮食指南\n3️⃣ 年度首席健康顾问（12个月）：¥${pY.toLocaleString()}（折合 ¥${Math.round(pY/12)}/月）\n   - 含：全年体能形体统筹 + 伤病预防处方 + 家属共享咨询权益`;
       window.copyRaw(txt, "线上全盘订阅报价表已复制！");
     };
 
@@ -2486,15 +2713,6 @@
       const num = parseFloat(rawVal);
       if (isNaN(num)) return;
       state.pricingCalc.offline[field] = num;
-      // 当拖动下方滑块时，释放10节包与单次价的临时手动锁，使其随滑块比例丝滑联动
-      if (["base1v1", "disc10", "disc20", "p1v2", "p1v3", "p1v4"].includes(field) && state.pricingCalc.offline.matrixCustom) {
-        delete state.pricingCalc.offline.matrixCustom.u10_2;
-        delete state.pricingCalc.offline.matrixCustom.u10_3;
-        delete state.pricingCalc.offline.matrixCustom.u10_4;
-        delete state.pricingCalc.offline.matrixCustom.single_2;
-        delete state.pricingCalc.offline.matrixCustom.single_3;
-        delete state.pricingCalc.offline.matrixCustom.single_4;
-      }
       renderOfflineCalculator();
       saveCalcStateDebounced();
     };
@@ -2514,7 +2732,7 @@
       state.pricingCalc.offline = structuredClone(DEFAULT_STATE.pricingCalc.offline);
       renderOfflineCalculator();
       saveState();
-      showToast("线下全景矩阵与测算器已恢复默认");
+      showToast("线下测算器已恢复默认锚点");
     };
 
     function renderOfflineCalculator() {
@@ -2528,21 +2746,18 @@
       const p1v3 = cfg.p1v3 || 170;
       const p1v4 = cfg.p1v4 || 145;
 
-      // 渲染顶部：1v1~1v4 整体模块全景价格矩阵表（支持表内直接编辑，与下方PRO测算器双向联动）
+      // 渲染顶部：1v1~1v4 整体模块全景价格矩阵表
       const rows = getOfflineMatrixRows();
       const matrixBox = document.getElementById("offlineMasterMatrixContainer");
       if (matrixBox) {
         matrixBox.innerHTML = `
-          <div class="text-[11px] text-emerald-800 bg-emerald-50 border border-emerald-200 px-2.5 py-1.5 rounded-lg mb-2 flex items-center justify-between">
-            <span>✏️ <strong>双向联动已开启：</strong>直接点击表格内任意「班型名称、标签、单节价格」即可修改，下方 PRO 测算器会实时同步；拖动下方滑块也会实时更新此表。</span>
-          </div>
           <table class="w-full text-left border-collapse text-xs">
             <thead>
               <tr class="bg-forest-900 text-white text-[11px]">
-                <th class="p-2 rounded-tl-lg">班型模块 (点击可改名)</th>
-                <th class="p-2">单次基准价 (可改)</th>
-                <th class="p-2">10节进阶包 (可改单价)</th>
-                <th class="p-2 bg-champagne-600 text-forest-900 font-extrabold">20节蜕变包 (主推/可改单价)</th>
+                <th class="p-2 rounded-tl-lg">班型模块</th>
+                <th class="p-2">单次基准价</th>
+                <th class="p-2">10节进阶包 (每人)</th>
+                <th class="p-2 bg-champagne-600 text-forest-900 font-extrabold">20节蜕变包 (主推/每人)</th>
                 <th class="p-2">家长20节立省</th>
                 <th class="p-2 rounded-tr-lg">教练单节总产出</th>
               </tr>
@@ -2553,32 +2768,12 @@
                 return `
                   <tr onclick="setOfflineCalcGroup(${r.size})" class="border-b cursor-pointer transition-colors ${isSelected ? 'bg-amber-50/90 font-semibold' : 'hover:bg-slate-50'}">
                     <td class="p-2 whitespace-nowrap">
-                      <div class="flex items-center gap-1">
-                        <input type="text" value="${r.name}" onclick="event.stopPropagation()" onchange="onOfflineMatrixEdit(${r.size}, 'name', this.value)" class="w-32 font-bold text-forest-900 bg-white/80 border border-slate-200 focus:border-forest-900 rounded px-1.5 py-0.5 text-xs" />
-                        <input type="text" value="${r.tag}" onclick="event.stopPropagation()" onchange="onOfflineMatrixEdit(${r.size}, 'tag', this.value)" class="w-20 text-[10px] text-center px-1 py-0.5 rounded border border-slate-200 ${r.size===3 ? 'bg-champagne-500 text-forest-900 font-bold' : 'bg-slate-100 text-slate-600'}" />
-                      </div>
+                      <span class="font-bold text-forest-900">${r.name}</span>
+                      <span class="ml-1 text-[10px] px-1.5 py-0.5 rounded ${r.size===3 ? 'bg-champagne-500 text-forest-900 font-bold' : 'bg-slate-100 text-slate-600'}">${r.tag}</span>
                     </td>
-                    <td class="p-2 whitespace-nowrap">
-                      <div class="flex items-center text-slate-600">
-                        <span class="text-[11px] mr-0.5">¥</span>
-                        <input type="number" step="5" value="${r.single}" onclick="event.stopPropagation()" onchange="onOfflineMatrixEdit(${r.size}, 'single', this.value)" class="w-14 bg-white border border-slate-200 rounded px-1 py-0.5 font-bold text-slate-700 text-xs" />
-                        <span class="text-[10px] ml-0.5">/节</span>
-                      </div>
-                    </td>
-                    <td class="p-2 whitespace-nowrap">
-                      <div class="flex items-center">
-                        <span class="text-[11px] text-slate-400 mr-0.5">¥</span>
-                        <input type="number" step="5" value="${r.u10}" onclick="event.stopPropagation()" onchange="onOfflineMatrixEdit(${r.size}, 'u10', this.value)" class="w-14 bg-white border border-slate-200 rounded px-1 py-0.5 font-bold text-slate-800 text-xs" />
-                        <span class="text-[10px] text-slate-500 ml-1">/节 (总¥${r.t10.toLocaleString()})</span>
-                      </div>
-                    </td>
-                    <td class="p-2 whitespace-nowrap bg-amber-50/50">
-                      <div class="flex items-center">
-                        <span class="text-xs font-bold text-forest-900 mr-0.5">¥</span>
-                        <input type="number" step="5" value="${r.u20}" onclick="event.stopPropagation()" onchange="onOfflineMatrixEdit(${r.size}, 'u20', this.value)" class="w-14 bg-white border border-amber-400 rounded px-1 py-0.5 font-extrabold text-sm text-forest-900" />
-                        <span class="text-[11px] text-amber-900 font-bold ml-1">/节 (总¥${r.t20.toLocaleString()})</span>
-                      </div>
-                    </td>
+                    <td class="p-2 text-slate-500 line-through">¥${r.single}/节</td>
+                    <td class="p-2 whitespace-nowrap"><strong class="text-slate-800">¥${r.u10}</strong>/节 <span class="text-[10px] text-slate-500">(总¥${r.t10.toLocaleString()})</span></td>
+                    <td class="p-2 whitespace-nowrap bg-amber-50/50"><strong class="text-sm text-forest-900">¥${r.u20}</strong>/节 <span class="text-[11px] text-amber-900 font-bold">(总¥${r.t20.toLocaleString()})</span></td>
                     <td class="p-2 text-emerald-700 font-bold whitespace-nowrap">省 ¥${r.save20.toLocaleString()}</td>
                     <td class="p-2 font-extrabold text-forest-900 whitespace-nowrap">¥${r.coachOut}/节 <span class="text-[10px] font-normal text-slate-400">(${r.size}人合计)</span></td>
                   </tr>
@@ -2693,32 +2888,10 @@
       document.getElementById("offUpgradeScriptBox").value = `【1v1 专属无损升舱 1v${upTarget} 精品小班方案】\n您好！目前咱们账户还剩余 1v1 学费余额 ¥${upBalance}。升级进入 1v${upTarget} 户外双语体能小班后，既能增加同龄伙伴的反应追逐对抗与英文口令互动，单节课时费也从原基准价降至 ¥${targetUnitPrice}/节（每节课立省 ¥${Math.max(0, base1v1 - targetUnitPrice)}）。\n\n🎁 专属折算福利：您的剩余学费 ¥${upBalance}，${giftNoteForScript}！确认升舱后我们下周即可按新班型为您排课。`;
     }
 
-    // --- 线上月/季/年订阅客单与规模化盈利测算器 + 全景矩阵表（支持表内直接编辑双向联动） ---
+    // --- 线上月/季/年订阅客单与规模化盈利测算器 + 全景矩阵表 ---
     window.setOnlineCalcCycle = (cyc) => {
       ensurePricingCalcState();
       state.pricingCalc.online.cycle = cyc;
-      renderOnlineCalculator();
-      saveCalcStateDebounced();
-    };
-
-    window.onOnlineMatrixEdit = (cycKey, field, rawVal) => {
-      ensurePricingCalcState();
-      const cfg = state.pricingCalc.online;
-      const mc = cfg.matrixCustom;
-
-      if (field === "name") {
-        mc[`name_${cycKey}`] = rawVal.trim();
-        saveCalcStateDebounced();
-        return;
-      }
-
-      const num = parseFloat(rawVal);
-      if (isNaN(num) || num <= 0) return;
-
-      if (cycKey === "monthly") cfg.pMonth = num;
-      if (cycKey === "quarterly") cfg.pQuarter = num;
-      if (cycKey === "yearly") cfg.pYear = num;
-
       renderOnlineCalculator();
       saveCalcStateDebounced();
     };
@@ -2738,13 +2911,12 @@
       state.pricingCalc.online = structuredClone(DEFAULT_STATE.pricingCalc.online);
       renderOnlineCalculator();
       saveState();
-      showToast("线上全景矩阵与测算器已恢复默认");
+      showToast("线上订阅测算器已恢复默认");
     };
 
     function renderOnlineCalculator() {
       ensurePricingCalcState();
       const cfg = state.pricingCalc.online;
-      const mc = cfg.matrixCustom || {};
       const cyc = cfg.cycle || "quarterly";
       const pMonth = cfg.pMonth || 1280;
       const pQuarter = cfg.pQuarter || 2980;
@@ -2752,24 +2924,17 @@
       const clients = cfg.activeClients || 15;
       const weeklyMins = cfg.weeklyMinsPerClient || 15;
 
-      const nameM = mc.name_monthly || "📅 月度轻享计划 (1个月)";
-      const nameQ = mc.name_quarterly || "🔥 季度蜕变陪伴 (3个月·主推)";
-      const nameY = mc.name_yearly || "👑 年度首席顾问 (12个月)";
-
-      // 渲染线上全景矩阵表（支持表内直接改名、改总价，实时联动下方 MRR 杠杆引擎）
+      // 渲染线上全景矩阵表
       const onMatrixEl = document.getElementById("onlineMasterMatrixContainer");
       if (onMatrixEl) {
         const qEqM = Math.round(pQuarter / 3);
         const yEqM = Math.round(pYear / 12);
         onMatrixEl.innerHTML = `
-          <div class="text-[11px] text-emerald-800 bg-emerald-50 border border-emerald-200 px-2.5 py-1.5 rounded-lg mb-2">
-            ✏️ <strong>双向联动已开启：</strong>直接点击表格内「订阅方案名称」或「订阅总价」即可修改，下方 MRR 杠杆引擎会实时同步计算。
-          </div>
           <table class="w-full text-left border-collapse text-xs">
             <thead>
               <tr class="bg-forest-900 text-white text-[11px]">
-                <th class="p-2 rounded-tl-lg">订阅周期档位 (点击可改名)</th>
-                <th class="p-2">订阅总价 (点击可改)</th>
+                <th class="p-2 rounded-tl-lg">订阅周期档位</th>
+                <th class="p-2">订阅总价</th>
                 <th class="p-2">折合月均单价</th>
                 <th class="p-2">客户立省总额</th>
                 <th class="p-2 rounded-tr-lg">${clients}人规模年化流水(ARR)</th>
@@ -2777,45 +2942,24 @@
             </thead>
             <tbody>
               <tr onclick="setOnlineCalcCycle('monthly')" class="border-b cursor-pointer ${cyc==='monthly'?'bg-amber-50 font-semibold':''}">
-                <td class="p-2">
-                  <input type="text" value="${nameM}" onclick="event.stopPropagation()" onchange="onOnlineMatrixEdit('monthly', 'name', this.value)" class="w-48 font-bold text-forest-900 bg-white border border-slate-200 rounded px-1.5 py-0.5 text-xs" />
-                </td>
-                <td class="p-2 whitespace-nowrap">
-                  <div class="flex items-center">
-                    <span class="text-xs text-slate-400 mr-0.5">¥</span>
-                    <input type="number" step="50" value="${pMonth}" onclick="event.stopPropagation()" onchange="onOnlineMatrixEdit('monthly', 'price', this.value)" class="w-20 font-bold text-forest-900 bg-white border border-slate-200 rounded px-1.5 py-0.5 text-xs" />
-                  </div>
-                </td>
+                <td class="p-2 font-bold text-forest-900">📅 月度轻享计划 (1个月)</td>
+                <td class="p-2 font-bold">¥${pMonth.toLocaleString()}</td>
                 <td class="p-2">¥${pMonth}/月</td>
                 <td class="p-2 text-slate-400">基准锚点</td>
                 <td class="p-2 font-bold">¥${(pMonth * 12 * clients).toLocaleString()}</td>
               </tr>
               <tr onclick="setOnlineCalcCycle('quarterly')" class="border-b cursor-pointer ${cyc==='quarterly'?'bg-amber-50 font-semibold':''}">
-                <td class="p-2">
-                  <input type="text" value="${nameQ}" onclick="event.stopPropagation()" onchange="onOnlineMatrixEdit('quarterly', 'name', this.value)" class="w-48 font-bold text-forest-900 bg-white border border-amber-300 rounded px-1.5 py-0.5 text-xs" />
-                </td>
-                <td class="p-2 whitespace-nowrap">
-                  <div class="flex items-center">
-                    <span class="text-xs font-bold text-forest-900 mr-0.5">¥</span>
-                    <input type="number" step="100" value="${pQuarter}" onclick="event.stopPropagation()" onchange="onOnlineMatrixEdit('quarterly', 'price', this.value)" class="w-20 font-extrabold text-sm text-forest-900 bg-white border border-amber-400 rounded px-1.5 py-0.5" />
-                  </div>
-                </td>
+                <td class="p-2 font-bold text-forest-900">🔥 季度蜕变陪伴 (3个月·主推)</td>
+                <td class="p-2 font-extrabold text-forest-900">¥${pQuarter.toLocaleString()}</td>
                 <td class="p-2 text-amber-900 font-bold">¥${qEqM}/月</td>
-                <td class="p-2 text-emerald-700 font-bold">省 ¥${Math.max(0, pMonth * 3 - pQuarter).toLocaleString()}</td>
+                <td class="p-2 text-emerald-700 font-bold">省 ¥${(pMonth * 3 - pQuarter).toLocaleString()}</td>
                 <td class="p-2 font-extrabold text-forest-900">¥${(qEqM * 12 * clients).toLocaleString()}</td>
               </tr>
               <tr onclick="setOnlineCalcCycle('yearly')" class="border-b cursor-pointer ${cyc==='yearly'?'bg-amber-50 font-semibold':''}">
-                <td class="p-2">
-                  <input type="text" value="${nameY}" onclick="event.stopPropagation()" onchange="onOnlineMatrixEdit('yearly', 'name', this.value)" class="w-48 font-bold text-forest-900 bg-white border border-slate-200 rounded px-1.5 py-0.5 text-xs" />
-                </td>
-                <td class="p-2 whitespace-nowrap">
-                  <div class="flex items-center">
-                    <span class="text-xs text-slate-400 mr-0.5">¥</span>
-                    <input type="number" step="200" value="${pYear}" onclick="event.stopPropagation()" onchange="onOnlineMatrixEdit('yearly', 'price', this.value)" class="w-20 font-bold text-forest-900 bg-white border border-slate-200 rounded px-1.5 py-0.5 text-xs" />
-                  </div>
-                </td>
+                <td class="p-2 font-bold text-forest-900">👑 年度首席顾问 (12个月)</td>
+                <td class="p-2 font-bold">¥${pYear.toLocaleString()}</td>
                 <td class="p-2 font-bold text-emerald-800">¥${yEqM}/月</td>
-                <td class="p-2 text-emerald-700 font-bold">省 ¥${Math.max(0, pMonth * 12 - pYear).toLocaleString()}</td>
+                <td class="p-2 text-emerald-700 font-bold">省 ¥${(pMonth * 12 - pYear).toLocaleString()}</td>
                 <td class="p-2 font-bold">¥${(pYear * clients).toLocaleString()}</td>
               </tr>
             </tbody>
@@ -2824,9 +2968,9 @@
       }
 
       const cycLabels = {
-        monthly: nameM,
-        quarterly: nameQ,
-        yearly: nameY
+        monthly: "月度轻享计划 (1个月)",
+        quarterly: "季度私享陪伴 (3个月)",
+        yearly: "年度首席顾问 (12个月)"
       };
       document.getElementById("onCalcCycleTag").textContent = `当前主推：${cycLabels[cyc]}`;
       ["monthly", "quarterly", "yearly"].forEach(k => {
@@ -2881,6 +3025,67 @@
       document.getElementById("onOutEqHourly").innerHTML = `¥${eqHourly.toLocaleString()} <span class="text-xs font-normal">/小时</span>`;
       document.getElementById("onOutEqHourlySub").textContent = `每服务 1 位会员每月仅耗时 ${+((weeklyMins * 4.33) / 60).toFixed(1)}h · 纯高毛利知识复利`;
     }
+
+    function renderPricing() {
+      const offlineItems = state.pricing.filter(p => (p.mode || "offline") === "offline");
+      const onlineItems = state.pricing.filter(p => p.mode === "online");
+
+      const renderCard = (p) => `
+        <div class="card p-3 flex flex-col justify-between space-y-2">
+          <div>
+            <div class="text-[11px] text-champagne-600 font-semibold">${p.unit}</div>
+            <h3 class="font-bold text-xs text-forest-900 mt-0.5">${p.title}</h3>
+            <div class="text-xl font-extrabold text-forest-900 my-1.5">${p.price}</div>
+            <p class="text-[11px] text-slate-600 leading-relaxed whitespace-pre-line break-words">${p.desc}</p>
+          </div>
+          <div class="flex justify-between items-center pt-2 border-t border-slate-100 text-[11px]">
+            <button type="button" onclick="copyPricingById('${p.id}')" class="px-2.5 py-1 rounded bg-champagne-500 text-forest-900 font-bold active:opacity-80">复制报价</button>
+            <div class="space-x-2">
+              <button type="button" onclick="openPricingModal('${p.mode || 'offline'}', '${p.id}')" class="text-slate-500 hover:text-forest-900">改</button>
+              <button type="button" onclick="deleteItem('pricing', '${p.id}')" class="text-rose-400">删</button>
+            </div>
+          </div>
+        </div>
+      `;
+
+      document.getElementById("pricingList").innerHTML = offlineItems.map(renderCard).join("");
+      document.getElementById("onlinePricingList").innerHTML = onlineItems.map(renderCard).join("");
+      renderOfflineCalculator();
+      renderOnlineCalculator();
+    }
+
+    window.openPricingModal = (mode = "offline", id = null) => {
+      const p = id ? state.pricing.find(x => x.id === id) : { mode, title: "", price: "¥", unit: mode==="online"?"3个月订阅":"10课时 / 20课时", desc: "" };
+      openModal(`
+        <h3 class="font-bold text-sm text-forest-900">${id ? '编辑产品定价' : (mode==='online' ? '新增线上订阅方案' : '新增线下课包')}</h3>
+        <div class="space-y-2 text-xs">
+          <div><label class="text-slate-500">方案名称</label><input id="mPrTitle" value="${(p.title || '').replace(/"/g, '"')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          <div class="grid grid-cols-2 gap-2">
+            <div><label class="text-slate-500">价格</label><input id="mPrPrice" value="${(p.price || '').replace(/"/g, '"')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+            <div><label class="text-slate-500">周期/规格</label><input id="mPrUnit" value="${(p.unit || '').replace(/"/g, '"')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          </div>
+          <div><label class="text-slate-500">核心服务与🎁附赠内容描述（支持随意换行与标点）</label><textarea id="mPrDesc" rows="4" class="w-full border rounded-lg p-1.5 mt-0.5">${p.desc || ''}</textarea></div>
+        </div>
+        <div class="flex justify-end gap-2 pt-1">
+          <button onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">取消</button>
+          <button onclick="savePricing('${mode}', '${id || ''}')" class="btn-primary px-4 py-1.5 rounded-lg text-xs">保存</button>
+        </div>
+      `);
+    };
+
+    window.savePricing = (mode, id) => {
+      const obj = {
+        id: id || "p_" + Date.now(),
+        mode,
+        title: document.getElementById("mPrTitle").value.trim(),
+        price: document.getElementById("mPrPrice").value.trim(),
+        unit: document.getElementById("mPrUnit").value.trim(),
+        desc: document.getElementById("mPrDesc").value.trim()
+      };
+      if (id) state.pricing[state.pricing.findIndex(x => x.id === id)] = obj;
+      else state.pricing.push(obj);
+      closeModal(); saveState(); showToast("定价方案已保存");
+    };
 
     // ==================== 三大业务线 SOP & 环节标准话术库 ====================
     function renderSops() {
