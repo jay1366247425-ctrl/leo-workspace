@@ -237,47 +237,43 @@
           <div id="bmiTableContainer" class="card p-3 hidden overflow-x-auto"></div>
         </div>
 
-        <!-- 线下 1.5 全盘定价体系（整体模块可编辑全景矩阵表 + 独立课包卡片 + 1v1~1v4动态测算器双向联动） -->
+        <!-- 线下 1.5 全盘定价体系（布局重构：1.全景矩阵表 -> 2.PRO测算器与升舱工作台 -> 3.底部对外主推课包卡片） -->
         <div id="fit-panel-pricing" class="fit-panel hidden space-y-3.5">
-          <!-- 线下整体模块全班型官方定价全景矩阵表 -->
+          <!-- 模块 1：线下整体模块全班型官方定价全景矩阵表 -->
           <div class="card p-3.5 space-y-3 border-forest-900/20 shadow-xs">
             <div class="flex items-center justify-between flex-wrap gap-2">
               <div>
                 <div class="flex items-center gap-1.5">
-                  <span class="px-1.5 py-0.5 rounded bg-forest-900 text-champagne-400 font-bold text-[10px]">全景价格矩阵 (可编辑)</span>
+                  <span class="px-1.5 py-0.5 rounded bg-forest-900 text-champagne-400 font-bold text-[10px]">1. 全景价格矩阵 (实收整数价总控)</span>
                   <h2 class="font-bold text-sm text-forest-900">📊 Leo 双语体能 · 1v1~1v4 整体模块定价体系总览表</h2>
                 </div>
-                <p class="text-[11px] text-slate-500 mt-0.5">直接点击表内名称或价格即可修改，与下方 PRO 测算器实时双向联动</p>
+                <p class="text-[11px] text-slate-500 mt-0.5">方案A实收整数价锚定：直接点击表内任意名称或单价即可修改（自动反算折合折扣与立省金额），与下方 PRO 测算器双向实时同步</p>
               </div>
-              <button type="button" onclick="copyFullOfflineMatrixText()" class="btn-gold px-3 py-1.5 rounded-lg text-xs shrink-0">📋 一键复制全盘报价表</button>
+              <div class="flex items-center gap-1.5 shrink-0">
+                <button type="button" onclick="syncOfflineMatrixToCards()" class="px-2.5 py-1.5 rounded-lg text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100">🔄 同步至底部课包卡</button>
+                <button type="button" onclick="copyFullOfflineMatrixText()" class="btn-gold px-3 py-1.5 rounded-lg text-xs">📋 一键复制全盘报价表</button>
+              </div>
             </div>
             <div id="offlineMasterMatrixContainer" class="overflow-x-auto"></div>
           </div>
 
-          <!-- 独立课包卡片区 -->
-          <div class="flex items-center justify-between">
-            <h2 class="font-bold text-sm text-forest-900">📦 主推课包卡片（支持单独编辑与复制）</h2>
-            <button onclick="openPricingModal('offline')" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-semibold">+ 新增线下课包</button>
-          </div>
-          <div id="pricingList" class="grid grid-cols-1 md:grid-cols-3 gap-2.5"></div>
-
-          <!-- 线下 1v1~1v4 动态定价与升舱时薪测算器 -->
+          <!-- 模块 2：线下 1v1~1v4 动态定价与无损升舱时薪测算器（移至上方紧贴矩阵表） -->
           <div class="card p-3.5 space-y-3.5 border-champagne-500/50 shadow-xs">
             <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-2.5">
               <div>
                 <div class="flex items-center gap-1.5">
-                  <span class="px-1.5 py-0.5 rounded bg-champagne-500 text-forest-900 font-extrabold text-[10px]">PRO 测算器</span>
-                  <h3 class="font-bold text-sm text-forest-900">🧮 1v1~1v4 动态定价与升舱时薪测算器</h3>
+                  <span class="px-1.5 py-0.5 rounded bg-champagne-500 text-forest-900 font-extrabold text-[10px]">2. PRO 测算器 & 升舱工作台</span>
+                  <h3 class="font-bold text-sm text-forest-900">🧮 1v1~1v4 整数定价滑块与无损升舱测算器</h3>
                 </div>
-                <p class="text-[11px] text-slate-500 mt-0.5">小程序滑块交互 · 与上方全景价格矩阵双向实时联动</p>
+                <p class="text-[11px] text-slate-500 mt-0.5">全部采用 5元/10元 整数步长调节，彻底告别零头 · 自动反推折合折扣率、教练时薪产出与 1v1 余额升舱方案</p>
               </div>
               <button type="button" onclick="resetOfflineCalcDefaults()" class="text-[11px] text-slate-400 hover:text-forest-900 shrink-0">重置默认</button>
             </div>
 
-            <!-- 1. 班型人数选择器 -->
+            <!-- 2.1 班型人数选择器 -->
             <div class="space-y-1.5">
               <div class="flex items-center justify-between text-xs">
-                <span class="font-bold text-slate-700">1. 选择当前重点测算班型人数</span>
+                <span class="font-bold text-slate-700">① 选择当前重点测算班型人数</span>
                 <span id="offCalcGroupTag" class="text-[11px] font-bold text-champagne-600">当前：1v3 精品小班 (3人)</span>
               </div>
               <div class="grid grid-cols-4 gap-1.5 bg-slate-100 p-1 rounded-xl">
@@ -288,12 +284,12 @@
               </div>
             </div>
 
-            <!-- 2. 核心参数滑块 & 可输入框 -->
+            <!-- 2.2 核心参数滑块 & 整数输入框（方案A：全实收整数单价控制，自动反算折扣） -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200/80">
               <div class="space-y-3">
                 <div class="space-y-1">
                   <div class="flex items-center justify-between text-xs">
-                    <span class="font-semibold text-slate-700">🎯 1v1 单节基准锚点价</span>
+                    <span class="font-semibold text-slate-700">🎯 1v1 单次基准锚点价 (原价)</span>
                     <div class="flex items-center gap-1">
                       <span class="text-slate-400 text-[11px]">¥</span>
                       <input id="offBase1v1Input" type="number" min="150" max="800" step="10" oninput="updateOfflineCalc('base1v1', this.value)" class="w-16 text-right font-extrabold text-forest-900 bg-white border border-slate-200 rounded px-1.5 py-0.5 text-xs" />
@@ -305,61 +301,71 @@
                 </div>
 
                 <div class="grid grid-cols-2 gap-2.5 pt-1 border-t border-slate-200/60">
-                  <div class="space-y-1">
+                  <div class="bg-white p-2 rounded-lg border border-slate-200 space-y-1">
                     <div class="flex items-center justify-between text-[11px]">
-                      <span class="font-semibold text-slate-600">10节包折扣率</span>
-                      <span id="offDisc10Label" class="font-extrabold text-forest-900">88% (88折)</span>
+                      <span class="font-semibold text-slate-600">1v1 10节包单价</span>
+                      <span id="offDisc10Label" class="font-bold text-champagne-600 text-[10px]">8.8折</span>
                     </div>
-                    <input id="offDisc10Slider" type="range" min="75" max="98" step="1" oninput="updateOfflineCalc('disc10', this.value)" class="w-full mp-slider" />
-                    <div class="text-[10px] text-slate-400" id="offDisc10PriceHint">1v1折后: ¥282/节</div>
+                    <div class="flex items-center">
+                      <span class="text-xs font-bold text-slate-400 mr-0.5">¥</span>
+                      <input id="offPrice1v1_10" type="number" step="5" oninput="updateOfflineCalc('u10_1', this.value)" class="w-full font-extrabold text-sm text-forest-900 focus:outline-none" />
+                    </div>
+                    <input id="offDisc10Slider" type="range" min="180" max="450" step="5" oninput="updateOfflineCalc('u10_1', this.value)" class="w-full mp-slider" />
+                    <div class="text-[10px] text-slate-400" id="offDisc10PriceHint">10节总价: ¥2,800</div>
                   </div>
-                  <div class="space-y-1">
+                  <div class="bg-white p-2 rounded-lg border border-emerald-300 space-y-1">
                     <div class="flex items-center justify-between text-[11px]">
-                      <span class="font-semibold text-slate-600">20节包折扣率</span>
-                      <span id="offDisc20Label" class="font-extrabold text-emerald-700">78% (78折)</span>
+                      <span class="font-semibold text-emerald-900">1v1 20节包单价</span>
+                      <span id="offDisc20Label" class="font-bold text-emerald-700 text-[10px]">7.8折</span>
                     </div>
-                    <input id="offDisc20Slider" type="range" min="65" max="95" step="1" oninput="updateOfflineCalc('disc20', this.value)" class="w-full mp-slider" />
-                    <div class="text-[10px] text-slate-400" id="offDisc20PriceHint">1v1折后: ¥250/节</div>
+                    <div class="flex items-center">
+                      <span class="text-xs font-bold text-slate-400 mr-0.5">¥</span>
+                      <input id="offPrice1v1_20" type="number" step="5" oninput="updateOfflineCalc('u20_1', this.value)" class="w-full font-extrabold text-sm text-forest-900 focus:outline-none" />
+                    </div>
+                    <input id="offDisc20Slider" type="range" min="150" max="400" step="5" oninput="updateOfflineCalc('u20_1', this.value)" class="w-full mp-slider" />
+                    <div class="text-[10px] text-emerald-700 font-semibold" id="offDisc20PriceHint">20节总价: ¥5,000</div>
                   </div>
                 </div>
               </div>
 
-              <div class="space-y-2">
-                <div class="text-xs font-semibold text-slate-700 flex items-center justify-between">
-                  <span>🏷️ 小班20节包单人单节实收价 (可输入/拖动)</span>
-                  <span class="text-[10px] text-slate-400">与上方矩阵实时同步</span>
+              <div class="space-y-2 flex flex-col justify-between">
+                <div class="space-y-2">
+                  <div class="text-xs font-semibold text-slate-700 flex items-center justify-between">
+                    <span>🏷️ 小班 20节主推包 每人单节整数价</span>
+                    <button type="button" onclick="autoScale10PackFrom20Pack()" class="text-[10px] bg-amber-100 text-amber-900 px-2 py-0.5 rounded font-bold hover:bg-amber-200">⚡ 按20节价一键生成10节梯度价</button>
+                  </div>
+                  <div class="grid grid-cols-3 gap-2">
+                    <div class="bg-white p-2 rounded-lg border border-slate-200 space-y-1">
+                      <div class="text-[10px] text-slate-500 font-semibold">👥 1v2 单人/节</div>
+                      <div class="flex items-center">
+                        <span class="text-xs font-bold text-slate-400 mr-0.5">¥</span>
+                        <input id="offPrice1v2" type="number" step="5" oninput="updateOfflineCalc('p1v2', this.value)" class="w-full font-extrabold text-sm text-forest-900 focus:outline-none" />
+                      </div>
+                      <input id="offSlide1v2" type="range" min="100" max="350" step="5" oninput="updateOfflineCalc('p1v2', this.value)" class="w-full mp-slider" />
+                    </div>
+                    <div class="bg-white p-2 rounded-lg border border-amber-300 space-y-1">
+                      <div class="text-[10px] text-amber-900 font-bold">👨‍👩‍👦 1v3 单人/节</div>
+                      <div class="flex items-center">
+                        <span class="text-xs font-bold text-slate-400 mr-0.5">¥</span>
+                        <input id="offPrice1v3" type="number" step="5" oninput="updateOfflineCalc('p1v3', this.value)" class="w-full font-extrabold text-sm text-forest-900 focus:outline-none" />
+                      </div>
+                      <input id="offSlide1v3" type="range" min="80" max="300" step="5" oninput="updateOfflineCalc('p1v3', this.value)" class="w-full mp-slider" />
+                    </div>
+                    <div class="bg-white p-2 rounded-lg border border-slate-200 space-y-1">
+                      <div class="text-[10px] text-slate-500 font-semibold">👨‍👩‍👧‍👦 1v4 单人/节</div>
+                      <div class="flex items-center">
+                        <span class="text-xs font-bold text-slate-400 mr-0.5">¥</span>
+                        <input id="offPrice1v4" type="number" step="5" oninput="updateOfflineCalc('p1v4', this.value)" class="w-full font-extrabold text-sm text-forest-900 focus:outline-none" />
+                      </div>
+                      <input id="offSlide1v4" type="range" min="60" max="260" step="5" oninput="updateOfflineCalc('p1v4', this.value)" class="w-full mp-slider" />
+                    </div>
+                  </div>
                 </div>
-                <div class="grid grid-cols-3 gap-2">
-                  <div class="bg-white p-2 rounded-lg border border-slate-200 space-y-1">
-                    <div class="text-[10px] text-slate-500 font-semibold">👥 1v2 单人/节</div>
-                    <div class="flex items-center">
-                      <span class="text-xs font-bold text-slate-400 mr-0.5">¥</span>
-                      <input id="offPrice1v2" type="number" step="5" oninput="updateOfflineCalc('p1v2', this.value)" class="w-full font-extrabold text-sm text-forest-900 focus:outline-none" />
-                    </div>
-                    <input id="offSlide1v2" type="range" min="100" max="400" step="5" oninput="updateOfflineCalc('p1v2', this.value)" class="w-full mp-slider" />
-                  </div>
-                  <div class="bg-white p-2 rounded-lg border border-amber-300 space-y-1">
-                    <div class="text-[10px] text-amber-900 font-bold">👨‍👩‍👦 1v3 单人/节</div>
-                    <div class="flex items-center">
-                      <span class="text-xs font-bold text-slate-400 mr-0.5">¥</span>
-                      <input id="offPrice1v3" type="number" step="5" oninput="updateOfflineCalc('p1v3', this.value)" class="w-full font-extrabold text-sm text-forest-900 focus:outline-none" />
-                    </div>
-                    <input id="offSlide1v3" type="range" min="80" max="350" step="5" oninput="updateOfflineCalc('p1v3', this.value)" class="w-full mp-slider" />
-                  </div>
-                  <div class="bg-white p-2 rounded-lg border border-slate-200 space-y-1">
-                    <div class="text-[10px] text-slate-500 font-semibold">👨‍👩‍👧‍👦 1v4 单人/节</div>
-                    <div class="flex items-center">
-                      <span class="text-xs font-bold text-slate-400 mr-0.5">¥</span>
-                      <input id="offPrice1v4" type="number" step="5" oninput="updateOfflineCalc('p1v4', this.value)" class="w-full font-extrabold text-sm text-forest-900 focus:outline-none" />
-                    </div>
-                    <input id="offSlide1v4" type="range" min="60" max="300" step="5" oninput="updateOfflineCalc('p1v4', this.value)" class="w-full mp-slider" />
-                  </div>
-                </div>
-                <div id="offPackageQuickTable" class="text-[11px] text-slate-600 bg-white px-2.5 py-1.5 rounded-lg border border-slate-200/80"></div>
+                <div id="offPackageQuickTable" class="text-[11px] text-slate-600 bg-white px-2.5 py-2 rounded-lg border border-slate-200/80"></div>
               </div>
             </div>
 
-            <!-- 3. 实时盈利与双赢模型计算面板 -->
+            <!-- 2.3 实时盈利与双赢模型计算面板 -->
             <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
               <div class="bg-forest-900 text-white p-3 rounded-xl space-y-1">
                 <div class="text-[11px] text-champagne-400 font-semibold">💰 教练单节时薪产出 (60-90min)</div>
@@ -369,7 +375,7 @@
               <div class="bg-emerald-50 border border-emerald-200 p-3 rounded-xl space-y-1">
                 <div class="text-[11px] text-emerald-800 font-semibold">🚀 对比 1v1 收益放大倍数</div>
                 <div id="offOutBoost" class="text-2xl font-extrabold text-emerald-700">+104%</div>
-                <div id="offOutBoostSub" class="text-[11px] text-emerald-800/80">对比 1v1 20节折后价(¥250) 净增 ¥260/h</div>
+                <div id="offOutBoostSub" class="text-[11px] text-emerald-800/80">对比 1v1 20节单价(¥250) 净增 ¥260/h</div>
               </div>
               <div class="bg-amber-50 border border-amber-200 p-3 rounded-xl space-y-1">
                 <div class="text-[11px] text-amber-900 font-semibold">🎁 家长单人立省 (双赢视角)</div>
@@ -378,7 +384,7 @@
               </div>
             </div>
 
-            <!-- 4. 内置：1v1 无损升舱快速折算工具 -->
+            <!-- 2.4 内置：1v1 无损升舱快速折算工具 -->
             <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-2.5">
               <div class="flex items-center justify-between flex-wrap gap-1">
                 <h4 class="font-bold text-xs text-forest-900">🔄 【1v1 无损升舱小班】快速折算 & 微信话术生成器</h4>
@@ -408,6 +414,24 @@
                 <button type="button" onclick="copyText('offUpgradeScriptBox', '微信升舱方案已复制')" class="btn-gold px-4 py-2.5 rounded-lg text-xs shrink-0">一键复制升舱方案</button>
               </div>
             </div>
+          </div>
+
+          <!-- 模块 3：独立课包卡片区（移至最下方 · 用于分阶段精准发送给客户） -->
+          <div class="card p-3.5 space-y-2.5 border-slate-200">
+            <div class="flex items-center justify-between flex-wrap gap-2">
+              <div>
+                <div class="flex items-center gap-1.5">
+                  <span class="px-1.5 py-0.5 rounded bg-slate-800 text-white font-bold text-[10px]">3. 实战分步报价卡</span>
+                  <h2 class="font-bold text-sm text-forest-900">📦 主推课包对外发送卡片（支持一键从矩阵同步价格 & 独立复制）</h2>
+                </div>
+                <p class="text-[11px] text-slate-500 mt-0.5">💡 谈单策略：破冰期只发【¥199体验卡】→ 体验课后促单只发【1v1 与 1v3 卡片】→ 老带新组班发上方【升舱方案或全盘表】</p>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <button type="button" onclick="syncOfflineMatrixToCards()" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-amber-50 text-amber-900 border border-amber-200">🔄 同步上方最新价格</button>
+                <button type="button" onclick="openPricingModal('offline')" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-semibold">+ 新增线下课包</button>
+              </div>
+            </div>
+            <div id="pricingList" class="grid grid-cols-1 md:grid-cols-3 gap-2.5"></div>
           </div>
         </div>
 
@@ -493,30 +517,29 @@
           <div id="onlinePlanLogList" class="space-y-2"></div>
         </div>
 
-        <!-- 线上 4. 月/季订阅定价与附赠权益 + 可编辑全景矩阵表 + 线上盈利测算器双向联动 -->
+        <!-- 线上 4. 订阅定价与赠品（布局重构：1.全景矩阵表 -> 2.MRR杠杆引擎 -> 3.底部订阅制方案卡片） -->
         <div id="on-panel-pricing" class="on-panel hidden space-y-3.5">
+          <!-- 模块 1：线上全景定价矩阵表 -->
           <div class="card p-3.5 space-y-2.5 border-forest-900/20 shadow-xs">
             <div class="flex items-center justify-between flex-wrap gap-2">
               <div>
-                <span class="px-1.5 py-0.5 rounded bg-forest-900 text-champagne-400 font-bold text-[10px]">线上全景定价矩阵 (可编辑)</span>
+                <span class="px-1.5 py-0.5 rounded bg-forest-900 text-champagne-400 font-bold text-[10px]">1. 线上全景定价矩阵 (可编辑)</span>
                 <h2 class="font-bold text-sm text-forest-900 inline ml-1">🌐 线上私享健康与训练顾问 · 月/季/年全景矩阵表</h2>
               </div>
-              <button type="button" onclick="copyFullOnlineMatrixText()" class="btn-gold px-3 py-1 rounded-lg text-xs">📋 复制线上全盘报价</button>
+              <div class="flex items-center gap-1.5">
+                <button type="button" onclick="syncOnlineMatrixToCards()" class="px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200 hover:bg-emerald-100">🔄 同步至底部订阅卡</button>
+                <button type="button" onclick="copyFullOnlineMatrixText()" class="btn-gold px-3 py-1 rounded-lg text-xs">📋 复制线上全盘报价</button>
+              </div>
             </div>
             <div id="onlineMasterMatrixContainer" class="overflow-x-auto"></div>
           </div>
 
-          <div class="flex items-center justify-between">
-            <h2 class="font-bold text-sm text-forest-900">线上订阅制方案卡片（含附赠权益 · 支持单独编辑复制）</h2>
-            <button onclick="openPricingModal('online')" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-semibold">+ 新增订阅方案</button>
-          </div>
-          <div id="onlinePricingList" class="grid grid-cols-1 md:grid-cols-3 gap-2.5"></div>
-
+          <!-- 模块 2：线上 MRR 杠杆引擎测算器（移至上方紧贴矩阵表） -->
           <div class="card p-3.5 space-y-3.5 border-champagne-500/50 shadow-xs">
             <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-2.5">
               <div>
                 <div class="flex items-center gap-1.5">
-                  <span class="px-1.5 py-0.5 rounded bg-champagne-500 text-forest-900 font-extrabold text-[10px]">MRR 杠杆引擎</span>
+                  <span class="px-1.5 py-0.5 rounded bg-champagne-500 text-forest-900 font-extrabold text-[10px]">2. MRR 杠杆引擎</span>
                   <h3 class="font-bold text-sm text-forest-900">🌐 月/季/年订阅客单与规模化盈利测算器</h3>
                 </div>
                 <p class="text-[11px] text-slate-500 mt-0.5">与上方线上全景定价矩阵双向实时联动，测算月度常态化现金流 (MRR) 与等效折合时薪</p>
@@ -526,7 +549,7 @@
 
             <div class="space-y-1.5">
               <div class="flex items-center justify-between text-xs">
-                <span class="font-bold text-slate-700">1. 切换主打订阅周期模型</span>
+                <span class="font-bold text-slate-700">① 切换主打订阅周期模型</span>
                 <span id="onCalcCycleTag" class="text-[11px] font-bold text-champagne-600">当前主推：季度私享陪伴 (3个月)</span>
               </div>
               <div class="grid grid-cols-3 gap-1.5 bg-slate-100 p-1 rounded-xl">
@@ -538,14 +561,14 @@
 
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200/80">
               <div class="space-y-2.5">
-                <div class="text-xs font-semibold text-slate-700">🏷️ 三档订阅客单价设定 (与上方矩阵表实时双向同步)</div>
+                <div class="text-xs font-semibold text-slate-700">🏷️ 三档订阅整数客单价设定 (与上方矩阵表实时双向同步)</div>
                 <div class="space-y-2">
                   <div class="bg-white p-2 rounded-lg border border-slate-200 space-y-1">
                     <div class="flex items-center justify-between text-xs">
                       <span class="text-slate-600 font-semibold">月度轻享客单价 (1个月)</span>
                       <div class="flex items-center gap-0.5">
                         <span class="text-slate-400 text-[11px]">¥</span>
-                        <input id="onPriceMonthly" type="number" step="50" oninput="updateOnlineCalc('pMonth', this.value)" class="w-16 text-right font-extrabold text-forest-900 border border-slate-200 rounded px-1 py-0.5 text-xs" />
+                        <input id="onPriceMonthly" type="number" step="20" oninput="updateOnlineCalc('pMonth', this.value)" class="w-16 text-right font-extrabold text-forest-900 border border-slate-200 rounded px-1 py-0.5 text-xs" />
                       </div>
                     </div>
                     <input id="onSlideMonthly" type="range" min="580" max="2580" step="20" oninput="updateOnlineCalc('pMonth', this.value)" class="w-full mp-slider" />
@@ -556,7 +579,7 @@
                       <span class="text-amber-900 font-bold">季度私享陪伴客单价 (3个月)</span>
                       <div class="flex items-center gap-0.5">
                         <span class="text-slate-400 text-[11px]">¥</span>
-                        <input id="onPriceQuarterly" type="number" step="100" oninput="updateOnlineCalc('pQuarter', this.value)" class="w-16 text-right font-extrabold text-forest-900 border border-slate-200 rounded px-1 py-0.5 text-xs" />
+                        <input id="onPriceQuarterly" type="number" step="20" oninput="updateOnlineCalc('pQuarter', this.value)" class="w-16 text-right font-extrabold text-forest-900 border border-slate-200 rounded px-1 py-0.5 text-xs" />
                       </div>
                     </div>
                     <input id="onSlideQuarterly" type="range" min="1580" max="5980" step="20" oninput="updateOnlineCalc('pQuarter', this.value)" class="w-full mp-slider" />
@@ -567,7 +590,7 @@
                       <span class="text-slate-600 font-semibold">年度首席顾问客单价 (12个月)</span>
                       <div class="flex items-center gap-0.5">
                         <span class="text-slate-400 text-[11px]">¥</span>
-                        <input id="onPriceYearly" type="number" step="200" oninput="updateOnlineCalc('pYear', this.value)" class="w-20 text-right font-extrabold text-forest-900 border border-slate-200 rounded px-1 py-0.5 text-xs" />
+                        <input id="onPriceYearly" type="number" step="100" oninput="updateOnlineCalc('pYear', this.value)" class="w-20 text-right font-extrabold text-forest-900 border border-slate-200 rounded px-1 py-0.5 text-xs" />
                       </div>
                     </div>
                     <input id="onSlideYearly" type="range" min="4800" max="19800" step="100" oninput="updateOnlineCalc('pYear', this.value)" class="w-full mp-slider" />
@@ -623,6 +646,24 @@
                 <div id="onOutEqHourlySub" class="text-[11px] text-emerald-800/80">不受地域与天气限制 · 零场地通勤损耗</div>
               </div>
             </div>
+          </div>
+
+          <!-- 模块 3：线上订阅制方案卡片（移至最下方 · 支持一键从矩阵同步价格） -->
+          <div class="card p-3.5 space-y-2.5 border-slate-200">
+            <div class="flex items-center justify-between flex-wrap gap-2">
+              <div>
+                <div class="flex items-center gap-1.5">
+                  <span class="px-1.5 py-0.5 rounded bg-slate-800 text-white font-bold text-[10px]">3. 对外订阅方案卡</span>
+                  <h2 class="font-bold text-sm text-forest-900">📦 线上订阅制方案卡片（含附赠权益 · 支持单独编辑复制）</h2>
+                </div>
+                <p class="text-[11px] text-slate-500 mt-0.5">💡 谈单策略：客户填完《摸底问卷》后，针对性发送主推的【季度私享陪伴卡】或【月度轻享卡】</p>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <button type="button" onclick="syncOnlineMatrixToCards()" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-amber-50 text-amber-900 border border-amber-200">🔄 同步上方最新价格</button>
+                <button type="button" onclick="openPricingModal('online')" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-semibold">+ 新增订阅方案</button>
+              </div>
+            </div>
+            <div id="onlinePricingList" class="grid grid-cols-1 md:grid-cols-3 gap-2.5"></div>
           </div>
         </div>
 
@@ -980,14 +1021,21 @@
         onSub5: "5. 线上SOP与话术",
         onSub6: "6. 线上自媒体"
       },
+      // 方案A：全实收整数单价直接存储，彻底告别百分比四舍五入零头
       pricingCalc: {
         offline: {
           groupSize: 3,
           base1v1: 320,
-          disc10: 88,
-          disc20: 78,
+          u10_1: 280,
+          u20_1: 250,
+          single_2: 260,
+          u10_2: 230,
           p1v2: 210,
+          single_3: 220,
+          u10_3: 190,
           p1v3: 170,
+          single_4: 190,
+          u10_4: 165,
           p1v4: 145,
           upBalance: 1440,
           upTarget: 3,
@@ -1121,8 +1169,8 @@
       ],
       pricing: [
         { id: "p1", mode: "offline", title: "1v1 生物力学评估+双语体验课", price: "¥199", unit: "60-90分钟", desc: "8维体测建档 + 英文运动指令摸底 + 弱侧纠偏实训 + 定制评估报告" },
-        { id: "p2", mode: "offline", title: "线下 1v1 私享定制包 (10节/20节)", price: "¥2,820 / ¥5,000", unit: "10课时 / 20课时", desc: "单节基准¥320 | 10节进阶包(88折 ¥282/节) | 20节蜕变包(78折 ¥250/节) | 专属长高/体态/体测靶向突破" },
-        { id: "p3", mode: "offline", title: "线下 1v3 户外双语精品小班 (主推)", price: "¥1,950 / ¥3,400", unit: "10课时 / 20课时 (人均)", desc: "20节包人均仅¥170/节（比1v1单次省¥150/节）| 同龄追逐游戏对抗 + 纯英口令抢答 + 课后独立评估反馈" },
+        { id: "p2", mode: "offline", title: "线下 1v1 私享定制包 (10节/20节)", price: "¥2,800 / ¥5,000", unit: "10课时 / 20课时", desc: "单节基准¥320 | 10节进阶包(¥280/节) | 20节蜕变包(¥250/节 · 立省¥1,400) | 专属长高/体态/体测靶向突破" },
+        { id: "p3", mode: "offline", title: "线下 1v3 户外双语精品小班 (主推)", price: "¥1,900 / ¥3,400", unit: "10课时 / 20课时 (人均)", desc: "10节包人均¥190/节 | 20节包人均仅¥170/节（比1v1单次立省¥3,000）| 同龄追逐游戏对抗 + 纯英口令抢答 + 课后独立反馈" },
         { id: "op1", mode: "online", title: "月度轻享·定制训练与营养答疑计划", price: "¥1,280", unit: "1个月订阅", desc: "深度健康摸底建档 + 4周全场景定制训练处方 + 每周1次异步视频动作诊断与答疑 | 🎁附赠：《外食/应酬控糖饮食速查卡》" },
         { id: "op2", mode: "online", title: "季度蜕变·私享健康与训练陪伴系统 (主推)", price: "¥2,980", unit: "3个月订阅", desc: "12周动态进阶训练周期表（居家/出差/健身房无缝切换）+ 每周深度复盘答疑 + 体检与体态指标追踪 | 🎁附赠：专业弹力带套装 +《深度睡眠与精力恢复指南》" },
         { id: "op3", mode: "online", title: "年度私享·个人健康与体能首席顾问", price: "¥9,800", unit: "12个月订阅", desc: "全年分阶段体能与形体统筹 + 伤病预防与康复处方 + 家属基础健康咨询共享权益 | 🎁附赠：定制运动装备包 + 丽水线下2天1晚康养私享接待" }
@@ -1421,7 +1469,7 @@
     };
     window.ui = ui;
 // === PART 1 END ===
-   // === PART 2 START ===
+    // === PART 2 START ===
     function applyCustomLabels() {
       const L = state.customLabels || DEFAULT_STATE.customLabels;
       document.getElementById("navAppTitle").textContent = L.appTitle || "Leo | Life OS";
@@ -1753,7 +1801,7 @@
       closeModal(); saveState(); showToast("学员档案已同步");
     };
 
-    // --- 消课与反馈一体化列表渲染（新增：编辑功能 + 删除自动退回课时） ---
+    // --- 消课与反馈一体化列表渲染（支持编辑与删单自动退课） ---
     window.copyRecordFeedbackById = (recId) => {
       const r = state.records.find(x => x.id === recId);
       if (!r) return;
@@ -1811,7 +1859,6 @@
       }).join("");
     }
 
-    // 删除消课记录时：如果是正式课，自动将该节课时退回给学员
     window.deleteRecord = (recId) => {
       const rec = state.records.find(x => x.id === recId);
       if (!rec) return;
@@ -1827,7 +1874,6 @@
       showToast(rec.type === "formal" && stu ? "已删除记录，并自动退回1节课时" : "记录已删除");
     };
 
-    // ==================== 全勾选式【上课消课 + 动作/游戏关联 + 微信反馈】一体化弹窗（支持二次编辑不重复扣课） ====================
     window.launchRecordFromLessonPlan = () => {
       const stuId = document.getElementById("lessonStudentSelect").value || (state.students[0]?.id || null);
       openRecordModal(stuId, true, null);
@@ -2031,7 +2077,6 @@
       const stuId = document.getElementById("mRecStu").value;
       let stuName = document.getElementById("mRecTempName").value.trim() || "体验新学员";
 
-      // 课时精准校准：若编辑已有记录，先退回原记录扣掉的1节课时，再按当前选定状态扣减（同一学员同为正式课则课时不变）
       if (existingRec) {
         if (existingRec.type === "formal" && existingRec.studentId !== "new_trial") {
           const oldStu = state.students.find(s => s.id === existingRec.studentId);
@@ -2098,7 +2143,7 @@
       }
     };
 
-    // ==================== 10大双语动作与游戏库（免左右滑动折叠网格 + 备课反馈联动） ====================
+    // ==================== 10大双语动作与游戏库 ====================
     const DRILL_CATS = ["全部", "🎲 趣味游戏", "动态热身", "灵敏", "协调", "平衡", "速度", "力量", "耐力", "柔韧", "拉伸恢复"];
     window.setDrillCat = (c) => { ui.drillCat = c; renderDrills(); };
     window.toggleDrillCatExpand = () => { ui.drillCatExpanded = !ui.drillCatExpanded; renderDrills(); };
@@ -2704,7 +2749,7 @@
       closeModal(); saveState(); showToast("计划与答疑记录已归档");
     };
 
-    // ==================== 全盘定价体系（整体模块全景矩阵表【支持表内直接编辑】 + 动态测算器双向联动） ====================
+    // ==================== 全盘定价体系（方案A：实收整数价直接锚定，自动反算折合折扣 + 双向联动 + 一键同步底部卡片） ====================
     window.copyPricingById = (id) => {
       const p = (state.pricing || []).find(x => x.id === id);
       if (!p) return;
@@ -2716,43 +2761,56 @@
       if (!state.pricingCalc) state.pricingCalc = structuredClone(DEFAULT_STATE.pricingCalc);
       if (!state.pricingCalc.offline) state.pricingCalc.offline = structuredClone(DEFAULT_STATE.pricingCalc.offline);
       if (!state.pricingCalc.online) state.pricingCalc.online = structuredClone(DEFAULT_STATE.pricingCalc.online);
-      if (!state.pricingCalc.offline.matrixCustom) state.pricingCalc.offline.matrixCustom = {};
+      const off = state.pricingCalc.offline;
+      if (!off.matrixCustom) off.matrixCustom = {};
       if (!state.pricingCalc.online.matrixCustom) state.pricingCalc.online.matrixCustom = {};
+
+      // 兼容旧缓存：将旧版的百分比转换为精确整数单价，后续完全以整数单价为准
+      const base = off.base1v1 || 320;
+      if (off.u10_1 === undefined) off.u10_1 = off.mc?.u10_1 || Math.round((base * ((off.disc10 || 88) / 100)) / 5) * 5;
+      if (off.u20_1 === undefined) off.u20_1 = off.mc?.u20_1 || Math.round((base * ((off.disc20 || 78) / 100)) / 5) * 5;
+      if (off.p1v2 === undefined) off.p1v2 = 210;
+      if (off.p1v3 === undefined) off.p1v3 = 170;
+      if (off.p1v4 === undefined) off.p1v4 = 145;
+      if (off.u10_2 === undefined) off.u10_2 = off.matrixCustom.u10_2 ?? 230;
+      if (off.u10_3 === undefined) off.u10_3 = off.matrixCustom.u10_3 ?? 190;
+      if (off.u10_4 === undefined) off.u10_4 = off.matrixCustom.u10_4 ?? 165;
+      if (off.single_2 === undefined) off.single_2 = off.matrixCustom.single_2 ?? 260;
+      if (off.single_3 === undefined) off.single_3 = off.matrixCustom.single_3 ?? 220;
+      if (off.single_4 === undefined) off.single_4 = off.matrixCustom.single_4 ?? 190;
     }
 
-    // 计算线下全盘 1v1~1v4 各梯度价格数据（支持矩阵表自定义覆盖与下方PRO测算器双向同步）
+    // 方案A核心：所有价格直接读取你设定的整数单价，绝不被百分比四舍五入篡改
     function getOfflineMatrixRows() {
       ensurePricingCalcState();
       const cfg = state.pricingCalc.offline;
       const mc = cfg.matrixCustom || {};
+
       const base1v1 = cfg.base1v1 || 320;
-      const disc10 = cfg.disc10 || 88;
-      const disc20 = cfg.disc20 || 78;
-      const p1v1_10 = Math.round(base1v1 * (disc10 / 100));
-      const p1v1_20 = Math.round(base1v1 * (disc20 / 100));
+      const u10_1 = cfg.u10_1 || 280;
+      const u20_1 = cfg.u20_1 || 250;
 
-      const p1v2_20 = cfg.p1v2 || 210;
-      const p1v3_20 = cfg.p1v3 || 170;
-      const p1v4_20 = cfg.p1v4 || 145;
+      const single_2 = cfg.single_2 || 260;
+      const u10_2 = cfg.u10_2 || 230;
+      const u20_2 = cfg.p1v2 || 210;
 
-      const ratio10vs20 = disc10 / disc20;
-      const p1v2_10 = mc.u10_2 ?? (Math.round((p1v2_20 * ratio10vs20) / 5) * 5);
-      const p1v3_10 = mc.u10_3 ?? (Math.round((p1v3_20 * ratio10vs20) / 5) * 5);
-      const p1v4_10 = mc.u10_4 ?? (Math.round((p1v4_20 * ratio10vs20) / 5) * 5);
+      const single_3 = cfg.single_3 || 220;
+      const u10_3 = cfg.u10_3 || 190;
+      const u20_3 = cfg.p1v3 || 170;
 
-      const p1v2_single = mc.single_2 ?? (Math.round((p1v2_10 * 1.12) / 5) * 5);
-      const p1v3_single = mc.single_3 ?? (Math.round((p1v3_10 * 1.12) / 5) * 5);
-      const p1v4_single = mc.single_4 ?? (Math.round((p1v4_10 * 1.12) / 5) * 5);
+      const single_4 = cfg.single_4 || 190;
+      const u10_4 = cfg.u10_4 || 165;
+      const u20_4 = cfg.p1v4 || 145;
 
       return [
-        { size: 1, name: mc.name_1 || "👤 1v1 私享定制", tag: mc.tag_1 || "靶向突破", single: base1v1, u10: p1v1_10, t10: p1v1_10 * 10, u20: p1v1_20, t20: p1v1_20 * 20, save20: Math.max(0, (base1v1 - p1v1_20) * 20), coachOut: p1v1_20 * 1 },
-        { size: 2, name: mc.name_2 || "👥 1v2 双人同训", tag: mc.tag_2 || "伙伴激励", single: p1v2_single, u10: p1v2_10, t10: p1v2_10 * 10, u20: p1v2_20, t20: p1v2_20 * 20, save20: Math.max(0, (base1v1 - p1v2_20) * 20), coachOut: p1v2_20 * 2 },
-        { size: 3, name: mc.name_3 || "👨‍👩‍👦 1v3 精品小班", tag: mc.tag_3 || "🔥黄金主推", single: p1v3_single, u10: p1v3_10, t10: p1v3_10 * 10, u20: p1v3_20, t20: p1v3_20 * 20, save20: Math.max(0, (base1v1 - p1v3_20) * 20), coachOut: p1v3_20 * 3 },
-        { size: 4, name: mc.name_4 || "👨‍👩‍👧‍👦 1v4 竞技战队", tag: mc.tag_4 || "团队对抗", single: p1v4_single, u10: p1v4_10, t10: p1v4_10 * 10, u20: p1v4_20, t20: p1v4_20 * 20, save20: Math.max(0, (base1v1 - p1v4_20) * 20), coachOut: p1v4_20 * 4 }
+        { size: 1, name: mc.name_1 || "👤 1v1 私享定制", tag: mc.tag_1 || "靶向突破", single: base1v1, u10: u10_1, t10: u10_1 * 10, u20: u20_1, t20: u20_1 * 20, save20: Math.max(0, (base1v1 - u20_1) * 20), coachOut: u20_1 * 1 },
+        { size: 2, name: mc.name_2 || "👥 1v2 双人同训", tag: mc.tag_2 || "伙伴激励", single: single_2, u10: u10_2, t10: u10_2 * 10, u20: u20_2, t20: u20_2 * 20, save20: Math.max(0, (base1v1 - u20_2) * 20), coachOut: u20_2 * 2 },
+        { size: 3, name: mc.name_3 || "👨‍👩‍👦 1v3 精品小班", tag: mc.tag_3 || "🔥黄金主推", single: single_3, u10: u10_3, t10: u10_3 * 10, u20: u20_3, t20: u20_3 * 20, save20: Math.max(0, (base1v1 - u20_3) * 20), coachOut: u20_3 * 3 },
+        { size: 4, name: mc.name_4 || "👨‍👩‍👧‍👦 1v4 竞技战队", tag: mc.tag_4 || "团队对抗", single: single_4, u10: u10_4, t10: u10_4 * 10, u20: u20_4, t20: u20_4 * 20, save20: Math.max(0, (base1v1 - u20_4) * 20), coachOut: u20_4 * 4 }
       ];
     }
 
-    // 在全景价格矩阵表中直接修改文字或价格 -> 实时反向联动下方 PRO 测算器
+    // 在全景价格矩阵表中直接修改任意名称或整数价格 -> 100% 精确保存并同步下方 PRO 测算器
     window.onOfflineMatrixEdit = (size, field, rawVal) => {
       ensurePricingCalcState();
       const cfg = state.pricingCalc.offline;
@@ -2769,27 +2827,77 @@
 
       if (field === "single") {
         if (size === 1) cfg.base1v1 = num;
-        else mc[`single_${size}`] = num;
+        else cfg[`single_${size}`] = num;
       } else if (field === "u10") {
-        if (size === 1) {
-          cfg.disc10 = Math.min(99, Math.max(50, Math.round((num / (cfg.base1v1 || 320)) * 100)));
-        } else {
-          mc[`u10_${size}`] = num;
-        }
+        cfg[`u10_${size}`] = num;
       } else if (field === "u20") {
-        if (size === 1) {
-          cfg.disc20 = Math.min(98, Math.max(40, Math.round((num / (cfg.base1v1 || 320)) * 100)));
-        } else if (size === 2) {
-          cfg.p1v2 = num;
-        } else if (size === 3) {
-          cfg.p1v3 = num;
-        } else if (size === 4) {
-          cfg.p1v4 = num;
-        }
+        if (size === 1) cfg.u20_1 = num;
+        else if (size === 2) cfg.p1v2 = num;
+        else if (size === 3) cfg.p1v3 = num;
+        else if (size === 4) cfg.p1v4 = num;
       }
 
       renderOfflineCalculator();
       saveCalcStateDebounced();
+    };
+
+    // 快捷按钮：当你调整了20节主推价后，若想一键按梯度生成10节包与单次整数价（以5元为单位取整）
+    window.autoScale10PackFrom20Pack = () => {
+      ensurePricingCalcState();
+      const cfg = state.pricingCalc.offline;
+      const ratio = (cfg.u10_1 || 280) / (cfg.u20_1 || 250);
+      cfg.u10_2 = Math.round(((cfg.p1v2 || 210) * ratio) / 5) * 5;
+      cfg.u10_3 = Math.round(((cfg.p1v3 || 170) * ratio) / 5) * 5;
+      cfg.u10_4 = Math.round(((cfg.p1v4 || 145) * ratio) / 5) * 5;
+      cfg.single_2 = Math.round((cfg.u10_2 * 1.12) / 5) * 5;
+      cfg.single_3 = Math.round((cfg.u10_3 * 1.12) / 5) * 5;
+      cfg.single_4 = Math.round((cfg.u10_4 * 1.12) / 5) * 5;
+      renderOfflineCalculator();
+      saveState();
+      showToast("⚡ 已按20节主推价自动生成10节包与单次整数梯度价！");
+    };
+
+    // 一键将线下矩阵最新价格同步至底部的对外主推课包卡片（解决日后提价、改价全盘统一协调问题）
+    window.syncOfflineMatrixToCards = () => {
+      const rows = getOfflineMatrixRows();
+      const r1 = rows[0];
+      const r3 = rows[2];
+      const disc10Txt = ((r1.u10 / r1.single) * 10).toFixed(1);
+      const disc20Txt = ((r1.u20 / r1.single) * 10).toFixed(1);
+
+      const p2Idx = state.pricing.findIndex(p => p.id === "p2" || (p.mode === "offline" && p.title.includes("1v1 私享")));
+      if (p2Idx >= 0) {
+        state.pricing[p2Idx].price = `¥${r1.t10.toLocaleString()} / ¥${r1.t20.toLocaleString()}`;
+        state.pricing[p2Idx].desc = `单节基准¥${r1.single} | 10节进阶包(折合${disc10Txt}折 ¥${r1.u10}/节) | 20节蜕变包(折合${disc20Txt}折 ¥${r1.u20}/节 · 立省¥${r1.save20.toLocaleString()}) | 专属长高/体态/体测靶向突破`;
+      }
+
+      const p3Idx = state.pricing.findIndex(p => p.id === "p3" || (p.mode === "offline" && p.title.includes("1v3")));
+      if (p3Idx >= 0) {
+        state.pricing[p3Idx].price = `¥${r3.t10.toLocaleString()} / ¥${r3.t20.toLocaleString()}`;
+        state.pricing[p3Idx].desc = `10节包人均¥${r3.u10}/节 | 20节包人均仅¥${r3.u20}/节（比1v1单次省¥${r1.single - r3.u20}/节，20节立省¥${r3.save20.toLocaleString()}）| 同龄追逐游戏对抗 + 纯英口令抢答 + 课后独立评估反馈`;
+      }
+
+      saveState();
+      showToast("🔄 已将矩阵最新整数价格同步至底部主推课包卡片！");
+    };
+
+    // 一键将线上矩阵最新价格同步至底部的线上订阅卡片
+    window.syncOnlineMatrixToCards = () => {
+      ensurePricingCalcState();
+      const cfg = state.pricingCalc.online;
+      const pM = cfg.pMonth || 1280;
+      const pQ = cfg.pQuarter || 2980;
+      const pY = cfg.pYear || 9800;
+
+      const op1 = state.pricing.find(p => p.id === "op1");
+      if (op1) op1.price = `¥${pM.toLocaleString()}`;
+      const op2 = state.pricing.find(p => p.id === "op2");
+      if (op2) op2.price = `¥${pQ.toLocaleString()}`;
+      const op3 = state.pricing.find(p => p.id === "op3");
+      if (op3) op3.price = `¥${pY.toLocaleString()}`;
+
+      saveState();
+      showToast("🔄 已将线上矩阵最新价格同步至底部订阅卡片！");
     };
 
     window.copyFullOfflineMatrixText = () => {
@@ -2827,14 +2935,6 @@
       const num = parseFloat(rawVal);
       if (isNaN(num)) return;
       state.pricingCalc.offline[field] = num;
-      if (["base1v1", "disc10", "disc20", "p1v2", "p1v3", "p1v4"].includes(field) && state.pricingCalc.offline.matrixCustom) {
-        delete state.pricingCalc.offline.matrixCustom.u10_2;
-        delete state.pricingCalc.offline.matrixCustom.u10_3;
-        delete state.pricingCalc.offline.matrixCustom.u10_4;
-        delete state.pricingCalc.offline.matrixCustom.single_2;
-        delete state.pricingCalc.offline.matrixCustom.single_3;
-        delete state.pricingCalc.offline.matrixCustom.single_4;
-      }
       renderOfflineCalculator();
       saveCalcStateDebounced();
     };
@@ -2854,7 +2954,7 @@
       state.pricingCalc.offline = structuredClone(DEFAULT_STATE.pricingCalc.offline);
       renderOfflineCalculator();
       saveState();
-      showToast("线下全景矩阵与测算器已恢复默认");
+      showToast("线下全景矩阵与测算器已恢复默认整数价");
     };
 
     function renderOfflineCalculator() {
@@ -2862,34 +2962,36 @@
       const cfg = state.pricingCalc.offline;
       const gSize = cfg.groupSize || 3;
       const base1v1 = cfg.base1v1 || 320;
-      const disc10 = cfg.disc10 || 88;
-      const disc20 = cfg.disc20 || 78;
+      const p1v1_10 = cfg.u10_1 || 280;
+      const p1v1_20 = cfg.u20_1 || 250;
       const p1v2 = cfg.p1v2 || 210;
       const p1v3 = cfg.p1v3 || 170;
       const p1v4 = cfg.p1v4 || 145;
 
-      // 渲染顶部：1v1~1v4 整体模块全景价格矩阵表（支持表内直接编辑，与下方PRO测算器双向联动）
+      // 渲染顶部：1v1~1v4 整体模块全景价格矩阵表（方案A：实收整数价直接编辑，自动显示折合折扣）
       const rows = getOfflineMatrixRows();
       const matrixBox = document.getElementById("offlineMasterMatrixContainer");
       if (matrixBox) {
         matrixBox.innerHTML = `
-          <div class="text-[11px] text-emerald-800 bg-emerald-50 border border-emerald-200 px-2.5 py-1.5 rounded-lg mb-2 flex items-center justify-between">
-            <span>✏️ <strong>双向联动已开启：</strong>直接点击表格内任意「班型名称、标签、单节价格」即可修改，下方 PRO 测算器会实时同步；拖动下方滑块也会实时更新此表。</span>
+          <div class="text-[11px] text-emerald-800 bg-emerald-50 border border-emerald-200 px-2.5 py-1.5 rounded-lg mb-2 flex items-center justify-between flex-wrap gap-1">
+            <span>✏️ <strong>方案A整数价双向联动：</strong>表内所有单价均可直接输入任意整数（如 280、250、170），系统自动反算折合折扣与总价，绝不跳回零头！</span>
           </div>
           <table class="w-full text-left border-collapse text-xs">
             <thead>
               <tr class="bg-forest-900 text-white text-[11px]">
                 <th class="p-2 rounded-tl-lg">班型模块 (点击可改名)</th>
                 <th class="p-2">单次基准价 (可改)</th>
-                <th class="p-2">10节进阶包 (可改单价)</th>
-                <th class="p-2 bg-champagne-600 text-forest-900 font-extrabold">20节蜕变包 (主推/可改单价)</th>
-                <th class="p-2">家长20节立省</th>
+                <th class="p-2">10节进阶包 (直接改整数单价)</th>
+                <th class="p-2 bg-champagne-600 text-forest-900 font-extrabold">20节蜕变包 (主推/直接改整数单价)</th>
+                <th class="p-2">对比1v1基准20节立省</th>
                 <th class="p-2 rounded-tr-lg">教练单节总产出</th>
               </tr>
             </thead>
             <tbody>
               ${rows.map(r => {
                 const isSelected = r.size === gSize;
+                const d10 = ((r.u10 / base1v1) * 10).toFixed(1);
+                const d20 = ((r.u20 / base1v1) * 10).toFixed(1);
                 return `
                   <tr onclick="setOfflineCalcGroup(${r.size})" class="border-b cursor-pointer transition-colors ${isSelected ? 'bg-amber-50/90 font-semibold' : 'hover:bg-slate-50'}">
                     <td class="p-2 whitespace-nowrap">
@@ -2909,14 +3011,14 @@
                       <div class="flex items-center">
                         <span class="text-[11px] text-slate-400 mr-0.5">¥</span>
                         <input type="number" step="5" value="${r.u10}" onclick="event.stopPropagation()" onchange="onOfflineMatrixEdit(${r.size}, 'u10', this.value)" class="w-14 bg-white border border-slate-200 rounded px-1 py-0.5 font-bold text-slate-800 text-xs" />
-                        <span class="text-[10px] text-slate-500 ml-1">/节 (总¥${r.t10.toLocaleString()})</span>
+                        <span class="text-[10px] text-slate-500 ml-1">/节 (总¥${r.t10.toLocaleString()} · 约${d10}折)</span>
                       </div>
                     </td>
                     <td class="p-2 whitespace-nowrap bg-amber-50/50">
                       <div class="flex items-center">
                         <span class="text-xs font-bold text-forest-900 mr-0.5">¥</span>
                         <input type="number" step="5" value="${r.u20}" onclick="event.stopPropagation()" onchange="onOfflineMatrixEdit(${r.size}, 'u20', this.value)" class="w-14 bg-white border border-amber-400 rounded px-1 py-0.5 font-extrabold text-sm text-forest-900" />
-                        <span class="text-[11px] text-amber-900 font-bold ml-1">/节 (总¥${r.t20.toLocaleString()})</span>
+                        <span class="text-[11px] text-amber-900 font-bold ml-1">/节 (总¥${r.t20.toLocaleString()} · 约${d20}折)</span>
                       </div>
                     </td>
                     <td class="p-2 text-emerald-700 font-bold whitespace-nowrap">省 ¥${r.save20.toLocaleString()}</td>
@@ -2942,22 +3044,25 @@
 
       document.getElementById("offBase1v1Input").value = base1v1;
       document.getElementById("offBase1v1Slider").value = Math.min(500, Math.max(200, base1v1));
-      document.getElementById("offDisc10Slider").value = disc10;
-      document.getElementById("offDisc20Slider").value = disc20;
 
-      const p1v1_10 = Math.round(base1v1 * (disc10 / 100));
-      const p1v1_20 = Math.round(base1v1 * (disc20 / 100));
-      document.getElementById("offDisc10Label").textContent = `${disc10}% (${(disc10/10).toFixed(1)}折)`;
-      document.getElementById("offDisc20Label").textContent = `${disc20}% (${(disc20/10).toFixed(1)}折)`;
-      document.getElementById("offDisc10PriceHint").textContent = `1v1 10节包：¥${p1v1_10}/节 (总¥${p1v1_10 * 10})`;
-      document.getElementById("offDisc20PriceHint").textContent = `1v1 20节包：¥${p1v1_20}/节 (总¥${p1v1_20 * 20})`;
+      document.getElementById("offPrice1v1_10").value = p1v1_10;
+      document.getElementById("offDisc10Slider").value = Math.min(450, Math.max(180, p1v1_10));
+      document.getElementById("offPrice1v1_20").value = p1v1_20;
+      document.getElementById("offDisc20Slider").value = Math.min(400, Math.max(150, p1v1_20));
+
+      const eqDisc10 = ((p1v1_10 / base1v1) * 10).toFixed(1);
+      const eqDisc20 = ((p1v1_20 / base1v1) * 10).toFixed(1);
+      document.getElementById("offDisc10Label").textContent = `折合 ${eqDisc10} 折`;
+      document.getElementById("offDisc20Label").textContent = `折合 ${eqDisc20} 折`;
+      document.getElementById("offDisc10PriceHint").textContent = `10节总价: ¥${(p1v1_10 * 10).toLocaleString()} (省¥${Math.max(0, (base1v1 - p1v1_10)*10)})`;
+      document.getElementById("offDisc20PriceHint").textContent = `20节总价: ¥${(p1v1_20 * 20).toLocaleString()} (省¥${Math.max(0, (base1v1 - p1v1_20)*20)})`;
 
       document.getElementById("offPrice1v2").value = p1v2;
-      document.getElementById("offSlide1v2").value = Math.min(400, Math.max(100, p1v2));
+      document.getElementById("offSlide1v2").value = Math.min(350, Math.max(100, p1v2));
       document.getElementById("offPrice1v3").value = p1v3;
-      document.getElementById("offSlide1v3").value = Math.min(350, Math.max(80, p1v3));
+      document.getElementById("offSlide1v3").value = Math.min(300, Math.max(80, p1v3));
       document.getElementById("offPrice1v4").value = p1v4;
-      document.getElementById("offSlide1v4").value = Math.min(300, Math.max(60, p1v4));
+      document.getElementById("offSlide1v4").value = Math.min(260, Math.max(60, p1v4));
 
       const unitMap = { 1: p1v1_20, 2: p1v2, 3: p1v3, 4: p1v4 };
       const curUnitPrice = unitMap[gSize];
@@ -2979,14 +3084,14 @@
 
       document.getElementById("offOutHourly").innerHTML = `¥${coachHourly.toLocaleString()} <span class="text-xs font-normal text-slate-300">/节</span>`;
       document.getElementById("offOutHourlyFormula").textContent = gSize === 1
-        ? `1v1 20节折后单价 ¥${curUnitPrice}/人 × 1人 (单次原价 ¥${base1v1})`
+        ? `1v1 20节包单价 ¥${curUnitPrice}/人 × 1人 (单次原价 ¥${base1v1})`
         : `每人 ¥${curUnitPrice}/节 × ${gSize}人同时消课 (20节总收款 ¥${(coachHourly * 20).toLocaleString()})`;
 
       document.getElementById("offOutBoost").textContent = `${boostVs20 >= 0 ? '+' : ''}${boostVs20}%`;
       document.getElementById("offOutBoostSub").textContent = `对比1v1课包价(¥${p1v1_20})净增 ¥${coachHourly - p1v1_20}/h ｜ 对比基准价(${boostVsBase >= 0 ? '+' : ''}${boostVsBase}%)`;
 
       document.getElementById("offOutParentSave").innerHTML = `省 ¥${parentSaveVsBase} <span class="text-xs font-normal">/节</span>`;
-      document.getElementById("offOutParentSaveTotal").textContent = `对比单节基准20节立省 ¥${(parentSaveVsBase * 20).toLocaleString()} ｜ 对比10节包每节省 ¥${parentSaveVs10}`;
+      document.getElementById("offOutParentSaveTotal").textContent = `对比单节基准20节立省 ¥${(parentSaveVsBase * 20).toLocaleString()} ｜ 对比1v1 10节包每节省 ¥${parentSaveVs10}`;
 
       const stuSel = document.getElementById("offUpStuSelect");
       const curStuVal = stuSel.value;
@@ -3033,7 +3138,7 @@
       document.getElementById("offUpgradeScriptBox").value = `【1v1 专属无损升舱 1v${upTarget} 精品小班方案】\n您好！目前咱们账户还剩余 1v1 学费余额 ¥${upBalance}。升级进入 1v${upTarget} 户外双语体能小班后，既能增加同龄伙伴的反应追逐对抗与英文口令互动，单节课时费也从原基准价降至 ¥${targetUnitPrice}/节（每节课立省 ¥${Math.max(0, base1v1 - targetUnitPrice)}）。\n\n🎁 专属折算福利：您的剩余学费 ¥${upBalance}，${giftNoteForScript}！确认升舱后我们下周即可按新班型为您排课。`;
     }
 
-    // --- 线上月/季/年订阅客单与规模化盈利测算器 + 全景矩阵表（支持表内直接编辑双向联动） ---
+    // --- 线上月/季/年订阅客单与规模化盈利测算器 + 全景矩阵表 ---
     window.setOnlineCalcCycle = (cyc) => {
       ensurePricingCalcState();
       state.pricingCalc.online.cycle = cyc;
@@ -3096,21 +3201,22 @@
       const nameQ = mc.name_quarterly || "🔥 季度蜕变陪伴 (3个月·主推)";
       const nameY = mc.name_yearly || "👑 年度首席顾问 (12个月)";
 
-      // 渲染线上全景矩阵表（支持表内直接改名、改总价，实时联动下方 MRR 杠杆引擎）
       const onMatrixEl = document.getElementById("onlineMasterMatrixContainer");
       if (onMatrixEl) {
         const qEqM = Math.round(pQuarter / 3);
         const yEqM = Math.round(pYear / 12);
+        const qDisc = ((pQuarter / (pMonth * 3)) * 10).toFixed(1);
+        const yDisc = ((pYear / (pMonth * 12)) * 10).toFixed(1);
         onMatrixEl.innerHTML = `
           <div class="text-[11px] text-emerald-800 bg-emerald-50 border border-emerald-200 px-2.5 py-1.5 rounded-lg mb-2">
-            ✏️ <strong>双向联动已开启：</strong>直接点击表格内「订阅方案名称」或「订阅总价」即可修改，下方 MRR 杠杆引擎会实时同步计算。
+            ✏️ <strong>整数总价双向联动：</strong>直接点击表格内「订阅方案名称」或「订阅总价」即可修改（自动反算折合月均价与折扣），与下方 MRR 杠杆引擎实时同步。
           </div>
           <table class="w-full text-left border-collapse text-xs">
             <thead>
               <tr class="bg-forest-900 text-white text-[11px]">
                 <th class="p-2 rounded-tl-lg">订阅周期档位 (点击可改名)</th>
-                <th class="p-2">订阅总价 (点击可改)</th>
-                <th class="p-2">折合月均单价</th>
+                <th class="p-2">订阅整数总价 (点击可改)</th>
+                <th class="p-2">折合月均单价 & 折扣</th>
                 <th class="p-2">客户立省总额</th>
                 <th class="p-2 rounded-tr-lg">${clients}人规模年化流水(ARR)</th>
               </tr>
@@ -3123,10 +3229,10 @@
                 <td class="p-2 whitespace-nowrap">
                   <div class="flex items-center">
                     <span class="text-xs text-slate-400 mr-0.5">¥</span>
-                    <input type="number" step="50" value="${pMonth}" onclick="event.stopPropagation()" onchange="onOnlineMatrixEdit('monthly', 'price', this.value)" class="w-20 font-bold text-forest-900 bg-white border border-slate-200 rounded px-1.5 py-0.5 text-xs" />
+                    <input type="number" step="20" value="${pMonth}" onclick="event.stopPropagation()" onchange="onOnlineMatrixEdit('monthly', 'price', this.value)" class="w-20 font-bold text-forest-900 bg-white border border-slate-200 rounded px-1.5 py-0.5 text-xs" />
                   </div>
                 </td>
-                <td class="p-2">¥${pMonth}/月</td>
+                <td class="p-2">¥${pMonth}/月 <span class="text-[10px] text-slate-400">(原价基准)</span></td>
                 <td class="p-2 text-slate-400">基准锚点</td>
                 <td class="p-2 font-bold">¥${(pMonth * 12 * clients).toLocaleString()}</td>
               </tr>
@@ -3137,10 +3243,10 @@
                 <td class="p-2 whitespace-nowrap">
                   <div class="flex items-center">
                     <span class="text-xs font-bold text-forest-900 mr-0.5">¥</span>
-                    <input type="number" step="100" value="${pQuarter}" onclick="event.stopPropagation()" onchange="onOnlineMatrixEdit('quarterly', 'price', this.value)" class="w-20 font-extrabold text-sm text-forest-900 bg-white border border-amber-400 rounded px-1.5 py-0.5" />
+                    <input type="number" step="20" value="${pQuarter}" onclick="event.stopPropagation()" onchange="onOnlineMatrixEdit('quarterly', 'price', this.value)" class="w-20 font-extrabold text-sm text-forest-900 bg-white border border-amber-400 rounded px-1.5 py-0.5" />
                   </div>
                 </td>
-                <td class="p-2 text-amber-900 font-bold">¥${qEqM}/月</td>
+                <td class="p-2 text-amber-900 font-bold">¥${qEqM}/月 <span class="text-[10px] font-normal">(约${qDisc}折)</span></td>
                 <td class="p-2 text-emerald-700 font-bold">省 ¥${Math.max(0, pMonth * 3 - pQuarter).toLocaleString()}</td>
                 <td class="p-2 font-extrabold text-forest-900">¥${(qEqM * 12 * clients).toLocaleString()}</td>
               </tr>
@@ -3151,10 +3257,10 @@
                 <td class="p-2 whitespace-nowrap">
                   <div class="flex items-center">
                     <span class="text-xs text-slate-400 mr-0.5">¥</span>
-                    <input type="number" step="200" value="${pYear}" onclick="event.stopPropagation()" onchange="onOnlineMatrixEdit('yearly', 'price', this.value)" class="w-20 font-bold text-forest-900 bg-white border border-slate-200 rounded px-1.5 py-0.5 text-xs" />
+                    <input type="number" step="100" value="${pYear}" onclick="event.stopPropagation()" onchange="onOnlineMatrixEdit('yearly', 'price', this.value)" class="w-20 font-bold text-forest-900 bg-white border border-slate-200 rounded px-1.5 py-0.5 text-xs" />
                   </div>
                 </td>
-                <td class="p-2 font-bold text-emerald-800">¥${yEqM}/月</td>
+                <td class="p-2 font-bold text-emerald-800">¥${yEqM}/月 <span class="text-[10px] font-normal">(约${yDisc}折)</span></td>
                 <td class="p-2 text-emerald-700 font-bold">省 ¥${Math.max(0, pMonth * 12 - pYear).toLocaleString()}</td>
                 <td class="p-2 font-bold">¥${(pYear * clients).toLocaleString()}</td>
               </tr>
@@ -3253,7 +3359,7 @@
     window.openPricingModal = (mode = "offline", id = null) => {
       const p = id ? state.pricing.find(x => x.id === id) : { mode, title: "", price: "¥", unit: mode==="online"?"3个月订阅":"10课时 / 20课时", desc: "" };
       openModal(`
-        <h3 class="font-bold text-sm text-forest-900">${id ? '编辑产品定价' : (mode==='online' ? '新增线上订阅方案' : '新增线下课包')}</h3>
+        <h3 class="font-bold text-sm text-forest-900">${id ? '编辑产品定价卡片' : (mode==='online' ? '新增线上订阅方案卡片' : '新增线下课包卡片')}</h3>
         <div class="space-y-2 text-xs">
           <div><label class="text-slate-500">方案名称</label><input id="mPrTitle" value="${(p.title || '').replace(/"/g, '"')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
           <div class="grid grid-cols-2 gap-2">
@@ -3280,7 +3386,7 @@
       };
       if (id) state.pricing[state.pricing.findIndex(x => x.id === id)] = obj;
       else state.pricing.push(obj);
-      closeModal(); saveState(); showToast("定价方案已保存");
+      closeModal(); saveState(); showToast("定价方案卡片已保存");
     };
 
     // ==================== 三大业务线 SOP & 环节标准话术库 ====================
@@ -4418,7 +4524,7 @@
       document.getElementById("dashActiveStudents").textContent = `${state.students.length + (state.onlineClients||[]).length} 人`;
     }
 
-    // ==================== 设置：全模块自定义命名 + 选项词典（含上课勾选标签自定义） ====================
+    // ==================== 设置：全模块自定义命名 + 选项词典 ====================
     window.openSettingsModal = () => {
       const d = state.dictionaries;
       const L = state.customLabels || DEFAULT_STATE.customLabels;
