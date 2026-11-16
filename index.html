@@ -115,7 +115,7 @@
           <button onclick="switchFitSub('standards')" id="fit-sub-standards" class="fit-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">4. 评估标准与BMI</button>
           <button onclick="switchFitSub('pricing')" id="fit-sub-pricing" class="fit-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">5. 全盘定价体系</button>
           <button onclick="switchFitSub('sop')" id="fit-sub-sop" class="fit-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">6. 线下SOP与话术</button>
-          <button onclick="switchFitSub('media')" id="fit-sub-media" class="fit-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">7. 自媒体看板</button>
+          <button onclick="switchFitSub('media')" id="fit-sub-media" class="fit-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">7. 自媒体工作流</button>
         </div>
 
         <!-- 线下 1.1 学员表 -->
@@ -237,7 +237,7 @@
           <div id="bmiTableContainer" class="card p-3 hidden overflow-x-auto"></div>
         </div>
 
-        <!-- 线下 1.5 全盘定价体系（布局重构：1.全景矩阵表 -> 2.PRO测算器与升舱工作台 -> 3.底部对外主推课包卡片） -->
+        <!-- 线下 1.5 全盘定价体系 -->
         <div id="fit-panel-pricing" class="fit-panel hidden space-y-3.5">
           <!-- 模块 1：线下整体模块全班型官方定价全景矩阵表 -->
           <div class="card p-3.5 space-y-3 border-forest-900/20 shadow-xs">
@@ -257,7 +257,7 @@
             <div id="offlineMasterMatrixContainer" class="overflow-x-auto"></div>
           </div>
 
-          <!-- 模块 2：线下 1v1~1v4 动态定价与无损升舱时薪测算器（移至上方紧贴矩阵表） -->
+          <!-- 模块 2：线下 1v1~1v4 动态定价与无损升舱时薪测算器 -->
           <div class="card p-3.5 space-y-3.5 border-champagne-500/50 shadow-xs">
             <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-2.5">
               <div>
@@ -284,7 +284,7 @@
               </div>
             </div>
 
-            <!-- 2.2 核心参数滑块 & 整数输入框（方案A：全实收整数单价控制，自动反算折扣） -->
+            <!-- 2.2 核心参数滑块 & 整数输入框 -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3 bg-slate-50 p-3 rounded-xl border border-slate-200/80">
               <div class="space-y-3">
                 <div class="space-y-1">
@@ -416,7 +416,7 @@
             </div>
           </div>
 
-          <!-- 模块 3：独立课包卡片区（移至最下方 · 用于分阶段精准发送给客户） -->
+          <!-- 模块 3：独立课包卡片区 -->
           <div class="card p-3.5 space-y-2.5 border-slate-200">
             <div class="flex items-center justify-between flex-wrap gap-2">
               <div>
@@ -447,18 +447,26 @@
           <div id="sopOfflineList" class="space-y-2.5"></div>
         </div>
 
-        <!-- 线下 1.7 自媒体看板 -->
+        <!-- 线下 1.7 自媒体工作流（聚焦真实上课实拍与自己带训内容 · 不做切片） -->
         <div id="fit-panel-media" class="fit-panel hidden space-y-2.5">
-          <div class="grid grid-cols-3 gap-2">
-            <div class="card p-2.5"><div class="text-[11px] text-slate-500">内容发布</div><div id="fitMediaPosts" class="text-base font-bold text-forest-900">0 篇</div></div>
+          <div class="grid grid-cols-4 gap-2">
+            <div class="card p-2.5"><div class="text-[11px] text-slate-500">工作流总数</div><div id="fitMediaPosts" class="text-base font-bold text-forest-900">0 篇</div></div>
+            <div class="card p-2.5"><div class="text-[11px] text-slate-500">已发布实拍</div><div id="fitMediaPubCount" class="text-base font-bold text-emerald-700">0 篇</div></div>
             <div class="card p-2.5"><div class="text-[11px] text-slate-500">引流加微信</div><div id="fitMediaLeads" class="text-base font-bold text-champagne-600">0 人</div></div>
             <div class="card p-2.5"><div class="text-[11px] text-slate-500">转化成交</div><div id="fitMediaConv" class="text-base font-bold text-emerald-600">0 单</div></div>
           </div>
-          <div class="flex items-center justify-between">
-            <h2 class="font-bold text-sm text-forest-900">线下社媒获客追踪（支持多平台多选与编辑）</h2>
-            <button onclick="openMediaModal('fitness')" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-semibold">+ 记录发布</button>
+          <div class="card p-3 bg-forest-900 text-white flex items-center justify-between flex-wrap gap-2">
+            <div>
+              <div class="flex items-center gap-1.5">
+                <span class="px-1.5 py-0.5 rounded bg-champagne-500 text-forest-900 font-extrabold text-[10px]">真实课堂实拍工作流 · 拒绝搬运切片</span>
+                <h2 class="font-bold text-xs text-white">🌳 线下双语体能 · 真实带训视频工作流台账</h2>
+              </div>
+              <p class="text-[11px] text-slate-300 mt-0.5">聚焦处州/白云山公园真实带训实拍、课堂实训动作/游戏细节、纯英口令互动原声与家长痛点文案</p>
+            </div>
+            <button onclick="openMediaModal('fitness')" class="btn-gold px-3 py-1.5 rounded-lg text-xs font-bold shrink-0">+ 新建线下实拍工作流</button>
           </div>
-          <div id="fitMediaList" class="space-y-2"></div>
+          <div id="fitMediaStageFilter" class="flex gap-1 overflow-x-auto no-scrollbar pb-0.5"></div>
+          <div id="fitMediaList" class="space-y-2.5"></div>
         </div>
       </div>
 
@@ -470,7 +478,7 @@
           <button onclick="switchOnlineSub('plans')" id="on-sub-plans" class="on-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">3. 周期计划与答疑</button>
           <button onclick="switchOnlineSub('pricing')" id="on-sub-pricing" class="on-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">4. 订阅定价与赠品</button>
           <button onclick="switchOnlineSub('sop')" id="on-sub-sop" class="on-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">5. 线上SOP与话术</button>
-          <button onclick="switchOnlineSub('media')" id="on-sub-media" class="on-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">6. 线上自媒体</button>
+          <button onclick="switchOnlineSub('media')" id="on-sub-media" class="on-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">6. 线上自媒体工作流</button>
         </div>
 
         <!-- 线上 1. 订阅会员表 -->
@@ -517,7 +525,7 @@
           <div id="onlinePlanLogList" class="space-y-2"></div>
         </div>
 
-        <!-- 线上 4. 订阅定价与赠品（布局重构：1.全景矩阵表 -> 2.MRR杠杆引擎 -> 3.底部订阅制方案卡片） -->
+        <!-- 线上 4. 订阅定价与赠品 -->
         <div id="on-panel-pricing" class="on-panel hidden space-y-3.5">
           <!-- 模块 1：线上全景定价矩阵表 -->
           <div class="card p-3.5 space-y-2.5 border-forest-900/20 shadow-xs">
@@ -534,7 +542,7 @@
             <div id="onlineMasterMatrixContainer" class="overflow-x-auto"></div>
           </div>
 
-          <!-- 模块 2：线上 MRR 杠杆引擎测算器（移至上方紧贴矩阵表） -->
+          <!-- 模块 2：线上 MRR 杠杆引擎测算器 -->
           <div class="card p-3.5 space-y-3.5 border-champagne-500/50 shadow-xs">
             <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-2.5">
               <div>
@@ -648,7 +656,7 @@
             </div>
           </div>
 
-          <!-- 模块 3：线上订阅制方案卡片（移至最下方 · 支持一键从矩阵同步价格） -->
+          <!-- 模块 3：线上订阅制方案卡片 -->
           <div class="card p-3.5 space-y-2.5 border-slate-200">
             <div class="flex items-center justify-between flex-wrap gap-2">
               <div>
@@ -679,18 +687,26 @@
           <div id="sopOnlineList" class="space-y-2.5"></div>
         </div>
 
-        <!-- 线上 6. 线上自媒体引流 -->
+        <!-- 线上 6. 线上自媒体工作流（核心全字段工作流：编号 + 主题/标题 + 状态阶段 + 源链接 + 正文文案及逻辑 + 渠道发布） -->
         <div id="on-panel-media" class="on-panel hidden space-y-2.5">
-          <div class="grid grid-cols-3 gap-2">
-            <div class="card p-2.5"><div class="text-[11px] text-slate-500">内容发布</div><div id="onMediaPosts" class="text-base font-bold text-forest-900">0 篇</div></div>
+          <div class="grid grid-cols-4 gap-2">
+            <div class="card p-2.5"><div class="text-[11px] text-slate-500">选题/工作流</div><div id="onMediaPosts" class="text-base font-bold text-forest-900">0 篇</div></div>
+            <div class="card p-2.5"><div class="text-[11px] text-slate-500">已发布内容</div><div id="onMediaPubCount" class="text-base font-bold text-emerald-700">0 篇</div></div>
             <div class="card p-2.5"><div class="text-[11px] text-slate-500">私域加微</div><div id="onMediaLeads" class="text-base font-bold text-champagne-600">0 人</div></div>
             <div class="card p-2.5"><div class="text-[11px] text-slate-500">成交月/季卡</div><div id="onMediaConv" class="text-base font-bold text-emerald-600">0 单</div></div>
           </div>
-          <div class="flex items-center justify-between">
-            <h2 class="font-bold text-sm text-forest-900">线上顾问社媒引流追踪（多平台多选 + 可编辑）</h2>
-            <button onclick="openMediaModal('online_fit')" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-semibold">+ 记录发布</button>
+          <div class="card p-3 bg-forest-900 text-white flex items-center justify-between flex-wrap gap-2">
+            <div>
+              <div class="flex items-center gap-1.5">
+                <span class="px-1.5 py-0.5 rounded bg-champagne-500 text-forest-900 font-extrabold text-[10px]">线上核心获客引擎 · 全字段工作流</span>
+                <h2 class="font-bold text-xs text-white">🌐 线上私享顾问 · 自媒体选题/文案/分发工作流</h2>
+              </div>
+              <p class="text-[11px] text-slate-300 mt-0.5">含：视频编号 ｜ 视频主题/暂定标题 ｜ 状态阶段(可直接切换) ｜ 源链接 ｜ 正文文案及逻辑 ｜ 渠道发布</p>
+            </div>
+            <button onclick="openMediaModal('online_fit')" class="btn-gold px-3 py-1.5 rounded-lg text-xs font-bold shrink-0">+ 新建线上自媒体工作流</button>
           </div>
-          <div id="onMediaList" class="space-y-2"></div>
+          <div id="onMediaStageFilter" class="flex gap-1 overflow-x-auto no-scrollbar pb-0.5"></div>
+          <div id="onMediaList" class="space-y-2.5"></div>
         </div>
       </div>
     </section>
@@ -701,7 +717,7 @@
         <button onclick="switchTourSub('orders')" id="tour-sub-orders" class="tour-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap bg-forest-900 text-white">1. 游客订单</button>
         <button onclick="switchTourSub('scripts')" id="tour-sub-scripts" class="tour-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">2. 九县市区词库</button>
         <button onclick="switchTourSub('sop')" id="tour-sub-sop" class="tour-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">3. 地接SOP与话术</button>
-        <button onclick="switchTourSub('media')" id="tour-sub-media" class="tour-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">4. 跨海社媒看板</button>
+        <button onclick="switchTourSub('media')" id="tour-sub-media" class="tour-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">4. 跨海社媒工作流</button>
       </div>
 
       <div id="tour-panel-orders" class="tour-panel space-y-2.5">
@@ -733,16 +749,21 @@
       </div>
 
       <div id="tour-panel-media" class="tour-panel hidden space-y-2.5">
-        <div class="grid grid-cols-3 gap-2">
-          <div class="card p-2.5"><div class="text-[11px] text-slate-500">跨海发布</div><div id="tourMediaPosts" class="text-base font-bold text-forest-900">0 篇</div></div>
+        <div class="grid grid-cols-4 gap-2">
+          <div class="card p-2.5"><div class="text-[11px] text-slate-500">工作流总数</div><div id="tourMediaPosts" class="text-base font-bold text-forest-900">0 篇</div></div>
+          <div class="card p-2.5"><div class="text-[11px] text-slate-500">已发布内容</div><div id="tourMediaPubCount" class="text-base font-bold text-emerald-700">0 篇</div></div>
           <div class="card p-2.5"><div class="text-[11px] text-slate-500">海外询盘</div><div id="tourMediaLeads" class="text-base font-bold text-champagne-600">0 条</div></div>
           <div class="card p-2.5"><div class="text-[11px] text-slate-500">锁单成团</div><div id="tourMediaConv" class="text-base font-bold text-emerald-600">0 单</div></div>
         </div>
-        <div class="flex items-center justify-between">
-          <h2 class="font-bold text-sm text-forest-900">跨海社媒引流追踪（支持多平台多选与随时编辑）</h2>
-          <button onclick="openMediaModal('tour')" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-semibold">+ 记录发布</button>
+        <div class="flex items-center justify-between flex-wrap gap-2">
+          <div>
+            <h2 class="font-bold text-sm text-forest-900">跨海社媒内容工作流（编号/标题/阶段/源链接/文案逻辑/渠道）</h2>
+            <p class="text-[11px] text-slate-500">支持多平台勾选、文案一键复制与阶段流转</p>
+          </div>
+          <button onclick="openMediaModal('tour')" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-semibold">+ 新建跨海工作流</button>
         </div>
-        <div id="tourMediaList" class="space-y-2"></div>
+        <div id="tourMediaStageFilter" class="flex gap-1 overflow-x-auto no-scrollbar pb-0.5"></div>
+        <div id="tourMediaList" class="space-y-2.5"></div>
       </div>
     </section>
 
@@ -1019,7 +1040,7 @@
         onSub3: "3. 周期计划与答疑",
         onSub4: "4. 订阅定价与赠品",
         onSub5: "5. 线上SOP与话术",
-        onSub6: "6. 线上自媒体"
+        onSub6: "6. 线上自媒体工作流"
       },
       // 方案A：全实收整数单价直接存储，彻底告别百分比四舍五入零头
       pricingCalc: {
@@ -1091,6 +1112,8 @@
         trainingIntensities: ["低强度恢复/拉伸", "中等强度有氧/技术", "力量与爆发力专项", "高强度足球对抗赛", "完全休息日"],
         fitMediaPlatforms: ["小红书", "抖音", "微信视频号", "朋友圈私域", "知乎/公众号"],
         tourMediaPlatforms: ["小红书(海外华人)", "Instagram", "TikTok", "YouTube Shorts", "GetYourGuide", "TourByLocals", "Showaround", "TripAdvisor"],
+        mediaStagesOnline: ["💡 选题/脚本打磨", "🎬 待录制/制作", "✂️ 后期剪辑包装", "⏳ 待多渠道分发", "✅ 已发布追踪", "🔥 爆款复利沉淀"],
+        mediaStagesOffline: ["📸 课堂实拍待整理", "✍️ 痛点文案撰写", "✂️ 真实原片粗剪", "⏳ 待同城发布", "✅ 已发布引流", "🌟 家长口碑素材"],
         onlineEnvs: ["居家徒手+哑铃/弹力带", "小区/单位健身房", "经常出差(酒店客房徒手)", "户外跑步+居家核心", "商业健身房全器械"],
         mealTypes: ["早餐", "早午餐合并(Brunch)", "午餐", "练前/下午加餐", "晚餐", "练后补充/宵夜"]
       },
@@ -1355,10 +1378,56 @@
           }
         ]
       },
+      // 升级版自媒体工作流数据（包含：视频编号 videoCode、主题/标题 title、状态阶段 stage、源链接 sourceUrl、正文文案及逻辑 copywriting、渠道发布 platforms + 线下专属真实课堂亮点）
       mediaPosts: [
-        { id: "m1", biz: "fitness", date: "2026-11-05", platforms: ["抖音", "小红书", "微信视频号"], title: "8岁女孩跳绳180个但单脚站立左右差4倍？隐形体态预警", views: 4200, inquiries: 8, leads: 3, deals: 1 },
-        { id: "m2", biz: "online_fit", date: "2026-11-07", platforms: ["小红书", "微信视频号"], title: "不去健身房不找私教，如何靠居家25分钟+早午餐合并重塑体态与精力？", views: 5600, inquiries: 12, leads: 5, deals: 1 },
-        { id: "m3", biz: "tour", date: "2026-11-06", platforms: ["Instagram", "TikTok", "小红书(海外华人)"], title: "Hidden Golden Clay Villages in Songyang, Lishui | Private English Tour", views: 1850, inquiries: 4, leads: 2, deals: 1 }
+        {
+          id: "m1",
+          biz: "fitness",
+          videoCode: "OFF-001",
+          date: "2026-11-05",
+          stage: "✅ 已发布引流",
+          platforms: ["抖音", "小红书", "微信视频号"],
+          title: "8岁女孩跳绳180个但单脚站立左右差4倍？处州公园1v1双语体测实拍",
+          sourceUrl: "手机相册原片：2026-11-05 处州公园吴姐姐实拍 / 夸克网盘备份",
+          classLocation: "丽水处州公园",
+          classDrills: "单腿微屈膝动态接抛球 + 5米视觉信号反应冲刺 + 红绿灯木头人急停",
+          bilingualHighlight: "Soft knee! Knee over second toe! Hold steady! 孩子在纯英指令下反应极快",
+          copywriting: "【痛点钩子】很多丽水家长以为孩子跳绳快就是体能好，直到今天在处州公园带8岁女孩做闭眼单脚测试：右脚60秒，左脚只有16秒！\n【专业拆解】左右侧本体感觉相差近4倍，正是孩子跑步容易崴脚、发力代偿的隐形根源。\n【真实课堂呈现】全程纯英文运动口令引导（Soft knees / Hold steady），用单腿接抛球+反应冲刺精准激活弱侧臀中肌。\n【行动钩子】同城4-15岁孩子想测测8维敏感期体能与双语指令反应？私信发「评估」约公园体验课。",
+          views: 4200,
+          inquiries: 8,
+          leads: 3,
+          deals: 1
+        },
+        {
+          id: "m2",
+          biz: "online_fit",
+          videoCode: "ON-001",
+          date: "2026-11-07",
+          stage: "✅ 已发布追踪",
+          platforms: ["小红书", "微信视频号"],
+          title: "不去健身房不请私教，工作忙的人如何靠居家25分钟+早午餐合并重塑精力？",
+          sourceUrl: "https://www.xiaohongshu.com/ (对标痛点参考 & 个人实拍口播工程文件)",
+          copywriting: "【3秒黄金钩子】为什么你办了健身卡去不了几次、请了私教一停课就反弹？因为你缺的不是毅力，是一套兼容你出差和加班的弹性系统。\n【核心逻辑推导】\n1. 砍掉通勤内耗：主场25分钟哑铃/弹力带A计划 + 差旅疲惫日15分钟保底B计划；\n2. 饮食不挨饿：应酬次日采用10:30早中餐合并(Brunch)拉长16小时空腹窗，高蛋白兜底；\n3. 体育硕士+AI数据追踪：每周异步视频校准动作，不到传统私教1/3的价格。\n【转化CTA】评论区或私信回复「诊断」，领《私享训练与健康背景摸底问卷》。",
+          views: 5600,
+          inquiries: 12,
+          leads: 5,
+          deals: 1
+        },
+        {
+          id: "m3",
+          biz: "tour",
+          videoCode: "TR-001",
+          date: "2026-11-06",
+          stage: "✅ 已发布追踪",
+          platforms: ["Instagram", "TikTok", "小红书(海外华人)"],
+          title: "Hidden Golden Clay Villages in Songyang, Lishui | Private English Tour",
+          sourceUrl: "松阳杨家堂/陈家铺实拍4K原片素材夹",
+          copywriting: "【Visual Hook】Step into 400 years of living history in Songyang's golden rammed-earth villages.\n【Value Logic】Skip the crowded tourist buses—explore Lishui with a local Master's graduate English guide in a luxury Li Auto EV.\n【CTA】DM for bespoke 1-to-3 day Lishui & Songyang itineraries.",
+          views: 1850,
+          inquiries: 4,
+          leads: 2,
+          deals: 1
+        }
       ],
       tourOrders: [
         { id: "to1", date: "2026-11-15", guest: "David & Sarah (UK)", route: "松阳杨家堂 + 陈家铺先锋书店一日包车导览", gross: 1600, cost: 80, status: "已锁单" }
@@ -1398,10 +1467,28 @@
       return [...structuredClone(defaultGames), ...rawDrills];
     }
 
+    function upgradeMediaPosts(rawPosts) {
+      if (!Array.isArray(rawPosts) || !rawPosts.length) return structuredClone(DEFAULT_STATE.mediaPosts);
+      return rawPosts.map((m, idx) => {
+        const prefix = m.biz === "online_fit" ? "ON" : (m.biz === "tour" ? "TR" : "OFF");
+        const defaultStage = m.biz === "fitness" ? "✅ 已发布引流" : "✅ 已发布追踪";
+        return {
+          videoCode: `${prefix}-${String(idx + 1).padStart(3, "0")}`,
+          stage: defaultStage,
+          sourceUrl: "",
+          copywriting: "",
+          classLocation: "丽水处州公园",
+          classDrills: "",
+          bilingualHighlight: "",
+          ...m
+        };
+      });
+    }
+
     function mergeStateWithDefaults(raw) {
       if (!raw) return structuredClone(DEFAULT_STATE);
       const mergedDict = { ...DEFAULT_STATE.dictionaries, ...(raw.dictionaries || {}) };
-      ["todoTags", "classFocusTags", "classFatigueTags", "classEngGoodTags", "classEngImproveTags"].forEach(k => {
+      ["todoTags", "classFocusTags", "classFatigueTags", "classEngGoodTags", "classEngImproveTags", "mediaStagesOnline", "mediaStagesOffline"].forEach(k => {
         if (!Array.isArray(mergedDict[k]) || !mergedDict[k].length) {
           mergedDict[k] = structuredClone(DEFAULT_STATE.dictionaries[k]);
         }
@@ -1428,6 +1515,7 @@
         todosByDate: raw.todosByDate || {},
         dictionaries: mergedDict,
         drills: mergeDrillsWithGames(raw.drills),
+        mediaPosts: upgradeMediaPosts(raw.mediaPosts),
         sops: {
           online: upgradeSopList(raw.sops?.online, DEFAULT_STATE.sops.online),
           offline: upgradeSopList(raw.sops?.offline, DEFAULT_STATE.sops.offline),
@@ -1465,11 +1553,16 @@
       activeDate: getOffsetDate(0),
       todoDate: getOffsetDate(0),
       showDateGrid: false,
-      showOverview: false
+      showOverview: false,
+      mediaStageFilter: {
+        fitness: "全部",
+        online_fit: "全部",
+        tour: "全部"
+      }
     };
     window.ui = ui;
 // === PART 1 END ===
-    // === PART 2 START ===
+    // === PART 2A START ===
     function applyCustomLabels() {
       const L = state.customLabels || DEFAULT_STATE.customLabels;
       document.getElementById("navAppTitle").textContent = L.appTitle || "Leo | Life OS";
@@ -1485,7 +1578,7 @@
       document.getElementById("on-sub-plans").textContent = L.onSub3 || "3. 周期计划与答疑";
       document.getElementById("on-sub-pricing").textContent = L.onSub4 || "4. 订阅定价与赠品";
       document.getElementById("on-sub-sop").textContent = L.onSub5 || "5. 线上SOP与话术";
-      document.getElementById("on-sub-media").textContent = L.onSub6 || "6. 线上自媒体";
+      document.getElementById("on-sub-media").textContent = L.onSub6 || "6. 线上自媒体工作流";
     }
 
     const CN_CHILD_BMI = {
@@ -2765,7 +2858,6 @@
       if (!off.matrixCustom) off.matrixCustom = {};
       if (!state.pricingCalc.online.matrixCustom) state.pricingCalc.online.matrixCustom = {};
 
-      // 兼容旧缓存：将旧版的百分比转换为精确整数单价，后续完全以整数单价为准
       const base = off.base1v1 || 320;
       if (off.u10_1 === undefined) off.u10_1 = off.mc?.u10_1 || Math.round((base * ((off.disc10 || 88) / 100)) / 5) * 5;
       if (off.u20_1 === undefined) off.u20_1 = off.mc?.u20_1 || Math.round((base * ((off.disc20 || 78) / 100)) / 5) * 5;
@@ -2780,7 +2872,6 @@
       if (off.single_4 === undefined) off.single_4 = off.matrixCustom.single_4 ?? 190;
     }
 
-    // 方案A核心：所有价格直接读取你设定的整数单价，绝不被百分比四舍五入篡改
     function getOfflineMatrixRows() {
       ensurePricingCalcState();
       const cfg = state.pricingCalc.offline;
@@ -2810,7 +2901,6 @@
       ];
     }
 
-    // 在全景价格矩阵表中直接修改任意名称或整数价格 -> 100% 精确保存并同步下方 PRO 测算器
     window.onOfflineMatrixEdit = (size, field, rawVal) => {
       ensurePricingCalcState();
       const cfg = state.pricingCalc.offline;
@@ -2841,7 +2931,6 @@
       saveCalcStateDebounced();
     };
 
-    // 快捷按钮：当你调整了20节主推价后，若想一键按梯度生成10节包与单次整数价（以5元为单位取整）
     window.autoScale10PackFrom20Pack = () => {
       ensurePricingCalcState();
       const cfg = state.pricingCalc.offline;
@@ -2857,7 +2946,6 @@
       showToast("⚡ 已按20节主推价自动生成10节包与单次整数梯度价！");
     };
 
-    // 一键将线下矩阵最新价格同步至底部的对外主推课包卡片（解决日后提价、改价全盘统一协调问题）
     window.syncOfflineMatrixToCards = () => {
       const rows = getOfflineMatrixRows();
       const r1 = rows[0];
@@ -2881,7 +2969,6 @@
       showToast("🔄 已将矩阵最新整数价格同步至底部主推课包卡片！");
     };
 
-    // 一键将线上矩阵最新价格同步至底部的线上订阅卡片
     window.syncOnlineMatrixToCards = () => {
       ensurePricingCalcState();
       const cfg = state.pricingCalc.online;
@@ -2968,7 +3055,6 @@
       const p1v3 = cfg.p1v3 || 170;
       const p1v4 = cfg.p1v4 || 145;
 
-      // 渲染顶部：1v1~1v4 整体模块全景价格矩阵表（方案A：实收整数价直接编辑，自动显示折合折扣）
       const rows = getOfflineMatrixRows();
       const matrixBox = document.getElementById("offlineMasterMatrixContainer");
       if (matrixBox) {
@@ -3388,7 +3474,8 @@
       else state.pricing.push(obj);
       closeModal(); saveState(); showToast("定价方案卡片已保存");
     };
-
+    // === PART 2A END ===
+    // === PART 2B START ===
     // ==================== 三大业务线 SOP & 环节标准话术库 ====================
     function renderSops() {
       const renderChannel = (channel, containerId) => {
@@ -3555,83 +3642,383 @@
       closeModal(); saveState();
     };
 
-    // ==================== 自媒体看板 ====================
+    // ==================== 全新改造：自媒体全字段工作流（线上 & 线下差异化定制 · 可编辑 · 可加入） ====================
+    function getMediaStagesByBiz(biz) {
+      if (biz === "fitness") {
+        return state.dictionaries.mediaStagesOffline || DEFAULT_STATE.dictionaries.mediaStagesOffline;
+      }
+      return state.dictionaries.mediaStagesOnline || DEFAULT_STATE.dictionaries.mediaStagesOnline;
+    }
+
+    function getNextVideoCode(biz) {
+      const prefix = biz === "online_fit" ? "ON" : (biz === "tour" ? "TR" : "OFF");
+      const sameBiz = (state.mediaPosts || []).filter(m => m.biz === biz);
+      const nextNum = sameBiz.length + 1;
+      return `${prefix}-${String(nextNum).padStart(3, "0")}`;
+    }
+
+    window.setMediaStageFilter = (biz, stage) => {
+      if (!ui.mediaStageFilter) ui.mediaStageFilter = { fitness: "全部", online_fit: "全部", tour: "全部" };
+      ui.mediaStageFilter[biz] = stage;
+      renderMedia();
+    };
+
+    window.quickChangeMediaStage = (id, newStage) => {
+      const item = (state.mediaPosts || []).find(x => x.id === id);
+      if (!item) return;
+      item.stage = newStage;
+      saveState();
+      showToast(`阶段已更新为：${newStage}`);
+    };
+
+    window.copyMediaCopywriting = (id) => {
+      const m = (state.mediaPosts || []).find(x => x.id === id);
+      if (!m) return;
+      const txt = `【${m.videoCode || ''}】${m.title}\n\n${m.copywriting || ''}`;
+      window.copyRaw(txt.trim(), "视频标题与正文文案逻辑已复制！");
+    };
+
+    window.copyMediaSourceUrl = (id) => {
+      const m = (state.mediaPosts || []).find(x => x.id === id);
+      if (!m || !m.sourceUrl) return;
+      window.copyRaw(m.sourceUrl, "源链接/素材路径已复制！");
+    };
+
     function renderMedia() {
       const configs = [
-        { biz: "fitness", postsEl: "fitMediaPosts", leadsEl: "fitMediaLeads", convEl: "fitMediaConv", listEl: "fitMediaList", leadUnit: "人", leadLabel: "加微信", dealLabel: "成交" },
-        { biz: "online_fit", postsEl: "onMediaPosts", leadsEl: "onMediaLeads", convEl: "onMediaConv", listEl: "onMediaList", leadUnit: "人", leadLabel: "加微信", dealLabel: "订购月/季卡" },
-        { biz: "tour", postsEl: "tourMediaPosts", leadsEl: "tourMediaLeads", convEl: "tourMediaConv", listEl: "tourMediaList", leadUnit: "条", leadLabel: "询盘", dealLabel: "锁单" }
+        {
+          biz: "fitness",
+          postsEl: "fitMediaPosts",
+          pubEl: "fitMediaPubCount",
+          leadsEl: "fitMediaLeads",
+          convEl: "fitMediaConv",
+          filterEl: "fitMediaStageFilter",
+          listEl: "fitMediaList",
+          leadUnit: "人",
+          leadLabel: "加微信",
+          dealLabel: "成交"
+        },
+        {
+          biz: "online_fit",
+          postsEl: "onMediaPosts",
+          pubEl: "onMediaPubCount",
+          leadsEl: "onMediaLeads",
+          convEl: "onMediaConv",
+          filterEl: "onMediaStageFilter",
+          listEl: "onMediaList",
+          leadUnit: "人",
+          leadLabel: "加微信",
+          dealLabel: "订购月/季卡"
+        },
+        {
+          biz: "tour",
+          postsEl: "tourMediaPosts",
+          pubEl: "tourMediaPubCount",
+          leadsEl: "tourMediaLeads",
+          convEl: "tourMediaConv",
+          filterEl: "tourMediaStageFilter",
+          listEl: "tourMediaList",
+          leadUnit: "条",
+          leadLabel: "询盘",
+          dealLabel: "锁单"
+        }
       ];
 
       configs.forEach(cfg => {
-        const posts = state.mediaPosts.filter(m => m.biz === cfg.biz);
-        const totalLeads = posts.reduce((acc, m) => acc + (m.leads || 0), 0);
-        const totalDeals = posts.reduce((acc, m) => acc + (m.deals || 0), 0);
-        document.getElementById(cfg.postsEl).textContent = `${posts.length} 篇`;
-        document.getElementById(cfg.leadsEl).textContent = `${totalLeads} ${cfg.leadUnit}`;
-        document.getElementById(cfg.convEl).textContent = `${totalDeals} 单`;
-        document.getElementById(cfg.listEl).innerHTML = posts.map(m => renderMediaCard(m, cfg.leadLabel, cfg.dealLabel)).join("") || `<div class="text-xs text-slate-400 p-3">暂无记录</div>`;
+        const allPosts = (state.mediaPosts || []).filter(m => m.biz === cfg.biz);
+        const pubPosts = allPosts.filter(m => (m.stage || "").includes("已发布") || (m.stage || "").includes("爆款") || (m.stage || "").includes("口碑"));
+        const totalLeads = allPosts.reduce((acc, m) => acc + (m.leads || 0), 0);
+        const totalDeals = allPosts.reduce((acc, m) => acc + (m.deals || 0), 0);
+
+        const pEl = document.getElementById(cfg.postsEl);
+        if (pEl) pEl.textContent = `${allPosts.length} 篇`;
+        const pubEl = document.getElementById(cfg.pubEl);
+        if (pubEl) pubEl.textContent = `${pubPosts.length} 篇`;
+        const lEl = document.getElementById(cfg.leadsEl);
+        if (lEl) lEl.textContent = `${totalLeads} ${cfg.leadUnit}`;
+        const cEl = document.getElementById(cfg.convEl);
+        if (cEl) cEl.textContent = `${totalDeals} 单`;
+
+        const stagePool = ["全部", ...getMediaStagesByBiz(cfg.biz)];
+        const activeFilter = ui.mediaStageFilter?.[cfg.biz] || "全部";
+        const filterBox = document.getElementById(cfg.filterEl);
+        if (filterBox) {
+          filterBox.innerHTML = stagePool.map(st => {
+            const cnt = st === "全部" ? allPosts.length : allPosts.filter(m => m.stage === st).length;
+            const isAct = activeFilter === st;
+            return `<button type="button" onclick="setMediaStageFilter('${cfg.biz}', '${st}')" class="px-2.5 py-1 rounded-md text-[11px] font-semibold whitespace-nowrap border transition-all ${
+              isAct ? 'bg-forest-900 text-white border-forest-900' : 'bg-white text-slate-600 border-slate-200'
+            }">${st} <span class="text-[10px] opacity-75">(${cnt})</span></button>`;
+          }).join("");
+        }
+
+        const filteredPosts = activeFilter === "全部" ? allPosts : allPosts.filter(m => m.stage === activeFilter);
+        const listBox = document.getElementById(cfg.listEl);
+        if (listBox) {
+          listBox.innerHTML = filteredPosts.map(m => renderMediaWorkflowCard(m, cfg.leadLabel, cfg.dealLabel)).join("")
+            || `<div class="card p-4 text-xs text-slate-400 text-center">当前阶段暂无视频工作流记录，点击右上角「+ 新建」加入。</div>`;
+        }
       });
     }
 
-    function renderMediaCard(m, leadLabel, dealLabel) {
-      const plats = Array.isArray(m.platforms) && m.platforms.length ? m.platforms : [m.platform || "未分类"];
+    function renderMediaWorkflowCard(m, leadLabel, dealLabel) {
+      const isOffline = m.biz === "fitness";
+      const stagePool = getMediaStagesByBiz(m.biz);
+      const curStage = m.stage || stagePool[0];
+      const stageOpts = stagePool.map(s => `<option value="${s}" ${curStage === s ? 'selected' : ''}>${s}</option>`).join("");
+
+      const isPublished = curStage.includes("已发布") || curStage.includes("爆款") || curStage.includes("口碑");
+      const stageColor = isPublished
+        ? "bg-emerald-50 text-emerald-800 border-emerald-300"
+        : (curStage.includes("待") || curStage.includes("剪") ? "bg-amber-50 text-amber-900 border-amber-300" : "bg-slate-100 text-slate-700 border-slate-300");
+
+      const plats = Array.isArray(m.platforms) && m.platforms.length ? m.platforms : [m.platform || "待选渠道"];
       const platBadges = plats.map(p => `<span class="text-[10px] bg-forest-900 text-white px-1.5 py-0.5 rounded font-semibold">${p}</span>`).join("");
-      return `
-        <div class="card p-3 flex items-center justify-between gap-2">
-          <div class="space-y-1">
-            <div class="flex items-center gap-1 flex-wrap">
-              ${platBadges}
-              <span class="text-[11px] text-slate-400 ml-1">${m.date}</span>
-              <span class="font-bold text-xs text-slate-800">${m.title}</span>
+
+      const isHttpUrl = (m.sourceUrl || "").startsWith("http://") || (m.sourceUrl || "").startsWith("https://");
+      const sourceHtml = m.sourceUrl
+        ? `<div class="flex items-center justify-between gap-2 bg-slate-50 px-2.5 py-1.5 rounded-lg border border-slate-200/80 text-[11px]">
+            <div class="truncate text-slate-600">
+              <strong class="text-forest-900">${isOffline ? '🎬 真实原片素材位：' : '🔗 源链接 / 素材源：'}</strong>
+              ${isHttpUrl ? `<a href="${m.sourceUrl}" target="_blank" rel="noopener" class="text-emerald-700 underline hover:text-emerald-900">${m.sourceUrl}</a>` : `<span>${m.sourceUrl}</span>`}
             </div>
-            <div class="flex gap-2.5 text-[11px] text-slate-600">
-              <span>曝光:<strong>${m.views}</strong></span>
-              <span>私信:<strong>${m.inquiries}</strong></span>
-              <span class="text-champagne-600">${leadLabel}:<strong>${m.leads}</strong></span>
-              <span class="text-emerald-600">${dealLabel}:<strong>${m.deals}</strong></span>
+            <button type="button" onclick="copyMediaSourceUrl('${m.id}')" class="text-[10px] text-champagne-600 font-bold shrink-0 hover:underline">复制链接</button>
+          </div>`
+        : "";
+
+      const offlineRealClassBlock = isOffline && (m.classLocation || m.classDrills || m.bilingualHighlight)
+        ? `<div class="bg-amber-50/70 border border-amber-200/90 rounded-lg p-2.5 space-y-1 text-[11px] text-amber-950">
+            <div class="flex items-center justify-between flex-wrap gap-1">
+              <span class="font-bold text-forest-900">🌳 线下真实带训课堂记录（非切片 · 原生实拍）</span>
+              ${m.classLocation ? `<span class="text-[10px] bg-white px-1.5 py-0.5 rounded border border-amber-200">📍${m.classLocation}</span>` : ''}
+            </div>
+            ${m.classDrills ? `<div><strong>🏃 实拍动作/趣味游戏：</strong>${m.classDrills}</div>` : ''}
+            ${m.bilingualHighlight ? `<div><strong>🗣️ 现场双语原声亮点：</strong><span class="italic">"${m.bilingualHighlight}"</span></div>` : ''}
+          </div>`
+        : "";
+
+      const copywritingBlock = m.copywriting
+        ? `<div class="bg-slate-50 border border-slate-200/90 rounded-lg p-2.5 space-y-1">
+            <div class="flex items-center justify-between">
+              <span class="text-[11px] font-bold text-forest-900">📝 正文文案及逻辑架构</span>
+              <button type="button" onclick="copyMediaCopywriting('${m.id}')" class="px-2 py-0.5 rounded bg-champagne-500 text-forest-900 text-[10px] font-bold">📋 一键复制标题+正文文案</button>
+            </div>
+            <div class="text-xs text-slate-700 whitespace-pre-line leading-relaxed max-h-36 overflow-y-auto pr-1">${m.copywriting}</div>
+          </div>`
+        : "";
+
+      return `
+        <div class="card p-3.5 space-y-2.5 border-slate-200 shadow-2xs">
+          <!-- 顶部栏：1. 视频编号 + 2. 视频主题/暂定标题 + 3. 状态阶段下拉快切 -->
+          <div class="flex items-start justify-between gap-2 flex-wrap">
+            <div class="space-y-1 flex-1 min-w-[200px]">
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="px-2 py-0.5 rounded bg-forest-900 text-champagne-400 font-mono font-extrabold text-[11px] tracking-wide">${m.videoCode || 'VID-001'}</span>
+                <span class="text-[11px] text-slate-400">📅 ${m.date || ''}</span>
+                <select onchange="quickChangeMediaStage('${m.id}', this.value)" class="text-[11px] font-bold px-2 py-0.5 rounded-md border cursor-pointer focus:outline-none ${stageColor}">
+                  ${stageOpts}
+                </select>
+              </div>
+              <h3 class="font-bold text-sm text-forest-900 leading-snug pt-0.5">${m.title}</h3>
+            </div>
+            <div class="flex items-center gap-2 shrink-0 text-xs">
+              <button type="button" onclick="openMediaModal('${m.biz}', '${m.id}')" class="px-2.5 py-1 rounded-lg bg-slate-100 text-forest-900 font-bold hover:bg-slate-200">✏️ 编辑工作流</button>
+              <button type="button" onclick="deleteItem('mediaPosts', '${m.id}')" class="px-2 py-1 rounded-lg text-rose-400 hover:bg-rose-50">删</button>
             </div>
           </div>
-          <div class="flex items-center gap-2 shrink-0 text-[11px]">
-            <button onclick="openMediaModal('${m.biz}', '${m.id}')" class="text-forest-900 font-semibold hover:underline">编辑</button>
-            <button onclick="deleteItem('mediaPosts', '${m.id}')" class="text-rose-400">删除</button>
+
+          <!-- 线下专属：真实上课实拍动作与双语口令亮点 -->
+          ${offlineRealClassBlock}
+
+          <!-- 4. 源链接 / 素材位置 -->
+          ${sourceHtml}
+
+          <!-- 5. 正文文案及逻辑 -->
+          ${copywritingBlock}
+
+          <!-- 底部栏：6. 渠道发布 + 转化漏斗数据 -->
+          <div class="flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-slate-100 text-[11px]">
+            <div class="flex items-center gap-1 flex-wrap">
+              <span class="text-slate-400 mr-0.5">📢 渠道发布:</span>
+              ${platBadges}
+            </div>
+            <div class="flex items-center gap-3 text-slate-600">
+              <span>曝光: <strong>${m.views || 0}</strong></span>
+              <span>咨询: <strong>${m.inquiries || 0}</strong></span>
+              <span class="text-champagne-600">${leadLabel}: <strong>${m.leads || 0}</strong></span>
+              <span class="text-emerald-600">${dealLabel}: <strong>${m.deals || 0}</strong></span>
+            </div>
           </div>
         </div>
       `;
     }
 
+    // 线下自媒体弹窗联动：一键将近期真实上课记录或动作库选入视频工作流
+    window.fillMediaFromClassRecord = (recId) => {
+      if (!recId) return;
+      const r = (state.records || []).find(x => x.id === recId);
+      if (!r) return;
+      const locInput = document.getElementById("mMdClassLoc");
+      const drillsInput = document.getElementById("mMdClassDrills");
+      const highlightInput = document.getElementById("mMdBilingual");
+      const copyBox = document.getElementById("mMdCopywriting");
+
+      if (locInput) locInput.value = r.location || "丽水处州公园";
+      if (drillsInput) drillsInput.value = (r.drillsDone || []).join(" + ") || r.summary || "";
+      if (highlightInput && (r.engGoodTags || []).length) {
+        highlightInput.value = r.engGoodTags.join("；");
+      }
+      if (copyBox && !copyBox.value.trim()) {
+        copyBox.value = `【真实带训痛点钩子】今天在${r.location || '公园'}带 ${r.studentName.split(' ')[0]} 进行户外双语体能实训！\n【课堂实拍动作与游戏】${(r.drillsDone || []).join(' + ') || r.summary}\n【双语指令与科学逻辑】${(r.engGoodTags || []).join('；') || '全英文口令浸润，强化弱侧神经募集与本体感觉'}\n【同城家长行动CTA】丽水4-15岁孩子科学长高/体态纠偏/运动英语开口，私信发「评估」约1v1户外体测体验课！`;
+      }
+      showToast("已带入该节真实上课实训素材！");
+    };
+
+    window.insertCopywritingTemplate = (biz) => {
+      const box = document.getElementById("mMdCopywriting");
+      if (!box) return;
+      if (biz === "fitness") {
+        box.value = `【1. 真实课堂痛点钩子 (前3秒画面+反常识发现)】\n今天在处州公园带训实拍：很多家长以为孩子跑得快就没问题，其实单腿稳定与落地缓冲藏着大隐患！\n\n【2. 亲自上课动作/游戏拆解 (专业体育硕士视角)】\n• 实训动作/游戏：\n• 靶向解决痛点：\n\n【3. 现场纯英口令原声亮点】\n• 英文指令 Cue："Soft knees! Stick the landing!"\n\n【4. 同城私域钩子 (CTA)】\n📍坐标丽水，想带孩子做一次8维敏感期体测+双语户外体验课？评论区或私信扣「体验」！`;
+      } else if (biz === "online_fit") {
+        box.value = `【1. 黄金3秒反内耗钩子】\n为什么你办了健身卡去不了几次、请了私教一停课就反弹？因为你缺的不是毅力，是一套兼容你加班和差旅的弹性系统。\n\n【2. 核心干货与逻辑推导】\n• 痛点破局：\n• 主场25分钟A计划 + 差旅15分钟保底B计划：\n• 10:30早午餐合并(16:8)高蛋白精力恢复逻辑：\n\n【3. 信任背书与私域引导 (CTA)】\n体育硕士+全场景私享健康顾问。私信或评论区回复「诊断」，发你一份《私享训练与健康背景摸底问卷》，定制你的90天精悍体态方案。`;
+      } else {
+        box.value = `【1. Visual Hook (First 3s)】\nHidden 400-year-old golden clay villages in Songyang, Lishui—without the tourist crowds.\n\n【2. Cultural & Bespoke Value】\n• Private English-speaking Master's guide\n• Luxury Li Auto EV door-to-door from Lishui High-Speed Rail Station\n\n【3. Call to Action】\nDM me "LISHUI" for a tailored 1-to-3 day ancient village & terrace itinerary!`;
+      }
+      showToast("已插入结构化文案逻辑模板");
+    };
+
     window.openMediaModal = (biz, id = null) => {
+      const isOffline = biz === "fitness";
       const existing = id ? state.mediaPosts.find(x => x.id === id) : null;
-      const m = existing || { biz, date: getOffsetDate(0), platforms: [], title: "", views: 0, inquiries: 0, leads: 0, deals: 0 };
+      const stagePool = getMediaStagesByBiz(biz);
+
+      const m = existing || {
+        biz,
+        videoCode: getNextVideoCode(biz),
+        date: getOffsetDate(0),
+        stage: stagePool[0],
+        platforms: [],
+        title: "",
+        sourceUrl: "",
+        classLocation: state.dictionaries.locations[0] || "丽水处州公园",
+        classDrills: ui.selectedDrills.length ? ui.selectedDrills.map(d => d.name).join(" + ") : "",
+        bilingualHighlight: "",
+        copywriting: "",
+        views: 0,
+        inquiries: 0,
+        leads: 0,
+        deals: 0
+      };
+
       const selectedPlats = Array.isArray(m.platforms) && m.platforms.length ? m.platforms : (m.platform ? [m.platform] : []);
       const platPool = biz === "tour" ? state.dictionaries.tourMediaPlatforms : state.dictionaries.fitMediaPlatforms;
 
       const platChecks = platPool.map(p => {
         const checked = selectedPlats.includes(p) ? "checked" : "";
-        return `<label class="flex items-center gap-1 text-[11px] bg-slate-50 border border-slate-200 px-2 py-1 rounded-md cursor-pointer">
-          <input type="checkbox" name="mMdPlatCheck" value="${p}" ${checked} /> ${p}
+        return `<label class="flex items-center gap-1 text-[11px] bg-white border border-slate-200 px-2 py-1 rounded-md cursor-pointer">
+          <input type="checkbox" name="mMdPlatCheck" value="${p}" ${checked} class="accent-forest-900" /> ${p}
         </label>`;
       }).join("");
 
-      openModal(`
-        <h3 class="font-bold text-sm text-forest-900">${id ? '编辑自媒体发布与转化数据' : '记录自媒体多平台发布'}</h3>
-        <div class="space-y-2.5 text-xs">
-          <div><label class="text-slate-500">发布日期</label><input id="mMdDate" type="date" value="${m.date}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
-          <div>
-            <label class="text-slate-500 block mb-1">发布平台（支持多选）</label>
-            <div class="flex flex-wrap gap-1.5">${platChecks}</div>
+      const stageOpts = stagePool.map(st => `<option value="${st}" ${m.stage === st ? 'selected' : ''}>${st}</option>`).join("");
+
+      const recentRecordsOpts = `<option value="">-- ⚡ 一键调取近期真实上课记录填入 --</option>` + (state.records || []).slice(0, 12).map(r =>
+        `<option value="${r.id}">${r.date} ｜ ${r.studentName} (${(r.drillsDone||[]).slice(0,2).join('+') || r.location})</option>`
+      ).join("");
+
+      const offlineFieldsHtml = isOffline ? `
+        <div class="bg-amber-50/80 p-2.5 rounded-lg border border-amber-200 space-y-2">
+          <div class="flex items-center justify-between flex-wrap gap-1">
+            <span class="font-bold text-forest-900 text-[11px]">🌳 线下真实带训课堂要素（主打真实实拍与亲自上课，不做切片）</span>
+            <select onchange="fillMediaFromClassRecord(this.value)" class="text-[11px] border border-amber-300 rounded px-1.5 py-0.5 bg-white text-amber-900 font-semibold max-w-[220px]">
+              ${recentRecordsOpts}
+            </select>
           </div>
-          <div><label class="text-slate-500">内容选题/标题</label><input id="mMdTitle" value="${m.title}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
-          <div class="grid grid-cols-2 gap-2">
-            <div><label class="text-slate-500">全网总浏览/曝光</label><input id="mMdViews" type="number" value="${m.views}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
-            <div><label class="text-slate-500">私信/评论咨询数</label><input id="mMdInq" type="number" value="${m.inquiries}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
-            <div><label class="text-slate-500">${biz==='tour'?'有效海外询盘数':'加微信好友数'}</label><input id="mMdLeads" type="number" value="${m.leads}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
-            <div><label class="text-slate-500">${biz==='tour'?'锁单成团数':'成交转化单数'}</label><input id="mMdDeals" type="number" value="${m.deals}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div>
+              <label class="text-[11px] text-slate-600">实拍上课场地</label>
+              <input id="mMdClassLoc" value="${(m.classLocation || '').replace(/"/g, '"')}" placeholder="如：丽水处州公园 / 白云山公园" class="w-full border rounded-lg p-1.5 mt-0.5 bg-white" />
+            </div>
+            <div>
+              <label class="text-[11px] text-slate-600">现场双语口令/互动原声亮点</label>
+              <input id="mMdBilingual" value="${(m.bilingualHighlight || '').replace(/"/g, '"')}" placeholder="如：Soft knees! 孩子纯英抢答" class="w-full border rounded-lg p-1.5 mt-0.5 bg-white" />
+            </div>
+            <div class="sm:col-span-2">
+              <label class="text-[11px] text-slate-600">实拍自己上课的动作 / 🎲趣味游戏明细</label>
+              <input id="mMdClassDrills" value="${(m.classDrills || '').replace(/"/g, '"')}" placeholder="如：红绿灯木头人单脚急停 + 弱侧单腿接抛球 + 5米反应冲刺" class="w-full border rounded-lg p-1.5 mt-0.5 bg-white" />
+            </div>
           </div>
         </div>
-        <div class="flex justify-end gap-2 pt-1">
+      ` : "";
+
+      openModal(`
+        <div class="flex items-center justify-between border-b pb-2">
+          <div>
+            <h3 class="font-bold text-sm text-forest-900">${id ? '✏️ 编辑自媒体工作流' : (isOffline ? '🌳 新建线下真实带训视频工作流' : '🌐 新建线上自媒体工作流')}</h3>
+            <p class="text-[10px] text-slate-500">全链路管理：视频编号 · 主题/暂定标题 · 状态阶段 · 源链接 · 正文文案及逻辑 · 渠道发布</p>
+          </div>
+          <button onclick="closeModal()" class="text-xs text-slate-400">✕</button>
+        </div>
+
+        <div class="space-y-2.5 text-xs">
+          <!-- 1. 视频编号 + 日期 + 3. 状态阶段 -->
+          <div class="grid grid-cols-3 gap-2">
+            <div>
+              <label class="text-slate-500 font-semibold">1. 视频编号</label>
+              <input id="mMdCode" value="${(m.videoCode || '').replace(/"/g, '"')}" placeholder="如：ON-001" class="w-full border rounded-lg p-1.5 mt-0.5 font-mono font-bold text-forest-900 bg-slate-50" />
+            </div>
+            <div>
+              <label class="text-slate-500 font-semibold">3. 状态阶段</label>
+              <select id="mMdStage" class="w-full border rounded-lg p-1.5 mt-0.5 font-bold text-forest-900 bg-amber-50/60">${stageOpts}</select>
+            </div>
+            <div>
+              <label class="text-slate-500">计划/发布日期</label>
+              <input id="mMdDate" type="date" value="${m.date}" class="w-full border rounded-lg p-1.5 mt-0.5" />
+            </div>
+          </div>
+
+          <!-- 2. 视频主题 / 暂定标题 -->
+          <div>
+            <label class="text-slate-500 font-semibold">2. 视频主题 / 暂定标题</label>
+            <input id="mMdTitle" value="${(m.title || '').replace(/"/g, '"')}" placeholder="${isOffline ? '如：处州公园真实带训：8岁女孩单脚闭眼站立左右差4倍怎么纠偏？' : '如：不去健身房不找私教，如何靠居家25分钟+早午餐合并重塑精力？'}" class="w-full border rounded-lg p-1.5 mt-0.5 font-bold text-slate-800" />
+          </div>
+
+          <!-- 4. 源链接 -->
+          <div>
+            <label class="text-slate-500 font-semibold">4. 源链接 / 原片素材存储位置</label>
+            <input id="mMdSource" value="${(m.sourceUrl || '').replace(/"/g, '"')}" placeholder="${isOffline ? '填写手机相册日期/夸克网盘路径/剪映草稿名/已发布视频链接...' : '填写参考灵感源链接 / 网盘工程文件链接 / 已发布作品链接...'}" class="w-full border rounded-lg p-1.5 mt-0.5 bg-slate-50" />
+          </div>
+
+          <!-- 线下专属真实课堂模块 -->
+          ${offlineFieldsHtml}
+
+          <!-- 5. 正文文案及逻辑 -->
+          <div>
+            <div class="flex items-center justify-between mb-1">
+              <label class="text-slate-500 font-semibold">5. 正文文案及逻辑（黄金3秒钩子 + 推导逻辑 + 转化CTA）</label>
+              <button type="button" onclick="insertCopywritingTemplate('${biz}')" class="text-[11px] text-champagne-600 font-bold hover:underline">+ 插入高转化文案逻辑模板</button>
+            </div>
+            <textarea id="mMdCopywriting" rows="5" placeholder="在此撰写或粘贴完整口播/字幕文案、痛点逻辑拆解与评论区引导钩子..." class="w-full border rounded-lg p-2 leading-relaxed bg-slate-50">${m.copywriting || ''}</textarea>
+          </div>
+
+          <!-- 6. 渠道发布 -->
+          <div class="bg-slate-50 p-2.5 rounded-lg border border-slate-200">
+            <label class="text-slate-600 font-semibold block mb-1.5">6. 渠道发布（支持多平台多选）</label>
+            <div class="flex flex-wrap gap-1.5">${platChecks}</div>
+          </div>
+
+          <!-- 曝光与转化结果追踪 -->
+          <div class="grid grid-cols-4 gap-2 pt-1 border-t border-slate-100">
+            <div><label class="text-[11px] text-slate-500">总浏览/曝光</label><input id="mMdViews" type="number" value="${m.views || 0}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+            <div><label class="text-[11px] text-slate-500">私信/评论数</label><input id="mMdInq" type="number" value="${m.inquiries || 0}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+            <div><label class="text-[11px] text-slate-500">${biz==='tour'?'海外询盘':'引流加微'}</label><input id="mMdLeads" type="number" value="${m.leads || 0}" class="w-full border rounded-lg p-1.5 mt-0.5 font-bold text-champagne-600" /></div>
+            <div><label class="text-[11px] text-slate-500">${biz==='tour'?'锁单成团':'转化成交'}</label><input id="mMdDeals" type="number" value="${m.deals || 0}" class="w-full border rounded-lg p-1.5 mt-0.5 font-bold text-emerald-700" /></div>
+          </div>
+        </div>
+
+        <div class="flex justify-end gap-2 pt-2 border-t">
           <button onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">取消</button>
-          <button onclick="saveMedia('${biz}', '${id || ''}')" class="btn-primary px-4 py-1.5 rounded-lg text-xs">保存同步</button>
+          <button onclick="saveMedia('${biz}', '${id || ''}')" class="btn-primary px-4 py-1.5 rounded-lg text-xs font-bold">保存工作流并同步</button>
         </div>
       `);
     };
@@ -3642,10 +4029,17 @@
       const obj = {
         id: id || "m_" + Date.now(),
         biz,
+        videoCode: document.getElementById("mMdCode").value.trim() || getNextVideoCode(biz),
+        stage: document.getElementById("mMdStage").value,
         date: document.getElementById("mMdDate").value,
+        title: document.getElementById("mMdTitle").value.trim() || "未命名视频主题",
+        sourceUrl: document.getElementById("mMdSource").value.trim(),
+        classLocation: document.getElementById("mMdClassLoc")?.value?.trim() || "",
+        classDrills: document.getElementById("mMdClassDrills")?.value?.trim() || "",
+        bilingualHighlight: document.getElementById("mMdBilingual")?.value?.trim() || "",
+        copywriting: document.getElementById("mMdCopywriting").value.trim(),
         platforms,
         platform: platforms.join("+"),
-        title: document.getElementById("mMdTitle").value.trim() || "未命名内容",
         views: parseInt(document.getElementById("mMdViews").value) || 0,
         inquiries: parseInt(document.getElementById("mMdInq").value) || 0,
         leads: parseInt(document.getElementById("mMdLeads").value) || 0,
@@ -3653,7 +4047,7 @@
       };
       if (id) state.mediaPosts[state.mediaPosts.findIndex(x => x.id === id)] = obj;
       else state.mediaPosts.unshift(obj);
-      closeModal(); saveState(); showToast("自媒体记录已保存");
+      closeModal(); saveState(); showToast("自媒体工作流已保存同步");
     };
 
     // ==================== 2. 丽水英语地接 ====================
@@ -4557,13 +4951,19 @@
           </div>
 
           <div class="space-y-2 pt-2 border-t">
+            <div class="font-bold text-forest-900">🎬 自媒体工作流阶段与渠道词典（用顿号或逗号分隔）</div>
+            <div><label class="text-slate-600">线上自媒体状态阶段池</label><input id="setMediaStagesOn" value="${(d.mediaStagesOnline||DEFAULT_STATE.dictionaries.mediaStagesOnline).join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+            <div><label class="text-slate-600">线下实拍自媒体状态阶段池</label><input id="setMediaStagesOff" value="${(d.mediaStagesOffline||DEFAULT_STATE.dictionaries.mediaStagesOffline).join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+            <div><label class="text-slate-600">国内社媒发布渠道池</label><input id="setFitPlats" value="${(d.fitMediaPlatforms||[]).join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+            <div><label class="text-slate-600">海外地接发布渠道池</label><input id="setTourPlats" value="${(d.tourMediaPlatforms||[]).join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          </div>
+
+          <div class="space-y-2 pt-2 border-t">
             <div class="font-bold text-forest-900">📚 通用下拉选项与标签词典（用顿号或逗号分隔）</div>
             <div><label class="text-slate-600">每日To-Do行动分类标签</label><input id="setTodoTags" value="${(d.todoTags||DEFAULT_STATE.dictionaries.todoTags).join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
             <div><label class="text-slate-600">常用上课地点</label><input id="setLocs" value="${d.locations.join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
             <div><label class="text-slate-600">线上会员常用训练场景</label><input id="setOnlineEnvs" value="${(d.onlineEnvs||[]).join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
             <div><label class="text-slate-600">进食餐次类型标签</label><input id="setMealTypes" value="${(d.mealTypes||[]).join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
-            <div><label class="text-slate-600">国内社媒平台池</label><input id="setFitPlats" value="${(d.fitMediaPlatforms||[]).join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
-            <div><label class="text-slate-600">海外地接社媒平台池</label><input id="setTourPlats" value="${(d.tourMediaPlatforms||[]).join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
             <div><label class="text-slate-600">我的训练强度标签</label><input id="setIntensities" value="${d.trainingIntensities.join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
             <div><label class="text-slate-600">我的健康状态标签</label><input id="setTagsMe" value="${d.healthTagsMe.join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
             <div><label class="text-slate-600">妻子健康状态标签</label><input id="setTagsWife" value="${d.healthTagsWife.join('、')}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
@@ -4602,18 +5002,20 @@
       state.dictionaries.classFatigueTags = splitPipe("setClsFatigue");
       state.dictionaries.classEngGoodTags = splitPipe("setClsEngGood");
       state.dictionaries.classEngImproveTags = splitPipe("setClsEngImp");
+      state.dictionaries.mediaStagesOnline = splitList("setMediaStagesOn");
+      state.dictionaries.mediaStagesOffline = splitList("setMediaStagesOff");
+      state.dictionaries.fitMediaPlatforms = splitList("setFitPlats");
+      state.dictionaries.tourMediaPlatforms = splitList("setTourPlats");
       state.dictionaries.todoTags = splitList("setTodoTags");
       state.dictionaries.locations = splitList("setLocs");
       state.dictionaries.onlineEnvs = splitList("setOnlineEnvs");
       state.dictionaries.mealTypes = splitList("setMealTypes");
-      state.dictionaries.fitMediaPlatforms = splitList("setFitPlats");
-      state.dictionaries.tourMediaPlatforms = splitList("setTourPlats");
       state.dictionaries.trainingIntensities = splitList("setIntensities");
       state.dictionaries.healthTagsMe = splitList("setTagsMe");
       state.dictionaries.healthTagsWife = splitList("setTagsWife");
       state.lockEnabled = document.getElementById("setLockOn").checked;
       state.pin = document.getElementById("setPin").value.trim() || "1999";
-      closeModal(); saveState(); showToast("模块名称与全局勾选词典已更新");
+      closeModal(); saveState(); showToast("模块名称与自媒体工作流词典已更新");
     };
 
     window.deleteItem = (collection, id) => {
