@@ -329,7 +329,7 @@
     <section id="view-fitness" class="pillar-view space-y-2.5">
       <div class="grid grid-cols-2 gap-1.5 bg-white p-1.5 rounded-xl border border-slate-200 shadow-2xs">
         <button onclick="switchFitMode('offline')" id="mode-btn-offline" data-label-key="fitModeOffline" class="py-2 px-2 rounded-lg text-xs font-bold text-center transition-all bg-forest-900 text-white">🌳 线下·双语体能训练</button>
-        <button onclick="switchFitMode('online')" id="mode-btn-online" data-label-key="fitModeOnline" class="py-2 px-2 rounded-lg text-xs font-bold text-center transition-all text-slate-600">🌐 线上·青少年成长体能顾问</button>
+        <button onclick="switchFitMode('online')" id="mode-btn-online" data-label-key="fitModeOnline" class="py-2 px-2 rounded-lg text-xs font-bold text-center transition-all text-slate-600">🌐 线上·青少年体能顾问</button>
       </div>
 
       <!-- ==================== 【A. 线下模式】 ==================== -->
@@ -2406,28 +2406,29 @@
         </div>
       </div>
 
-      <!-- ==================== 【B. 线上模式：青少年体能与健康顾问（个人IP信任 · 科学陪伴 · 专业体能）】 ==================== -->
+      <!-- ==================== 【B. 线上模式：青少年体能顾问（专注于青少年体能 · 周期计划与陪伴答疑 · 线上专属海报生成）】 ==================== -->
       <div id="fit-mode-online" class="hidden space-y-2.5">
         <div class="card p-3 bg-forest-900 text-white flex items-center justify-between flex-wrap gap-2">
           <div>
             <div class="flex items-center gap-1.5 flex-wrap">
-              <span class="px-2 py-0.5 rounded bg-champagne-500 text-forest-900 font-extrabold text-[10px]">体育硕士个人IP · 科学陪伴 · 非双语纯享运动科学</span>
-              <span class="font-bold text-xs text-white" data-label-key="onTopIdentityTitle">🌐 Leo 线上青少年体能与生长发育健康顾问系统</span>
+              <span class="px-2 py-0.5 rounded bg-champagne-500 text-forest-900 font-extrabold text-[10px]">体育硕士个人IP · 专注青少年体能 · 周期计划与陪伴答疑</span>
+              <span class="font-bold text-xs text-white" data-label-key="onTopIdentityTitle">🌐 Leo 线上青少年体能顾问系统</span>
             </div>
-            <p class="text-[11px] text-slate-300 mt-0.5" data-label-key="onTopIdentitySub">以专业运动人体科学（LTAD敏感期 / 骨骺生长刺激 / 力学代偿纠偏）+ 高温度长期陪伴建立深度家长信任</p>
+            <p class="text-[11px] text-slate-300 mt-0.5" data-label-key="onTopIdentitySub">核心交付闭环：① 微信咨询定制《未来周期大方向规划框架报告》 → ② 正式会员交付《每周训练重心与每次课动作组数执行图》+ 视频纠偏陪伴答疑</p>
           </div>
           <div class="flex items-center gap-1.5 text-[11px]">
-            <span class="bg-forest-800 border border-slate-700 px-2 py-1 rounded text-champagne-400">全模块支持随时增删改</span>
+            <button type="button" onclick="switchOnlineSub('poster')" class="btn-gold px-2.5 py-1 rounded text-[11px] font-extrabold shadow-2xs">🎨 线上海报生成中心</button>
           </div>
         </div>
 
         <div class="flex gap-1 overflow-x-auto no-scrollbar bg-white p-1 rounded-lg border border-slate-200">
           <button onclick="switchOnlineSub('clients')" id="on-sub-clients" data-label-key="onSub1" class="on-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap bg-forest-900 text-white">1. 学员表(咨询&amp;正式)</button>
-          <button onclick="switchOnlineSub('intake')" id="on-sub-intake" data-label-key="onSub2" class="on-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">2. 生长与运动科学问卷</button>
+          <button onclick="switchOnlineSub('intake')" id="on-sub-intake" data-label-key="onSub2" class="on-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">2. 体能与运动科学问卷</button>
           <button onclick="switchOnlineSub('plans')" id="on-sub-plans" data-label-key="onSub3" class="on-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">3. 周期计划与陪伴答疑</button>
           <button onclick="switchOnlineSub('pricing')" id="on-sub-pricing" data-label-key="onSub4" class="on-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">4. 可编辑定价系统</button>
           <button onclick="switchOnlineSub('sop')" id="on-sub-sop" data-label-key="onSub5" class="on-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">5. 线上SOP与话术</button>
           <button onclick="switchOnlineSub('media')" id="on-sub-media" data-label-key="onSub6" class="on-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">6. 线上自媒体工作台</button>
+          <button onclick="switchOnlineSub('poster')" id="on-sub-poster" data-label-key="onSub7" class="on-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap text-slate-600">7. 🎨 线上海报生成</button>
         </div>
 
         <!-- ==================== 线上 1. 学员表（分为咨询学员 & 正式学员，含动态扩展字段） ==================== -->
@@ -2540,16 +2541,51 @@
           <div id="intakeList" class="grid grid-cols-1 md:grid-cols-2 gap-2.5"></div>
         </div>
 
-        <!-- ==================== 线上 3. 周期计划制定与陪伴答疑（专业体能 + 温度陪伴，非双语） ==================== -->
+        <!-- ==================== 线上 3. 周期计划制定与陪伴答疑（双核心交付：①大方向框架报告 + ②正式会员周重心与单次动作课表） ==================== -->
         <div id="on-panel-plans" class="on-panel hidden space-y-2.5">
-          <div class="card p-3 bg-amber-50/70 border border-amber-200 flex items-center justify-between flex-wrap gap-2">
-            <div>
-              <div class="font-bold text-xs text-forest-900">🌱 线上青少年周期训练制定 &amp; 1v1视频动作纠偏/陪伴答疑工作台</div>
-              <p class="text-[11px] text-amber-900 mt-0.5">聚焦青少年敏感期体能、长高纵向跳跃、足踝核心力量、居家微习惯陪伴与家长焦虑疏导（已全面去除双语口令，纯享专业体能与走心陪伴）</p>
+          <div class="card p-3.5 bg-forest-900 text-white space-y-2.5">
+            <div class="flex items-center justify-between flex-wrap gap-2">
+              <div>
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <span class="px-2 py-0.5 rounded bg-champagne-500 text-forest-900 font-extrabold text-[10px]">线上体能核心交付中枢 · 一键转专属海报</span>
+                  <h3 class="font-bold text-sm text-white" data-label-key="onPlansTitle">🌱 周期计划与陪伴答疑工作台（大方向规划框架 + 正式会员周课表动作明细）</h3>
+                </div>
+                <p class="text-[11px] text-slate-300 mt-0.5">家长加微了解情况后 → 先出【未来大方向规划框架报告】锁单；成为正式会员（如¥599/季）后 → 交付【具体一周重心+每次课主题+每个动作怎么练/几组】并配合视频答疑！</p>
+              </div>
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <button type="button" onclick="openPlanTemplateDictModal()" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-forest-800 text-champagne-400 border border-slate-700 hover:bg-forest-900">⚙️ 管理周期模板库</button>
+                <button type="button" onclick="switchOnlineSub('poster')" class="btn-gold px-3 py-1.5 rounded-lg text-xs font-extrabold">🎨 打开线上海报中心</button>
+              </div>
             </div>
-            <div class="flex items-center gap-1.5 flex-wrap">
-              <button type="button" onclick="openPlanTemplateDictModal()" class="px-2.5 py-1.5 rounded-lg text-xs font-semibold bg-white text-forest-900 border border-amber-300 hover:bg-amber-100">⚙️ 管理周期模板库</button>
-              <button type="button" onclick="openOnlineLogModal()" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-semibold">+ 制定周期计划 / 记录答疑</button>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-2.5 pt-1 text-xs">
+              <div class="bg-forest-800/90 border border-slate-700 p-3 rounded-xl flex flex-col justify-between space-y-2">
+                <div>
+                  <div class="flex items-center justify-between">
+                    <span class="font-bold text-champagne-400">🗺️ 交付一：微信咨询破冰 · 未来大方向规划框架报告</span>
+                    <span class="text-[10px] bg-amber-500/20 text-amber-300 px-1.5 py-0.5 rounded">格式固定·随学员信息自动变</span>
+                  </div>
+                  <p class="text-[11px] text-slate-300 mt-1 leading-relaxed">家长加微说完孩子年龄、现状与目标诉求后，一键根据所填信息生成「体能诊断 + 未来三阶段周期进阶大方向框架报告」，并可一键生成专属海报发微信。</p>
+                </div>
+                <div class="flex items-center gap-2 pt-1">
+                  <button type="button" onclick="openOnlineLogModal(null, null, '大方向规划框架报告')" class="btn-gold px-3 py-1.5 rounded-lg text-xs font-bold flex-1 text-center">+ 新建【大方向规划框架报告】</button>
+                  <button type="button" onclick="openOnlinePosterForClient(null, 'macro_framework')" class="px-2.5 py-1.5 rounded-lg bg-white/10 text-white hover:bg-white/20 text-[11px] font-semibold">🎨 直接做框架海报</button>
+                </div>
+              </div>
+
+              <div class="bg-forest-800/90 border border-emerald-700/60 p-3 rounded-xl flex flex-col justify-between space-y-2">
+                <div>
+                  <div class="flex items-center justify-between">
+                    <span class="font-bold text-emerald-400">🏋️ 交付二：正式会员专属 · 周训练重心与每次课动作处方</span>
+                    <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded">周重心·每次主题·动作怎么练/几组</span>
+                  </div>
+                  <p class="text-[11px] text-slate-300 mt-1 leading-relaxed">针对正式会员（如¥599/季会员），明确给出本周训练重心、每一次课的主题、每一个动作有哪些、应该怎么练（发力口诀）、练几组几次，并配合视频纠偏答疑。</p>
+                </div>
+                <div class="flex items-center gap-2 pt-1">
+                  <button type="button" onclick="openOnlineLogModal(null, null, '正式会员周训练动作课表')" class="px-3 py-1.5 rounded-lg bg-emerald-600 text-white hover:bg-emerald-500 text-xs font-bold flex-1 text-center">+ 新建【正式会员·周训练动作课表】</button>
+                  <button type="button" onclick="openOnlinePosterForClient(null, 'weekly_plan')" class="px-2.5 py-1.5 rounded-lg bg-white/10 text-white hover:bg-white/20 text-[11px] font-semibold">🎨 直接做周课表海报</button>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -2558,13 +2594,18 @@
               <span class="font-bold text-forest-900">筛选学员：</span>
               <select id="onPlanFilterClient" onchange="renderOnlineFitness()" class="border border-slate-200 rounded-lg px-2 py-1 bg-slate-50 font-semibold text-forest-900"></select>
               <select id="onPlanFilterType" onchange="renderOnlineFitness()" class="border border-slate-200 rounded-lg px-2 py-1 bg-slate-50">
-                <option value="全部">全部记录 (计划+答疑)</option>
+                <option value="全部">全部交付记录 (大方向框架 + 周动作课表 + 陪伴答疑)</option>
+                <option value="大方向规划框架报告">🗺️ 未来大方向规划框架报告 (咨询/初期规划)</option>
+                <option value="正式会员周训练动作课表">🏋️ 正式会员·周训练与单次动作课表</option>
                 <option value="周期训练计划">📅 周期训练计划</option>
                 <option value="视频纠偏与陪伴答疑">💬 视频纠偏与陪伴答疑</option>
-                <option value="阶段复测与长高评估">📈 阶段复测与长高评估</option>
+                <option value="阶段复测与长高评估">📈 阶段复测与体能评估</option>
               </select>
             </div>
-            <span id="onPlanCountHint" class="text-[11px] text-slate-400">共 0 条记录</span>
+            <div class="flex items-center gap-2">
+              <button type="button" onclick="openOnlineLogModal(null, null, '视频纠偏与陪伴答疑')" class="px-2.5 py-1 rounded-lg bg-emerald-50 text-emerald-800 border border-emerald-200 text-xs font-bold hover:bg-emerald-100">+ 记录视频纠偏/日常答疑</button>
+              <span id="onPlanCountHint" class="text-[11px] text-slate-400">共 0 条记录</span>
+            </div>
           </div>
 
           <div id="onlinePlanLogList" class="space-y-2.5"></div>
@@ -2576,7 +2617,7 @@
             <div class="flex items-center justify-between flex-wrap gap-2">
               <div>
                 <span class="px-1.5 py-0.5 rounded bg-forest-900 text-champagne-400 font-bold text-[10px]">1. 完全可编辑定价矩阵表</span>
-                <h2 class="font-bold text-sm text-forest-900 inline ml-1" data-label-key="onMatrixTitle">🌐 线上青少年体能与健康顾问 · 全景定价体系表（支持增删改任意档位）</h2>
+                <h2 class="font-bold text-sm text-forest-900 inline ml-1" data-label-key="onMatrixTitle">🌐 线上青少年体能顾问 · 全景定价体系表（支持增删改任意档位）</h2>
                 <p class="text-[11px] text-slate-500 mt-0.5">表格内所有档位名称、周期月数、收费标准、服务交付内容与核心定位均可直接点击修改，也可新增或删除档位！</p>
               </div>
               <div class="flex items-center gap-1.5 flex-wrap">
@@ -2648,7 +2689,7 @@
               <div>
                 <div class="flex items-center gap-1.5">
                   <span class="px-1.5 py-0.5 rounded bg-slate-800 text-white font-bold text-[10px]">3. 对外发送方案卡片</span>
-                  <h2 class="font-bold text-sm text-forest-900" data-label-key="onCardsTitle">📦 线上青少年体能与健康陪伴方案卡（支持自由增删改与一键复制）</h2>
+                  <h2 class="font-bold text-sm text-forest-900" data-label-key="onCardsTitle">📦 线上青少年体能陪伴方案卡（支持自由增删改与一键复制）</h2>
                 </div>
               </div>
               <div class="flex items-center gap-1.5">
@@ -2700,6 +2741,66 @@
           </div>
 
           <div id="onMediaList" class="space-y-2.5"></div>
+        </div>
+
+        <!-- ==================== 线上 7. 🎨 线上专属海报生成中心（独立于线下 · 专供①未来大方向规划框架报告 & ②正式会员周重心与每次课动作图） ==================== -->
+        <div id="on-panel-poster" class="on-panel hidden space-y-3">
+          <div class="card p-3.5 bg-forest-900 text-white flex items-center justify-between flex-wrap gap-2">
+            <div>
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <span class="px-2 py-0.5 rounded bg-champagne-500 text-forest-900 font-extrabold text-[10px]">线上专属独立海报系统 · 自动带入线上学员档案与周课表</span>
+                <h2 class="font-bold text-sm text-white" data-label-key="onPosterBannerTitle">🎨 Leo 线上青少年体能顾问 · 视觉报告与周训练课表海报中心</h2>
+              </div>
+              <p class="text-[11px] text-slate-300 mt-0.5">专为线上体能工作流打造：① 给微信咨询家长出《未来周期大方向规划框架报告》；② 给正式会员出《每周重心+每次课主题+每个动作怎么练/几组执行图》</p>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button type="button" onclick="exportOnlinePosterImage()" class="btn-gold px-3.5 py-1.5 rounded-lg text-xs font-extrabold shadow-xs">📸 一键导出高清 PNG 线上海报</button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-3.5 items-start">
+            <!-- 左侧：线上专属海报控制台 -->
+            <div class="lg:col-span-5 card p-3.5 space-y-3">
+              <div class="space-y-1.5">
+                <label class="font-bold text-xs text-forest-900 block">① 选择线上海报交付母版（与线下完全独立）</label>
+                <div id="onPosterTemplateButtons" class="grid grid-cols-1 gap-1.5"></div>
+              </div>
+
+              <div class="space-y-2 pt-2 border-t border-slate-100">
+                <label class="font-bold text-xs text-forest-900 block">② 选择线上学员（自动根据所填姓名/年龄/现状/诉求变化）</label>
+                <select id="onPosterClientSelect" onchange="onOnlinePosterClientChange(this.value)" class="w-full border border-slate-200 rounded-lg p-2 text-xs font-bold text-forest-900 bg-slate-50"></select>
+                <div class="space-y-1">
+                  <label class="text-[11px] text-slate-500 block">或从已保存的【周期计划与陪伴答疑】记录载入到海报：</label>
+                  <select id="onPosterLogSelect" onchange="onOnlinePosterLogChange(this.value)" class="w-full border border-slate-200 rounded-lg p-1.5 text-xs text-slate-700 bg-white"></select>
+                </div>
+              </div>
+
+              <div class="space-y-2 pt-2 border-t border-slate-100">
+                <div id="onPosterDynamicControls" class="space-y-2.5 text-xs"></div>
+              </div>
+
+              <div class="bg-amber-50 border border-amber-200 rounded-lg p-2.5 text-[11px] text-amber-900 space-y-1 leading-relaxed">
+                <div class="font-bold">💡 线上体能海报极速工作流：</div>
+                <div>1. <strong>咨询家长破冰</strong>：选「母版1 大方向规划框架」，点选刚录入的咨询学员，名字/年龄/现状/三阶段方向自动替换，右侧任意文字点一下就能改；</div>
+                <div>2. <strong>正式会员排课</strong>：选「母版2 正式会员周动作课表」，一键套用动作大纲或增删每次课主题、动作要领与组数，导出高清长图直接发微信！</div>
+              </div>
+
+              <div class="grid grid-cols-2 gap-2 pt-1">
+                <button type="button" onclick="saveOnlinePosterToPlanLogs()" class="py-2 rounded-lg text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-300 hover:bg-emerald-100">💾 同步存入学员计划记录</button>
+                <button type="button" onclick="exportOnlinePosterImage()" class="btn-gold py-2 rounded-lg text-xs font-extrabold shadow-xs">📸 导出高清 PNG 海报</button>
+              </div>
+            </div>
+
+            <!-- 右侧：实时所见即所得线上海报画布 -->
+            <div class="lg:col-span-7 flex flex-col items-center">
+              <div class="text-[11px] text-slate-400 mb-1.5 flex items-center gap-2">
+                <span>👇 线上专属海报实时预览画布（画布内任何一行文字均可直接点击修改）</span>
+              </div>
+              <div class="w-full overflow-x-auto flex justify-center py-1">
+                <div id="onlinePosterCaptureTarget" class="poster-canvas-wrap rounded-2xl select-none"></div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
@@ -3332,9 +3433,9 @@
         dashKpi3: "全渠道粉丝群/加微线索",
         dashKpi4: "在服青少年学员总数",
         fitModeOffline: "🌳 线下·青少年双语体能",
-        fitModeOnline: "🌐 线上·青少年体能与健康顾问",
-        onTopIdentityTitle: "🌐 Leo 线上青少年体能与生长发育健康顾问系统",
-        onTopIdentitySub: "以专业运动人体科学（LTAD敏感期 / 骨骺生长刺激 / 力学代偿纠偏）+ 高温度长期陪伴建立深度家长信任",
+        fitModeOnline: "🌐 线上·青少年体能顾问",
+        onTopIdentityTitle: "🌐 Leo 线上青少年体能顾问系统",
+        onTopIdentitySub: "核心交付闭环：① 微信咨询定制《未来周期大方向规划框架报告》 → ② 正式会员交付《每周训练重心与每次课动作组数执行图》+ 视频纠偏陪伴答疑",
         offSub1: "1. 学员表与成长档案",
         offSub2: "2. 消课与反馈闭环",
         offSub3: "3. 动作/游戏库与备课",
@@ -3345,11 +3446,13 @@
         offSub8: "8. 🎨 视觉海报母版",
         offPosterBannerTitle: "🎨 Leo 户外双语体能 · 视觉海报母版中心 (可画同款)",
         onSub1: "1. 学员表(咨询&正式)",
-        onSub2: "2. 生长与运动科学问卷",
+        onSub2: "2. 体能与运动科学问卷",
         onSub3: "3. 周期计划与陪伴答疑",
         onSub4: "4. 可编辑定价系统",
         onSub5: "5. 线上SOP与话术",
         onSub6: "6. 线上自媒体工作台",
+        onSub7: "7. 🎨 线上海报生成",
+        onPosterBannerTitle: "🎨 Leo 线上青少年体能顾问 · 视觉报告与周训练课表海报中心",
         tourSub1: "1. 游客订单",
         tourSub2: "2. 九县市区词库",
         tourSub3: "3. 地接SOP与话术",
@@ -3368,9 +3471,9 @@
         onClientsTitle: "线上青少年学员全周期档案表（咨询线索 & 正式陪伴学员双轨记录）",
         onIntakeBannerTitle: "🧬 青少年生长发育规律 (LTAD/PHV) & 运动科学定制摸底问卷",
         onIntakeListTitle: "📋 定制诊断问卷题库（全可编辑 · 含家长极简选项与运动科学解析）",
-        onPlansTitle: "🌱 线上青少年周期训练制定 & 1v1视频动作纠偏/陪伴答疑工作台",
-        onMatrixTitle: "🌐 线上青少年体能与健康顾问 · 全景定价体系表（支持增删改任意档位）",
-        onCardsTitle: "📦 线上青少年体能与健康陪伴方案卡（支持自由增删改与一键复制）",
+        onPlansTitle: "🌱 周期计划与陪伴答疑工作台（大方向规划框架 + 正式会员周课表动作明细）",
+        onMatrixTitle: "🌐 线上青少年体能顾问 · 全景定价体系表（支持增删改任意档位）",
+        onCardsTitle: "📦 线上青少年体能陪伴方案卡（支持自由增删改与一键复制）",
         onSopTitle: "🌐 线上青少年体能顾问全流程 SOP & 信任陪伴话术库（全可删减/可编辑/可排序）",
         onMediaBannerTitle: "🎬 线上个人IP自媒体创作工作台（标题 · 脚本内容 · 底层逻辑 · 分发平台全可编辑增减）",
         healthMetaTitle: "📌 阶段身体基础状况与总体规划",
@@ -3403,47 +3506,47 @@
         },
         online: {
           cycle: "tier_quarter",
-          pMonth: 499,
-          pQuarter: 1280,
-          pYear: 3980,
+          pMonth: 249,
+          pQuarter: 599,
+          pYear: 1980,
           activeClients: 25,
           weeklyMinsPerClient: 12,
           tiers: [
             {
               id: "tier_diag",
-              name: "🔍 L1 生长发育与动作力学单次诊断",
+              name: "🔍 L1 动作力学评估与未来大方向规划",
               months: 1,
-              price: 199,
-              unitLabel: "单次深度评估 (可100%抵扣正式陪伴)",
-              deliverables: "8维生长发育与体测摸底 + 15秒动作视频生物力学拆解 + 1v1定制运动处方单",
+              price: 99,
+              unitLabel: "单次深度评估+大方向规划报告 (可抵扣正式会员)",
+              deliverables: "体能现状与敏感期摸底 + 15秒动作视频力学拆解 + 定制《未来周期大方向规划框架报告》",
               highlight: "建立体育硕士专业IP信任破冰"
             },
             {
               id: "tier_month",
-              name: "📅 月度习惯养成·居家体能陪伴",
+              name: "📅 月度习惯养成·线上体能陪伴",
               months: 1,
-              price: 499,
-              unitLabel: "1个月陪伴 (折合¥16/天)",
-              deliverables: "4周动态进阶居家训练表 + 每周打卡视频动作纠偏与语音鼓励 + 生长睡眠饮食指导",
-              highlight: "适合初次体验线上陪伴家庭"
+              price: 249,
+              unitLabel: "1个月陪伴 (折合¥8/天)",
+              deliverables: "4周定制周训练重心与单次动作课表 + 每周打卡视频动作纠偏与语音鼓励 + 微信随时答疑",
+              highlight: "适合初次体验线上体能陪伴家庭"
             },
             {
               id: "tier_quarter",
-              name: "🔥 季度蜕变·90天体能与追高陪伴 (主推)",
+              name: "🔥 季度蜕变·90天青少年体能陪伴会员 (主推)",
               months: 3,
-              price: 1280,
-              unitLabel: "3个月陪伴 (折合¥427/月 · 立省¥217)",
-              deliverables: "12周LTAD分阶段周期计划 + 每周1v1视频动作力学精调 + 阶段数据对比喜报 + 家长随时留言答疑",
-              highlight: "黄金90天神经肌肉重塑周期"
+              price: 599,
+              unitLabel: "3个月正式会员 (¥599/季 · 折合¥199/月)",
+              deliverables: "未来12周三阶段大方向规划 + 每周具体训练重心与每次课主题/动作组数图 + 视频动作纠偏 + 随时陪伴答疑",
+              highlight: "黄金90天体能重塑与习惯养成周期"
             },
             {
               id: "tier_year",
-              name: "👑 年度私享·青少年成长体能首席顾问",
+              name: "👑 年度私享·青少年体能首席陪伴顾问",
               months: 12,
-              price: 3980,
-              unitLabel: "12个月陪伴 (折合¥332/月 · 二胎同享)",
-              deliverables: "全年4学期身高追赶/体态纠偏/体测满分全统筹 + 二胎同享指导 + 寒暑假特训优先权",
-              highlight: "高粘性长期家庭健康管家"
+              price: 1980,
+              unitLabel: "12个月陪伴 (折合¥165/月 · 二胎同享)",
+              deliverables: "全年4学期体能拔高/体测满分/专项爆发全周期统筹 + 每周定制动作课表 + 二胎同享指导",
+              highlight: "高粘性长期家庭体能顾问"
             }
           ]
         }
@@ -3522,11 +3625,12 @@
           "🧠 体育硕士硬核科普 → LTAD青少年敏感期规律 → 为什么盲目报班没用 → 建立信任"
         ],
         onlinePayModes: [
-          "待定/咨询跟进中",
-          "L1 单次运动科学评估 (¥199)",
-          "月度习惯养成陪伴 (¥499/月)",
+          "待定/咨询跟进中 (已出大方向规划框架)",
+          "季度体能陪伴正式会员 (¥599/季)",
+          "L1 单次评估+大方向规划报告 (¥99)",
+          "月度习惯养成体能陪伴 (¥249/月)",
           "季度蜕变90天陪伴 (¥1,280/季)",
-          "年度首席成长顾问 (¥3,980/年)",
+          "年度体能首席顾问 (¥1,980/年)",
           "二胎家庭定制陪伴包"
         ],
         onlineEnvs: [
@@ -3784,34 +3888,34 @@
         {
           id: "op_diag",
           mode: "online",
-          title: "🔍 L1 生长发育与运动力学单次诊断",
-          price: "¥199",
+          title: "🔍 L1 体能动作力学诊断与未来大方向规划",
+          price: "¥99",
           unit: "单次深度评估 (7天内升舱全额抵扣)",
-          desc: "1. 体育硕士Leo亲自拆解：LTAD敏感期窗口 + FPHV遗传身高潜力评估\n2. 15秒居家动作视频（跳绳/深蹲/单脚站）慢放生物力学诊断\n3. 交付《青少年专属体能与长高干预处方单》+ 15分钟语音深度答疑"
+          desc: "1. 体育硕士Leo亲自拆解：LTAD体能敏感期定位 + 现有体能短板剖析\n2. 15秒居家动作视频（跳绳/深蹲/单脚站/起跑）慢放生物力学诊断\n3. 交付专属《未来周期大方向规划框架报告》+ 1v1语音深度答疑"
         },
         {
           id: "op_month",
           mode: "online",
           title: "📅 月度习惯养成·青少年体能陪伴",
-          price: "¥499",
-          unit: "1个月定制陪伴 (每天仅¥16)",
-          desc: "1. 定制4周《周中放学15min+周末户外25min》家庭体能训练计划\n2. 每周打卡视频1v1动作纠偏 + Leo教练原声语音鼓励孩子\n3. 生长激素深睡眠作息与『掌心蛋白质』营养落地指导\n4. 专属家长微信随时留言答疑，告别盲目焦虑"
+          price: "¥249",
+          unit: "1个月定制陪伴 (每天仅¥8)",
+          desc: "1. 定制4周《每周训练重心+每次课主题+每个动作怎么练/几组》执行图\n2. 每周打卡视频1v1动作纠偏 + Leo教练原声语音鼓励孩子\n3. 专属家长微信随时留言陪伴答疑，帮孩子建立规律运动习惯"
         },
         {
           id: "op_quarter",
           mode: "online",
-          title: "🔥 季度蜕变·90天体能与追高深度陪伴 (主推)",
-          price: "¥1,280",
-          unit: "3个月定制陪伴 (折合¥427/月)",
-          desc: "1. 12周完整生理改造周期：第1月打通动作发力与踝刚性 → 第2月拔高心肺爆发力 → 第3月巩固习惯冲击满分\n2. 每周1v1视频帧级动作纠偏 + Leo教练专属语音赋能陪伴\n3. 每30天复测并输出《阶段身体素质成长对比报告》\n4. 全周期生长发育、运动伤病防护、考前减量与营养睡眠顾问陪伴"
+          title: "🔥 季度蜕变·90天青少年体能陪伴会员 (主推)",
+          price: "¥599",
+          unit: "3个月正式会员 (折合¥199/月 · 每天仅¥6.6)",
+          desc: "1. 交付《12周三阶段大方向规划框架》：第1月动作模式与足踝刚性 → 第2月专项体能与核心传导 → 第3月爆发力突破与习惯固化\n2. 每周交付《正式会员周训练重心与每次课具体动作/要领/组数图》\n3. 每周1v1训练视频动作纠偏 + Leo教练语音激励 + 微信随时陪伴答疑\n4. 阶段体能数据复测与成长对比喜报"
         },
         {
           id: "op_year",
           mode: "online",
-          title: "👑 年度私享·青少年成长体能首席顾问",
-          price: "¥3,980",
+          title: "👑 年度私享·青少年体能首席陪伴顾问",
+          price: "¥1,980",
           unit: "12个月私享陪伴 (二胎家庭同享)",
-          desc: "1. 全年4个学期动态跟随生长速率(PHV)与学校体测节点定制方案\n2. 家里二胎兄弟姐妹可免费共享顾问指导权益\n3. 包含全年无上限每周视频动作诊断、骨龄/体态跟踪与家长情绪陪伴\n4. 享Leo线下特训营或私教专属VIP优先席位与最高抵扣权益"
+          desc: "1. 全年4个学期动态跟随体能发展敏感期(LTAD)与学校体测节点定制周课表\n2. 家里二胎兄弟姐妹可免费共享体能计划与动作纠偏权益\n3. 包含全年无上限每周视频动作诊断、周期课表更新与随时陪伴答疑"
         }
       ],
       onlineClients: [
@@ -3830,8 +3934,8 @@
           sourceChannel: "小红书科普笔记 → 粉丝群",
           childCondition: "近1年仅长高4.5cm（偏缓）；1分钟跳绳卡在115个总断绳，起跳脚后跟重砸地面；单脚闭眼站立左脚仅11秒、右脚32秒，写作业容易含胸塌腰。",
           parentDemand: "1. 抓住10岁前窗口科学追高，改善晚睡与挑食；2. 寒假前把1分钟跳绳稳定突破到160个以上；3. 需要专业教练每周督促鼓励孩子，减少母子陪练冲突。",
-          payMode: "季度蜕变90天陪伴 (¥1,280/季)",
-          fee: 1280,
+          payMode: "季度体能陪伴正式会员 (¥599/季)",
+          fee: 599,
           startDate: "2026-11-01",
           endDate: "2027-01-31",
           env: "客厅瑜伽垫2㎡+无绳/竹节跳绳（周中15min+周末30min）",
@@ -3961,15 +4065,26 @@
       ],
       onlinePlanLogs: [
         {
-          id: "opl_1",
-          date: "2026-11-15",
-          recordType: "周期训练计划",
+          id: "opl_macro_1",
+          date: "2026-11-01",
+          recordType: "大方向规划框架报告",
           clientId: "oc_formal_1",
           clientName: "宇轩 (小学3年级)",
-          phase: "第1阶段(第1-4周)：踝关节弹簧刚性激活 & 跳绳破150个专项",
-          envUsed: "周中放学后客厅15min(A计划) + 周末小区空地25min(B计划)",
-          planDetail: "【A计划·周中放学后15min客厅（作业前大脑充氧）】\n1. 足底筋膜唤醒+脚趾抓毛巾：40秒×2组\n2. 原地前脚掌高频Pogo弹性跳：40秒×3组（口诀：膝盖微屈不锁死，脚掌像小弹簧一样轻快点地）\n3. 单腿微屈膝闭眼站立（弱侧左脚优先）：30秒×3组\n4. 连续摸高纵跳唤醒骨骺生长板：15次×3组\n\n【B计划·周末小区空地25min】\n1. 十字象限快速双脚跳：20秒×3组\n2. 1分钟计时跳绳间歇冲刺：4组（组间慢走60秒）\n3. 睡前大腿后链与小腿静态拉伸：每侧30秒",
-          qaSummary: "【视频动作纠偏 & 陪伴答疑】：\n慢放看了宇轩妈妈发来的15秒跳绳视频：宇轩之前习惯用整个大臂抡绳，导致跳到70个左右肩膀就酸、绳子变形绊脚。\n✅ 调整口诀：在腋下夹两张小纸片跳30秒，体会『大臂贴肋骨、手腕画小圈』！\n🌟 陪伴反馈：给宇轩录了45秒专属表扬语音，孩子听完当晚主动加练2组，单次连跳突破75个！叮嘱今晚21:30前准时睡觉。"
+          phase: "【未来12周体能大方向规划框架】踝刚性重塑 · 跳绳破160个 · 核心抗旋与追高",
+          envUsed: "每周3-4次 · 周中居家客厅15分钟 + 周末户外空地25分钟",
+          planDetail: "📊 一、学员当前情况与运动科学诊断：\n• 基本信息：宇轩（男 · 9岁5个月 · 134cm / 28.5kg），正处于【中枢神经步频协调与踝关节弹簧刚性敏感期】。\n• 核心卡点：目前跳绳卡在115个易断绳，主因是起跳脚后跟砸地缓冲过慢、大臂外展抡绳，且左脚单腿稳定偏弱（仅11秒）。\n\n🗺️ 二、未来12周（季度）三大阶段大方向规划框架：\n• 【第一阶段（第1-4周）：基础发力模式与足踝弹簧刚性激活】\n  重点纠正脚后跟砸地与大臂抡绳代偿，唤醒足底抓地与前脚掌短触地弹性，建立放学后15分钟运动微习惯，1分钟跳绳稳步破135个。\n• 【第二阶段（第5-8周）：手脚协同加速与核心抗旋传导强化】\n  加入十字象限变向跳、单腿动态平衡与间歇心肺耐力，打通上下肢力量传导，消除写作业含胸塌腰，跳绳稳定突破150个。\n• 【第三阶段（第9-12周）：专项爆发力冲刺与自主运动习惯固化】\n  强化连续纵跳爆发与1分钟极限步频抗疲劳能力，跳绳冲刺165+个优秀线，完成季度体能全面复测对比。",
+          qaSummary: "【陪伴答疑与交付机制】：\n1. 每周根据宇轩上一周完成情况，动态下发《本周重心与每次课具体动作执行表》；\n2. 每次练完家长只需随手拍15秒侧面视频发微信，Leo教练亲自做慢动作力学纠偏并录专属语音鼓励孩子；\n3. 遇到动作卡点或偷懒抗拒，随时微信留言答疑沟通。"
+        },
+        {
+          id: "opl_1",
+          date: "2026-11-15",
+          recordType: "正式会员周训练动作课表",
+          clientId: "oc_formal_1",
+          clientName: "宇轩 (小学3年级)",
+          phase: "第1阶段·第3周课表：踝关节弹簧刚性激活 & 夹臂手腕摇绳定型",
+          envUsed: "本周3次课 ｜ 周二/周四放学客厅15min + 周日小区空地25min",
+          planDetail: "🎯 【本周训练核心重心】：彻底改掉『脚后跟砸地』与『大臂抡绳』，建立前脚掌轻快点地节奏与弱侧左脚单腿稳定。\n\n📅 【第1次课主题：足底唤醒与踝关节弹簧刚性（周二·客厅15min）】\n1. 动作一：足底筋膜抓毛巾唤醒 ｜ 怎么练：赤脚脚跟固定，五趾用力抓起毛巾保持2秒 ｜ 剂量：每侧15次 × 2组 (休20秒)\n2. 动作二：原地前脚掌Pogo弹簧跳 ｜ 怎么练：膝盖微屈不锁死，脚后跟绝不沾地，像弹簧一样用前脚掌轻快点地 ｜ 剂量：40秒 × 3组 (休30秒)\n3. 动作三：腋下夹纸片手腕空摇跳 ｜ 怎么练：腋下各夹一张纸片不掉落，体会大臂贴肋骨、手腕画小圈 ｜ 剂量：45秒 × 3组 (休30秒)\n\n📅 【第2次课主题：弱侧单腿平衡与核心抗旋传导（周四·客厅15min）】\n1. 动作一：闭眼单脚微屈膝稳定站立 ｜ 怎么练：弱侧左脚先练，膝盖对准第二脚趾，核心收紧保持骨盆水平 ｜ 剂量：左脚30秒×3组 / 右脚30秒×2组\n2. 动作二：死虫式核心抗伸展控制 ｜ 怎么练：仰卧下背部死死贴住瑜伽垫，对侧手脚缓慢下放不拱腰 ｜ 剂量：每侧10次 × 3组 (休30秒)\n3. 动作三：连续纵向摸高弹性跳 ｜ 怎么练：双臂向上充分伸展摸高，落地前脚掌过渡屈髋轻缓冲 ｜ 剂量：15次 × 3组 (休40秒)\n\n📅 【第3次课主题：灵敏变向步频与1分钟跳绳实战（周日·户外25min）】\n1. 动作一：十字象限快速双脚变向跳 ｜ 怎么练：前脚掌着地快速在十字四格内顺时针/逆时针弹跳 ｜ 剂量：20秒 × 3组 (休30秒)\n2. 动作二：1分钟计时跳绳间歇冲刺 ｜ 怎么练：前半程稳住手腕节奏，后15秒保持躯干挺直不弯腰断绳 ｜ 剂量：1分钟 × 4组 (组间慢走鼻吸口呼恢复60秒)\n3. 动作三：小腿腓肠肌与大腿后链静态拉伸 ｜ 怎么练：深长呼吸放松小腿与腘绳肌 ｜ 剂量：每侧30秒 × 2组",
+          qaSummary: "【视频动作纠偏 & 陪伴答疑】：\n慢放看了宇轩妈妈发来的15秒跳绳视频：宇轩用上『腋下夹纸片』方法后，手腕画圈明显轻巧了！\n🌟 陪伴反馈：给宇轩录了45秒专属表扬语音，单次连跳已突破75个！本周重点拍一段【第1次课Pogo跳】和【第3次课1分钟跳绳】侧面15秒视频发我复盘。"
         },
         {
           id: "opl_2",
@@ -4497,6 +4612,17 @@
       };
 
       const mergedLabels = { ...DEFAULT_STATE.customLabels, ...(raw.customLabels || {}) };
+      // 自动清理线上模块旧版“健康”字眼，专注于青少年体能
+      ["fitModeOnline", "onTopIdentityTitle", "onMatrixTitle", "onCardsTitle"].forEach(k => {
+        if (mergedLabels[k] && (mergedLabels[k].includes("健康") || mergedLabels[k].includes("生长发育健康"))) {
+          mergedLabels[k] = DEFAULT_STATE.customLabels[k];
+        }
+      });
+      if (!mergedLabels.onSub7) mergedLabels.onSub7 = DEFAULT_STATE.customLabels.onSub7;
+      if (!mergedLabels.onPosterBannerTitle) mergedLabels.onPosterBannerTitle = DEFAULT_STATE.customLabels.onPosterBannerTitle;
+      if (!mergedDict.onlinePayModes.some(x => x.includes("599"))) {
+        mergedDict.onlinePayModes.unshift("季度体能陪伴正式会员 (¥599/季)");
+      }
 
       // 升级线上自媒体旧帖補充 logicFramework / hookText / ctaText
       let mediaPosts = Array.isArray(raw.mediaPosts) && raw.mediaPosts.length
@@ -4843,6 +4969,7 @@
       });
       document.getElementById(`on-sub-${sub}`).className = "on-sub-btn px-2.5 py-1.5 rounded-md text-xs font-semibold whitespace-nowrap bg-forest-900 text-white";
       if (sub === "pricing") renderPricing();
+      if (sub === "poster") renderOnlinePosterStudio();
     };
 
     window.switchTourSub = (sub) => {
@@ -6193,16 +6320,16 @@ ${progressLines}
       if (!c) return;
       c.clientType = "formal";
       if (!c.payMode || c.payMode.includes("待定")) {
-        c.payMode = "季度蜕变90天陪伴 (¥1,280/季)";
+        c.payMode = "季度体能陪伴正式会员 (¥599/季)";
       }
       if (!c.fee || c.fee <= 0) {
-        c.fee = 1280;
+        c.fee = 599;
       }
       c.startDate = getOffsetDate(0);
       c.endDate = getOffsetDate(90);
-      c.followUpStatus = "已转正式学员 · 启动第1阶段陪伴计划";
+      c.followUpStatus = "已转正式会员 · 启动第1周具体重心与单次动作课表";
       saveState();
-      showToast(`🎉 恭喜！已将「${c.name}」转为正式陪伴学员！`);
+      showToast(`🎉 恭喜！已将「${c.name}」转为正式会员(默认¥599/季)！`);
     };
 
     window.quickAddClientExtraField = (clientId) => {
@@ -6278,7 +6405,7 @@ ${progressLines}
     window.copyOnlineLogById = (id) => {
       const l = (state.onlinePlanLogs || []).find(x => x.id === id);
       if (!l) return;
-      window.copyRaw(`【Leo青少年体能与健康顾问 · ${l.clientName} · ${l.phase}】\n📌 记录类型：${l.recordType || '周期计划与答疑'}\n📍 执行场景：${l.envUsed}\n\n🏃 科学训练处方：\n${l.planDetail}\n\n💬 动作力学纠偏与陪伴建议：\n${l.qaSummary}`, "计划与答疑已复制，可直接发给家长！");
+      window.copyRaw(`【Leo线上青少年体能顾问 · ${l.clientName} · ${l.phase}】\n📌 交付类型：${l.recordType || '周期计划与答疑'}\n📍 频次与场景：${l.envUsed}\n\n🏃 核心规划与训练动作处方：\n${l.planDetail}\n\n💬 动作力学纠偏与陪伴答疑：\n${l.qaSummary}`, "计划与答疑已复制，可直接发给家长！");
     };
 
     // 生长发育(FPHV)与运动科学(LTAD)即时测算引擎
@@ -6520,9 +6647,11 @@ ${progressLines}
 
             <div class="flex flex-wrap justify-between items-center gap-2 pt-1.5 border-t border-slate-100 text-[11px]">
               <div class="flex items-center gap-1.5 flex-wrap">
-                ${isConsult ? `<button type="button" onclick="convertConsultToFormal('${c.id}')" class="px-2 py-0.5 rounded bg-emerald-700 text-white font-bold hover:opacity-90">✅ 一键转正式学员</button>` : ''}
-                <button type="button" onclick="openOnlineLogModal('${c.id}')" class="px-2 py-0.5 rounded bg-champagne-500/20 text-forest-900 font-bold hover:bg-champagne-500/30">+ 制定计划/记录答疑</button>
-                <button type="button" onclick="quickAddClientExtraField('${c.id}')" class="text-amber-800 font-semibold hover:underline">+ 增添字段内容</button>
+                <button type="button" onclick="openOnlinePosterForClient('${c.id}', 'macro_framework')" class="px-2 py-0.5 rounded bg-champagne-500 text-forest-900 font-extrabold text-[10px]">🗺️ 大方向框架海报</button>
+                <button type="button" onclick="openOnlinePosterForClient('${c.id}', 'weekly_plan')" class="px-2 py-0.5 rounded bg-forest-900 text-champagne-400 font-extrabold text-[10px]">🏋️ 周动作课表海报</button>
+                ${isConsult ? `<button type="button" onclick="convertConsultToFormal('${c.id}')" class="px-2 py-0.5 rounded bg-emerald-700 text-white font-bold hover:opacity-90">✅ 转正式会员</button>` : ''}
+                <button type="button" onclick="openOnlineLogModal('${c.id}')" class="px-2 py-0.5 rounded bg-champagne-500/20 text-forest-900 font-bold hover:bg-champagne-500/30">+ 计划/答疑</button>
+                <button type="button" onclick="quickAddClientExtraField('${c.id}')" class="text-amber-800 font-semibold hover:underline">+ 添字段</button>
               </div>
               <div class="space-x-2">
                 <button type="button" onclick="openOnlineClientModal('${c.id}')" class="text-forest-900 font-bold hover:underline">✏️ 编辑档案</button>
@@ -6588,9 +6717,11 @@ ${progressLines}
 
       document.getElementById("onlinePlanLogList").innerHTML = filteredLogs.map(l => {
         const rType = l.recordType || "周期训练计划";
-        const typeBadge = rType.includes("答疑")
-          ? "bg-emerald-100 text-emerald-800 border-emerald-200"
-          : (rType.includes("复测") ? "bg-purple-100 text-purple-800 border-purple-200" : "bg-forest-900 text-champagne-400");
+        const isMacro = rType.includes("大方向");
+        const isWeekly = rType.includes("周训练") || rType.includes("周课表");
+        const typeBadge = isMacro
+          ? "bg-amber-500 text-forest-900 border-amber-600"
+          : (isWeekly ? "bg-forest-900 text-champagne-400 border-forest-900" : (rType.includes("答疑") ? "bg-emerald-100 text-emerald-800 border-emerald-200" : "bg-slate-800 text-white"));
         return `
           <div class="card p-3.5 space-y-2 border-slate-200">
             <div class="flex items-center justify-between flex-wrap gap-2">
@@ -6600,10 +6731,11 @@ ${progressLines}
                 <span class="font-bold text-xs bg-amber-100 text-amber-900 px-2 py-0.5 rounded">${l.clientName}</span>
                 <span class="text-xs font-bold text-forest-900">${l.phase}</span>
               </div>
-              <div class="flex items-center gap-2 text-[11px] shrink-0">
+              <div class="flex items-center gap-1.5 text-[11px] shrink-0 flex-wrap">
+                <button type="button" onclick="openOnlinePosterFromLog('${l.id}')" class="px-2.5 py-1 rounded bg-forest-900 text-champagne-400 font-extrabold">🎨 转成线上海报</button>
                 <button type="button" onclick="copyOnlineLogById('${l.id}')" class="px-2.5 py-1 rounded bg-champagne-500 text-forest-900 font-bold">📋 复制发家长</button>
-                <button type="button" onclick="openOnlineLogModal(null, '${l.id}')" class="text-forest-900 font-bold hover:underline">✏️ 编辑</button>
-                <button type="button" onclick="deleteItem('onlinePlanLogs', '${l.id}')" class="text-rose-400">删除</button>
+                <button type="button" onclick="openOnlineLogModal(null, '${l.id}')" class="text-forest-900 font-bold hover:underline px-1">✏️ 编辑</button>
+                <button type="button" onclick="deleteItem('onlinePlanLogs', '${l.id}')" class="text-rose-400 px-1">删除</button>
               </div>
             </div>
             <div class="text-[11px] text-slate-500">📍 执行场景与频次：${l.envUsed || '周中放学后15min + 周末户外25min'}</div>
@@ -6611,7 +6743,7 @@ ${progressLines}
             <div class="text-xs text-emerald-950 bg-emerald-50/80 border border-emerald-200 p-2.5 rounded-lg whitespace-pre-line leading-relaxed"><strong>💬 视频动作力学纠偏与陪伴答疑：</strong>\n${l.qaSummary}</div>
           </div>
         `;
-      }).join("") || `<div class="card p-4 text-xs text-slate-400 text-center">暂无周期计划或陪伴答疑记录，点击右上角「+ 制定周期计划 / 记录答疑」即可创建。</div>`;
+      }).join("") || `<div class="card p-4 text-xs text-slate-400 text-center">暂无周期计划或陪伴答疑记录，点击上方「+ 新建大方向规划框架报告」或「+ 新建正式会员周训练动作课表」即可创建。</div>`;
     }
 
     window.moveIntakeQuestion = (idx, dir) => {
@@ -6939,56 +7071,160 @@ ${progressLines}
       showToast("✅ 周期计划模板库已保存！");
     };
 
-    window.openOnlineLogModal = (preClientId = null, editLogId = null) => {
+    window.autoFillMacroFrameworkInModal = () => {
+      const cId = document.getElementById("mOplClient")?.value;
+      const c = (state.onlineClients || []).find(x => x.id === cId) || (state.onlineClients || [])[0];
+      if (!c) return;
+      const ageNum = parseFloat(c.age) || 9;
+      let ltadWindow = "中枢神经步频协调与踝关节弹簧刚性敏感期 (7-10岁)";
+      if (ageNum <= 6.5) ltadWindow = "前庭平衡 & 基础动作模式(FMS)黄金启蒙期 (5-6岁)";
+      else if (ageNum >= 11 && ageNum <= 13.5) ltadWindow = "青春生长突增期(PHV) & 髋主导核心力量储备窗口 (11-13岁)";
+      else if (ageNum > 13.5) ltadWindow = "心肺耐力 & 下肢爆发力冲刺窗口期 (14岁+体测专项)";
+
+      document.getElementById("mOplType").value = "大方向规划框架报告";
+      document.getElementById("mOplPhase").value = `【未来12周体能大方向规划框架】${c.name} · 专属周期进阶蓝图`;
+      document.getElementById("mOplEnv").value = `${c.freq || '每周3-4次 · 每次15-25分钟'} ｜ ${c.env || '居家客厅+小区户外空地'}`;
+      document.getElementById("mOplPlan").value = `📊 一、学员基本档案与体能诊断：
+• 学员信息：${c.name}（${c.gender} · ${c.age} · 身高${c.height} / 体重${c.weight}）
+• 所处运动科学敏感期：【${ltadWindow}】
+• 当前体能情况与卡点：${c.childCondition || '基础动作发力模式待建立，核心稳定与下肢弹性有较大提升空间'}
+• 家长核心目标诉求：${c.parentDemand || '全面提升体能素质，突破运动卡点，养成规律运动习惯'}
+
+🗺️ 二、未来12周（季度）三大阶段大方向规划框架：
+• 【第一阶段（第1-4周）：基础发力模式建立与神经肌肉唤醒期】
+  核心方向：针对当前卡点纠正代偿动作（如落地缓冲、足踝刚性与核心收紧），用15分钟零阻力居家微习惯把动作做对、把运动多巴胺调动起来。
+• 【第二阶段（第5-8周）：专项体能强化与上下肢核心传导期】
+  核心方向：在动作标准基础上递增训练密度，重点突破灵敏步频、连续弹跳与心肺耐力，让核心力量顺畅传导至四肢，关键指标实现阶段性跃升。
+• 【第三阶段（第9-12周）：爆发力冲刺与终身运动习惯固化期】
+  核心方向：对标学校体测优秀/满分线或专项运动需求进行爆发力与抗疲劳强化，完成季度体能数据复测对比，固化受益终身的自主锻炼习惯。`;
+      document.getElementById("mOplQa").value = `【Leo教练线上陪伴与答疑交付机制】：
+1. 动态周课表：每周根据${c.name.split(' ')[0]}上一周的反馈，定制下发《本周训练重心与每次课具体动作/组数执行表》；
+2. 15秒视频动作纠偏：每次练完挑1-2个核心动作拍15秒侧面视频发微信，我亲自慢放拆解发力细节并录语音夸奖激励孩子；
+3. 随时陪伴答疑：训练中遇到任何动作疑问或孩子情绪波动，随时微信留言沟通解决。`;
+      showToast(`🗺️ 已根据「${c.name}」的年龄、情况与诉求自动生成《未来大方向规划框架报告》！`);
+    };
+
+    window.autoFillWeeklyPlanInModal = (presetKey = "rope") => {
+      const cId = document.getElementById("mOplClient")?.value;
+      const c = (state.onlineClients || []).find(x => x.id === cId) || (state.onlineClients || [])[0];
+      const stuName = c ? c.name.split(" ")[0] : "会员";
+      document.getElementById("mOplType").value = "正式会员周训练动作课表";
+
+      const presets = {
+        rope: {
+          phase: `正式会员·本周训练课表：踝关节弹簧刚性激活 & 跳绳步频突破`,
+          env: `本周安排3次课 ｜ 周二/周四居家15-20min + 周末户外25min`,
+          plan: `🎯 【本周训练核心重心】：改掉『脚后跟砸地』与『大臂外展抡绳』，建立前脚掌短触地弹簧反射与手腕画小圈节奏。
+
+📅 【第1次课主题：足底唤醒与踝关节弹簧刚性（周二·15-20min）】
+1. 足底筋膜抓毛巾唤醒 ｜ 怎么练：赤脚脚跟固定，五趾用力抓起毛巾保持2秒 ｜ 剂量：每侧15次 × 2组 (休20秒)
+2. 原地前脚掌Pogo弹簧跳 ｜ 怎么练：膝盖微屈不锁死，脚后跟不落地，前脚掌像弹簧轻快点地 ｜ 剂量：40秒 × 3组 (休30秒)
+3. 腋下夹纸片手腕空摇跳 ｜ 怎么练：腋下各夹一张纸片不掉落，体会大臂贴肋骨、手腕画小圈 ｜ 剂量：45秒 × 3组 (休30秒)
+
+📅 【第2次课主题：弱侧单腿稳定与核心抗旋控制（周四·15-20min）】
+1. 闭眼单脚微屈膝平衡站立 ｜ 怎么练：弱侧脚先练，膝盖对准第二脚趾，核心收紧骨盆不歪斜 ｜ 剂量：弱侧30秒×3组 / 强侧30秒×2组
+2. 死虫式核心抗伸展 ｜ 怎么练：仰卧腰背死死贴住垫子，对侧手脚缓慢下放不拱腰 ｜ 剂量：每侧10次 × 3组 (休30秒)
+3. 连续纵向摸高弹性跳 ｜ 怎么练：双臂向上充分伸展摸高，落地前脚掌过渡屈髋缓冲 ｜ 剂量：15次 × 3组 (休40秒)
+
+📅 【第3次课主题：灵敏步频变向与1分钟跳绳实战（周末·25min）】
+1. 十字象限快速双脚变向跳 ｜ 怎么练：前脚掌着地快速在十字四格内顺/逆时针弹跳 ｜ 剂量：20秒 × 3组 (休30秒)
+2. 1分钟计时跳绳间歇冲刺 ｜ 怎么练：前半程稳住手腕节奏，后15秒保持躯干挺直不断绳 ｜ 剂量：1分钟 × 4组 (组间慢走恢复60秒)
+3. 小腿与大腿后链静态拉伸 ｜ 怎么练：深呼吸放松小腿腓肠肌与大腿后侧 ｜ 剂量：每侧30秒 × 2组`,
+          qa: `【陪伴答疑与拍视频叮嘱】：\n本周带${stuName}练完第1次课和第3次课时，请拍一段15秒【侧面Pogo跳】和【侧面跳绳】视频发我，我重点看孩子的脚后跟有没有沾地、手腕摇绳位置对不对，并给孩子录专属表扬语音！`
+        },
+        power: {
+          phase: `正式会员·本周训练课表：髋主导下肢爆发力(立定跳远/加速跑)与核心传导`,
+          env: `本周安排3次课 ｜ 周中居家下肢力量20min + 周末操场/空地爆发实测25min`,
+          plan: `🎯 【本周训练核心重心】：学会用臀部屈髋蓄力（告别只靠小腿蹦），打通『摆臂-蹬地-收腹伸小腿』完整爆发力链条。
+
+📅 【第1次课主题：臀大肌唤醒与髋关节铰链蓄力（第1次课·20min）】
+1. 双腿/单腿臀桥顶峰收缩 ｜ 怎么练：脚跟发力把髋部顶起，在最高点夹紧臀部保持2秒 ｜ 剂量：15次 × 3组 (休30秒)
+2. 立定跳远三拍摆臂折髋定型 ｜ 怎么练：1拍高举吸气展腹→2拍快速后摆屈髋半蹲制动→3拍定住检查膝盖不内扣 ｜ 剂量：12次 × 3组 (休30秒)
+3. 保加利亚分腿蹲(弱侧优先) ｜ 怎么练：后脚搭矮凳，前脚全脚掌踩实下蹲，挺胸核心收紧 ｜ 剂量：每侧10次 × 3组 (休45秒)
+
+📅 【第2次课主题：核心抗旋转传导与快速步频启动（第2次课·20min）】
+1. 鸟狗式核心抗旋控制 ｜ 怎么练：四足支撑，对侧手脚向远端延伸成一直线，腰部放水杯不倒 ｜ 剂量：每侧10次 × 3组 (休30秒)
+2. 原地高频高抬腿接定格 ｜ 怎么练：大腿快速抬至水平，摆臂前后有力，听口令瞬间单脚定格稳住 ｜ 剂量：20秒 × 4组 (休30秒)
+3. 纵跳落地3秒静音缓冲 ｜ 怎么练：向上全力起跳，落地瞬间屈髋屈膝像猫一样无声稳住3秒 ｜ 剂量：10次 × 3组 (休40秒)
+
+📅 【第3次课主题：连续蛙跳衔接与5米反应冲刺（第3次课·25min）】
+1. 高抬腿接5米视觉信号冲刺 ｜ 怎么练：原地高频小碎步，看到手势瞬间重心前倾全力冲出5米 ｜ 剂量：5趟 × 2组 (休45秒)
+2. 三级连续蛙跳体会腾空收腹 ｜ 怎么练：连跳3步，落地即起，重点体会空中收腹把小腿往前送 ｜ 剂量：5组 (组间休60秒)
+3. 标志线目标立定跳远实测 ｜ 怎么练：在预期目标线放标志碟，诱导全力蹬摆越过标志物 ｜ 剂量：6-8次 (休45秒)`,
+          qa: `【陪伴答疑与拍视频叮嘱】：\n立定跳远和启动冲刺最怕『膝盖内扣』和『未等髋部蓄力就急着跳』。本周请拍一段${stuName}正侧面起跳的慢动作视频发微信，我来帮他帧级划线分析起跳角度！`
+        }
+      };
+      const p = presets[presetKey] || presets.rope;
+      document.getElementById("mOplPhase").value = p.phase;
+      document.getElementById("mOplEnv").value = p.env;
+      document.getElementById("mOplPlan").value = p.plan;
+      document.getElementById("mOplQa").value = p.qa;
+      showToast("🏋️ 已填入《正式会员·周训练重心与单次动作课表》大纲！");
+    };
+
+    window.openOnlineLogModal = (preClientId = null, editLogId = null, presetRecordType = null) => {
       const existing = editLogId ? (state.onlinePlanLogs || []).find(x => x.id === editLogId) : null;
-      const targetClientId = existing ? existing.clientId : preClientId;
+      const targetClientId = existing ? existing.clientId : (preClientId || state.onlineClients?.[0]?.id || "");
       const opts = (state.onlineClients || []).map(c => `<option value="${c.id}" ${targetClientId===c.id?'selected':''}>[${c.clientType==='consult'?'咨询':'正式'}] ${c.name} (${c.age}·${c.height})</option>`).join("");
       const tpls = state.dictionaries.onlinePlanTemplates || DEFAULT_STATE.dictionaries.onlinePlanTemplates;
       const tplBtns = tpls.map((t, i) => `<button type="button" onclick="applyOnlinePlanTemplate(${i})" class="px-2 py-1 rounded bg-white border border-amber-300 text-amber-900 text-[11px] font-semibold hover:bg-amber-100">${t.title}</button>`).join("");
 
-      const rType = existing ? (existing.recordType || "周期训练计划") : "周期训练计划";
+      const rType = existing ? (existing.recordType || "周期训练计划") : (presetRecordType || "正式会员周训练动作课表");
 
       openModal(`
         <div class="flex items-center justify-between border-b pb-2">
           <div>
-            <h3 class="font-bold text-sm text-forest-900">${existing ? '✏️ 编辑周期计划 / 陪伴答疑记录' : '🌱 制定青少年周期计划 / 记录视频动作纠偏与答疑'}</h3>
-            <p class="text-[10px] text-slate-500">注重专业体能与高温度陪伴（非双语），可一键套用下方运动科学模板再做个性化微调</p>
+            <h3 class="font-bold text-sm text-forest-900">${existing ? '✏️ 编辑线上周期计划 / 周动作课表 / 答疑记录' : '🌱 新建线上交付：大方向规划框架 / 正式会员周动作课表 / 陪伴答疑'}</h3>
+            <p class="text-[10px] text-slate-500">保存后可直接一键转为【线上海报】导出高清长图发给家长</p>
           </div>
           <button onclick="closeModal()" class="text-xs text-slate-400">✕</button>
         </div>
 
         <div class="space-y-2.5 text-xs max-h-[68vh] overflow-y-auto pr-1">
-          ${!existing ? `
-            <div class="bg-amber-50/80 p-2 rounded-lg border border-amber-200 space-y-1">
-              <div class="text-[11px] font-bold text-forest-900">⚡ 一键套用青少年运动科学周期模板：</div>
-              <div class="flex flex-wrap gap-1">${tplBtns}</div>
+          <div class="bg-amber-50/90 p-2.5 rounded-lg border border-amber-300 space-y-1.5">
+            <div class="text-[11px] font-bold text-forest-900">⚡ 第一步：选好下方关联学员后，可一键自动生成对应阶段的标准大纲：</div>
+            <div class="flex flex-wrap gap-1.5">
+              <button type="button" onclick="autoFillMacroFrameworkInModal()" class="px-2.5 py-1 rounded bg-forest-900 text-champagne-400 text-[11px] font-extrabold">🗺️ 根据所选学员信息 → 自动生成《未来大方向规划框架报告》</button>
+              <button type="button" onclick="autoFillWeeklyPlanInModal('rope')" class="px-2.5 py-1 rounded bg-emerald-700 text-white text-[11px] font-bold">🏋️ 套用《正式会员·跳绳与足踝刚性周动作课表》</button>
+              <button type="button" onclick="autoFillWeeklyPlanInModal('power')" class="px-2.5 py-1 rounded bg-emerald-800 text-white text-[11px] font-bold">🚀 套用《正式会员·爆发力与核心传导周动作课表》</button>
             </div>
-          ` : ''}
+            <div class="flex flex-wrap gap-1 pt-1 border-t border-amber-200/70">${tplBtns}</div>
+          </div>
+
           <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
             <div><label class="text-slate-500">日期</label><input id="mOplDate" type="date" value="${existing ? existing.date : getOffsetDate(0)}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
             <div>
-              <label class="text-slate-500">记录分类</label>
-              <select id="mOplType" class="w-full border rounded-lg p-1.5 mt-0.5 font-bold text-forest-900">
+              <label class="text-slate-500">交付记录分类</label>
+              <select id="mOplType" class="w-full border rounded-lg p-1.5 mt-0.5 font-bold text-forest-900 bg-amber-50/50">
+                <option value="大方向规划框架报告" ${rType==='大方向规划框架报告'?'selected':''}>🗺️ 未来大方向规划框架报告 (咨询破冰)</option>
+                <option value="正式会员周训练动作课表" ${rType==='正式会员周训练动作课表'?'selected':''}>🏋️ 正式会员·周训练与单次动作课表</option>
                 <option value="周期训练计划" ${rType==='周期训练计划'?'selected':''}>📅 周期训练计划</option>
                 <option value="视频纠偏与陪伴答疑" ${rType==='视频纠偏与陪伴答疑'?'selected':''}>💬 视频纠偏与陪伴答疑</option>
-                <option value="阶段复测与长高评估" ${rType==='阶段复测与长高评估'?'selected':''}>📈 阶段复测与长高评估</option>
+                <option value="阶段复测与长高评估" ${rType==='阶段复测与长高评估'?'selected':''}>📈 阶段复测与体能评估</option>
               </select>
             </div>
             <div><label class="text-slate-500">关联学员</label><select id="mOplClient" class="w-full border rounded-lg p-1.5 mt-0.5 font-bold">${opts}</select></div>
           </div>
-          <div><label class="text-slate-500 font-semibold">周期阶段主题 / 本次答疑核心问题</label><input id="mOplPhase" value="${existing ? existing.phase : ''}" placeholder="如：第1阶段(第1-4周)：踝关节弹簧刚性激活 & 跳绳破150个专项" class="w-full border rounded-lg p-1.5 mt-0.5 font-bold text-forest-900" /></div>
-          <div><label class="text-slate-500">家庭执行场景与时间安排</label><input id="mOplEnv" value="${existing ? existing.envUsed : '周中放学后客厅15min(A计划) + 周末小区空地25min(B计划)'}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
-          <div><label class="text-slate-500 font-semibold">🏃 周期体能训练处方明细（动作、组数、发力口诀、掌心营养与睡眠要求）</label><textarea id="mOplPlan" rows="6" class="w-full border rounded-lg p-2 mt-0.5 leading-relaxed">${existing ? existing.planDetail : ''}</textarea></div>
-          <div><label class="text-slate-500 font-semibold">💬 打卡视频动作力学纠偏 & 走心陪伴答疑记录</label><textarea id="mOplQa" rows="4" class="w-full border rounded-lg p-2 mt-0.5 leading-relaxed bg-emerald-50/30">${existing ? existing.qaSummary : ''}</textarea></div>
+          <div><label class="text-slate-500 font-semibold">标题 / 本周训练重心 / 大方向主题</label><input id="mOplPhase" value="${existing ? existing.phase : ''}" placeholder="如：第1阶段·第1周课表：踝关节弹簧刚性激活 & 每次课具体动作" class="w-full border rounded-lg p-1.5 mt-0.5 font-bold text-forest-900" /></div>
+          <div><label class="text-slate-500">训练频次与家庭执行场景</label><input id="mOplEnv" value="${existing ? existing.envUsed : '本周3次课 ｜ 周二/周四放学客厅15min + 周末户外空地25min'}" class="w-full border rounded-lg p-1.5 mt-0.5" /></div>
+          <div><label class="text-slate-500 font-semibold">🏃 核心内容（三阶段大方向规划框架 或 本周重心+每次课主题+每个动作怎么练/几组）</label><textarea id="mOplPlan" rows="8" class="w-full border rounded-lg p-2 mt-0.5 leading-relaxed">${existing ? existing.planDetail : ''}</textarea></div>
+          <div><label class="text-slate-500 font-semibold">💬 陪伴答疑机制 / 打卡视频动作力学纠偏叮嘱</label><textarea id="mOplQa" rows="3" class="w-full border rounded-lg p-2 mt-0.5 leading-relaxed bg-emerald-50/30">${existing ? existing.qaSummary : ''}</textarea></div>
         </div>
-        <div class="flex justify-end gap-2 pt-2 border-t">
+        <div class="flex flex-wrap justify-end gap-2 pt-2 border-t">
           <button onclick="closeModal()" class="px-3 py-1.5 rounded-lg text-xs text-slate-500">取消</button>
-          <button onclick="saveOnlineLog('${editLogId || ''}')" class="btn-primary px-4 py-1.5 rounded-lg text-xs font-bold">💾 保存并同步</button>
+          <button onclick="saveOnlineLog('${editLogId || ''}', false)" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-slate-200 text-slate-800">💾 仅保存记录</button>
+          <button onclick="saveOnlineLog('${editLogId || ''}', true)" class="btn-gold px-4 py-1.5 rounded-lg text-xs font-extrabold">🎨 保存并直接生成线上海报</button>
         </div>
       `);
+
+      if (!existing && presetRecordType === "大方向规划框架报告") {
+        autoFillMacroFrameworkInModal();
+      } else if (!existing && presetRecordType === "正式会员周训练动作课表") {
+        autoFillWeeklyPlanInModal("rope");
+      }
     };
 
-    window.saveOnlineLog = (editLogId = "") => {
+    window.saveOnlineLog = (editLogId = "", jumpToPoster = false) => {
       const cId = document.getElementById("mOplClient").value;
       const c = state.onlineClients.find(x => x.id === cId);
       const obj = {
@@ -7010,7 +7246,11 @@ ${progressLines}
       }
       closeModal();
       saveState();
-      showToast("✅ 周期计划与陪伴答疑记录已保存！");
+      if (jumpToPoster) {
+        openOnlinePosterFromLog(obj.id);
+      } else {
+        showToast("✅ 周期计划与陪伴答疑记录已保存！");
+      }
     };
 
     // ==================== 全盘定价体系 ====================
@@ -10296,6 +10536,843 @@ ${progressLines}
       }
     };
 
+
+    // ==================== 🌐 线上青少年体能顾问 · 专属视觉海报引擎（独立于线下 · 两大核心交付母版） ====================
+    const onlinePosterState = {
+      template: "macro_framework", // 'macro_framework' (母版1: 未来大方向规划框架报告) | 'weekly_plan' (母版2: 正式会员周重心与单次动作课表) | 'milestone_online' (母版3: 线上阶段进步复盘喜报)
+      clientId: "",
+      logId: "",
+      showPhoto: false,
+      photoUrl: "",
+      // 母版1：微信咨询破冰 · 未来周期大方向规划框架报告（格式固定，根据所选学员年龄/名字/情况/诉求自动变化）
+      macro: {
+        brandBadge: "LEO YOUTH CONDITIONING · 体育硕士线上青少年体能顾问",
+        reportTitle: "青少年体能评估与未来周期大方向规划报告",
+        stuLine: "宇轩 · 男 · 9岁5个月 · 身高134cm / 体重28.5kg",
+        dateLine: "规 划 日 期 ：2 0 2 6 . 1 1 . 1 9 ｜ 专 属 顾 问 ：L e o 教 练",
+        currentCondLabel: "👦 学员当前体能情况与动作卡点：",
+        currentCondText: "1分钟跳绳卡在115个易断绳，起跳习惯脚后跟硬砸地面、大臂外展抡绳；弱侧左脚单腿闭眼站立仅11秒，写作业易含胸塌腰。",
+        parentGoalLabel: "🎯 家长核心目标诉求：",
+        parentGoalText: "改善足踝发力与跳绳节奏，寒假前跳绳稳定突破160个以上；强化核心抗旋与纵向弹跳刺激，养成规律居家运动习惯。",
+        scienceWindowTitle: "🧬 运动科学敏感期定位与破局诊断",
+        scienceWindowText: "当前正处于【中枢神经步频协调与踝关节弹簧刚性敏感期 (7-10岁)】黄金窗口。孩子并非体能差，而是踝关节触地回弹过慢、上下肢发力链条脱节。不需盲目拉长耗时，关键在于打通正确动作模式！",
+        frameworkSectionTitle: "🗺️ 未来12周（季度）三大阶段大方向规划框架",
+        phase1Tag: "第一阶段（第1-4周）",
+        phase1Title: "基础动作模式建立 & 足踝弹簧刚性激活期",
+        phase1Desc: "• 核心方向：纠正脚后跟砸地与大臂抡绳代偿，唤醒足底抓地力与前脚掌短触地反射(SSC)。\n• 阶段目标：建立每周3-4次×15分钟低阻力运动微习惯，单脚稳定翻倍，跳绳稳步破135个。",
+        phase2Tag: "第二阶段（第5-8周）",
+        phase2Title: "专项体能强化 & 上下肢核心传导进阶期",
+        phase2Desc: "• 核心方向：加入多向灵敏步频、单腿动态抗旋与心肺间歇训练，打通核心向四肢的力量传导。\n• 阶段目标：改善运动与久坐体态力线，连续跳跃缓冲轻盈稳定，1分钟跳绳突破150个。",
+        phase3Tag: "第三阶段（第9-12周）",
+        phase3Title: "爆发力冲刺突破 & 自主运动习惯固化期",
+        phase3Desc: "• 核心方向：强化高频步频抗疲劳能力与下肢髋主导爆发力，冲击校测优秀/满分标准。\n• 阶段目标：跳绳冲刺165+个，输出季度体能前后对比报告，固化受益终身的运动习惯。",
+        deliveryTitle: "🤝 Leo教练线上陪伴与答疑交付机制",
+        deliveryText: "▸ 每周动态排课：每周下发《周训练重心与每次课具体动作/组数执行图》\n▸ 视频动作纠偏：每次练完拍15秒侧面视频发微信，Leo教练亲自慢放拆解+语音鼓励孩子\n▸ 随时陪伴答疑：训练中遇到任何动作卡点或执行问题，微信随时留言1v1答疑调整",
+        footerLine1: "科 学 周 期 规 划  ·  1 v 1 视 频 纠 偏  ·  高 温 度 长 期 陪 伴",
+        footerLine2: "主 训 顾 问 ： L e o 教 练 （体育硕士 / 青少年体能顾问）"
+      },
+      // 母版2：正式会员专属 · 具体一周重心 + 每一次课主题 + 每一个动作怎么练/几组执行图
+      weekly: {
+        brandBadge: "LEO YOUTH CONDITIONING · 正式会员专属周期训练处方",
+        reportTitle: "青少年体能正式会员 · 周训练与动作执行课表",
+        stuLine: "宇轩 (9岁5个月) ｜ 第1阶段 · 第3周训练处方",
+        freqLine: "📍 本周频次：每周 3 次课（每次15-25分钟）｜ 场景：居家客厅瑜伽垫 + 小区户外空地",
+        weeklyFocusLabel: "🎯 本周训练核心重心 (Weekly Focus)：",
+        weeklyFocusText: "彻底改掉『脚后跟重砸地面』与『大臂抡绳』，唤醒前脚掌短触地弹簧刚性，强化弱侧左脚单腿稳定与核心抗旋。",
+        sessions: [
+          {
+            sessionTag: "第 1 次课",
+            sessionTheme: "足底筋膜唤醒 & 踝关节弹簧刚性建立（周二 · 15-20分钟）",
+            drills: [
+              { name: "1. 足底抓毛巾足弓唤醒", howTo: "赤脚脚跟固定，五趾发力抓起毛巾顶峰保持2秒", sets: "每侧15次 × 2组 (休20秒)" },
+              { name: "2. 原地前脚掌Pogo弹簧跳", howTo: "膝盖微屈不锁死，脚后跟绝不沾地，前脚掌像弹簧轻快点地", sets: "40秒 × 3组 (休30秒)" },
+              { name: "3. 腋下夹纸片手腕空摇跳", howTo: "双侧腋下夹纸片不掉，大臂贴紧肋骨、纯靠手腕画小圈", sets: "45秒 × 3组 (休30秒)" }
+            ]
+          },
+          {
+            sessionTag: "第 2 次课",
+            sessionTheme: "弱侧单腿平衡稳定 & 核心抗伸展传导（周四 · 15-20分钟）",
+            drills: [
+              { name: "1. 闭眼单脚微屈膝稳定站", howTo: "弱侧左脚优先练，膝盖对准第二脚趾，收紧核心骨盆不歪", sets: "左30秒×3组 / 右30秒×2组" },
+              { name: "2. 死虫式核心抗伸展控制", howTo: "仰卧下腰背死死贴紧垫面，对侧手脚缓慢下放不拱腰", sets: "每侧10次 × 3组 (休30秒)" },
+              { name: "3. 连续纵向摸高弹性跳", howTo: "双臂向上充分伸展，落地前脚掌过渡至屈髋轻柔缓冲", sets: "15次 × 3组 (休40秒)" }
+            ]
+          },
+          {
+            sessionTag: "第 3 次课",
+            sessionTheme: "多向灵敏步频 & 1分钟跳绳间歇实战（周末 · 25分钟）",
+            drills: [
+              { name: "1. 十字象限快速双脚变向跳", howTo: "前脚掌着地，快速在十字四格内顺/逆时针轻盈弹跳", sets: "20秒 × 3组 (休30秒)" },
+              { name: "2. 1分钟计时跳绳间歇冲刺", howTo: "前半程稳住手腕节奏，后15秒挺胸目视前方不断绳", sets: "1分钟 × 4组 (组间慢走60秒)" },
+              { name: "3. 小腿与大腿后链静态拉伸", howTo: "深长鼻吸口呼，充分拉长小腿腓肠肌与大腿后侧", sets: "每侧30秒 × 2组" }
+            ]
+          }
+        ],
+        qaBoxTitle: "📹 本周视频打卡纠偏 & 陪伴答疑重点：",
+        qaBoxText: "本周练完请挑【第1次课Pogo跳】和【第3次课1分钟跳绳】各拍15秒侧面视频发微信，Leo教练亲自慢放检查动作力线并给孩子录专属语音鼓励！有任何动作疑问随时微信留言答疑。",
+        footerLine1: "动 作 标 准 优 先  ·  科 学 剂 量 进 阶  ·  每 周 视 频 精 调",
+        footerLine2: "主 训 顾 问 ： L e o 教 练 （体育硕士 / 青少年体能顾问）"
+      },
+      // 母版3：线上会员阶段体能进步复盘喜报
+      progress: {
+        brandBadge: "LEO YOUTH CONDITIONING · 线上会员阶段成长复盘",
+        reportTitle: "线上青少年体能 · 阶段进步对比与复盘报告",
+        stuLine: "宇轩 · 9岁5个月 · 第1阶段(满4周)体能复盘",
+        highlightLine: "🌟 1分钟跳绳从115个突破至152个(+37个) ｜ 弱侧单脚稳定提升+145%",
+        metrics: [
+          { name: "1分钟速度跳绳", base: "115个 (脚后跟砸地)", now: "152个 (前脚掌轻快回弹)", diff: "+37个 🚀" },
+          { name: "弱侧闭眼单脚站(左)", base: "11秒 (骨盆易晃动)", now: "27秒 (核心锁死稳定)", diff: "+16秒 🚀" },
+          { name: "单次连续不断绳最高", base: "42个 (大臂酸胀)", now: "96个 (手腕摇绳定型)", diff: "+54个 ⚡" },
+          { name: "每周自主运动打卡率", base: "被动催促易抵触", now: "每周4次全勤主动完成", diff: "100% 达成 🏆" }
+        ],
+        coachReviewTitle: "🔬 Leo教练阶段动作力学复盘：",
+        coachReviewText: "经过前4周的陪伴与每周视频微调，孩子已经彻底改掉了『脚后跟砸地』和『大臂抡绳』两个最大卡点，踝关节弹簧刚性和核心抗旋能力肉眼可见地立起来了！",
+        nextPlanTitle: "🎯 下一阶段（第5-8周）进阶重心：",
+        nextPlanText: "在动作定型基础上引入『双摇节奏感知、多向敏捷变向与下肢屈髋爆发力』，向校测满分线稳步冲刺！",
+        footerLine1: "量 化 每 一 步 成 长  ·  科 学 陪 伴 不 走 弯 路"
+      }
+    };
+
+    const ONLINE_WEEKLY_PRESETS = {
+      rope: {
+        name: "⚡ 大纲1：跳绳突破 & 足踝弹簧刚性周课表",
+        weeklyFocusText: "彻底改掉『脚后跟重砸地面』与『大臂抡绳』，唤醒前脚掌短触地弹簧刚性，强化弱侧单腿稳定与手腕摇绳节奏。",
+        sessions: [
+          {
+            sessionTag: "第 1 次课",
+            sessionTheme: "足底筋膜唤醒 & 踝关节弹簧刚性建立（周中 · 15-20分钟）",
+            drills: [
+              { name: "1. 足底抓毛巾足弓唤醒", howTo: "赤脚脚跟固定，五趾发力抓起毛巾顶峰保持2秒", sets: "每侧15次 × 2组 (休20秒)" },
+              { name: "2. 原地前脚掌Pogo弹簧跳", howTo: "膝盖微屈不锁死，脚后跟绝不沾地，前脚掌像弹簧轻快点地", sets: "40秒 × 3组 (休30秒)" },
+              { name: "3. 腋下夹纸片手腕空摇跳", howTo: "双侧腋下夹纸片不掉，大臂贴紧肋骨、纯靠手腕画小圈", sets: "45秒 × 3组 (休30秒)" }
+            ]
+          },
+          {
+            sessionTag: "第 2 次课",
+            sessionTheme: "弱侧单腿平衡稳定 & 核心抗伸展传导（周中 · 15-20分钟）",
+            drills: [
+              { name: "1. 闭眼单脚微屈膝稳定站", howTo: "弱侧脚优先练，膝盖对准第二脚趾，收紧核心骨盆不歪", sets: "弱侧30秒×3组 / 强侧30秒×2组" },
+              { name: "2. 死虫式核心抗伸展控制", howTo: "仰卧下腰背死死贴紧垫面，对侧手脚缓慢下放不拱腰", sets: "每侧10次 × 3组 (休30秒)" },
+              { name: "3. 连续纵向摸高弹性跳", howTo: "双臂向上充分伸展，落地前脚掌过渡至屈髋轻柔缓冲", sets: "15次 × 3组 (休40秒)" }
+            ]
+          },
+          {
+            sessionTag: "第 3 次课",
+            sessionTheme: "多向灵敏步频 & 1分钟跳绳间歇实战（周末 · 25分钟）",
+            drills: [
+              { name: "1. 十字象限快速双脚变向跳", howTo: "前脚掌着地，快速在十字四格内顺/逆时针轻盈弹跳", sets: "20秒 × 3组 (休30秒)" },
+              { name: "2. 1分钟计时跳绳间歇冲刺", howTo: "前半程稳住手腕节奏，后15秒挺胸目视前方不断绳", sets: "1分钟 × 4组 (组间慢走60秒)" },
+              { name: "3. 小腿与大腿后链静态拉伸", howTo: "深长鼻吸口呼，充分拉长小腿腓肠肌与大腿后侧", sets: "每侧30秒 × 2组" }
+            ]
+          }
+        ]
+      },
+      jump_sprint: {
+        name: "🚀 大纲2：立定跳远/50米爆发力 & 髋主导发力周课表",
+        weeklyFocusText: "学会用臀部屈髋铰链蓄力（告别只靠小腿往前蹦），打通『高举摆臂-屈髋蓄力-快速蹬伸-收腹落缓冲』完整爆发链条。",
+        sessions: [
+          {
+            sessionTag: "第 1 次课",
+            sessionTheme: "臀肌激活与立定跳远三拍蓄力定型（周中 · 20分钟）",
+            drills: [
+              { name: "1. 臀桥顶峰夹紧激活", howTo: "双脚跟发力顶起骨盆，最高点夹紧臀大肌保持2秒不塌腰", sets: "15次 × 3组 (休30秒)" },
+              { name: "2. 立定跳远三拍摆臂折髋", howTo: "1拍高举吸气→2拍后摆折髋半蹲制动→定住检查膝盖不内扣", sets: "12次 × 3组 (休30秒)" },
+              { name: "3. 保加利亚分腿蹲(弱侧先)", howTo: "后脚搭沙发或矮凳，前脚全脚掌踩实下蹲，重心居中挺胸", sets: "每侧10次 × 3组 (休45秒)" }
+            ]
+          },
+          {
+            sessionTag: "第 2 次课",
+            sessionTheme: "核心抗旋转传导 & 快速步频神经唤醒（周中 · 20分钟）",
+            drills: [
+              { name: "1. 鸟狗式核心抗旋转支撑", howTo: "四足跪撑，对侧手脚向远延伸成水平直线，躯干稳如磐石", sets: "每侧10次 × 3组 (休30秒)" },
+              { name: "2. 原地高频高抬腿接单脚定格", howTo: "快速扒地高抬腿5秒，听口令瞬间单脚微屈膝稳稳刹住", sets: "20秒 × 4组 (休30秒)" },
+              { name: "3. 纵跳落地3秒静音缓冲", howTo: "全力向上起跳，落地瞬间屈髋屈膝像猫一样无声稳住3秒", sets: "10次 × 3组 (休40秒)" }
+            ]
+          },
+          {
+            sessionTag: "第 3 次课",
+            sessionTheme: "连续蛙跳腾空收腹 & 5米反应加速冲刺（周末 · 25分钟）",
+            drills: [
+              { name: "1. 高抬腿接5米信号反应冲刺", howTo: "原地高频碎步，看到家长手势瞬间重心前倾全力冲出5米", sets: "5趟 × 2组 (休45秒)" },
+              { name: "2. 三级连续蛙跳腾空收腹", howTo: "连跳3步，重点体会空中大腿靠近胸口、把小腿向前送出", sets: "5组 (组间慢走休60秒)" },
+              { name: "3. 标志线目标立定跳远挑战", howTo: "在目标距离放标志物，完整运用摆臂蹬伸跳过标志线", sets: "6-8次 (每次休45秒)" }
+            ]
+          }
+        ]
+      },
+      fms_coord: {
+        name: "🌱 大纲3：低龄基础动作模式(FMS) & 协调平衡周课表",
+        weeklyFocusText: "通过高趣味多巴胺动作唤醒前庭平衡感、手眼脚协调与基础蹲/跳/爬力线，培养专注听指令与规律流汗习惯。",
+        sessions: [
+          {
+            sessionTag: "第 1 次课",
+            sessionTheme: "前庭单脚平衡 & 动物爬行核心支撑（周中 · 15分钟）",
+            drills: [
+              { name: "1. 木头人单脚平衡对决", howTo: "与家长面对面单脚站立，微屈膝抓地，看谁先晃动落地", sets: "左右各30秒 × 3组" },
+              { name: "2. 巨熊爬行核心肩带稳定", howTo: "双手双脚撑地、膝盖离地2厘米往前爬，臀部不乱晃", sets: "8米往返 × 3组 (休30秒)" },
+              { name: "3. 轻巧青蛙跳缓冲落地", howTo: "深蹲摸地板后向上跳起，落地前脚掌轻缓冲不发出重响", sets: "12次 × 3组 (休30秒)" }
+            ]
+          },
+          {
+            sessionTag: "第 2 次课",
+            sessionTheme: "手眼反应协调 & 敏捷步频节奏（周中 · 15分钟）",
+            drills: [
+              { name: "1. 单腿站立双手接抛球", howTo: "单脚微屈膝站稳，同时与家长互相抛接小网球或沙包", sets: "每侧15次接球 × 3组" },
+              { name: "2. 地砖格子进进出出快步", howTo: "利用客厅地砖缝隙，前脚掌快速完成进-进-出-出步频", sets: "30秒 × 4组 (休30秒)" },
+              { name: "3. 超人飞翔背部后链激活", howTo: "俯卧在瑜伽垫上，吸气同时抬起胸口与双臂夹紧肩胛骨", sets: "12次(保持3秒) × 3组" }
+            ]
+          },
+          {
+            sessionTag: "第 3 次课",
+            sessionTheme: "户外红绿灯反应急停 & 折返耐力跑（周末 · 25分钟）",
+            drills: [
+              { name: "1. 红绿灯听口令快速急停", howTo: "绿灯快跑、黄灯小碎步、红灯瞬间单脚定格稳住不倒", sets: "4分钟 × 2轮 (休60秒)" },
+              { name: "2. 5米×4折返摸标志物跑", howTo: "快速跑到标志物前必须降低重心屈髋屈膝摸地再折返", sets: "4趟 × 3组 (休60秒)" },
+              { name: "3. 全身大字放松与深呼吸", howTo: "拉伸大腿前侧、小腿与胸肩，平复心率", sets: "每个部位30秒" }
+            ]
+          }
+        ]
+      }
+    };
+
+    window.openOnlinePosterForClient = (clientId = null, tpl = "macro_framework") => {
+      switchPillar("fitness");
+      switchFitMode("online");
+      onlinePosterState.template = tpl;
+      const targetId = clientId || onlinePosterState.clientId || state.onlineClients?.[0]?.id || "";
+      if (targetId) {
+        loadClientIntoOnlinePoster(targetId);
+      }
+      switchOnlineSub("poster");
+      renderOnlinePosterStudio();
+      showToast(tpl === "macro_framework" ? "🗺️ 已根据该学员信息自动生成《未来大方向规划框架报告》海报！" : "🏋️ 已载入该会员《周训练重心与单次动作执行课表》海报！");
+    };
+
+    window.openOnlinePosterFromLog = (logId) => {
+      const log = (state.onlinePlanLogs || []).find(x => x.id === logId);
+      if (!log) return;
+      switchPillar("fitness");
+      switchFitMode("online");
+      onlinePosterState.clientId = log.clientId || "";
+      onlinePosterState.logId = log.id;
+      if (log.clientId) loadClientIntoOnlinePoster(log.clientId);
+
+      if ((log.recordType || "").includes("大方向")) {
+        onlinePosterState.template = "macro_framework";
+        onlinePosterState.macro.reportTitle = log.phase || "青少年体能评估与未来周期大方向规划报告";
+        onlinePosterState.macro.deliveryText = log.qaSummary || onlinePosterState.macro.deliveryText;
+      } else {
+        onlinePosterState.template = "weekly_plan";
+        onlinePosterState.weekly.stuLine = `${log.clientName} ｜ ${log.phase}`;
+        onlinePosterState.weekly.freqLine = `📍 频次与场景：${log.envUsed || '每周3-4次 · 居家/户外'}`;
+        onlinePosterState.weekly.qaBoxText = log.qaSummary || onlinePosterState.weekly.qaBoxText;
+      }
+      switchOnlineSub("poster");
+      renderOnlinePosterStudio();
+      showToast("🎨 已将该条记录载入线上专属海报画布，可直接导出高清PNG！");
+    };
+
+    function loadClientIntoOnlinePoster(clientId) {
+      const c = (state.onlineClients || []).find(x => x.id === clientId) || (state.onlineClients || [])[0];
+      if (!c) return;
+      onlinePosterState.clientId = c.id;
+      const cleanName = c.name;
+      const ageNum = parseFloat(c.age) || 9;
+
+      // 自动更新母版1：未来大方向规划框架报告（根据填写的年龄、名字、情况、诉求动态变化）
+      onlinePosterState.macro.stuLine = `${cleanName} · ${c.gender || '男'} · ${c.age || '9岁'} · 身高${c.height || '135cm'} / 体重${c.weight || '30kg'}`;
+      onlinePosterState.macro.dateLine = `规 划 日 期 ：${getOffsetDate(0).replace(/-/g, " . ")} ｜ 专 属 顾 问 ：L e o 教 练（体育硕士）`;
+      onlinePosterState.macro.currentCondText = c.childCondition || "基础动作模式待巩固，踝关节弹性、核心抗旋稳定与运动耐力有较大拔高空间。";
+      onlinePosterState.macro.parentGoalText = c.parentDemand || "科学提升体能素质与运动表现，突破薄弱项卡点，建立规律自主运动习惯。";
+
+      if (ageNum <= 6.5) {
+        onlinePosterState.macro.scienceWindowText = `当前正处于【前庭平衡 & 基础动作模式(FMS)敏感期 (5-6岁)】。重点不在于枯燥重复，而在于通过高多巴胺趣味动作建立单脚前庭稳定、足弓支撑与轻巧跳跃缓冲力线。`;
+        onlinePosterState.macro.phase1Title = "基础动作模式启蒙 & 足弓前庭平衡唤醒期";
+        onlinePosterState.macro.phase1Desc = `• 核心方向：针对「${(c.childCondition||'基础平衡与协调').slice(0, 22)}」通过趣味支撑、单脚定格与轻巧弹跳唤醒本体感觉。\n• 阶段目标：养成每周3-4次×15分钟快乐流汗微习惯，单脚站立与动作控制力显著提升。`;
+        onlinePosterState.macro.phase2Title = "手眼脚协调步频 & 核心稳定传导强化期";
+        onlinePosterState.macro.phase2Desc = `• 核心方向：引入多向敏捷步频、接抛球反应与连续弹性跳，打通上下肢协调配合。\n• 阶段目标：跑跳姿态更轻盈稳健，跳绳/拍球等手脚协同能力跨上新台阶。`;
+        onlinePosterState.macro.phase3Title = "综合体能拔高 & 终身运动习惯固化期";
+        onlinePosterState.macro.phase3Desc = `• 核心方向：强化速度灵敏与心肺耐力，激发运动自信心与抗挫折能力。\n• 阶段目标：全面达成「${(c.parentDemand||'体能拔高与习惯养成').slice(0, 24)}」，输出阶段体能成长对比报告。`;
+      } else if (ageNum <= 10.5) {
+        onlinePosterState.macro.scienceWindowText = `当前正处于【中枢神经步频协调与踝关节弹簧刚性敏感期 (7-10岁)】黄金窗口。针对孩子目前的情况，核心破局点是把『沉重砸地代偿』升级为『前脚掌短触地弹簧反射』，打通核心传导！`;
+        onlinePosterState.macro.phase1Title = "正确发力力线建立 & 踝关节弹簧刚性激活期";
+        onlinePosterState.macro.phase1Desc = `• 核心方向：针对当前卡点纠正落地缓冲与发力代偿，唤醒足底抓地与前脚掌弹性反射。\n• 阶段目标：建立放学后15分钟运动微习惯，消除无效累感，基础跳绳与单腿稳定明显突破。`;
+        onlinePosterState.macro.phase2Title = "专项步频协调强化 & 核心抗旋转传导期";
+        onlinePosterState.macro.phase2Desc = `• 核心方向：加入十字象限灵敏变向、核心抗伸展与间歇心肺训练，让核心力量顺畅传至四肢。\n• 阶段目标：改善久坐与运动体态力线，动作速率与连续抗疲劳能力大幅跃升。`;
+        onlinePosterState.macro.phase3Title = "专项爆发力冲刺 & 自主运动习惯固化期";
+        onlinePosterState.macro.phase3Desc = `• 核心方向：对标核心诉求「${(c.parentDemand||'体测优秀与综合体能突破').slice(0, 22)}」进行专项速度与爆发冲刺。\n• 阶段目标：冲击校内体测优秀/满分标准，完成季度数据复测对比，固化自主运动习惯。`;
+      } else {
+        onlinePosterState.macro.scienceWindowText = `当前正处于【青春生长突增期(PHV) & 髋主导爆发力与心肺储备窗口 (11-15岁)】。骨骼快速生长阶段必须优先强化臀腿屈髋发力与核心抗旋保护膝踝，同时高效拉升最大摄氧量与体测爆发力！`;
+        onlinePosterState.macro.phase1Title = "下肢动力链力线保护 & 髋关节铰链发力唤醒期";
+        onlinePosterState.macro.phase1Desc = `• 核心方向：激活臀中肌/臀大肌与核心稳定，纠正膝内扣与错误起跳发力，预防生长期牵拉不适。\n• 阶段目标：掌握高效屈髋蓄力与落地缓冲机制，建立高执行率居家+户外训练节律。`;
+        onlinePosterState.macro.phase2Title = "下肢爆发力（蹬摆协同）& 间歇心肺耐力强化期";
+        onlinePosterState.macro.phase2Desc = `• 核心方向：针对立定跳远、加速冲刺与高频跳绳进行专项力量转化与心肺耐力拉升。\n• 阶段目标：爆发力动作干净利落，耐力跑与连续高强度运动恢复速度显著加快。`;
+        onlinePosterState.macro.phase3Title = "体测满分线专项冲刺 & 运动表现巅峰固化期";
+        onlinePosterState.macro.phase3Desc = `• 核心方向：模拟测试节奏进行专项技术精调与超量恢复管理，全面兑现家长目标诉求。\n• 阶段目标：冲击学校体育测试高分/满分线，输出完整周期身体素质跃升报告。`;
+      }
+
+      // 自动更新母版2：正式会员周训练重心与单次动作课表抬头
+      onlinePosterState.weekly.stuLine = `${cleanName} (${c.gender}·${c.age}) ｜ 正式会员 · 本周定制训练课表`;
+      onlinePosterState.weekly.freqLine = `📍 训练频次：${c.freq || '每周3-4次 · 每次15-25分钟'} ｜ 场景：${c.env || '居家客厅+小区户外空地'}`;
+
+      // 自动更新母版3：阶段复盘抬头
+      onlinePosterState.progress.stuLine = `${cleanName} · ${c.age} · 线上阶段体能进步复盘`;
+    }
+
+    window.switchOnlinePosterTemplate = (tpl) => {
+      onlinePosterState.template = tpl;
+      renderOnlinePosterStudio();
+    };
+
+    window.onOnlinePosterClientChange = (clientId) => {
+      loadClientIntoOnlinePoster(clientId);
+      renderOnlinePosterStudio();
+    };
+
+    window.onOnlinePosterLogChange = (logId) => {
+      if (!logId) return;
+      openOnlinePosterFromLog(logId);
+    };
+
+    window.applyOnlineWeeklyPresetToPoster = (presetKey) => {
+      const p = ONLINE_WEEKLY_PRESETS[presetKey];
+      if (!p) return;
+      onlinePosterState.weekly.weeklyFocusText = p.weeklyFocusText;
+      onlinePosterState.weekly.sessions = structuredClone(p.sessions);
+      renderOnlinePosterStudio();
+      showToast(`✅ 已载入「${p.name}」，可自由修改每次课主题和每个动作！`);
+    };
+
+    window.editOnlineWeeklySession = (sIdx, field, val) => {
+      const s = onlinePosterState.weekly.sessions[sIdx];
+      if (!s) return;
+      s[field] = val;
+      renderOnlinePosterCanvasOnly();
+    };
+
+    window.editOnlineWeeklyDrill = (sIdx, dIdx, field, val) => {
+      const d = onlinePosterState.weekly.sessions[sIdx]?.drills?.[dIdx];
+      if (!d) return;
+      d[field] = val;
+      renderOnlinePosterCanvasOnly();
+    };
+
+    window.addOnlineWeeklyDrill = (sIdx) => {
+      const s = onlinePosterState.weekly.sessions[sIdx];
+      if (!s) return;
+      if (!Array.isArray(s.drills)) s.drills = [];
+      s.drills.push({
+        name: `${s.drills.length + 1}. 新增训练动作`,
+        howTo: "动作标准要领与发力口诀说明",
+        sets: "12次 × 3组 (休30秒)"
+      });
+      renderOnlinePosterStudio();
+    };
+
+    window.removeOnlineWeeklyDrill = (sIdx, dIdx) => {
+      const s = onlinePosterState.weekly.sessions[sIdx];
+      if (!s || !Array.isArray(s.drills)) return;
+      s.drills.splice(dIdx, 1);
+      renderOnlinePosterStudio();
+    };
+
+    window.addOnlineWeeklySession = () => {
+      const len = onlinePosterState.weekly.sessions.length;
+      onlinePosterState.weekly.sessions.push({
+        sessionTag: `第 ${len + 1} 次课`,
+        sessionTheme: `专项强化与综合体能巩固（20分钟）`,
+        drills: [
+          { name: "1. 核心与下肢激活练习", howTo: "保持核心收紧，动作控制平稳", sets: "15次 × 3组 (休30秒)" },
+          { name: "2. 专项灵敏/爆发主训动作", howTo: "前脚掌积极发力，注意落地缓冲", sets: "40秒 × 3组 (休30秒)" }
+        ]
+      });
+      renderOnlinePosterStudio();
+    };
+
+    window.removeOnlineWeeklySession = (sIdx) => {
+      if (onlinePosterState.weekly.sessions.length <= 1) {
+        showToast("至少保留1次课");
+        return;
+      }
+      onlinePosterState.weekly.sessions.splice(sIdx, 1);
+      renderOnlinePosterStudio();
+    };
+
+    window.editOnlineProgressMetric = (mIdx, field, val) => {
+      const m = onlinePosterState.progress.metrics[mIdx];
+      if (!m) return;
+      m[field] = val;
+      renderOnlinePosterCanvasOnly();
+    };
+
+    window.addOnlineProgressMetric = () => {
+      onlinePosterState.progress.metrics.push({
+        name: "新增体能对比项",
+        base: "期初基线状态",
+        now: "当前突破表现",
+        diff: "显著提升 🚀"
+      });
+      renderOnlinePosterStudio();
+    };
+
+    window.removeOnlineProgressMetric = (mIdx) => {
+      onlinePosterState.progress.metrics.splice(mIdx, 1);
+      renderOnlinePosterStudio();
+    };
+
+    window.onOnlinePosterInlineBlur = (group, key, el) => {
+      if (onlinePosterState[group]) {
+        onlinePosterState[group][key] = el.innerText.trim();
+      }
+    };
+
+    window.saveOnlinePosterToPlanLogs = () => {
+      const cId = onlinePosterState.clientId || state.onlineClients?.[0]?.id || "";
+      const c = (state.onlineClients || []).find(x => x.id === cId);
+      const clientName = c ? c.name : "线上学员";
+
+      if (onlinePosterState.template === "macro_framework") {
+        const mc = onlinePosterState.macro;
+        const planDetail = `📊 一、学员当前体能情况与诉求：\n• ${mc.stuLine}\n• 当前体能情况：${mc.currentCondText}\n• 家长核心诉求：${mc.parentGoalText}\n• 运动科学诊断：${mc.scienceWindowText}\n\n🗺️ 二、${mc.frameworkSectionTitle}：\n• 【${mc.phase1Tag} · ${mc.phase1Title}】\n${mc.phase1Desc}\n• 【${mc.phase2Tag} · ${mc.phase2Title}】\n${mc.phase2Desc}\n• 【${mc.phase3Tag} · ${mc.phase3Title}】\n${mc.phase3Desc}`;
+        state.onlinePlanLogs.unshift({
+          id: "opl_" + Date.now(),
+          date: getOffsetDate(0),
+          recordType: "大方向规划框架报告",
+          clientId: cId,
+          clientName,
+          phase: mc.reportTitle,
+          envUsed: c?.freq || "每周3-4次 · 居家/户外",
+          planDetail,
+          qaSummary: mc.deliveryText
+        });
+      } else if (onlinePosterState.template === "weekly_plan") {
+        const wk = onlinePosterState.weekly;
+        const sessionsTxt = (wk.sessions || []).map(s => {
+          const dLines = (s.drills || []).map(d => `  ${d.name} ｜ 怎么练：${d.howTo} ｜ 剂量：${d.sets}`).join("\n");
+          return `📅 【${s.sessionTag} · ${s.sessionTheme}】\n${dLines}`;
+        }).join("\n\n");
+        state.onlinePlanLogs.unshift({
+          id: "opl_" + Date.now(),
+          date: getOffsetDate(0),
+          recordType: "正式会员周训练动作课表",
+          clientId: cId,
+          clientName,
+          phase: wk.stuLine,
+          envUsed: wk.freqLine.replace("📍 ", ""),
+          planDetail: `🎯 【本周训练核心重心】：${wk.weeklyFocusText}\n\n${sessionsTxt}`,
+          qaSummary: wk.qaBoxText
+        });
+      } else {
+        const pg = onlinePosterState.progress;
+        const mLines = (pg.metrics || []).map(m => `• ${m.name}：${m.base} → ${m.now} (${m.diff})`).join("\n");
+        state.onlinePlanLogs.unshift({
+          id: "opl_" + Date.now(),
+          date: getOffsetDate(0),
+          recordType: "阶段复测与长高评估",
+          clientId: cId,
+          clientName,
+          phase: pg.stuLine,
+          envUsed: "阶段体能对比复盘",
+          planDetail: `${pg.highlightLine}\n\n${mLines}`,
+          qaSummary: `${pg.coachReviewText}\n下阶段重心：${pg.nextPlanText}`
+        });
+      }
+      saveState();
+      showToast("💾 已将当前海报内容同步存入该学员的【周期计划与陪伴答疑】档案！");
+    };
+
+    window.renderOnlinePosterStudio = renderOnlinePosterStudio;
+    function renderOnlinePosterStudio() {
+      const panel = document.getElementById("on-panel-poster");
+      if (!panel) return;
+
+      if (!onlinePosterState.clientId && state.onlineClients?.length) {
+        loadClientIntoOnlinePoster(state.onlineClients[0].id);
+      }
+
+      const tplBtns = [
+        { id: "macro_framework", label: "🗺️ 母版1：未来周期大方向规划框架报告", tag: "微信咨询家长破冰", tagCls: "bg-champagne-500 text-forest-900" },
+        { id: "weekly_plan", label: "🏋️ 母版2：正式会员·周训练重心与每次课动作图", tag: "正式会员每周交付", tagCls: "bg-emerald-100 text-emerald-800" },
+        { id: "milestone_online", label: "📈 母版3：线上会员·阶段体能进步复盘喜报", tag: "阶段复盘/续费", tagCls: "bg-amber-100 text-amber-900" }
+      ];
+
+      const btnBox = document.getElementById("onPosterTemplateButtons");
+      if (btnBox) {
+        btnBox.innerHTML = tplBtns.map(b => {
+          const isAct = onlinePosterState.template === b.id;
+          return `<button type="button" onclick="switchOnlinePosterTemplate('${b.id}')" class="py-2 px-2.5 rounded-lg text-xs font-bold text-left border transition-all flex items-center justify-between ${isAct ? 'bg-forest-900 text-white border-forest-900 shadow-2xs' : 'bg-white text-slate-700 border-slate-200 hover:bg-slate-50'}">
+            <span class="truncate mr-1">${b.label}</span>
+            <span class="text-[10px] px-1.5 py-0.5 rounded shrink-0 ${b.tagCls}">${b.tag}</span>
+          </button>`;
+        }).join("");
+      }
+
+      const clientSel = document.getElementById("onPosterClientSelect");
+      if (clientSel) {
+        clientSel.innerHTML = (state.onlineClients || []).map(c =>
+          `<option value="${c.id}" ${onlinePosterState.clientId === c.id ? 'selected' : ''}>[${c.clientType === 'consult' ? '咨询家长' : '正式会员'}] ${c.name} (${c.age} · ${c.height} · ${c.payMode})</option>`
+        ).join("");
+      }
+
+      const logSel = document.getElementById("onPosterLogSelect");
+      if (logSel) {
+        const clientLogs = (state.onlinePlanLogs || []).filter(l => !onlinePosterState.clientId || l.clientId === onlinePosterState.clientId);
+        logSel.innerHTML = `<option value="">-- 可选：点选某条已存的计划/周课表记录载入 --</option>` + clientLogs.map(l =>
+          `<option value="${l.id}" ${onlinePosterState.logId === l.id ? 'selected' : ''}>[${l.recordType || '计划'}] ${l.date} · ${l.phase}</option>`
+        ).join("");
+      }
+
+      const ctrlBox = document.getElementById("onPosterDynamicControls");
+      if (ctrlBox) {
+        if (onlinePosterState.template === "macro_framework") {
+          const mc = onlinePosterState.macro;
+          ctrlBox.innerHTML = `
+            <div class="bg-amber-50/70 p-2.5 rounded-lg border border-amber-200 space-y-2">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-forest-900">🗺️ 未来大方向规划框架配置（随学员自动变）</span>
+                <button type="button" onclick="onOnlinePosterClientChange(onlinePosterState.clientId)" class="text-[11px] text-champagne-600 font-bold hover:underline">🔄 重新读取学员档案</button>
+              </div>
+              <div class="space-y-1.5 text-[11px]">
+                <div><label class="text-slate-500">学员信息栏（姓名/性别/年龄/身高体重）：</label><input type="text" value="${mc.stuLine}" oninput="onlinePosterState.macro.stuLine=this.value;renderOnlinePosterCanvasOnly()" class="w-full border rounded px-2 py-1 bg-white font-bold text-forest-900" /></div>
+                <div><label class="text-slate-500">👦 当前体能情况与卡点：</label><textarea rows="2" oninput="onlinePosterState.macro.currentCondText=this.value;renderOnlinePosterCanvasOnly()" class="w-full border rounded p-1.5 bg-white">${mc.currentCondText}</textarea></div>
+                <div><label class="text-slate-500">🎯 家长核心目标诉求：</label><textarea rows="2" oninput="onlinePosterState.macro.parentGoalText=this.value;renderOnlinePosterCanvasOnly()" class="w-full border rounded p-1.5 bg-white">${mc.parentGoalText}</textarea></div>
+                <div><label class="text-slate-500">🧬 运动科学敏感期诊断：</label><textarea rows="2" oninput="onlinePosterState.macro.scienceWindowText=this.value;renderOnlinePosterCanvasOnly()" class="w-full border rounded p-1.5 bg-white">${mc.scienceWindowText}</textarea></div>
+                <div class="pt-1 border-t border-amber-200 font-bold text-forest-900">三大阶段定制大方向（也可直接在右侧海报上点字改）：</div>
+                <div><input type="text" value="${mc.phase1Title}" oninput="onlinePosterState.macro.phase1Title=this.value;renderOnlinePosterCanvasOnly()" class="w-full border rounded px-2 py-0.5 bg-white font-bold text-forest-900 mb-0.5" /><textarea rows="2" oninput="onlinePosterState.macro.phase1Desc=this.value;renderOnlinePosterCanvasOnly()" class="w-full border rounded p-1 bg-white">${mc.phase1Desc}</textarea></div>
+                <div><input type="text" value="${mc.phase2Title}" oninput="onlinePosterState.macro.phase2Title=this.value;renderOnlinePosterCanvasOnly()" class="w-full border rounded px-2 py-0.5 bg-white font-bold text-forest-900 mb-0.5" /><textarea rows="2" oninput="onlinePosterState.macro.phase2Desc=this.value;renderOnlinePosterCanvasOnly()" class="w-full border rounded p-1 bg-white">${mc.phase2Desc}</textarea></div>
+                <div><input type="text" value="${mc.phase3Title}" oninput="onlinePosterState.macro.phase3Title=this.value;renderOnlinePosterCanvasOnly()" class="w-full border rounded px-2 py-0.5 bg-white font-bold text-forest-900 mb-0.5" /><textarea rows="2" oninput="onlinePosterState.macro.phase3Desc=this.value;renderOnlinePosterCanvasOnly()" class="w-full border rounded p-1 bg-white">${mc.phase3Desc}</textarea></div>
+              </div>
+            </div>
+          `;
+        } else if (onlinePosterState.template === "weekly_plan") {
+          const wk = onlinePosterState.weekly;
+          ctrlBox.innerHTML = `
+            <div class="bg-emerald-50/70 p-2.5 rounded-lg border border-emerald-200 space-y-2">
+              <div class="font-bold text-forest-900">🏋️ 正式会员·周训练重心与每次课动作大纲编辑器</div>
+              <div class="space-y-1">
+                <span class="text-[10px] text-slate-500 block">⚡ 一键切换常用周训练大纲模板：</span>
+                <div class="flex flex-wrap gap-1">
+                  <button type="button" onclick="applyOnlineWeeklyPresetToPoster('rope')" class="px-2 py-1 rounded bg-forest-900 text-champagne-400 text-[10.5px] font-bold">⚡ 跳绳与足踝刚性周课表</button>
+                  <button type="button" onclick="applyOnlineWeeklyPresetToPoster('jump_sprint')" class="px-2 py-1 rounded bg-emerald-800 text-white text-[10.5px] font-bold">🚀 跳远/冲刺爆发力周课表</button>
+                  <button type="button" onclick="applyOnlineWeeklyPresetToPoster('fms_coord')" class="px-2 py-1 rounded bg-amber-600 text-white text-[10.5px] font-bold">🌱 基础协调与平衡周课表</button>
+                </div>
+              </div>
+
+              <div class="space-y-1.5 text-[11px] pt-1 border-t border-emerald-200/80">
+                <div><label class="text-slate-600 font-semibold">会员与周期阶段抬头：</label><input type="text" value="${wk.stuLine}" oninput="onlinePosterState.weekly.stuLine=this.value;renderOnlinePosterCanvasOnly()" class="w-full border rounded px-2 py-1 bg-white font-bold text-forest-900" /></div>
+                <div><label class="text-slate-600 font-semibold">🎯 本周训练核心重心：</label><textarea rows="2" oninput="onlinePosterState.weekly.weeklyFocusText=this.value;renderOnlinePosterCanvasOnly()" class="w-full border rounded p-1.5 bg-white font-medium">${wk.weeklyFocusText}</textarea></div>
+              </div>
+
+              <div class="space-y-2 max-h-64 overflow-y-auto pr-0.5 pt-1 border-t border-emerald-200/80">
+                <div class="flex items-center justify-between">
+                  <span class="text-[11px] font-bold text-forest-900">📅 每次课主题 & 具体动作/怎么练/几组：</span>
+                  <button type="button" onclick="addOnlineWeeklySession()" class="text-[11px] text-emerald-800 font-bold hover:underline">+ 新增一次课</button>
+                </div>
+                ${(wk.sessions || []).map((s, sIdx) => `
+                  <div class="bg-white p-2 rounded-lg border border-slate-200 space-y-1.5 text-[11px]">
+                    <div class="flex items-center gap-1">
+                      <input type="text" value="${s.sessionTag}" oninput="editOnlineWeeklySession(${sIdx}, 'sessionTag', this.value)" class="w-16 border rounded px-1.5 py-0.5 font-extrabold bg-forest-900 text-champagne-400 text-[10.5px]" />
+                      <input type="text" value="${s.sessionTheme}" oninput="editOnlineWeeklySession(${sIdx}, 'sessionTheme', this.value)" class="flex-1 border rounded px-1.5 py-0.5 font-bold text-forest-900" placeholder="本次课训练主题" />
+                      <button type="button" onclick="removeOnlineWeeklySession(${sIdx})" class="text-rose-500 font-bold px-1" title="删除本次课">✕</button>
+                    </div>
+                    <div class="space-y-1">
+                      ${(s.drills || []).map((d, dIdx) => `
+                        <div class="grid grid-cols-12 gap-1 items-center bg-slate-50 p-1 rounded border border-slate-100 text-[10.5px]">
+                          <input type="text" value="${d.name}" oninput="editOnlineWeeklyDrill(${sIdx}, ${dIdx}, 'name', this.value)" class="col-span-4 border rounded px-1 py-0.5 bg-white font-bold text-forest-900" placeholder="动作名称" />
+                          <input type="text" value="${d.howTo}" oninput="editOnlineWeeklyDrill(${sIdx}, ${dIdx}, 'howTo', this.value)" class="col-span-5 border rounded px-1 py-0.5 bg-white text-slate-700" placeholder="应该怎么练(动作要领)" />
+                          <input type="text" value="${d.sets}" oninput="editOnlineWeeklyDrill(${sIdx}, ${dIdx}, 'sets', this.value)" class="col-span-2 border rounded px-1 py-0.5 bg-white font-bold text-emerald-700" placeholder="几组×几次" />
+                          <button type="button" onclick="removeOnlineWeeklyDrill(${sIdx}, ${dIdx})" class="col-span-1 text-rose-400 font-bold text-center">✕</button>
+                        </div>
+                      `).join("")}
+                    </div>
+                    <button type="button" onclick="addOnlineWeeklyDrill(${sIdx})" class="text-[10.5px] text-champagne-600 font-bold hover:underline">+ 为${s.sessionTag}加一个动作</button>
+                  </div>
+                `).join("")}
+              </div>
+            </div>
+          `;
+        } else {
+          const pg = onlinePosterState.progress;
+          ctrlBox.innerHTML = `
+            <div class="bg-amber-50/70 p-2.5 rounded-lg border border-amber-200 space-y-2 text-[11px]">
+              <div class="flex items-center justify-between">
+                <span class="font-bold text-forest-900">📈 线上阶段进步对比项编辑</span>
+                <button type="button" onclick="addOnlineProgressMetric()" class="text-champagne-600 font-bold hover:underline">+ 新增对比项</button>
+              </div>
+              <div class="space-y-1.5 max-h-48 overflow-y-auto">
+                ${(pg.metrics || []).map((m, mIdx) => `
+                  <div class="grid grid-cols-12 gap-1 items-center bg-white p-1 rounded border border-slate-200 text-[10.5px]">
+                    <input type="text" value="${m.name}" oninput="editOnlineProgressMetric(${mIdx}, 'name', this.value)" class="col-span-3 border rounded px-1 py-0.5 font-bold text-forest-900" />
+                    <input type="text" value="${m.base}" oninput="editOnlineProgressMetric(${mIdx}, 'base', this.value)" class="col-span-4 border rounded px-1 py-0.5 text-slate-600" placeholder="期初状态" />
+                    <input type="text" value="${m.now}" oninput="editOnlineProgressMetric(${mIdx}, 'now', this.value)" class="col-span-3 border rounded px-1 py-0.5 font-bold text-emerald-700" placeholder="当前表现" />
+                    <input type="text" value="${m.diff}" oninput="editOnlineProgressMetric(${mIdx}, 'diff', this.value)" class="col-span-1 border rounded px-0.5 py-0.5 text-amber-900 font-bold" />
+                    <button type="button" onclick="removeOnlineProgressMetric(${mIdx})" class="col-span-1 text-rose-400 font-bold text-center">✕</button>
+                  </div>
+                `).join("")}
+              </div>
+            </div>
+          `;
+        }
+      }
+
+      renderOnlinePosterCanvasOnly();
+    }
+
+    window.onlinePosterState = onlinePosterState;
+        window.renderOnlinePosterCanvasOnly = function() { renderOnlinePosterCanvasOnly(); };
+        function renderOnlinePosterCanvasOnly() {
+      const target = document.getElementById("onlinePosterCaptureTarget");
+      if (!target) return;
+
+      if (onlinePosterState.template === "macro_framework") {
+        const mc = onlinePosterState.macro;
+        target.innerHTML = `
+          <div class="px-4 pt-3 pb-1.5 text-center">
+            <div class="inline-block px-3 py-0.5 rounded-full bg-[#163828] text-[#D4B475] text-[10px] font-extrabold tracking-wider shadow-xs" contenteditable="true" onblur="onOnlinePosterInlineBlur('macro','brandBadge',this)">${mc.brandBadge}</div>
+            <div contenteditable="true" onblur="onOnlinePosterInlineBlur('macro','reportTitle',this)" class="poster-editable text-center text-[17.5px] font-extrabold text-[#163828] tracking-[0.04em] mt-1">${mc.reportTitle}</div>
+            <div contenteditable="true" onblur="onOnlinePosterInlineBlur('macro','dateLine',this)" class="poster-editable text-[10px] font-bold text-[#8A7858] tracking-widest mt-0.5">${mc.dateLine}</div>
+          </div>
+
+          <!-- 1. 学员档案与现状诉求卡（随所选学员自动变） -->
+          <div class="px-3.5 py-1">
+            <div class="poster-glass-card-soft rounded-2xl p-2.5 space-y-1.5">
+              <div class="flex items-center justify-between border-b border-slate-200/80 pb-1">
+                <div contenteditable="true" onblur="onOnlinePosterInlineBlur('macro','stuLine',this)" class="poster-editable font-extrabold text-[13.5px] text-[#0F291E]">${mc.stuLine}</div>
+                <span class="text-[9.5px] px-1.5 py-0.5 rounded bg-amber-100 text-amber-900 font-bold shrink-0">1v1 定制规划档案</span>
+              </div>
+              <div class="text-[10.6px] leading-snug space-y-1">
+                <div>
+                  <strong contenteditable="true" onblur="onOnlinePosterInlineBlur('macro','currentCondLabel',this)" class="poster-editable text-[#163828]">${mc.currentCondLabel}</strong>
+                  <span contenteditable="true" onblur="onOnlinePosterInlineBlur('macro','currentCondText',this)" class="poster-editable text-slate-700">${mc.currentCondText}</span>
+                </div>
+                <div>
+                  <strong contenteditable="true" onblur="onOnlinePosterInlineBlur('macro','parentGoalLabel',this)" class="poster-editable text-[#9A7D46]">${mc.parentGoalLabel}</strong>
+                  <span contenteditable="true" onblur="onOnlinePosterInlineBlur('macro','parentGoalText',this)" class="poster-editable text-slate-800 font-semibold">${mc.parentGoalText}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. 运动科学敏感期定位与诊断 -->
+          <div class="px-3.5 py-1">
+            <div class="poster-glass-card-soft rounded-2xl p-2.5 space-y-1 bg-emerald-50/70 border-emerald-200">
+              <div contenteditable="true" onblur="onOnlinePosterInlineBlur('macro','scienceWindowTitle',this)" class="poster-editable font-extrabold text-[11.2px] text-[#2F5E24]">${mc.scienceWindowTitle}</div>
+              <div contenteditable="true" onblur="onOnlinePosterInlineBlur('macro','scienceWindowText',this)" class="poster-editable text-[10.5px] text-slate-700 leading-relaxed">${mc.scienceWindowText}</div>
+            </div>
+          </div>
+
+          <!-- 3. 未来周期三大阶段大方向规划框架 -->
+          <div class="px-3.5 py-1">
+            <div class="poster-glass-card rounded-2xl p-3 space-y-2">
+              <div contenteditable="true" onblur="onOnlinePosterInlineBlur('macro','frameworkSectionTitle',this)" class="poster-editable text-center font-extrabold text-[12px] text-[#163828] border-b border-slate-200/80 pb-1">${mc.frameworkSectionTitle}</div>
+
+              <div class="bg-white/90 rounded-xl p-2 border border-slate-200/80 space-y-0.5">
+                <div class="flex items-center gap-1.5">
+                  <span contenteditable="true" onblur="onOnlinePosterInlineBlur('macro','phase1Tag',this)" class="poster-editable px-1.5 py-0.5 rounded bg-[#163828] text-[#D4B475] font-extrabold text-[9.5px]">${mc.phase1Tag}</span>
+                  <span contenteditable="true" onblur="onOnlinePosterInlineBlur('macro','phase1Title',this)" class="poster-editable font-extrabold text-[11.2px] text-[#0F291E]">${mc.phase1Title}</span>
+                </div>
+                <div contenteditable="true" onblur="onOnlinePosterInlineBlur('macro','phase1Desc',this)" class="poster-editable text-[10.2px] text-slate-700 whitespace-pre-line leading-snug pt-0.5">${mc.phase1Desc}</div>
+              </div>
+
+              <div class="bg-white/90 rounded-xl p-2 border border-amber-300/80 space-y-0.5">
+                <div class="flex items-center gap-1.5">
+                  <span contenteditable="true" onblur="onOnlinePosterInlineBlur('macro','phase2Tag',this)" class="poster-editable px-1.5 py-0.5 rounded bg-[#C5A059] text-[#0F291E] font-extrabold text-[9.5px]">${mc.phase2Tag}</span>
+                  <span contenteditable="true" onblur="onOnlinePosterInlineBlur('macro','phase2Title',this)" class="poster-editable font-extrabold text-[11.2px] text-[#0F291E]">${mc.phase2Title}</span>
+                </div>
+                <div contenteditable="true" onblur="onOnlinePosterInlineBlur('macro','phase2Desc',this)" class="poster-editable text-[10.2px] text-slate-700 whitespace-pre-line leading-snug pt-0.5">${mc.phase2Desc}</div>
+              </div>
+
+              <div class="bg-white/90 rounded-xl p-2 border border-emerald-300/80 space-y-0.5">
+                <div class="flex items-center gap-1.5">
+                  <span contenteditable="true" onblur="onOnlinePosterInlineBlur('macro','phase3Tag',this)" class="poster-editable px-1.5 py-0.5 rounded bg-[#2F5E24] text-white font-extrabold text-[9.5px]">${mc.phase3Tag}</span>
+                  <span contenteditable="true" onblur="onOnlinePosterInlineBlur('macro','phase3Title',this)" class="poster-editable font-extrabold text-[11.2px] text-[#0F291E]">${mc.phase3Title}</span>
+                </div>
+                <div contenteditable="true" onblur="onOnlinePosterInlineBlur('macro','phase3Desc',this)" class="poster-editable text-[10.2px] text-slate-700 whitespace-pre-line leading-snug pt-0.5">${mc.phase3Desc}</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. 陪伴交付机制 -->
+          <div class="px-3.5 py-1">
+            <div class="poster-glass-card-soft rounded-2xl p-2.5 space-y-1">
+              <div contenteditable="true" onblur="onOnlinePosterInlineBlur('macro','deliveryTitle',this)" class="poster-editable font-extrabold text-[11px] text-[#9A7D46]">${mc.deliveryTitle}</div>
+              <div contenteditable="true" onblur="onOnlinePosterInlineBlur('macro','deliveryText',this)" class="poster-editable text-[10.2px] text-slate-700 whitespace-pre-line leading-relaxed">${mc.deliveryText}</div>
+            </div>
+          </div>
+
+          <div class="pt-1 pb-2.5 px-3 text-center text-[#F9F8F3] space-y-0.5">
+            <div contenteditable="true" onblur="onOnlinePosterInlineBlur('macro','footerLine1',this)" class="poster-editable font-serif font-extrabold text-[11.5px] tracking-[0.08em] drop-shadow-sm">${mc.footerLine1}</div>
+            <div contenteditable="true" onblur="onOnlinePosterInlineBlur('macro','footerLine2',this)" class="poster-editable font-extrabold text-[10.8px] tracking-[0.08em] drop-shadow-sm">${mc.footerLine2}</div>
+          </div>
+        `;
+      } else if (onlinePosterState.template === "weekly_plan") {
+        const wk = onlinePosterState.weekly;
+        const sessionsHtml = (wk.sessions || []).map((s, sIdx) => {
+          const drillsRows = (s.drills || []).map((d, dIdx) => `
+            <tr class="border-b border-slate-200/60 last:border-b-0">
+              <td contenteditable="true" onblur="editOnlineWeeklyDrill(${sIdx},${dIdx},'name',this.innerText)" class="poster-editable py-1.5 px-1.5 font-extrabold text-[#0F291E] w-[30%] align-top">${d.name}</td>
+              <td contenteditable="true" onblur="editOnlineWeeklyDrill(${sIdx},${dIdx},'howTo',this.innerText)" class="poster-editable py-1.5 px-1.5 text-slate-700 w-[45%] align-top">${d.howTo}</td>
+              <td contenteditable="true" onblur="editOnlineWeeklyDrill(${sIdx},${dIdx},'sets',this.innerText)" class="poster-editable py-1.5 px-1.5 font-extrabold text-[#2F5E24] w-[25%] align-top text-right">${d.sets}</td>
+            </tr>
+          `).join("");
+
+          return `
+            <div class="bg-white/95 rounded-xl border border-slate-200/90 overflow-hidden shadow-2xs">
+              <div class="bg-[#163828] text-white px-2.5 py-1.5 flex items-center justify-between gap-1.5">
+                <div class="flex items-center gap-1.5 min-w-0">
+                  <span contenteditable="true" onblur="editOnlineWeeklySession(${sIdx},'sessionTag',this.innerText)" class="poster-editable px-1.5 py-0.5 rounded bg-[#C5A059] text-[#0F291E] font-extrabold text-[9.5px] shrink-0">${s.sessionTag}</span>
+                  <span contenteditable="true" onblur="editOnlineWeeklySession(${sIdx},'sessionTheme',this.innerText)" class="poster-editable font-bold text-[11px] text-[#F9F6EE] truncate">${s.sessionTheme}</span>
+                </div>
+              </div>
+              <table class="w-full text-left border-collapse text-[10.2px] leading-snug">
+                <thead>
+                  <tr class="bg-slate-100/90 text-slate-500 text-[9.5px] border-b border-slate-200/70">
+                    <th class="py-1 px-1.5">训练动作名称</th>
+                    <th class="py-1 px-1.5">应该怎么练 (动作标准与发力要领)</th>
+                    <th class="py-1 px-1.5 text-right">组数 × 次数/时长</th>
+                  </tr>
+                </thead>
+                <tbody>${drillsRows}</tbody>
+              </table>
+            </div>
+          `;
+        }).join("");
+
+        target.innerHTML = `
+          <div class="px-4 pt-3 pb-1 text-center">
+            <div class="inline-block px-3 py-0.5 rounded-full bg-[#163828] text-[#D4B475] text-[10px] font-extrabold tracking-wider shadow-xs" contenteditable="true" onblur="onOnlinePosterInlineBlur('weekly','brandBadge',this)">${wk.brandBadge}</div>
+            <div contenteditable="true" onblur="onOnlinePosterInlineBlur('weekly','reportTitle',this)" class="poster-editable text-center text-[17.5px] font-extrabold text-[#163828] tracking-[0.04em] mt-1">${wk.reportTitle}</div>
+          </div>
+
+          <!-- 会员信息与本周重心 -->
+          <div class="px-3.5 py-1">
+            <div class="poster-glass-card-soft rounded-2xl p-2.5 space-y-1">
+              <div contenteditable="true" onblur="onOnlinePosterInlineBlur('weekly','stuLine',this)" class="poster-editable font-extrabold text-[13.5px] text-[#0F291E] text-center">${wk.stuLine}</div>
+              <div contenteditable="true" onblur="onOnlinePosterInlineBlur('weekly','freqLine',this)" class="poster-editable text-[10px] text-slate-600 text-center font-semibold border-b border-slate-200/70 pb-1">${wk.freqLine}</div>
+              <div class="pt-0.5 text-[10.8px] leading-snug">
+                <strong contenteditable="true" onblur="onOnlinePosterInlineBlur('weekly','weeklyFocusLabel',this)" class="poster-editable text-[#2F5E24]">${wk.weeklyFocusLabel}</strong>
+                <span contenteditable="true" onblur="onOnlinePosterInlineBlur('weekly','weeklyFocusText',this)" class="poster-editable font-bold text-[#111827]">${wk.weeklyFocusText}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- 每一次课的主题与具体动作清单 -->
+          <div class="px-3.5 py-1 space-y-2">
+            ${sessionsHtml}
+          </div>
+
+          <!-- 视频纠偏与陪伴答疑叮嘱 -->
+          <div class="px-3.5 py-1">
+            <div class="poster-glass-card rounded-2xl p-2.5 space-y-0.5">
+              <div contenteditable="true" onblur="onOnlinePosterInlineBlur('weekly','qaBoxTitle',this)" class="poster-editable font-extrabold text-[10.8px] text-[#9A7D46]">${wk.qaBoxTitle}</div>
+              <div contenteditable="true" onblur="onOnlinePosterInlineBlur('weekly','qaBoxText',this)" class="poster-editable text-[10.2px] text-slate-700 leading-relaxed">${wk.qaBoxText}</div>
+            </div>
+          </div>
+
+          <div class="pt-1 pb-2.5 px-3 text-center text-[#F9F8F3] space-y-0.5">
+            <div contenteditable="true" onblur="onOnlinePosterInlineBlur('weekly','footerLine1',this)" class="poster-editable font-serif font-extrabold text-[11.5px] tracking-[0.08em] drop-shadow-sm">${wk.footerLine1}</div>
+            <div contenteditable="true" onblur="onOnlinePosterInlineBlur('weekly','footerLine2',this)" class="poster-editable font-extrabold text-[10.8px] tracking-[0.08em] drop-shadow-sm">${wk.footerLine2}</div>
+          </div>
+        `;
+      } else {
+        const pg = onlinePosterState.progress;
+        const rowsHtml = (pg.metrics || []).map((m, idx) => `
+          <div class="bg-white/90 rounded-xl p-2 border border-slate-200/80 flex items-center justify-between gap-2 text-[10.8px]">
+            <div>
+              <div contenteditable="true" onblur="editOnlineProgressMetric(${idx},'name',this.innerText)" class="poster-editable font-extrabold text-[#0F291E]">${m.name}</div>
+              <div class="text-[10px] text-slate-500 mt-0.5">
+                期初：<span contenteditable="true" onblur="editOnlineProgressMetric(${idx},'base',this.innerText)" class="poster-editable">${m.base}</span>
+                → 现：<strong contenteditable="true" onblur="editOnlineProgressMetric(${idx},'now',this.innerText)" class="poster-editable text-[#2F5E24]">${m.now}</strong>
+              </div>
+            </div>
+            <span contenteditable="true" onblur="editOnlineProgressMetric(${idx},'diff',this.innerText)" class="poster-editable px-2 py-0.5 rounded-lg bg-emerald-100 text-emerald-900 font-extrabold text-[10.5px] shrink-0">${m.diff}</span>
+          </div>
+        `).join("");
+
+        target.innerHTML = `
+          <div class="px-4 pt-3 pb-1 text-center">
+            <div class="inline-block px-3 py-0.5 rounded-full bg-[#163828] text-[#D4B475] text-[10px] font-extrabold tracking-wider shadow-xs" contenteditable="true" onblur="onOnlinePosterInlineBlur('progress','brandBadge',this)">${pg.brandBadge}</div>
+            <div contenteditable="true" onblur="onOnlinePosterInlineBlur('progress','reportTitle',this)" class="poster-editable text-center text-[17.5px] font-extrabold text-[#163828] tracking-[0.04em] mt-1">${pg.reportTitle}</div>
+          </div>
+
+          <div class="px-3.5 py-1">
+            <div class="poster-glass-card-soft rounded-2xl p-2.5 text-center space-y-0.5">
+              <div contenteditable="true" onblur="onOnlinePosterInlineBlur('progress','stuLine',this)" class="poster-editable font-extrabold text-[14px] text-[#0F291E]">${pg.stuLine}</div>
+              <div contenteditable="true" onblur="onOnlinePosterInlineBlur('progress','highlightLine',this)" class="poster-editable text-[11px] font-bold text-[#2F5E24]">${pg.highlightLine}</div>
+            </div>
+          </div>
+
+          <div class="px-3.5 py-1">
+            <div class="poster-glass-card-soft rounded-2xl p-2.5 space-y-1.5">
+              ${rowsHtml}
+            </div>
+          </div>
+
+          <div class="px-3.5 py-1">
+            <div class="poster-glass-card rounded-2xl p-3 space-y-1.5 text-[10.8px] leading-relaxed">
+              <div>
+                <div contenteditable="true" onblur="onOnlinePosterInlineBlur('progress','coachReviewTitle',this)" class="poster-editable font-extrabold text-[#9A7D46]">${pg.coachReviewTitle}</div>
+                <div contenteditable="true" onblur="onOnlinePosterInlineBlur('progress','coachReviewText',this)" class="poster-editable text-slate-700">${pg.coachReviewText}</div>
+              </div>
+              <div class="pt-1 border-t border-slate-200/70">
+                <div contenteditable="true" onblur="onOnlinePosterInlineBlur('progress','nextPlanTitle',this)" class="poster-editable font-extrabold text-[#2F5E24]">${pg.nextPlanTitle}</div>
+                <div contenteditable="true" onblur="onOnlinePosterInlineBlur('progress','nextPlanText',this)" class="poster-editable text-slate-700">${pg.nextPlanText}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="pt-1.5 pb-2.5 px-3 text-center text-[#F9F8F3]">
+            <div contenteditable="true" onblur="onOnlinePosterInlineBlur('progress','footerLine1',this)" class="poster-editable font-serif font-extrabold text-[12px] tracking-[0.1em] drop-shadow-sm">${pg.footerLine1}</div>
+          </div>
+        `;
+      }
+    }
+
+    window.exportOnlinePosterImage = async () => {
+      const target = document.getElementById("onlinePosterCaptureTarget");
+      if (!target) return;
+      if (typeof html2canvas === "undefined") {
+        showToast("正在加载海报渲染引擎，请直接截屏或稍后重试");
+        return;
+      }
+      showToast("⏳ 正在合成 3 倍超清线上专属海报...");
+      try {
+        const canvas = await html2canvas(target, {
+          scale: 3,
+          useCORS: true,
+          backgroundColor: null
+        });
+        const dataUrl = canvas.toDataURL("image/png");
+        const c = (state.onlineClients || []).find(x => x.id === onlinePosterState.clientId);
+        const stuName = c ? c.name.split(" ")[0] : "线上学员";
+        const tplLabel = onlinePosterState.template === "macro_framework" ? "未来周期大方向规划框架" : (onlinePosterState.template === "weekly_plan" ? "周训练重心与动作课表" : "阶段体能复盘喜报");
+        const fileName = `Leo线上青少年体能_${stuName}_${tplLabel}_${getOffsetDate(0)}.png`;
+
+        const a = document.createElement("a");
+        a.href = dataUrl;
+        a.download = fileName;
+        a.click();
+
+        openModal(`
+          <div class="flex items-center justify-between border-b pb-2">
+            <div>
+              <h3 class="font-bold text-sm text-forest-900">✅ 3倍超清线上体能海报已生成！</h3>
+              <p class="text-[11px] text-slate-500">电脑端已自动下载；手机端可直接<strong>长按下方图片保存到相册或转发微信家长</strong></p>
+            </div>
+            <button onclick="closeModal()" class="text-xs text-slate-400">✕</button>
+          </div>
+          <div class="flex justify-center bg-slate-100 p-2 rounded-xl max-h-[70vh] overflow-y-auto">
+            <img src="${dataUrl}" class="max-w-full h-auto rounded-lg shadow-md" alt="Generated Online Poster" />
+          </div>
+          <div class="flex justify-end pt-1">
+            <button onclick="closeModal()" class="btn-primary px-4 py-1.5 rounded-lg text-xs">完成</button>
+          </div>
+        `);
+      } catch (err) {
+        showToast("导出提示：您可直接对预览画布截屏保存");
+      }
+    };
+
     function renderAll() {
       if (state.lockEnabled && safeGetSession("leo_unlocked") !== "1") {
         document.getElementById("lockScreen").classList.remove("hidden");
@@ -10311,6 +11388,7 @@ ${progressLines}
       renderSops();
       renderMedia();
       renderPosterStudio();
+      renderOnlinePosterStudio();
       renderHealth();
       renderTour();
     }
