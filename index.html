@@ -485,6 +485,7 @@
           <button type="button" onclick="switchOnlineSub('cards')" id="on-sub-cards" data-label-key="onSub5" class="on-sub-btn px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap text-slate-600">5. 模块化月度指导卡</button>
           <button type="button" onclick="switchOnlineSub('scripts')" id="on-sub-scripts" data-label-key="onSub6" class="on-sub-btn px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap text-slate-600">6. 异步复盘与话术</button>
           <button type="button" onclick="switchOnlineSub('pricing')" id="on-sub-pricing" data-label-key="onSub7" class="on-sub-btn px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap text-slate-600">7. 定价与权益矩阵</button>
+          <button type="button" onclick="switchOnlineSub('sop')" id="on-sub-sop" data-label-key="onSub8" class="on-sub-btn px-3 py-1.5 rounded-lg text-xs font-semibold whitespace-nowrap text-slate-600">8. 📋 线上业务SOP</button>
         </div>
 
         <!-- 线上 Tab 1: 自媒体工作台 (公域短视频/图文引流 → 微信私域 → 诊断问卷) -->
@@ -1605,6 +1606,46 @@
             </div>
           </div>
         </div>
+
+        <!-- 线上 Tab 8: 线上业务全流程 SOP & 家长沟通话术沉淀库 -->
+        <div id="on-panel-sop" class="on-panel hidden space-y-3">
+          <div class="card p-3.5 bg-forest-900 text-white flex items-center justify-between flex-wrap gap-2">
+            <div>
+              <span class="px-2 py-0.5 rounded bg-champagne-500 text-forest-900 font-extrabold text-[10px]">自由增删改排序 · 沉淀线上引流成交与家长沟通实战话术</span>
+              <h2 class="font-bold text-sm mt-1" data-label-key="onSopTitle">📋 线上业务全流程 SOP &amp; 家长沟通话术沉淀库</h2>
+            </div>
+            <div class="flex items-center gap-1.5 flex-wrap">
+              <button type="button" onclick="copyFullOnlineBizSop()" class="px-2.5 py-1.5 rounded-lg text-xs bg-forest-800 border border-slate-600 text-slate-100">📋 复制完整SOP</button>
+              <button type="button" onclick="addOnlineBizSopStep()" class="btn-gold px-3 py-1.5 rounded-lg text-xs font-bold">+ 新增SOP步骤</button>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 items-start">
+            <!-- 左侧：线上全流程 SOP 步骤 -->
+            <div class="lg:col-span-6 card p-4 space-y-3 border-forest-900/20">
+              <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-2 flex-wrap">
+                <div>
+                  <span class="px-2 py-0.5 rounded bg-forest-900 text-champagne-400 font-bold text-[10px]">从 1 到 N 步 · 持续迭代升级你的线上转化闭环</span>
+                  <h3 class="font-bold text-sm text-forest-900 mt-1">🧭 线上成交与交付全流程 SOP</h3>
+                </div>
+                <button type="button" onclick="addOnlineBizSopStep()" class="btn-primary px-2.5 py-1 rounded-lg text-xs font-bold">+ 新增步骤</button>
+              </div>
+              <div id="onlineSopList" class="space-y-2.5"></div>
+            </div>
+
+            <!-- 右侧：家长沟通话术沉淀库 -->
+            <div class="lg:col-span-6 card p-4 space-y-3 border-champagne-500/50">
+              <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-2 flex-wrap">
+                <div>
+                  <span class="px-2 py-0.5 rounded bg-champagne-500 text-forest-900 font-bold text-[10px]">直接编辑自动保存 · 随时一键复制发微信</span>
+                  <h3 class="font-bold text-sm text-forest-900 mt-1">💬 家长沟通话术沉淀库（可不断升级）</h3>
+                </div>
+                <button type="button" onclick="addOnlineCommScript()" class="btn-primary px-2.5 py-1 rounded-lg text-xs font-bold">+ 新增话术</button>
+              </div>
+              <div id="onlineCommScriptsList" class="space-y-2.5"></div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <!-- ==================== B. 【🟢 线下 · 户外双语体能】7步引流与交付闭环流水线 ==================== -->
@@ -2559,6 +2600,21 @@
       </div>
           </div>
 
+          <!-- 课程说明与服务须知（自由增删改） -->
+          <div class="card p-3.5 space-y-3 border-champagne-500/40">
+            <div class="flex items-center justify-between flex-wrap gap-2 border-b border-slate-100 pb-2">
+              <div>
+                <span class="px-2 py-0.5 rounded bg-champagne-500 text-forest-900 font-bold text-[10px]">自由增删改排序 · 一键复制报价单时同步附带</span>
+                <h3 class="font-bold text-sm text-forest-900 mt-1">📜 课程说明与服务须知（请假 / 有效期 / 调课规则）</h3>
+              </div>
+              <div class="flex items-center gap-1.5 flex-wrap">
+                <button type="button" onclick="copyOfflineCourseNotes()" class="btn-gold px-2.5 py-1.5 rounded-lg text-xs">📋 复制课程说明</button>
+                <button type="button" onclick="addOfflineCourseNote()" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-bold">+ 新增条款</button>
+              </div>
+            </div>
+            <div id="offlineCourseNotesList" class="grid grid-cols-1 md:grid-cols-2 gap-2.5"></div>
+          </div>
+
           <!-- 1v1 无损升舱折算 -->
           <div class="card p-3.5 space-y-2.5 bg-slate-50/70">
             <h3 class="font-bold text-xs text-forest-900">🔄 1V1 余额无损升舱 1V2 / 1V3 / 1V4 折算器</h3>
@@ -2578,8 +2634,9 @@
         <!-- 线下 Tab 6: 转介绍唯一核销卡 & 业务全流程 SOP -->
         <div id="fit-panel-camp" class="fit-panel hidden space-y-3">
           <div class="grid grid-cols-1 lg:grid-cols-12 gap-3 items-start">
-            <!-- 左侧：我的业务全流程 SOP（1 → N 步自由增删改） -->
-            <div class="lg:col-span-6 card p-4 space-y-3 border-forest-900/20">
+            <!-- 左侧：我的业务全流程 SOP + 结课续费独立话术卡片 -->
+            <div class="lg:col-span-6 space-y-3">
+            <div class="card p-4 space-y-3 border-forest-900/20">
               <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-2 flex-wrap">
                 <div>
                   <span class="px-2 py-0.5 rounded bg-forest-900 text-champagne-400 font-bold text-[10px]">自由增删改 · 从 1 到 N 步沉淀你的专属成交闭环</span>
@@ -2666,6 +2723,19 @@
             <textarea rows="2" onchange="editBizSopStep(4, 'content', this.value)" placeholder="写下这一步的具体做法、话术要点或复盘心得..." class="w-full bg-white border border-slate-200 rounded-lg p-2 text-xs text-slate-700 leading-relaxed">发出带唯一核销码的转介绍邀请卡（可打印实体卡或发图），一码一家庭防滥用，促成老带新。</textarea>
           </div>
         </div>
+            </div>
+
+              <!-- 线下结课续费与升舱话术独立卡片 -->
+              <div class="card p-4 space-y-2.5 border-emerald-300 bg-emerald-50/20">
+                <div class="flex items-center justify-between gap-2 border-b border-emerald-200/70 pb-2 flex-wrap">
+                  <div>
+                    <span class="px-2 py-0.5 rounded bg-emerald-800 text-emerald-100 font-bold text-[10px]">结课前黄金窗口 · 直接编辑自动保存</span>
+                    <h3 class="font-bold text-sm text-forest-900 mt-1">🔄 线下续费与升舱话术卡片</h3>
+                  </div>
+                  <button type="button" onclick="addOfflineRenewalScript()" class="btn-primary px-2.5 py-1 rounded-lg text-xs font-bold">+ 新增续费话术</button>
+                </div>
+                <div id="offlineRenewalScriptsBox" class="space-y-2"></div>
+              </div>
             </div>
 
             <!-- 右侧：唯一核销码转介绍邀请卡 + 核销台账 + 话术 -->
@@ -2899,21 +2969,23 @@
               <h3 class="font-bold text-xs text-forest-900" data-label-key="healthCard2Title">2. 当日锻炼计划</h3>
               <span id="trainProgressBadge" class="text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded font-bold">0/0 完成</span>
             </div>
-            <div class="flex items-center gap-1">
-              <select id="dayIntensity" onchange="saveCurrentDayHealth()" class="text-xs border border-slate-200 rounded-md px-2 py-1 bg-slate-50 font-semibold text-forest-900"><option value="赛后低强度有氧">赛后低强度有氧</option><option value="上半身力量训练">上半身力量训练</option><option value="赛前日激活">赛前日激活</option><option value="五人足球野球">五人足球野球</option><option value="高强度足球对抗赛">高强度足球对抗赛</option><option value="完全休息日">完全休息日</option><option value="下肢离心与膝关节强化">下肢离心与膝关节强化</option><option value="赛前日神经激活">赛前日神经激活</option><option value="力量训练+五人足球野球">力量训练+五人足球野球</option><option value="核心稳定与柔韧拉伸">核心稳定与柔韧拉伸</option></select>
-              <button type="button" onclick="openTrainingIntensityManagerModal()" class="text-[11px] bg-amber-50 text-amber-900 border border-amber-200 px-2 py-1 rounded-md font-semibold">✏️ 编辑选项</button>
+            <div class="flex items-center gap-1 flex-wrap">
+              <span class="text-[11px] text-slate-500">今日主题</span>
+              <select id="dayIntensity" onchange="saveCurrentDayHealth()" class="text-xs border border-amber-300 rounded-md px-2 py-1 bg-amber-50/40 font-bold text-forest-900"><option value="赛后低强度有氧">赛后低强度有氧</option><option value="上半身力量训练">上半身力量训练</option><option value="赛前日激活">赛前日激活</option><option value="五人足球野球">五人足球野球</option><option value="高强度足球对抗赛">高强度足球对抗赛</option><option value="完全休息日">完全休息日</option><option value="下肢离心与膝关节强化">下肢离心与膝关节强化</option><option value="赛前日神经激活">赛前日神经激活</option><option value="力量训练+五人足球野球">力量训练+五人足球野球</option><option value="核心稳定与柔韧拉伸">核心稳定与柔韧拉伸</option></select>
+              <button type="button" onclick="openTrainingIntensityManagerModal()" class="text-[11px] bg-amber-50 text-amber-900 border border-amber-200 px-2 py-1 rounded-md font-semibold">✏️ 管理主题</button>
             </div>
           </div>
           <div id="healthWarningBanner" class="bg-rose-50 border border-rose-200 text-rose-800 text-[11px] p-2 rounded-lg">⚠️ 状态防护提醒：右膝盖过度用 会不舒服；大汗体质；下半身肌肉多 腹部脂肪多 手臂脂肪少</div>
-          <div class="space-y-1.5">
-            <div class="flex flex-wrap sm:flex-nowrap items-center justify-between gap-1.5">
-              <input id="dayTrainTheme" type="text" onchange="saveCurrentDayHealth()" placeholder="今日训练主题（如：上半身推拉 / 足球对抗赛）" class="flex-1 text-xs border border-slate-200 rounded-lg px-2.5 py-1.5 min-w-[180px]">
-              <div class="flex items-center gap-1 shrink-0">
-                <button type="button" onclick="openReuseTrainingModal()" class="px-2.5 py-1.5 rounded-lg text-[11px] font-semibold bg-amber-100 text-amber-900 border border-amber-200">📥 历史复用</button>
-                <button type="button" onclick="addTrainingItem()" class="btn-primary px-2.5 py-1.5 rounded-lg text-[11px]">+ 加动作</button>
-              </div>
+          <div class="space-y-2">
+            <div class="flex flex-wrap sm:flex-nowrap items-center gap-1.5">
+              <input id="dayTrainTheme" type="text" onchange="saveCurrentDayHealth()" placeholder="训练补充备注（选填：如场地 / 时长 / 体感，无需重复填主题）" class="flex-1 text-xs border border-slate-200 rounded-lg px-2.5 py-1.5 bg-slate-50 min-w-[180px]">
+              <button type="button" onclick="openReuseTrainingModal()" class="px-2.5 py-1.5 rounded-lg text-[11px] font-semibold bg-amber-100 text-amber-900 border border-amber-200 shrink-0">📥 历史复用</button>
             </div>
             <div id="dayTrainItemsList" class="space-y-1.5"><div class="text-[11px] text-slate-400 py-1">今日暂未添加锻炼动作</div></div>
+            <div class="flex items-center gap-1.5 pt-1 border-t border-slate-100">
+              <input id="newTrainItemInput" type="text" onkeydown="if(event.key==='Enter')addTrainingItemQuick()" placeholder="+ 输入锻炼动作与组数（如：哑铃卧推 3组×10次，回车添加）..." class="flex-1 text-xs border border-slate-200 rounded-lg px-2.5 py-1.5 bg-white min-w-0">
+              <button type="button" onclick="addTrainingItemQuick()" class="btn-primary px-3 py-1.5 rounded-lg text-[11px] font-semibold shrink-0">+ 加动作</button>
+            </div>
           </div>
         </div>
 
@@ -3042,6 +3114,8 @@
         onSub5: "5. 模块化月度指导卡",
         onSub6: "6. 异步复盘与话术",
         onSub7: "7. 定价与权益矩阵",
+        onSub8: "8. 📋 线上业务SOP",
+        onSopTitle: "📋 线上业务全流程 SOP & 家长沟通话术沉淀库",
         onMediaTitle: "🎬 线上青少年体能顾问 · 自媒体工作台",
         onCrmTitle: "订阅学员档案与打卡状态 (Subscriber CRM)",
         onIntakeTitle: "🧬 定制诊断问卷（体能核心 · 健康辅助）",
@@ -3422,6 +3496,46 @@
         }
       ],
       onlineMrrCalc: { stdCount: 12, proCount: 8, vipCount: 3, weeklyMins: 12, marginPct: 92 },
+      onlineBizSop: [
+        { id: "osop_1", title: "公域引流加微 · 首句破冰与建立专业人设", content: "通过小红书/抖音/视频号自然流加微后，10分钟内发欢迎语，简明亮出「体育硕士 · 青少年体能顾问」身份，询问孩子年龄与目前运动项目，不急于抛价目表。" },
+        { id: "osop_2", title: "发送极简诊断问卷 · 收集关键基线信息", content: "从 Tab 3 一键复制4题极简版诊断问卷发家长，请家长顺手拍一段 15 秒孩子跑步/跳绳/蹲跳的侧面小视频，降低回复门槛。" },
+        { id: "osop_3", title: "出具诊断结论与《三阶蓝图》· 建立高信任锚点", content: "将问卷数据录入 Tab 3 自动生成诊断书，并在 Tab 4 输出《月·季·年三阶成长跃迁蓝图》发家长，用专业动作力学判断让家长眼前一亮。" },
+        { id: "osop_4", title: "权益报价与异议处理 · 促成季卡/年卡签约", content: "展示标准版/进阶版/尊享版权益矩阵，针对「线上有没有效果」「家长没时间盯」等常见顾虑用沉淀话术温和化解，引导先跑通首季习惯周期。" },
+        { id: "osop_5", title: "首周启动交付 · 跑通每周3次×15分钟打卡闭环", content: "在 Tab 2 建档，用 Tab 5 拼出首月《模块化月度指导卡》并发送《首周启动通知》，固定每晚 21:30–22:00 发出 60 秒三明治语音复盘。" },
+        { id: "osop_6", title: "打卡关怀防流失 + 月末升舱 + 季末对比续费", content: "关注 Tab 2 超过5天未打卡预警，及时发低阻力关怀话术；第4周复盘引导升级进阶版，第11周整理前后动作对比促成续费。" }
+      ],
+      onlineCommScripts: [
+        {
+          id: "ocs_1",
+          title: "👋 公域引流加微 · 破冰首句",
+          tag: "加微首触达",
+          text: "家长您好！欢迎添加～我是 Leo 教练（体育硕士，专注青少年体能与运动表现）。\n方便先告诉我一下孩子的【出生年月 / 性别 / 目前在练什么运动或最想解决什么体能问题】吗？我先免费帮您看看孩子目前处于哪个发育敏感期，以及居家训练最该避开哪些坑。"
+        },
+        {
+          id: "ocs_2",
+          title: "🧬 引导填写诊断问卷 & 拍15秒视频",
+          tag: "诊断前沟通",
+          text: "了解啦！孩子正处在非常宝贵的体能敏感期窗口期。\n为了不给您套用千篇一律的通用课表，我把 4 个极简问题发您，您直接语音或打字回复都行；如果方便，今晚在家随手拍一段 15 秒孩子跳绳或原地纵跳的侧面小视频发我，我帮您做一次免费动作模式初诊！"
+        },
+        {
+          id: "ocs_3",
+          title: "🛡️ 异议处理：担心「线上练没效果 / 家长不会教」",
+          tag: "常见异议",
+          text: "非常理解您的顾虑！这也是我把线上顾问做成【模块化指导卡 + 家长口令 + 每周语音精修】的原因：\n1️⃣ 每次只需 15 分钟、2–3 个精准动作，孩子完全不抵触；\n2️⃣ 指导卡上写好了您直接能念的「家长引导口令」和「错误盯防点」，零基础也能轻松当助教；\n3️⃣ 您拍 15 秒视频发我，我逐帧慢放用 60 秒语音直接纠偏，等于把体育硕士请到家里把关动作质量。"
+        },
+        {
+          id: "ocs_4",
+          title: "💰 异议处理：觉得价格犹豫 / 对比线下课",
+          tag: "报价成交",
+          text: "线下 1v1 私教单节通常 300+ 元，还包含接送往返的时间成本；线上标准版 599 元是一整个季度（90天）的专属蓝图 + 3份月度定制指导卡 + 12周持续视频纠偏，折合下来每天不到 7 块钱。\n您可以先从标准版跑通 1 个季度，看到孩子动作和自律习惯的变化后，随时可以补差价无损升级！"
+        },
+        {
+          id: "ocs_5",
+          title: "🔄 季末复盘对比 & 续费/升年卡话术",
+          tag: "续费转化",
+          text: "家长您好！这一季度陪伴下来，我把{姓名}第1周和最近一周的动作视频拼在一起对比了一下：落地轻盈度和核心稳定性进步非常明显！\n下个季度刚好进入爆发力与专项转化窗口期，老学员续订季卡/年卡享优先排期与专属动作进阶，咱们下周一直接无缝衔接新阶段指导卡？"
+        }
+      ],
 
       // ==================== 线下 6 步闭环数据 ====================
       students: [
@@ -3540,6 +3654,12 @@
           { id: "r1v3_20", mode: "1V3 三人班", people: 3, lessons: 20, totalPerPerson: 3000, tag: "高性价比" },
           { id: "r1v4_10", mode: "1V4 四人班", people: 4, lessons: 10, totalPerPerson: 1350, tag: "满编团购" },
           { id: "r1v4_20", mode: "1V4 四人班", people: 4, lessons: 20, totalPerPerson: 2500, tag: "🏆最高时薪" }
+        ],
+        courseNotes: [
+          { id: "cn_1", title: "📅 课时包使用期限", content: "10 节课包自首节正式课开课之日起 4 个月内有效；20 节课包 8 个月内有效。如遇寒暑假外出旅游、伤病休养等特殊情况，提前微信告知教练即可免费顺延有效期。" },
+          { id: "cn_2", title: "⏰ 请假与调课规则", content: "请假或改期请至少提前 4 小时微信通知教练，可免费协调改约同周或后续空闲档期；课前 4 小时内临时取消或无故缺席默认正常扣课 1 节（突发发热、意外伤病等情况除外）。" },
+          { id: "cn_3", title: "🌦️ 恶劣天气与场地预案", content: "户外课如遇雷雨、大风或极端高温/严寒天气，教练将提前 2 小时通知免费顺延，或经家长同意后切换至约定室内场馆进行。" },
+          { id: "cn_4", title: "👥 1V2–1V4 小班缺勤说明", content: "多人伙伴班若其中 1 位学员临时请假，其余学员按原计划正常上课；请假学员可按约定规则协商补课或调整后续安排（可点击此处按实际情况自行修改）。" }
         ]
       },
       offlineBizSop: [
@@ -3547,7 +3667,28 @@
         { id: "sop_2", title: "首次体验课与现场体态动作测评", content: "60–90分钟视孩子状态弹性把控；完成足弓/姿态/敏捷/平衡基线打分，并记入【本地学员表 · 仅体验课待转化】。" },
         { id: "sop_3", title: "课后 2 小时内发出视觉反馈海报", content: "发送 3 张高光抓拍 + 专业点评卡 + 现场诊断卡，让家长直观看到专业度与孩子的开心状态。" },
         { id: "sop_4", title: "长期课包成交与同龄同时间段拼班", content: "根据学员表中的年龄段与常上课时间段，匹配 1V2/1V3/1V4 伙伴团购或 1V1 定制长期课包。" },
-        { id: "sop_5", title: "第 5 节黄金窗口口碑裂变与转介绍", content: "发出带唯一核销码的转介绍邀请卡（可打印实体卡或发图），一码一家庭防滥用，促成老带新。" }
+        { id: "sop_5", title: "第 5 节黄金窗口口碑裂变与转介绍", content: "发出带唯一核销码的转介绍邀请卡（可打印实体卡或发图），一码一家庭防滥用，促成老带新。" },
+        { id: "sop_6", title: "余 2–3 节黄金窗口 · 阶段复测与续费转化", content: "在剩余 2–3 节课时时安排阶段性体能复测，输出《阶段对比喜报》展示量化进步，同步给出下一阶段训练重点并自然衔接续费或 1V2/团课升舱。" }
+      ],
+      offlineRenewalScripts: [
+        {
+          id: "ors_1",
+          title: "🔔 余 3 节提前铺垫（无压力预告）",
+          tag: "余3节预警",
+          text: "XX妈妈您好！今天上完课，孩子当前课包还剩 3 节啦～\n这两节课我打算帮孩子做一次阶段性体测复评（跳绳/立定跳远/单腿平衡），把第1节和现在的进步整理成一份对比喜报发您，同时也一起聊聊下个阶段体能进阶的重点方向！"
+        },
+        {
+          id: "ors_2",
+          title: "📈 阶段对比喜报发出 · 自然促续费",
+          tag: "结课前1-2节",
+          text: "XX妈妈，这是孩子这10节课的《阶段成长对比喜报》✨ 从数据就能看到，落地缓冲、敏捷步频和英文指令反应都上了很大一个台阶！\n目前孩子刚好度过基础重建期，下一周期进入【核心爆发与专项转化阶段】效果会更明显。老学员提前续报 10 节 / 20 节课包直接锁定当前周末黄金档期，您看咱们继续按原时间段衔接吗？"
+        },
+        {
+          id: "ors_3",
+          title: "👥 1V1 续费升舱 1V2 / 小班伙伴团购话术",
+          tag: "续费+拼班",
+          text: "XX妈妈，孩子现在的动作基础已经非常扎实啦！如果下一期想进一步激发胜负欲和对抗反应，同时把单节成本降下来，非常推荐拉上 1–2 位同龄好朋友组 1V2 或 1V3 伙伴班——单节直接省下 ¥70–¥110，而且小伙伴同场比拼专注度翻倍，老学员续费我还为您优先保留现在的黄金时间段！"
+        }
       ],
       offlineReferralLedger: [
         { code: "LEO-2611-A8F3", issuer: "Luna妈妈", date: getOffsetDate(0), status: "待核销", note: "预留给同班同学" }
@@ -3727,9 +3868,12 @@
       if (Array.isArray(raw.offlineBilingualCues) && raw.offlineBilingualCues.length) merged.offlineBilingualCues = raw.offlineBilingualCues;
       if (Array.isArray(raw.canvaTemplates) && raw.canvaTemplates.length) merged.canvaTemplates = raw.canvaTemplates;
 
-      // 线下定价：如果老数据缺少 1V3 / 1V4，自动平滑补全
+      // 线下定价：如果老数据缺少 1V3 / 1V4 或缺少 courseNotes，自动平滑补全
       if (raw.offlinePricing && Array.isArray(raw.offlinePricing.rows)) {
         merged.offlinePricing = structuredClone(raw.offlinePricing);
+        if (!Array.isArray(merged.offlinePricing.courseNotes)) {
+          merged.offlinePricing.courseNotes = structuredClone(DEFAULT_STATE.offlinePricing.courseNotes);
+        }
         const has3 = merged.offlinePricing.rows.some(r => parseInt(r.people) === 3);
         const has4 = merged.offlinePricing.rows.some(r => parseInt(r.people) === 4);
         if (!has3) {
@@ -3747,6 +3891,9 @@
       }
 
       if (Array.isArray(raw.offlineBizSop) && raw.offlineBizSop.length) merged.offlineBizSop = raw.offlineBizSop;
+      if (Array.isArray(raw.offlineRenewalScripts) && raw.offlineRenewalScripts.length) merged.offlineRenewalScripts = raw.offlineRenewalScripts;
+      if (Array.isArray(raw.onlineBizSop) && raw.onlineBizSop.length) merged.onlineBizSop = raw.onlineBizSop;
+      if (Array.isArray(raw.onlineCommScripts) && raw.onlineCommScripts.length) merged.onlineCommScripts = raw.onlineCommScripts;
       if (Array.isArray(raw.offlineReferralLedger)) merged.offlineReferralLedger = raw.offlineReferralLedger;
       if (raw.offlineCampReferral) {
         merged.offlineCampReferral = { ...merged.offlineCampReferral, ...raw.offlineCampReferral };
@@ -4181,6 +4328,7 @@
       if (sub === "cards") renderCardBuilder();
       if (sub === "scripts") renderOnlineScripts();
       if (sub === "pricing") renderOnlinePricing();
+      if (sub === "sop") renderOnlineSop();
     };
 
     window.switchFitSub = (sub) => {
@@ -5200,6 +5348,95 @@
       copyRaw(`【Leo 线上青少年体能顾问 · 订阅权益与收费标准】\n\n${lines}`, "✅ 三级权益报价矩阵已复制！");
     };
 
+    // ==================== 线上 Tab 8：线上业务全流程 SOP & 家长沟通话术沉淀库 ====================
+    function renderOnlineSop() {
+      const sopList = state.onlineBizSop || DEFAULT_STATE.onlineBizSop;
+      state.onlineBizSop = sopList;
+      const sopBox = document.getElementById("onlineSopList");
+      if (sopBox) {
+        sopBox.innerHTML = sopList.map((step, idx) => `
+          <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-1.5 text-xs">
+            <div class="flex items-center justify-between gap-2">
+              <div class="flex items-center gap-1.5 flex-1 min-w-0">
+                <span class="px-2 py-0.5 rounded bg-forest-900 text-champagne-400 font-extrabold text-[10px] shrink-0">STEP ${idx + 1}</span>
+                <input type="text" value="${escHtml(step.title)}" onchange="editOnlineBizSopStep(${idx}, 'title', this.value)" class="font-bold text-forest-900 bg-white border border-slate-200 rounded px-2 py-0.5 flex-1 min-w-0" />
+              </div>
+              <div class="flex items-center gap-1 shrink-0 text-[10px]">
+                <button type="button" onclick="moveOnlineBizSopStep(${idx}, -1)" class="px-1.5 py-0.5 bg-white border rounded">↑</button>
+                <button type="button" onclick="moveOnlineBizSopStep(${idx}, 1)" class="px-1.5 py-0.5 bg-white border rounded">↓</button>
+                <button type="button" onclick="deleteOnlineBizSopStep(${idx})" class="text-rose-400 px-1">删</button>
+              </div>
+            </div>
+            <textarea rows="3" onchange="editOnlineBizSopStep(${idx}, 'content', this.value)" placeholder="写下这一步的执行动作、关键细节或复盘迭代心得..." class="w-full bg-white border border-slate-200 rounded-lg p-2 text-xs text-slate-700 leading-relaxed">${escHtml(step.content || '')}</textarea>
+          </div>
+        `).join("") || `<div class="text-xs text-slate-400 text-center py-4">点击右上角「+ 新增步骤」开始沉淀你的线上业务 SOP</div>`;
+      }
+
+      const commList = state.onlineCommScripts || DEFAULT_STATE.onlineCommScripts;
+      state.onlineCommScripts = commList;
+      const commBox = document.getElementById("onlineCommScriptsList");
+      if (commBox) {
+        commBox.innerHTML = commList.map((sc, idx) => `
+          <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-2 text-xs">
+            <div class="flex items-center justify-between gap-1.5 flex-wrap">
+              <div class="flex items-center gap-1.5 flex-1 min-w-[160px]">
+                <input type="text" value="${escHtml(sc.title)}" onchange="editOnlineCommScript(${idx}, 'title', this.value)" class="font-bold text-forest-900 bg-white border border-slate-200 rounded px-2 py-0.5 flex-1 min-w-0" />
+                <input type="text" value="${escHtml(sc.tag || '')}" onchange="editOnlineCommScript(${idx}, 'tag', this.value)" placeholder="场景标签" class="text-[10px] text-amber-900 bg-amber-50 border border-amber-200 rounded px-1.5 py-0.5 w-24 shrink-0" />
+              </div>
+              <div class="flex items-center gap-1.5 shrink-0">
+                <button type="button" onclick="copyOnlineCommScript(${idx})" class="btn-gold px-2.5 py-0.5 rounded text-[11px]">📋 复制</button>
+                <button type="button" onclick="deleteOnlineCommScript(${idx})" class="text-[11px] text-rose-400">删</button>
+              </div>
+            </div>
+            <textarea rows="4" onchange="editOnlineCommScript(${idx}, 'text', this.value)" placeholder="输入并持续优化给家长的沟通话术..." class="w-full bg-white border border-slate-200 rounded-lg p-2 text-xs text-slate-700 leading-relaxed">${escHtml(sc.text || '')}</textarea>
+          </div>
+        `).join("") || `<div class="text-xs text-slate-400 text-center py-4">点击右上角「+ 新增话术」沉淀与家长沟通的高转化话术</div>`;
+      }
+    }
+
+    window.addOnlineBizSopStep = () => {
+      if (!Array.isArray(state.onlineBizSop)) state.onlineBizSop = [];
+      const n = state.onlineBizSop.length + 1;
+      state.onlineBizSop.push({ id: "osop_" + Date.now(), title: `第 ${n} 步线上流程（点击修改）`, content: "" });
+      saveState();
+      showToast(`已新增线上 SOP STEP ${n}`);
+    };
+    window.editOnlineBizSopStep = (idx, field, val) => {
+      if (state.onlineBizSop?.[idx]) { state.onlineBizSop[idx][field] = val; saveStateDebounced(true); }
+    };
+    window.moveOnlineBizSopStep = (idx, dir) => {
+      const list = state.onlineBizSop || [];
+      const t = idx + dir;
+      if (t < 0 || t >= list.length) return;
+      [list[idx], list[t]] = [list[t], list[idx]];
+      saveState();
+    };
+    window.deleteOnlineBizSopStep = (idx) => {
+      state.onlineBizSop?.splice(idx, 1);
+      saveState();
+    };
+    window.copyFullOnlineBizSop = () => {
+      const txt = (state.onlineBizSop || []).map((s, i) => `【STEP ${i + 1} · ${s.title}】\n${s.content}`).join("\n\n");
+      copyRaw(`【Leo 线上青少年体能顾问 · 业务全流程 SOP】\n\n${txt}`, "✅ 线上完整业务 SOP 已复制！");
+    };
+    window.addOnlineCommScript = () => {
+      if (!Array.isArray(state.onlineCommScripts)) state.onlineCommScripts = [];
+      state.onlineCommScripts.unshift({ id: "ocs_" + Date.now(), title: "💬 新家长沟通话术", tag: "实战沉淀", text: "输入话术内容，随时迭代升级..." });
+      saveState();
+      showToast("已新增家长沟通话术卡片");
+    };
+    window.editOnlineCommScript = (idx, field, val) => {
+      if (state.onlineCommScripts?.[idx]) { state.onlineCommScripts[idx][field] = val; saveStateDebounced(true); }
+    };
+    window.deleteOnlineCommScript = (idx) => {
+      state.onlineCommScripts?.splice(idx, 1);
+      saveState();
+    };
+    window.copyOnlineCommScript = (idx) => {
+      const sc = state.onlineCommScripts?.[idx];
+      if (sc) copyRaw(sc.text || "", `✅ 已复制「${sc.title}」话术！`);
+    };
+
     // ==================== 线下 Tab 1：本地学员与课消档案 (Local CRM) ====================
     function calcAgeBmi(birthday, heightCm, weightKg) {
       const b = new Date(birthday || "2018-01-01");
@@ -6041,6 +6278,27 @@
         </div>
       `).join("");
 
+      if (!Array.isArray(op.courseNotes)) op.courseNotes = structuredClone(DEFAULT_STATE.offlinePricing.courseNotes);
+      const notesBox = document.getElementById("offlineCourseNotesList");
+      if (notesBox) {
+        notesBox.innerHTML = op.courseNotes.map((n, idx) => `
+          <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-1.5 text-xs">
+            <div class="flex items-center justify-between gap-1.5">
+              <div class="flex items-center gap-1.5 flex-1 min-w-0">
+                <span class="px-1.5 py-0.5 rounded bg-forest-900 text-champagne-400 font-bold text-[10px] shrink-0">${idx + 1}</span>
+                <input type="text" value="${escHtml(n.title)}" onchange="editOfflineCourseNote(${idx}, 'title', this.value)" class="font-bold text-forest-900 bg-white border border-slate-200 rounded px-2 py-0.5 flex-1 min-w-0" />
+              </div>
+              <div class="flex items-center gap-1 shrink-0 text-[10px]">
+                <button type="button" onclick="moveOfflineCourseNote(${idx}, -1)" class="px-1.5 py-0.5 bg-white border rounded">↑</button>
+                <button type="button" onclick="moveOfflineCourseNote(${idx}, 1)" class="px-1.5 py-0.5 bg-white border rounded">↓</button>
+                <button type="button" onclick="deleteOfflineCourseNote(${idx})" class="text-rose-400 px-1">删</button>
+              </div>
+            </div>
+            <textarea rows="3" onchange="editOfflineCourseNote(${idx}, 'content', this.value)" placeholder="输入具体规则说明（如请假时限、10节课有效期等）..." class="w-full bg-white border border-slate-200 rounded-lg p-2 text-xs text-slate-700 leading-relaxed">${escHtml(n.content || '')}</textarea>
+          </div>
+        `).join("") || `<div class="col-span-2 text-xs text-slate-400 text-center py-4 bg-slate-50 rounded-lg">暂无课程说明条款，点击右上角「+ 新增条款」添加请假/有效期等规则</div>`;
+      }
+
       const stuSel = document.getElementById("offUpStuSelect");
       if (stuSel) {
         const cur = stuSel.value;
@@ -6049,6 +6307,35 @@
       }
       renderOfflineUpgradeCalc();
     }
+
+    window.addOfflineCourseNote = () => {
+      if (!Array.isArray(state.offlinePricing.courseNotes)) state.offlinePricing.courseNotes = [];
+      state.offlinePricing.courseNotes.push({ id: "cn_" + Date.now(), title: "📌 新课程说明条款", content: "" });
+      saveState();
+      showToast("已新增课程说明条款");
+    };
+    window.editOfflineCourseNote = (idx, field, val) => {
+      if (state.offlinePricing.courseNotes?.[idx]) {
+        state.offlinePricing.courseNotes[idx][field] = val;
+        saveStateDebounced(true);
+      }
+    };
+    window.moveOfflineCourseNote = (idx, dir) => {
+      const list = state.offlinePricing.courseNotes || [];
+      const t = idx + dir;
+      if (t < 0 || t >= list.length) return;
+      [list[idx], list[t]] = [list[t], list[idx]];
+      saveState();
+    };
+    window.deleteOfflineCourseNote = (idx) => {
+      state.offlinePricing.courseNotes?.splice(idx, 1);
+      saveState();
+    };
+    window.copyOfflineCourseNotes = () => {
+      const notes = state.offlinePricing.courseNotes || [];
+      const txt = notes.map((n, i) => `${i + 1}. 【${n.title}】\n${n.content}`).join("\n\n");
+      copyRaw(`【Leo 户外双语体能 · 课程说明与服务须知】\n\n${txt}`, "✅ 课程说明已复制，可直接发家长！");
+    };
 
     window.updateOfflineBasePrice = (val) => {
       state.offlinePricing.basePrice = parseFloat(val) || 320;
@@ -6089,7 +6376,9 @@
         const save = Math.max(0, (base - u) * r.lessons);
         return `• ${r.mode} ${r.lessons}课时：¥${r.totalPerPerson.toLocaleString()}/人（折合 ¥${u}/节，对比基准立省 ¥${save.toLocaleString()}）`;
       }).join("\n");
-      copyRaw(`【Leo 户外双语体能 · 阶梯课包报价单】\n🎯 1V1 单次基准价：¥${base}/节\n\n${lines}`, "✅ 线下报价单已复制！");
+      const notes = (state.offlinePricing.courseNotes || []).filter(n => (n.title || n.content));
+      const notesStr = notes.length ? `\n\n【课程说明与服务须知】\n` + notes.map((n, i) => `${i + 1}. ${n.title}：${n.content}`).join("\n") : "";
+      copyRaw(`【Leo 户外双语体能 · 阶梯课包报价单】\n🎯 1V1 单次基准价：¥${base}/节\n\n${lines}${notesStr}`, "✅ 线下报价单（含课程说明）已复制！");
     };
     window.fillUpgradeFromStudent = (sid) => {
       const s = state.students.find(x => x.id === sid);
@@ -6169,6 +6458,27 @@
             </div>
           `;
         }).join("") || `<div class="text-[11px] text-slate-400 text-center py-2">暂无发卡记录，在上方输入推荐人并生成唯一核销码</div>`;
+      }
+
+      const renList = state.offlineRenewalScripts || DEFAULT_STATE.offlineRenewalScripts;
+      state.offlineRenewalScripts = renList;
+      const renBox = document.getElementById("offlineRenewalScriptsBox");
+      if (renBox) {
+        renBox.innerHTML = renList.map((sc, idx) => `
+          <div class="bg-white border border-emerald-200 rounded-xl p-2.5 space-y-1.5">
+            <div class="flex items-center justify-between gap-1.5 flex-wrap">
+              <div class="flex items-center gap-1.5 flex-1 min-w-[150px]">
+                <input type="text" value="${escHtml(sc.title)}" onchange="editOfflineRenewalScript(${idx}, 'title', this.value)" class="font-bold text-xs text-forest-900 bg-transparent flex-1 min-w-0" />
+                <input type="text" value="${escHtml(sc.tag || '')}" onchange="editOfflineRenewalScript(${idx}, 'tag', this.value)" placeholder="时机标签" class="text-[10px] text-emerald-900 bg-emerald-50 border border-emerald-200 rounded px-1.5 py-0.5 w-20 shrink-0" />
+              </div>
+              <div class="flex items-center gap-1.5 shrink-0">
+                <button type="button" onclick="copyOfflineRenewalScript(${idx})" class="btn-gold px-2.5 py-0.5 rounded text-[11px]">📋 复制</button>
+                <button type="button" onclick="deleteOfflineRenewalScript(${idx})" class="text-[11px] text-rose-400">删</button>
+              </div>
+            </div>
+            <textarea rows="4" onchange="editOfflineRenewalScript(${idx}, 'text', this.value)" class="w-full bg-slate-50/70 border border-slate-200 rounded-lg p-2 text-xs text-slate-700 leading-relaxed">${escHtml(sc.text || '')}</textarea>
+          </div>
+        `).join("") || `<div class="text-xs text-slate-400 text-center py-3">暂无续费话术，点击右上角「+ 新增续费话术」添加</div>`;
       }
 
       document.getElementById("campReferralScriptsBox").innerHTML = (cr.scripts || []).map((sc, idx) => `
@@ -6261,6 +6571,26 @@
       state.offlineCampReferral.scripts[idx][field] = val;
       saveStateDebounced(true);
     };
+    window.addOfflineRenewalScript = () => {
+      if (!Array.isArray(state.offlineRenewalScripts)) state.offlineRenewalScripts = [];
+      state.offlineRenewalScripts.unshift({ id: "ors_" + Date.now(), title: "🔄 新续费话术", tag: "结课续费", text: "输入续费话术内容..." });
+      saveState();
+      showToast("已新增续费话术卡片");
+    };
+    window.editOfflineRenewalScript = (idx, field, val) => {
+      if (state.offlineRenewalScripts?.[idx]) {
+        state.offlineRenewalScripts[idx][field] = val;
+        saveStateDebounced(true);
+      }
+    };
+    window.deleteOfflineRenewalScript = (idx) => {
+      state.offlineRenewalScripts?.splice(idx, 1);
+      saveState();
+    };
+    window.copyOfflineRenewalScript = (idx) => {
+      const sc = state.offlineRenewalScripts?.[idx];
+      if (sc) copyRaw(sc.text || "", `✅ 已复制「${sc.title}」话术！`);
+    };
     window.exportReferralCardPng = () => exportDomAsPng("referralInviteCard", `Leo转介绍邀请卡_${state.offlineCampReferral.activeCode || getOffsetDate(0)}.png`, 4);
 
     // ==================== 导航 3：健康饮食锻炼渲染 ====================
@@ -6341,7 +6671,7 @@
         document.getElementById("periodOverviewTable").innerHTML = `
           <table class="w-full text-left border-collapse text-[11px]">
             <thead><tr class="border-b bg-slate-50 text-slate-500"><th class="p-1.5">日期</th><th class="p-1.5">晨重</th><th class="p-1.5">训练</th><th class="p-1.5">进食</th></tr></thead>
-            <tbody>${dates.map(d => { const l = getDayLog(ui.healthPerson, d); return `<tr class="border-b"><td class="p-1.5 font-bold">${d.slice(5)}</td><td class="p-1.5">${l.weight || '-'}</td><td class="p-1.5">${escHtml(l.trainTheme || l.intensity || '-')}</td><td class="p-1.5">${(l.mealEntries||[]).map(m=>`[${m.time}]${escHtml(m.content)}`).join('; ') || '-'}</td></tr>`; }).join("")}</tbody>
+            <tbody>${dates.map(d => { const l = getDayLog(ui.healthPerson, d); const trainDisp = l.intensity ? (l.trainTheme ? `${l.intensity}（${l.trainTheme}）` : l.intensity) : (l.trainTheme || '-'); return `<tr class="border-b"><td class="p-1.5 font-bold">${d.slice(5)}</td><td class="p-1.5">${l.weight || '-'}</td><td class="p-1.5">${escHtml(trainDisp)}</td><td class="p-1.5">${(l.mealEntries||[]).map(m=>`[${m.time}]${escHtml(m.content)}`).join('; ') || '-'}</td></tr>`; }).join("")}</tbody>
           </table>
         `;
       }
@@ -6368,10 +6698,13 @@
         document.getElementById("dayTrainItemsList").innerHTML = items.map((it, idx) => `
           <div class="flex items-start justify-between gap-2 px-2.5 py-2 rounded-md text-xs border ${it.done ? 'bg-slate-100/70 opacity-65' : 'bg-slate-50 border-slate-200'}">
             <div class="flex items-start gap-2 flex-1 min-w-0">
-              <input type="checkbox" ${it.done ? 'checked' : ''} onchange="toggleTrainItemDone(${idx})" class="w-4 h-4 mt-0.5 accent-forest-900 cursor-pointer" />
-              <span onclick="toggleTrainItemDone(${idx})" class="cursor-pointer leading-relaxed ${it.done ? 'line-through text-slate-400' : 'text-slate-800 font-medium'}"><strong>${idx + 1}.</strong> ${escHtml(it.text)}</span>
+              <input type="checkbox" ${it.done ? 'checked' : ''} onchange="toggleTrainItemDone(${idx})" class="w-4 h-4 mt-0.5 accent-forest-900 cursor-pointer shrink-0" />
+              <span onclick="toggleTrainItemDone(${idx})" class="cursor-pointer leading-relaxed break-words ${it.done ? 'line-through text-slate-400' : 'text-slate-800 font-medium'}"><strong>${idx + 1}.</strong> ${escHtml(it.text)}</span>
             </div>
-            <button type="button" onclick="removeTrainItem(${idx})" class="text-rose-400 text-[11px] px-1">删</button>
+            <div class="flex items-center gap-1 shrink-0 text-[11px]">
+              <button type="button" onclick="editTrainItem(${idx})" class="px-1.5 py-0.5 rounded bg-white border border-slate-200 text-forest-900 font-semibold">改</button>
+              <button type="button" onclick="removeTrainItem(${idx})" class="text-rose-400 px-1">删</button>
+            </div>
           </div>
         `).join("") || `<div class="text-[11px] text-slate-400 py-1">今日暂未添加锻炼动作</div>`;
       }
@@ -6491,10 +6824,42 @@
       if (it) { it.done = !it.done; saveState(); }
     };
     window.removeTrainItem = (idx) => { getDayLog("me", ui.activeDate).trainItems.splice(idx, 1); saveState(); };
+    window.editTrainItem = (idx) => {
+      const it = getDayLog("me", ui.activeDate).trainItems[idx];
+      if (!it) return;
+      openModal(`
+        <h3 class="font-bold text-sm text-forest-900">✏️ 修改锻炼动作</h3>
+        <input id="mTrEdit" value="${escHtml(it.text)}" onkeydown="if(event.key==='Enter')saveEditedTrainItem(${idx})" class="w-full border border-slate-300 rounded-lg p-2 text-xs font-medium text-forest-900" />
+        <div class="flex justify-end gap-2 pt-2">
+          <button type="button" onclick="closeModal()" class="px-3 py-1.5 text-xs text-slate-500">取消</button>
+          <button type="button" onclick="saveEditedTrainItem(${idx})" class="btn-primary px-4 py-1.5 rounded-lg text-xs font-bold">保存修改</button>
+        </div>
+      `);
+      setTimeout(() => { const el = document.getElementById("mTrEdit"); if (el) { el.focus(); el.select(); } }, 30);
+    };
+    window.saveEditedTrainItem = (idx) => {
+      const it = getDayLog("me", ui.activeDate).trainItems[idx];
+      const v = document.getElementById("mTrEdit")?.value?.trim();
+      if (it && v) {
+        it.text = v;
+        closeModal();
+        saveState();
+        showToast("✅ 锻炼动作已更新");
+      }
+    };
+    window.addTrainingItemQuick = () => {
+      const inp = document.getElementById("newTrainItemInput");
+      const v = inp?.value?.trim();
+      if (!v) { addTrainingItem(); return; }
+      getDayLog("me", ui.activeDate).trainItems.push({ text: v, done: false });
+      inp.value = "";
+      saveState();
+      showToast("✅ 已添加锻炼动作");
+    };
     window.addTrainingItem = () => {
       openModal(`
         <h3 class="font-bold text-sm text-forest-900">添加今日锻炼动作</h3>
-        <input id="mTrNew" placeholder="如：哑铃卧推 3组×10次" class="w-full border rounded-lg p-2 text-xs" />
+        <input id="mTrNew" onkeydown="if(event.key==='Enter')confirmAddTrainItem()" placeholder="如：哑铃卧推 3组×10次" class="w-full border rounded-lg p-2 text-xs" />
         <div class="flex justify-end gap-2 pt-2"><button type="button" onclick="closeModal()" class="px-3 py-1.5 text-xs text-slate-500">取消</button><button type="button" onclick="confirmAddTrainItem()" class="btn-primary px-4 py-1.5 rounded-lg text-xs">加入</button></div>
       `);
     };
@@ -6521,7 +6886,7 @@
     };
     window.openTrainingIntensityManagerModal = () => {
       openModal(`
-        <h3 class="font-bold text-sm text-forest-900">编辑训练类型下拉选项（每行1项）</h3>
+        <h3 class="font-bold text-sm text-forest-900">编辑今日训练主题选项（每行1项）</h3>
         <textarea id="mIntList" rows="6" class="w-full border rounded-lg p-2 text-xs">${escHtml((state.dictionaries.trainingIntensities || []).join("\n"))}</textarea>
         <div class="flex justify-end gap-2 pt-2"><button type="button" onclick="closeModal()" class="px-3 py-1.5 text-xs text-slate-500">取消</button><button type="button" onclick="saveIntList()" class="btn-primary px-4 py-1.5 rounded-lg text-xs">保存</button></div>
       `);
@@ -7029,6 +7394,7 @@
       renderCardBuilder();
       renderOnlineScripts();
       renderOnlinePricing();
+      renderOnlineSop();
       renderOfflineCRM();
       renderOfflineAssessment();
       renderOfflineLessonPlan();
