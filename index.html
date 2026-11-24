@@ -1993,13 +1993,25 @@
           <input type="text" value="能秒懂 Quick feet / Soft knees 等核心运动口令" oninput="updateAssessScore(5, 'note', this.value)" class="w-full bg-white border border-slate-200 rounded px-2 py-1 text-[11px] text-slate-700">
         </div>
       </div>
-              <div class="pt-2 border-t border-slate-100 space-y-1.5 text-xs">
-                <label class="font-bold text-forest-900 block">② 现场实测核心数字（可选填，同步至档案）</label>
-                <div class="grid grid-cols-3 gap-1.5">
-                  <div><span class="text-[10px] text-slate-500">1分跳绳(个)</span><input id="asRope" type="number" value="140" oninput="renderAssessmentCard()" class="w-full border rounded p-1 font-bold"></div>
-                  <div><span class="text-[10px] text-slate-500">立定跳远(cm)</span><input id="asJump" type="number" value="135" oninput="renderAssessmentCard()" class="w-full border rounded p-1 font-bold"></div>
-                  <div><span class="text-[10px] text-slate-500">单脚站左(秒)</span><input id="asBalL" type="number" value="18" oninput="renderAssessmentCard()" class="w-full border rounded p-1 font-bold"></div>
+              <div class="pt-2 border-t border-slate-100 space-y-2 text-xs">
+                <div class="flex items-center justify-between gap-1">
+                  <label class="font-bold text-forest-900">② 身高体重、测评日期与青少年 BMI 判定</label>
+                  <span id="asBmiLiveBadge" class="px-2 py-0.5 rounded border text-[10px] font-bold bg-emerald-100 text-emerald-900 border-emerald-200">BMI -- · 正常</span>
                 </div>
+                <div class="grid grid-cols-3 gap-1.5">
+                  <div><span class="text-[10px] text-slate-500">本次身高(cm)</span><input id="asHeight" type="number" step="0.5" value="153" oninput="updateAssessBodyField('height', this.value)" class="w-full border rounded p-1 font-bold text-forest-900 bg-white"></div>
+                  <div><span class="text-[10px] text-slate-500">本次体重(kg)</span><input id="asWeight" type="number" step="0.1" value="36.5" oninput="updateAssessBodyField('weight', this.value)" class="w-full border rounded p-1 font-bold text-forest-900 bg-white"></div>
+                  <div><span class="text-[10px] text-slate-500">测评日期</span><input id="asTestDate" type="date" value="" oninput="updateAssessBodyField('testDate', this.value)" class="w-full border rounded p-1 font-semibold text-forest-900 bg-white text-[11px]"></div>
+                </div>
+                <div id="asBmiLiveHint" class="text-[10px] text-slate-500 bg-slate-50 rounded px-2 py-1 border border-slate-200"></div>
+              </div>
+
+              <div class="pt-2 border-t border-slate-100 space-y-1.5 text-xs">
+                <div class="flex items-center justify-between gap-1">
+                  <label class="font-bold text-forest-900">③ 现场实测核心项目（4项默认，支持增删改）</label>
+                  <button type="button" onclick="addAssessTestItem()" class="px-2 py-0.5 rounded bg-amber-50 text-amber-900 border border-amber-300 text-[10px] font-bold">+ 新增项目</button>
+                </div>
+                <div id="assessTestItemsBox" class="space-y-1.5"></div>
               </div>
               <button type="button" onclick="copyAssessmentWechatText()" class="w-full btn-primary py-2 rounded-lg text-xs font-bold">📋 复制微信文字诊断结论</button>
             </div>
@@ -3554,7 +3566,7 @@
           unitPrice: 270,
           goals: ["📏 科学长高/骨龄干预", "🗣️ 纯英沉浸沟通"],
           notes: "专注度佳，足弓略扁平，持续强化跳跃缓冲与英文计数。",
-          milestones: [{ id: "ms_init_1", lessonNum: 1, date: "2026-10-18", title: "第1节·期初基线", fmsRemark: "双侧平衡待强化", items: [{ name: "1分钟速度跳绳", val: 140, unit: "个", dir: "higher" }, { name: "立定跳远", val: 130, unit: "cm", dir: "higher" }, { name: "闭眼单脚站(左)", val: 18, unit: "秒", dir: "higher" }] }]
+          milestones: [{ id: "ms_init_1", lessonNum: 1, date: "2026-10-18", height: 129.5, weight: 25.6, title: "第1节·期初基线", fmsRemark: "双侧平衡待强化", items: [{ name: "立定跳远", val: 130, unit: "cm", dir: "higher" }, { name: "闭眼单脚站(左)", val: 18, unit: "秒", dir: "higher" }, { name: "平板支撑", val: 40, unit: "秒", dir: "higher" }, { name: "绳梯进进出出", val: 12.5, unit: "秒", dir: "lower" }] }]
         },
         {
           id: "stu_1794292794621",
@@ -3571,7 +3583,7 @@
           unitPrice: 270,
           goals: ["🗣️ 纯英沉浸沟通", "⚡ 体能全面拔高", "🏆 校队/体测达标"],
           notes: "理解指令极快，重点强化核心抗旋与步频爆发。",
-          milestones: [{ id: "ms_init_2", lessonNum: 1, date: "2026-10-18", title: "第1节·期初基线", fmsRemark: "动作协调性佳", items: [{ name: "1分钟速度跳绳", val: 155, unit: "个", dir: "higher" }, { name: "立定跳远", val: 152, unit: "cm", dir: "higher" }, { name: "闭眼单脚站(左)", val: 20, unit: "秒", dir: "higher" }] }]
+          milestones: [{ id: "ms_init_2", lessonNum: 1, date: "2026-10-18", height: 152, weight: 36.0, title: "第1节·期初基线", fmsRemark: "动作协调性佳", items: [{ name: "立定跳远", val: 152, unit: "cm", dir: "higher" }, { name: "闭眼单脚站(左)", val: 20, unit: "秒", dir: "higher" }, { name: "平板支撑", val: 55, unit: "秒", dir: "higher" }, { name: "绳梯进进出出", val: 11.2, unit: "秒", dir: "lower" }] }]
         },
         {
           id: "stu_1794292753894",
@@ -3588,7 +3600,7 @@
           unitPrice: 200,
           goals: ["📏 科学长高/骨龄干预", "⚡ 体能全面拔高"],
           notes: "1V2双人班，强化踝关节弹性与纵向跳跃。",
-          milestones: [{ id: "ms_init_3", lessonNum: 1, date: "2026-10-18", title: "第1节·期初基线", fmsRemark: "期初建档", items: [{ name: "1分钟速度跳绳", val: 120, unit: "个", dir: "higher" }, { name: "立定跳远", val: 128, unit: "cm", dir: "higher" }, { name: "闭眼单脚站(左)", val: 15, unit: "秒", dir: "higher" }] }]
+          milestones: [{ id: "ms_init_3", lessonNum: 1, date: "2026-10-18", height: 133.5, weight: 27.3, title: "第1节·期初基线", fmsRemark: "期初建档", items: [{ name: "立定跳远", val: 128, unit: "cm", dir: "higher" }, { name: "闭眼单脚站(左)", val: 15, unit: "秒", dir: "higher" }, { name: "平板支撑", val: 38, unit: "秒", dir: "higher" }, { name: "绳梯进进出出", val: 13.0, unit: "秒", dir: "lower" }] }]
         }
       ],
       records: [
@@ -3597,6 +3609,15 @@
       ],
       offlineAssessment: {
         studentId: "stu_1794293675428",
+        testDate: getOffsetDate(0),
+        height: 130,
+        weight: 26,
+        testItems: [
+          { name: "立定跳远", val: 135, unit: "cm", dir: "higher" },
+          { name: "闭眼单脚站(左)", val: 22, unit: "秒", dir: "higher" },
+          { name: "平板支撑", val: 48, unit: "秒", dir: "higher" },
+          { name: "绳梯进进出出", val: 11.2, unit: "秒", dir: "lower" }
+        ],
         scores: [
           { key: "arch", label: "扁平足 / 足弓支撑", score: 7, note: "动态落地时足弓略有塌陷，建议加强抓毛巾与前脚掌缓冲" },
           { key: "spine", label: "脊柱姿态 (含胸/骨盆)", score: 8, note: "自然站立双肩平齐，高速跑动时偶有轻微耸肩" },
@@ -3861,7 +3882,13 @@
       if (Array.isArray(raw.onlineStageScripts) && raw.onlineStageScripts.length) merged.onlineStageScripts = raw.onlineStageScripts;
       if (Array.isArray(raw.onlineOfferTiers) && raw.onlineOfferTiers.length) merged.onlineOfferTiers = raw.onlineOfferTiers;
       if (raw.onlineMrrCalc) merged.onlineMrrCalc = { ...merged.onlineMrrCalc, ...raw.onlineMrrCalc };
-      if (raw.offlineAssessment) merged.offlineAssessment = { ...merged.offlineAssessment, ...raw.offlineAssessment };
+      if (raw.offlineAssessment) {
+        merged.offlineAssessment = { ...merged.offlineAssessment, ...raw.offlineAssessment };
+        if (!Array.isArray(merged.offlineAssessment.testItems) || !merged.offlineAssessment.testItems.length) {
+          merged.offlineAssessment.testItems = structuredClone(DEFAULT_STATE.offlineAssessment.testItems);
+        }
+        if (!merged.offlineAssessment.testDate) merged.offlineAssessment.testDate = getOffsetDate(0);
+      }
       if (Array.isArray(raw.offlineLessonPlans) && raw.offlineLessonPlans.length) {
         merged.offlineLessonPlans = raw.offlineLessonPlans.map(lp => ({ duration: 75, ...lp }));
       }
@@ -5720,14 +5747,109 @@
     };
 
     // ==================== 线下 Tab 2：现场体测与诊断出具 (On-site Assessment) ====================
+    // 依据教育部《国家学生体质健康标准（2014年修订）》表1-1、表1-2 男女生分年龄段 BMI 界值
+    const YOUTH_BMI_STD = {
+      male: {
+        6:  { low: 13.4, normHi: 18.1, overHi: 20.3 },
+        7:  { low: 13.6, normHi: 18.4, overHi: 20.4 },
+        8:  { low: 13.8, normHi: 19.4, overHi: 22.1 },
+        9:  { low: 14.1, normHi: 20.1, overHi: 22.6 },
+        10: { low: 14.3, normHi: 21.4, overHi: 24.1 },
+        11: { low: 14.6, normHi: 21.8, overHi: 24.5 },
+        12: { low: 15.4, normHi: 22.1, overHi: 24.9 },
+        13: { low: 15.6, normHi: 22.5, overHi: 25.2 },
+        14: { low: 15.7, normHi: 22.8, overHi: 26.0 },
+        15: { low: 16.4, normHi: 23.2, overHi: 26.3 },
+        16: { low: 16.7, normHi: 23.7, overHi: 26.5 },
+        17: { low: 17.2, normHi: 23.8, overHi: 27.3 }
+      },
+      female: {
+        6:  { low: 13.2, normHi: 17.3, overHi: 19.2 },
+        7:  { low: 13.4, normHi: 17.8, overHi: 20.2 },
+        8:  { low: 13.5, normHi: 18.6, overHi: 21.1 },
+        9:  { low: 13.6, normHi: 19.4, overHi: 22.0 },
+        10: { low: 13.7, normHi: 20.5, overHi: 22.9 },
+        11: { low: 14.1, normHi: 20.8, overHi: 23.6 },
+        12: { low: 14.7, normHi: 21.7, overHi: 24.4 },
+        13: { low: 15.2, normHi: 22.2, overHi: 24.8 },
+        14: { low: 15.9, normHi: 22.6, overHi: 25.1 },
+        15: { low: 16.4, normHi: 22.7, overHi: 25.2 },
+        16: { low: 16.8, normHi: 23.2, overHi: 25.4 },
+        17: { low: 17.0, normHi: 23.3, overHi: 25.7 }
+      }
+    };
+
+    function evaluateYouthBmi(heightCm, weightKg, ageYears, gender) {
+      const h = parseFloat(heightCm) || 0;
+      const w = parseFloat(weightKg) || 0;
+      if (h <= 0 || w <= 0) {
+        return { bmi: 0, label: "待录入", shortLabel: "待录入", badgeCls: "bg-slate-100 text-slate-600 border-slate-200", rangeText: "--", advice: "请补充身高与体重数据" };
+      }
+      const bmi = +(w / ((h / 100) ** 2)).toFixed(1);
+      const isFemale = gender === "female" || gender === "女";
+      const ageKey = Math.max(6, Math.min(17, Math.floor(ageYears || 8)));
+      const std = (isFemale ? YOUTH_BMI_STD.female : YOUTH_BMI_STD.male)[ageKey];
+      const normMin = +(std.low + 0.1).toFixed(1);
+      const rangeText = `${normMin}–${std.normHi}`;
+      if (bmi <= std.low) {
+        return { bmi, label: "偏瘦 (低体重)", shortLabel: "偏瘦", badgeCls: "bg-sky-100 text-sky-900 border-sky-200", rangeText, advice: "体重偏轻，建议加强优质蛋白摄入与基础力量储备" };
+      }
+      if (bmi <= std.normHi) {
+        return { bmi, label: "标准正常", shortLabel: "正常", badgeCls: "bg-emerald-100 text-emerald-900 border-emerald-200", rangeText, advice: "身高体重比例均衡，处于青少年标准健康区间" };
+      }
+      if (bmi <= std.overHi) {
+        return { bmi, label: "偏胖 (超重)", shortLabel: "偏胖", badgeCls: "bg-amber-100 text-amber-900 border-amber-300", rangeText, advice: "体脂略偏高，建议增加低冲击有氧与核心消耗并控制含糖零食" };
+      }
+      return { bmi, label: "肥胖", shortLabel: "肥胖", badgeCls: "bg-rose-100 text-rose-900 border-rose-300", rangeText, advice: "体重负荷偏大，优先保护膝踝关节缓冲，循序渐进增加日常活动量" };
+    }
+
+    function ensureAssessTestItems(oa) {
+      if (!Array.isArray(oa.testItems) || !oa.testItems.length) {
+        oa.testItems = structuredClone(DEFAULT_STATE.offlineAssessment.testItems);
+      }
+      return oa.testItems;
+    }
+
     function renderOfflineAssessment() {
       const stus = state.students || [];
       const oa = state.offlineAssessment || DEFAULT_STATE.offlineAssessment;
+      state.offlineAssessment = oa;
       const sel = document.getElementById("assessStuSelect");
       if (sel) {
         sel.innerHTML = stus.map(s => `<option value="${s.id}" ${oa.studentId === s.id ? 'selected' : ''}>${escHtml(s.name)}</option>`).join("");
         if (!oa.studentId && stus[0]) oa.studentId = stus[0].id;
       }
+
+      const stu = stus.find(s => s.id === oa.studentId) || stus[0];
+      if (stu) {
+        if (!oa.height || oa._loadedStuId !== stu.id) oa.height = stu.height || 135;
+        if (!oa.weight || oa._loadedStuId !== stu.id) oa.weight = stu.weight || 30;
+        if (!oa.testDate) oa.testDate = getOffsetDate(0);
+        if (oa._loadedStuId !== stu.id) {
+          const lastMs = Array.isArray(stu.milestones) && stu.milestones.length ? stu.milestones[stu.milestones.length - 1] : null;
+          if (lastMs && Array.isArray(lastMs.items) && lastMs.items.length) {
+            const hasNewItems = lastMs.items.some(it => it.name === "平板支撑" || it.name === "绳梯进进出出");
+            if (hasNewItems) {
+              oa.testItems = lastMs.items.map(it => ({ name: it.name, val: parseFloat(it.val) || 0, unit: it.unit || "", dir: it.dir || "higher" }));
+            } else {
+              const defs = structuredClone(DEFAULT_STATE.offlineAssessment.testItems);
+              defs.forEach(d => {
+                const match = lastMs.items.find(it => it.name === d.name);
+                if (match) d.val = parseFloat(match.val) || d.val;
+              });
+              oa.testItems = defs;
+            }
+          }
+          oa._loadedStuId = stu.id;
+        }
+      }
+
+      const hInp = document.getElementById("asHeight");
+      const wInp = document.getElementById("asWeight");
+      const dInp = document.getElementById("asTestDate");
+      if (hInp) hInp.value = oa.height ?? "";
+      if (wInp) wInp.value = oa.weight ?? "";
+      if (dInp) dInp.value = oa.testDate || getOffsetDate(0);
 
       document.getElementById("assessSlidersBox").innerHTML = (oa.scores || []).map((sc, idx) => `
         <div class="bg-slate-50 p-2 rounded-lg border border-slate-200 space-y-1">
@@ -5740,12 +5862,60 @@
         </div>
       `).join("");
 
+      const testItems = ensureAssessTestItems(oa);
+      const itemsBox = document.getElementById("assessTestItemsBox");
+      if (itemsBox) {
+        itemsBox.innerHTML = testItems.map((it, idx) => `
+          <div class="flex items-center gap-1 bg-slate-50 p-1.5 rounded-lg border border-slate-200 text-[11px]">
+            <input type="text" value="${escHtml(it.name)}" oninput="updateAssessTestItem(${idx}, 'name', this.value)" placeholder="项目名" class="flex-1 min-w-0 border rounded px-1.5 py-1 bg-white font-bold text-forest-900" />
+            <input type="number" step="0.1" value="${it.val}" oninput="updateAssessTestItem(${idx}, 'val', this.value)" class="w-16 border rounded px-1.5 py-1 bg-white text-right font-extrabold text-emerald-700" />
+            <input type="text" value="${escHtml(it.unit)}" oninput="updateAssessTestItem(${idx}, 'unit', this.value)" placeholder="单位" class="w-10 border rounded px-1 py-1 bg-white text-center" />
+            <select onchange="updateAssessTestItem(${idx}, 'dir', this.value)" title="进步判定方向" class="border rounded px-1 py-1 bg-white text-[10px] font-semibold text-slate-600">
+              <option value="higher" ${(it.dir || 'higher') === 'higher' ? 'selected' : ''}>↑高优</option>
+              <option value="lower" ${it.dir === 'lower' ? 'selected' : ''}>↓快优</option>
+            </select>
+            <button type="button" onclick="removeAssessTestItem(${idx})" title="删除此项" class="text-rose-400 hover:text-rose-600 px-1 shrink-0">✕</button>
+          </div>
+        `).join("");
+      }
+
       renderAssessmentCard();
     }
 
     window.loadStudentForAssessment = (sid) => {
       state.offlineAssessment.studentId = sid;
+      state.offlineAssessment._loadedStuId = "";
       renderOfflineAssessment();
+    };
+    window.updateAssessBodyField = (field, val) => {
+      if (field === "height" || field === "weight") {
+        state.offlineAssessment[field] = parseFloat(val) || 0;
+      } else {
+        state.offlineAssessment[field] = val;
+      }
+      renderAssessmentCard();
+      saveStateDebounced(true);
+    };
+    window.updateAssessTestItem = (idx, field, val) => {
+      const items = ensureAssessTestItems(state.offlineAssessment);
+      if (!items[idx]) return;
+      items[idx][field] = field === "val" ? (parseFloat(val) || 0) : val;
+      renderAssessmentCard();
+      saveStateDebounced(true);
+    };
+    window.addAssessTestItem = () => {
+      const items = ensureAssessTestItems(state.offlineAssessment);
+      items.push({ name: "新增体测项", val: 0, unit: "秒", dir: "higher" });
+      renderOfflineAssessment();
+      saveStateDebounced(true);
+      showToast("已新增实测项目，可直接修改名称与数值");
+    };
+    window.removeAssessTestItem = (idx) => {
+      const items = ensureAssessTestItems(state.offlineAssessment);
+      if (items.length <= 1) { showToast("至少保留1个测试项目"); return; }
+      items.splice(idx, 1);
+      renderOfflineAssessment();
+      saveStateDebounced(true);
     };
     window.updateAssessScore = (idx, field, val) => {
       if (!state.offlineAssessment.scores[idx]) return;
@@ -5758,28 +5928,57 @@
     window.renderAssessmentCard = () => {
       const oa = state.offlineAssessment;
       const stu = (state.students || []).find(s => s.id === oa.studentId) || (state.students || [])[0];
-      const info = stu ? calcAgeBmi(stu.birthday, stu.height, stu.weight) : { ageText: "8岁", bmi: 15.5 };
+      const h = parseFloat(oa.height) || (stu ? stu.height : 135);
+      const w = parseFloat(oa.weight) || (stu ? stu.weight : 30);
+      const testDate = oa.testDate || getOffsetDate(0);
+      const info = stu ? calcAgeBmi(stu.birthday, h, w) : { ageYears: 8, ageText: "8岁", bmi: 15.5 };
+      const bmiEval = evaluateYouthBmi(h, w, info.ageYears, stu ? stu.gender : "male");
       const avg = ((oa.scores || []).reduce((a, x) => a + (parseFloat(x.score) || 0), 0) / Math.max(1, (oa.scores || []).length)).toFixed(1);
-      const rope = document.getElementById("asRope")?.value || 140;
-      const jump = document.getElementById("asJump")?.value || 135;
-      const balL = document.getElementById("asBalL")?.value || 18;
+      const testItems = ensureAssessTestItems(oa);
+
+      const liveBadge = document.getElementById("asBmiLiveBadge");
+      if (liveBadge) {
+        liveBadge.className = `px-2 py-0.5 rounded border text-[10px] font-bold ${bmiEval.badgeCls}`;
+        liveBadge.textContent = `BMI ${bmiEval.bmi || '--'} · ${bmiEval.label}`;
+      }
+      const liveHint = document.getElementById("asBmiLiveHint");
+      if (liveHint) {
+        liveHint.textContent = `📏 ${stu ? (stu.gender === 'female' ? '女' : '男') : ''} ${info.ageText} 标准正常 BMI 参考区间：${bmiEval.rangeText} ｜ ${bmiEval.advice}`;
+      }
+
+      const gridColsCls = testItems.length >= 4 ? "grid-cols-2 sm:grid-cols-4" : (testItems.length === 3 ? "grid-cols-3" : "grid-cols-2");
 
       document.getElementById("assessmentDiagCard").innerHTML = `
-        <div class="border-b-2 border-forest-900 pb-2.5 flex items-center justify-between">
+        <div class="border-b-2 border-forest-900 pb-2.5 flex items-center justify-between gap-2">
           <div>
             <div class="text-[10px] font-extrabold tracking-widest text-champagne-600 uppercase">LEO OUTDOOR BILINGUAL FITNESS · ASSESSMENT</div>
             <h3 class="text-base font-extrabold text-forest-900 mt-0.5">《学员体态与动作模式诊断卡》</h3>
           </div>
-          <div class="text-right text-xs">
-            <div class="font-extrabold text-forest-900">${escHtml(stu ? stu.name : '体验学员')} · ${info.ageText}</div>
-            <div class="text-[11px] text-emerald-700 font-bold">综合评定：${avg} / 10 分</div>
+          <div class="text-right text-xs shrink-0">
+            <div class="font-extrabold text-forest-900">${escHtml(stu ? stu.name : '体验学员')} · ${stu ? (stu.gender === 'female' ? '女' : '男') : ''} · ${info.ageText}</div>
+            <div class="text-[11px] text-emerald-700 font-bold">综合评定：${avg} / 10 分 <span class="text-slate-400 font-normal">· ${escHtml(testDate)}</span></div>
           </div>
         </div>
 
-        <div class="grid grid-cols-3 gap-2 bg-slate-50 p-2.5 rounded-xl border border-slate-200 text-center text-xs">
-          <div><div class="text-[10px] text-slate-500">1分钟跳绳</div><div class="font-extrabold text-forest-900">${rope} 个</div></div>
-          <div><div class="text-[10px] text-slate-500">立定跳远</div><div class="font-extrabold text-forest-900">${jump} cm</div></div>
-          <div><div class="text-[10px] text-slate-500">闭眼单脚站(左)</div><div class="font-extrabold text-forest-900">${balL} 秒</div></div>
+        <div class="bg-emerald-50/40 border border-emerald-200/80 rounded-xl p-2.5 flex flex-wrap items-center justify-between gap-2 text-xs">
+          <div class="flex items-center gap-3 flex-wrap">
+            <div><span class="text-[10px] text-slate-500 block">净身高</span><strong class="text-forest-900">${h} cm</strong></div>
+            <div><span class="text-[10px] text-slate-500 block">体重</span><strong class="text-forest-900">${w} kg</strong></div>
+            <div><span class="text-[10px] text-slate-500 block">青少年 BMI</span><strong class="text-forest-900">${bmiEval.bmi || '--'}</strong></div>
+          </div>
+          <div class="text-right">
+            <span class="inline-block px-2 py-0.5 rounded border text-[11px] font-extrabold ${bmiEval.badgeCls}">${escHtml(bmiEval.label)}</span>
+            <div class="text-[10px] text-slate-500 mt-0.5">同龄正常区间 ${escHtml(bmiEval.rangeText)}（国家学生体质健康标准）</div>
+          </div>
+        </div>
+
+        <div class="grid ${gridColsCls} gap-2 bg-slate-50 p-2.5 rounded-xl border border-slate-200 text-center text-xs">
+          ${testItems.map(it => `
+            <div class="bg-white rounded-lg p-1.5 border border-slate-200/70">
+              <div class="text-[10px] text-slate-500 truncate">${escHtml(it.name)}</div>
+              <div class="font-extrabold text-forest-900 mt-0.5">${it.val} ${escHtml(it.unit)}</div>
+            </div>
+          `).join("")}
         </div>
 
         <div class="space-y-2">
@@ -5806,28 +6005,49 @@
       const oa = state.offlineAssessment;
       const stu = state.students.find(s => s.id === oa.studentId);
       if (!stu) return;
+      const h = parseFloat(oa.height) || stu.height || 135;
+      const w = parseFloat(oa.weight) || stu.weight || 30;
+      const testDate = oa.testDate || getOffsetDate(0);
+      const info = calcAgeBmi(stu.birthday, h, w);
+      const bmiEval = evaluateYouthBmi(h, w, info.ageYears, stu.gender);
+      const items = ensureAssessTestItems(oa).map(it => ({
+        name: (it.name || "").trim() || "体测项",
+        val: parseFloat(it.val) || 0,
+        unit: (it.unit || "").trim(),
+        dir: it.dir || "higher"
+      }));
+
+      stu.height = h;
+      stu.weight = w;
       if (!Array.isArray(stu.milestones)) stu.milestones = [];
       stu.milestones.push({
         id: "ms_" + Date.now(),
         lessonNum: Math.max(1, stu.milestones.length * 5),
-        date: getOffsetDate(0),
-        title: `现场体测诊断 (${getOffsetDate(0)})`,
+        date: testDate,
+        height: h,
+        weight: w,
+        bmi: bmiEval.bmi,
+        bmiLabel: bmiEval.label,
+        title: `现场体测诊断 (${testDate})`,
         fmsRemark: oa.summaryNote,
-        items: [
-          { name: "1分钟速度跳绳", val: parseFloat(document.getElementById("asRope").value) || 140, unit: "个", dir: "higher" },
-          { name: "立定跳远", val: parseFloat(document.getElementById("asJump").value) || 135, unit: "cm", dir: "higher" },
-          { name: "闭眼单脚站(左)", val: parseFloat(document.getElementById("asBalL").value) || 18, unit: "秒", dir: "higher" }
-        ]
+        items
       });
+      if (posterState.studentId === stu.id) loadStudentIntoPoster(stu.id);
       saveState();
-      showToast(`✅ 已将现场体测数据归档至「${stu.name}」里程碑！`);
+      showToast(`✅ 已将 ${testDate} 体测数据（含BMI与${items.length}项实测）归档至「${stu.name}」并同步海报！`);
     };
 
     window.copyAssessmentWechatText = () => {
       const oa = state.offlineAssessment;
       const stu = state.students.find(s => s.id === oa.studentId);
+      const h = parseFloat(oa.height) || (stu ? stu.height : 135);
+      const w = parseFloat(oa.weight) || (stu ? stu.weight : 30);
+      const testDate = oa.testDate || getOffsetDate(0);
+      const info = stu ? calcAgeBmi(stu.birthday, h, w) : { ageYears: 8, ageText: "8岁" };
+      const bmiEval = evaluateYouthBmi(h, w, info.ageYears, stu ? stu.gender : "male");
+      const testLine = ensureAssessTestItems(oa).map(it => `${it.name} ${it.val}${it.unit}`).join(" ｜ ");
       const lines = oa.scores.map(s => `• ${s.label}：${s.score}/10 — ${s.note}`).join("\n");
-      copyRaw(`【Leo户外双语体能 · ${stu ? stu.name : '学员'} 现场体测诊断卡】\n${lines}\n\n🎯 教练建议：${oa.summaryNote}`, "✅ 微信文字诊断结论已复制！");
+      copyRaw(`【Leo户外双语体能 · ${stu ? stu.name : '学员'} 现场体测诊断卡 (${testDate})】\n📏 体格与BMI：身高 ${h}cm / 体重 ${w}kg / BMI ${bmiEval.bmi}（${bmiEval.label}，同龄正常区间 ${bmiEval.rangeText}）\n🏅 实测核心数据：${testLine}\n\n${lines}\n\n🎯 教练建议：${oa.summaryNote}`, "✅ 微信文字诊断结论已复制！");
     };
     window.exportAssessmentCardPng = () => exportDomAsPng("assessmentDiagCard", `Leo现场体测诊断卡_${getOffsetDate(0)}.png`);
 
@@ -5969,12 +6189,19 @@
       },
       ms: {
         title: "户外 · 双语 · 体能阶段成长对比喜报",
-        stuHeader: "陈妍羽 Clary · 第1节基线 vs 第8节复测",
-        badge: "🌟 1分钟跳绳 +22个 ｜ 弱侧单脚平衡提升 +120%",
+        stuHeader: "陈妍羽 Clary · 阶段体能复测对比",
+        baseDate: "2026-10-18",
+        nowDate: getOffsetDate(0),
+        baseHeight: 152,
+        nowHeight: 153,
+        baseWeight: 36.0,
+        nowWeight: 36.5,
+        badge: "🌟 立定跳远 +14cm ｜ 平板支撑 +20秒 ｜ 绳梯提速 -1.4秒",
         metrics: [
-          { name: "1分钟速度跳绳", base: 155, now: 177, unit: "个" },
-          { name: "立定跳远", base: 152, now: 166, unit: "cm" },
-          { name: "闭眼单脚站(左)", base: 20, now: 44, unit: "秒" }
+          { name: "立定跳远", base: 152, now: 166, unit: "cm", dir: "higher" },
+          { name: "闭眼单脚站(左)", base: 20, now: 38, unit: "秒", dir: "higher" },
+          { name: "平板支撑", base: 55, now: 75, unit: "秒", dir: "higher" },
+          { name: "绳梯进进出出", base: 11.2, now: 9.8, unit: "秒", dir: "lower" }
         ],
         note: "动作发力模式与核心抗旋稳定性肉眼可见跃升，纯英口令条件反射已完全建立！",
         footerText: "科学测评 · 精准干预 · 主训专家：Leo教练"
@@ -5987,6 +6214,24 @@
       }
     };
 
+    function formatMetricDelta(m) {
+      const diff = +((parseFloat(m.now) || 0) - (parseFloat(m.base) || 0)).toFixed(1);
+      const isLowerBetter = m.dir === "lower";
+      const improved = isLowerBetter ? diff < 0 : diff > 0;
+      const sign = diff > 0 ? "+" : "";
+      const verb = isLowerBetter ? (diff < 0 ? "提速 " : (diff > 0 ? "增加 " : "")) : "";
+      return { diff, improved, text: `${verb}${sign}${diff}${m.unit}${improved ? ' 🚀' : ''}` };
+    }
+
+    function autoBuildMilestoneBadge(ms) {
+      const highlights = (ms.metrics || []).map(m => {
+        const d = formatMetricDelta(m);
+        return d.improved ? `${m.name} ${d.text.replace(' 🚀', '')}` : "";
+      }).filter(Boolean).slice(0, 3);
+      if (highlights.length) return `🌟 ${highlights.join(" ｜ ")}`;
+      return "🌟 动作模式与核心稳定持续进阶";
+    }
+
     function loadStudentIntoPoster(sid) {
       const s = (state.students || []).find(x => x.id === sid) || (state.students || [])[0];
       if (!s) return;
@@ -5994,7 +6239,49 @@
       posterState.fb.stuTitle = s.name;
       posterState.fb.lessonLine = `L E S S O N   ·   ${getOffsetDate(0).replace(/-/g, " . ")}`;
       posterState.ms.stuHeader = `${s.name} · 阶段体能复测对比`;
+
+      const list = Array.isArray(s.milestones) ? s.milestones : [];
+      const firstMs = list[0] || null;
+      const lastMs = list.length >= 2 ? list[list.length - 1] : null;
+      const oa = state.offlineAssessment;
+      const oaMatchesStu = oa && oa.studentId === s.id;
+
+      posterState.ms.baseDate = firstMs?.date || getOffsetDate(-30);
+      posterState.ms.nowDate = lastMs?.date || (oaMatchesStu && oa.testDate ? oa.testDate : getOffsetDate(0));
+      posterState.ms.baseHeight = parseFloat(firstMs?.height) || parseFloat(s.height) || 135;
+      posterState.ms.nowHeight = parseFloat(lastMs?.height) || (oaMatchesStu ? parseFloat(oa.height) : 0) || parseFloat(s.height) || 135;
+      posterState.ms.baseWeight = parseFloat(firstMs?.weight) || parseFloat(s.weight) || 30;
+      posterState.ms.nowWeight = parseFloat(lastMs?.weight) || (oaMatchesStu ? parseFloat(oa.weight) : 0) || parseFloat(s.weight) || 30;
+
+      const latestItems = (lastMs && Array.isArray(lastMs.items) && lastMs.items.length)
+        ? lastMs.items
+        : (oaMatchesStu && Array.isArray(oa.testItems) && oa.testItems.length
+            ? oa.testItems
+            : (firstMs && Array.isArray(firstMs.items) && firstMs.items.length ? firstMs.items : DEFAULT_STATE.offlineAssessment.testItems));
+
+      posterState.ms.metrics = latestItems.map(it => {
+        const baseMatch = firstMs && Array.isArray(firstMs.items) ? firstMs.items.find(x => x.name === it.name) : null;
+        const nowVal = parseFloat(it.val) || 0;
+        const baseVal = baseMatch ? (parseFloat(baseMatch.val) || 0) : nowVal;
+        return { name: it.name, base: baseVal, now: nowVal, unit: it.unit || "", dir: it.dir || "higher" };
+      });
+      posterState.ms.badge = autoBuildMilestoneBadge(posterState.ms);
     }
+
+    window.syncAssessmentToPosterMilestone = () => {
+      loadStudentIntoPoster(posterState.studentId);
+      renderPosterStudio();
+      showToast("🔄 已同步该学员首次与最新体测数据（含时间、身高体重与测试项）");
+    };
+    window.addPosterMilestoneMetric = () => {
+      posterState.ms.metrics.push({ name: "新增对比项", base: 0, now: 0, unit: "秒", dir: "higher" });
+      renderPosterStudio();
+    };
+    window.removePosterMilestoneMetric = (idx) => {
+      if (posterState.ms.metrics.length <= 1) { showToast("至少保留1个对比项目"); return; }
+      posterState.ms.metrics.splice(idx, 1);
+      renderPosterStudio();
+    };
 
     window.switchPosterTemplate = (tpl) => { posterState.template = tpl; renderPosterStudio(); };
     window.onPosterStudentChange = (sid) => { loadStudentIntoPoster(sid); renderPosterStudio(); };
@@ -6051,15 +6338,37 @@
           <input type="file" id="posterPhotoFileInput" accept="image/*" class="hidden" onchange="handlePosterPhotoUpload(event)" />
         `;
       } else if (posterState.template === "milestone") {
+        const ms = posterState.ms;
         ctrl.innerHTML = `
-          <div class="font-bold text-forest-900">③ 阶段对比指标数值（直接修改实时同步画布）：</div>
-          ${posterState.ms.metrics.map((m, i) => `
+          <div class="flex items-center justify-between gap-1">
+            <span class="font-bold text-forest-900">③ 测评时间与身高体重变化</span>
+            <button type="button" onclick="syncAssessmentToPosterMilestone()" class="px-2 py-0.5 rounded bg-emerald-50 text-emerald-800 border border-emerald-200 text-[10px] font-bold">🔄 同步体测记录</button>
+          </div>
+          <div class="grid grid-cols-2 gap-1.5 text-[11px] bg-slate-50 p-2 rounded-lg border border-slate-200">
+            <div><span class="text-[10px] text-slate-500">首次测评日期</span><input type="date" value="${escHtml(ms.baseDate || '')}" oninput="posterState.ms.baseDate=this.value;renderPosterCanvas()" class="w-full border rounded px-1.5 py-0.5 bg-white font-semibold" /></div>
+            <div><span class="text-[10px] text-slate-500">最新测评日期</span><input type="date" value="${escHtml(ms.nowDate || '')}" oninput="posterState.ms.nowDate=this.value;renderPosterCanvas()" class="w-full border rounded px-1.5 py-0.5 bg-white font-semibold" /></div>
+            <div>
+              <span class="text-[10px] text-slate-500">身高变化 (cm)</span>
+              <div class="flex items-center gap-1"><input type="number" step="0.5" value="${ms.baseHeight || 0}" oninput="posterState.ms.baseHeight=parseFloat(this.value)||0;renderPosterCanvas()" class="w-1/2 border rounded px-1 py-0.5 bg-white text-right" /><span>→</span><input type="number" step="0.5" value="${ms.nowHeight || 0}" oninput="posterState.ms.nowHeight=parseFloat(this.value)||0;renderPosterCanvas()" class="w-1/2 border rounded px-1 py-0.5 bg-white text-right font-bold text-emerald-700" /></div>
+            </div>
+            <div>
+              <span class="text-[10px] text-slate-500">体重变化 (kg)</span>
+              <div class="flex items-center gap-1"><input type="number" step="0.1" value="${ms.baseWeight || 0}" oninput="posterState.ms.baseWeight=parseFloat(this.value)||0;renderPosterCanvas()" class="w-1/2 border rounded px-1 py-0.5 bg-white text-right" /><span>→</span><input type="number" step="0.1" value="${ms.nowWeight || 0}" oninput="posterState.ms.nowWeight=parseFloat(this.value)||0;renderPosterCanvas()" class="w-1/2 border rounded px-1 py-0.5 bg-white text-right font-bold text-emerald-700" /></div>
+            </div>
+          </div>
+          <div class="flex items-center justify-between gap-1 pt-1">
+            <span class="font-bold text-forest-900">④ 体能对比项目（支持增删改）</span>
+            <button type="button" onclick="addPosterMilestoneMetric()" class="px-2 py-0.5 rounded bg-amber-50 text-amber-900 border border-amber-300 text-[10px] font-bold">+ 添加对比项</button>
+          </div>
+          ${ms.metrics.map((m, i) => `
             <div class="flex items-center gap-1 bg-slate-50 p-1 rounded border text-[11px]">
-              <input type="text" value="${escHtml(m.name)}" oninput="posterState.ms.metrics[${i}].name=this.value;renderPosterCanvas()" class="flex-1 border rounded px-1 py-0.5 bg-white font-bold" />
-              <input type="number" value="${m.base}" oninput="posterState.ms.metrics[${i}].base=parseFloat(this.value)||0;renderPosterCanvas()" class="w-12 border rounded px-1 py-0.5 bg-white text-right" />
+              <input type="text" value="${escHtml(m.name)}" oninput="posterState.ms.metrics[${i}].name=this.value;renderPosterCanvas()" class="flex-1 min-w-0 border rounded px-1 py-0.5 bg-white font-bold" />
+              <input type="number" step="0.1" value="${m.base}" oninput="posterState.ms.metrics[${i}].base=parseFloat(this.value)||0;renderPosterCanvas()" class="w-12 border rounded px-1 py-0.5 bg-white text-right" />
               <span>→</span>
-              <input type="number" value="${m.now}" oninput="posterState.ms.metrics[${i}].now=parseFloat(this.value)||0;renderPosterCanvas()" class="w-12 border rounded px-1 py-0.5 bg-white text-right font-bold text-emerald-700" />
-              <input type="text" value="${escHtml(m.unit)}" oninput="posterState.ms.metrics[${i}].unit=this.value;renderPosterCanvas()" class="w-9 border rounded px-1 py-0.5 bg-white text-center" />
+              <input type="number" step="0.1" value="${m.now}" oninput="posterState.ms.metrics[${i}].now=parseFloat(this.value)||0;renderPosterCanvas()" class="w-12 border rounded px-1 py-0.5 bg-white text-right font-bold text-emerald-700" />
+              <input type="text" value="${escHtml(m.unit)}" oninput="posterState.ms.metrics[${i}].unit=this.value;renderPosterCanvas()" class="w-8 border rounded px-1 py-0.5 bg-white text-center" />
+              <select onchange="posterState.ms.metrics[${i}].dir=this.value;renderPosterCanvas()" class="border rounded px-0.5 py-0.5 bg-white text-[10px]"><option value="higher" ${(m.dir||'higher')==='higher'?'selected':''}>↑高</option><option value="lower" ${m.dir==='lower'?'selected':''}>↓快</option></select>
+              <button type="button" onclick="removePosterMilestoneMetric(${i})" class="text-rose-400 px-0.5">✕</button>
             </div>
           `).join("")}
         `;
@@ -6110,8 +6419,15 @@
       if (posterState.template === "feedback3") {
         txt = `${posterState.fb.stuTitle}\n${posterState.fb.lessonLine}\n\n${posterState.fb.comment}\n\n${posterState.fb.footerText}`;
       } else if (posterState.template === "milestone") {
-        const rows = posterState.ms.metrics.map(m => `• ${m.name}：${m.base}${m.unit} → ${m.now}${m.unit}`).join("\n");
-        txt = `${posterState.ms.title}\n${posterState.ms.stuHeader}\n${posterState.ms.badge}\n\n${rows}\n\n点评：${posterState.ms.note}`;
+        const ms = posterState.ms;
+        const spanDays = Math.max(0, daysBetween(ms.baseDate, ms.nowDate));
+        const dh = +((parseFloat(ms.nowHeight) || 0) - (parseFloat(ms.baseHeight) || 0)).toFixed(1);
+        const dw = +((parseFloat(ms.nowWeight) || 0) - (parseFloat(ms.baseWeight) || 0)).toFixed(1);
+        const rows = ms.metrics.map(m => {
+          const d = formatMetricDelta(m);
+          return `• ${m.name}：${m.base}${m.unit} → ${m.now}${m.unit}（${d.text}）`;
+        }).join("\n");
+        txt = `${ms.title}\n${ms.stuHeader}\n📅 测评周期：${ms.baseDate || '--'} → ${ms.nowDate || '--'}（历时 ${spanDays} 天）\n📏 体格成长：身高 ${ms.baseHeight}cm → ${ms.nowHeight}cm（${dh >= 0 ? '+' : ''}${dh}cm）｜ 体重 ${ms.baseWeight}kg → ${ms.nowWeight}kg（${dw >= 0 ? '+' : ''}${dw}kg）\n${ms.badge}\n\n【体能项目变化】\n${rows}\n\n点评：${ms.note}`;
       } else {
         const base = state.offlinePricing.basePrice || 320;
         const rows = state.offlinePricing.rows.map(r => `${r.mode} ${r.lessons}节：¥${r.totalPerPerson}/人（折合¥${Math.round(r.totalPerPerson/Math.max(1,r.lessons))}/节）`).join("\n");
@@ -6154,24 +6470,63 @@
         `;
       } else if (posterState.template === "milestone") {
         const ms = posterState.ms;
+        const stu = (state.students || []).find(x => x.id === posterState.studentId);
+        const spanDays = Math.max(0, daysBetween(ms.baseDate, ms.nowDate));
+        const bh = parseFloat(ms.baseHeight) || 0;
+        const nh = parseFloat(ms.nowHeight) || 0;
+        const bw = parseFloat(ms.baseWeight) || 0;
+        const nw = parseFloat(ms.nowWeight) || 0;
+        const dh = +(nh - bh).toFixed(1);
+        const dw = +(nw - bw).toFixed(1);
+        const ageInfo = stu ? calcAgeBmi(stu.birthday, nh || 135, nw || 30) : { ageYears: 9 };
+        const nowBmiEval = evaluateYouthBmi(nh, nw, ageInfo.ageYears, stu ? stu.gender : "male");
+        const baseBmi = (bh > 0 && bw > 0) ? +(bw / ((bh / 100) ** 2)).toFixed(1) : 0;
+
         target.innerHTML = `
           ${logoHtml}
           <div class="px-4 pb-1"><div contenteditable="true" onblur="posterState.ms.title=this.innerText.trim()" class="dyn-edit text-center text-[17px] font-extrabold text-[#B69863]">${escHtml(ms.title)}</div></div>
-          <div class="px-4 py-1"><div class="poster-glass-card-soft rounded-2xl py-2 px-3 text-center">
+          <div class="px-4 py-1"><div class="poster-glass-card-soft rounded-2xl py-2 px-3 text-center space-y-0.5">
             <div contenteditable="true" onblur="posterState.ms.stuHeader=this.innerText.trim()" class="dyn-edit font-extrabold text-sm text-[#0F291E]">${escHtml(ms.stuHeader)}</div>
-            <div contenteditable="true" onblur="posterState.ms.badge=this.innerText.trim()" class="dyn-edit text-[11px] font-bold text-[#2F5E24] mt-0.5">${escHtml(ms.badge)}</div>
+            <div class="text-[10px] font-bold text-slate-500">📅 ${escHtml(ms.baseDate || '--')} → ${escHtml(ms.nowDate || '--')}（周期 ${spanDays} 天）</div>
+            <div contenteditable="true" onblur="posterState.ms.badge=this.innerText.trim()" class="dyn-edit text-[11px] font-bold text-[#2F5E24]">${escHtml(ms.badge)}</div>
           </div></div>
-          <div class="px-4 py-1.5"><div class="poster-glass-card-soft rounded-2xl p-3 space-y-2.5">
+          <div class="px-4 py-1"><div class="poster-glass-card-soft rounded-2xl p-2.5 grid grid-cols-3 gap-1.5 text-center text-[10px]">
+            <div class="bg-white/80 rounded-lg p-1.5 border border-slate-200/70">
+              <div class="text-slate-500">身高变化</div>
+              <div class="font-extrabold text-[#0F291E] mt-0.5">${bh}→${nh}cm</div>
+              <div class="font-bold text-[#2F5E24]">${dh >= 0 ? '+' : ''}${dh}cm</div>
+            </div>
+            <div class="bg-white/80 rounded-lg p-1.5 border border-slate-200/70">
+              <div class="text-slate-500">体重变化</div>
+              <div class="font-extrabold text-[#0F291E] mt-0.5">${bw}→${nw}kg</div>
+              <div class="font-bold text-[#2F5E24]">${dw >= 0 ? '+' : ''}${dw}kg</div>
+            </div>
+            <div class="bg-white/80 rounded-lg p-1.5 border border-slate-200/70">
+              <div class="text-slate-500">BMI 判定</div>
+              <div class="font-extrabold text-[#0F291E] mt-0.5">${baseBmi || '--'}→${nowBmiEval.bmi || '--'}</div>
+              <div class="font-bold text-emerald-700">${escHtml(nowBmiEval.shortLabel)}</div>
+            </div>
+          </div></div>
+          <div class="px-4 py-1"><div class="poster-glass-card-soft rounded-2xl p-3 space-y-2">
             ${ms.metrics.map(m => {
+              const isLower = m.dir === "lower";
               const mx = Math.max(m.base, m.now, 1) * 1.1;
-              const bW = Math.min(95, Math.max(20, Math.round((m.base / mx) * 100)));
-              const nW = Math.min(98, Math.max(25, Math.round((m.now / mx) * 100)));
-              const d = +(m.now - m.base).toFixed(1);
+              let bW, nW;
+              if (isLower) {
+                const maxVal = Math.max(m.base, m.now, 1);
+                bW = Math.min(95, Math.max(25, Math.round((m.now / maxVal) * 75)));
+                nW = Math.min(98, Math.max(30, Math.round((m.base / Math.max(m.now, 0.1)) * 75)));
+                if (m.now > m.base) { bW = 80; nW = 55; }
+              } else {
+                bW = Math.min(95, Math.max(20, Math.round((m.base / mx) * 100)));
+                nW = Math.min(98, Math.max(25, Math.round((m.now / mx) * 100)));
+              }
+              const delta = formatMetricDelta(m);
               return `
                 <div class="space-y-1">
-                  <div class="flex justify-between text-[11px] font-bold"><span>${escHtml(m.name)}</span><span class="text-[#2F5E24]">${m.base}${m.unit} → ${m.now}${m.unit} (${d >= 0 ? '+' : ''}${d}${m.unit} 🚀)</span></div>
-                  <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden"><div class="bg-slate-400 h-full" style="width:${bW}%"></div></div>
-                  <div class="w-full bg-emerald-100 h-2.5 rounded-full overflow-hidden"><div class="bg-[#163828] h-full" style="width:${nW}%"></div></div>
+                  <div class="flex justify-between text-[11px] font-bold gap-1"><span class="truncate">${escHtml(m.name)}</span><span class="${delta.improved ? 'text-[#2F5E24]' : 'text-slate-600'} shrink-0">${m.base}${m.unit} → ${m.now}${m.unit} (${delta.text})</span></div>
+                  <div class="w-full bg-slate-200 h-1.5 rounded-full overflow-hidden"><div class="bg-slate-400 h-full" style="width:${bW}%"></div></div>
+                  <div class="w-full bg-emerald-100 h-2 rounded-full overflow-hidden"><div class="bg-[#163828] h-full" style="width:${nW}%"></div></div>
                 </div>
               `;
             }).join("")}
