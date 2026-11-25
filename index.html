@@ -89,6 +89,91 @@
       color: #0F291E;
       border-radius: 4px;
     }
+    /* 体能与顾问核心板块：全展开直读式流式编辑块（零滚动、零拉动） */
+    .flow-edit {
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+      min-height: 1.65rem;
+      outline: none;
+      transition: background-color 0.15s, box-shadow 0.15s;
+    }
+    .flow-edit:empty::before {
+      content: attr(data-placeholder);
+      color: #94A3B8;
+      font-weight: 400;
+    }
+    .flow-edit:hover {
+      background-color: rgba(197, 160, 89, 0.08);
+    }
+    .flow-edit:focus {
+      background-color: #FFFFFF;
+      color: #0F291E;
+      box-shadow: 0 0 0 2px rgba(197, 160, 89, 0.7);
+    }
+    .flow-edit-dark {
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+      min-height: 2rem;
+      outline: none;
+      transition: background-color 0.15s, box-shadow 0.15s;
+    }
+    .flow-edit-dark:hover {
+      background-color: rgba(255, 255, 255, 0.06);
+    }
+    .flow-edit-dark:focus {
+      background-color: #163828;
+      color: #FFFFFF;
+      box-shadow: 0 0 0 2px rgba(197, 160, 89, 0.8);
+    }
+    .sop-timeline-wrap {
+      position: relative;
+      padding-left: 14px;
+    }
+    .sop-timeline-wrap::before {
+      content: "";
+      position: absolute;
+      left: 5px;
+      top: 14px;
+      bottom: 14px;
+      width: 2px;
+      background: linear-gradient(180deg, #0F291E 0%, #C5A059 60%, #CBD5E1 100%);
+      border-radius: 999px;
+      opacity: 0.35;
+    }
+    .sop-step-card {
+      position: relative;
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-left: 3px solid #0F291E;
+      border-radius: 12px;
+      box-shadow: 0 1px 3px rgba(15, 41, 30, 0.05);
+    }
+    .sop-step-dot {
+      position: absolute;
+      left: -14px;
+      top: 16px;
+      width: 10px;
+      height: 10px;
+      border-radius: 999px;
+      background: #C5A059;
+      border: 2px solid #0F291E;
+    }
+    .script-flow-card {
+      background: #FFFFFF;
+      border: 1px solid #E2E8F0;
+      border-left: 3px solid #C5A059;
+      border-radius: 12px;
+      box-shadow: 0 1px 2px rgba(15, 41, 30, 0.04);
+    }
+    .script-flow-card-emerald {
+      background: #FFFFFF;
+      border: 1px solid #A7F3D0;
+      border-left: 3px solid #059669;
+      border-radius: 12px;
+      box-shadow: 0 1px 2px rgba(6, 95, 70, 0.04);
+    }
     .poster-canvas-wrap {
       width: 420px;
       max-width: 100%;
@@ -945,7 +1030,7 @@
                   <button type="button" onclick="setBlockCatFilter('B')" id="blk-cat-B" class="flex-1 py-1 rounded text-slate-600">B 爆发避震</button>
                   <button type="button" onclick="setBlockCatFilter('C')" id="blk-cat-C" class="flex-1 py-1 rounded text-slate-600">C 抗旋对抗</button>
                 </div>
-                <div id="cbBlockLibraryList" class="space-y-1.5 max-h-[360px] overflow-y-auto pr-0.5">
+                <div id="cbBlockLibraryList" class="space-y-1.5">
         <div class="p-2 rounded-lg border border-slate-200 bg-slate-50/70 space-y-1 text-xs">
           <div class="flex items-center justify-between gap-1">
             <div class="flex items-center gap-1.5 min-w-0">
@@ -1300,27 +1385,29 @@
               </div>
             </div>
 
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5 text-xs">
-              <div class="bg-emerald-50/70 p-2.5 rounded-xl border border-emerald-200 space-y-1.5">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-2.5 text-xs items-start">
+              <div class="bg-emerald-50/70 p-2.5 rounded-xl border border-emerald-200 space-y-2">
                 <div class="font-bold text-emerald-900">1️⃣ 表扬亮点（前 15 秒 · 情绪正反馈）</div>
-                <textarea id="swPraise" rows="3" oninput="saveSandwichDraft()" class="w-full bg-white border border-emerald-200 rounded-lg p-1.5 text-xs leading-relaxed"></textarea>
-                <div class="flex flex-wrap gap-1" id="swPraiseChips"><button type="button" onclick="appendSwChip('swPraise', '落地缓冲轻盈度明显提升')" class="px-1.5 py-0.5 rounded bg-white border border-emerald-200 text-[10px] text-emerald-800">+ 落地缓冲轻盈度明显提升</button><button type="button" onclick="appendSwChip('swPraise', '核心抗旋锁得很稳')" class="px-1.5 py-0.5 rounded bg-white border border-emerald-200 text-[10px] text-emerald-800">+ 核心抗旋锁得很稳</button><button type="button" onclick="appendSwChip('swPraise', '眼神专注、动作节奏感棒')" class="px-1.5 py-0.5 rounded bg-white border border-emerald-200 text-[10px] text-emerald-800">+ 眼神专注、动作节奏感棒</button></div>
+                <div id="swPraise" contenteditable="true" oninput="saveSandwichDraft()" data-placeholder="点击直接输入表扬亮点..." class="flow-edit w-full bg-white border border-emerald-200 rounded-lg p-2.5 text-xs text-slate-800 leading-relaxed"></div>
+                <div class="flex flex-wrap gap-1" id="swPraiseChips"></div>
               </div>
-              <div class="bg-amber-50/70 p-2.5 rounded-xl border border-amber-200 space-y-1.5">
+              <div class="bg-amber-50/70 p-2.5 rounded-xl border border-amber-200 space-y-2">
                 <div class="font-bold text-amber-900">2️⃣ 纠偏代偿（中 25 秒 · 只抓 1 个核心）</div>
-                <textarea id="swCorrect" rows="3" oninput="saveSandwichDraft()" class="w-full bg-white border border-amber-200 rounded-lg p-1.5 text-xs leading-relaxed"></textarea>
-                <div class="flex flex-wrap gap-1" id="swCorrectChips"><button type="button" onclick="appendSwChip('swCorrect', '起跳落地膝盖略内扣→膝盖对准二脚趾')" class="px-1.5 py-0.5 rounded bg-white border border-amber-200 text-[10px] text-amber-900">+ 起跳落地膝盖略内扣→膝盖对准二脚趾</button><button type="button" onclick="appendSwChip('swCorrect', '脚后跟砸地偏重→前脚掌轻快点地')" class="px-1.5 py-0.5 rounded bg-white border border-amber-200 text-[10px] text-amber-900">+ 脚后跟砸地偏重→前脚掌轻快点地</button><button type="button" onclick="appendSwChip('swCorrect', '下腰背微拱→呼气沉肋收腹')" class="px-1.5 py-0.5 rounded bg-white border border-amber-200 text-[10px] text-amber-900">+ 下腰背微拱→呼气沉肋收腹</button></div>
+                <div id="swCorrect" contenteditable="true" oninput="saveSandwichDraft()" data-placeholder="点击直接输入核心纠偏点..." class="flow-edit w-full bg-white border border-amber-200 rounded-lg p-2.5 text-xs text-slate-800 leading-relaxed"></div>
+                <div class="flex flex-wrap gap-1" id="swCorrectChips"></div>
               </div>
-              <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200 space-y-1.5">
+              <div class="bg-slate-50 p-2.5 rounded-xl border border-slate-200 space-y-2">
                 <div class="font-bold text-forest-900">3️⃣ 下一步要求（后 20 秒 · 低阻力微目标）</div>
-                <textarea id="swNext" rows="3" oninput="saveSandwichDraft()" class="w-full bg-white border border-slate-200 rounded-lg p-1.5 text-xs leading-relaxed"></textarea>
-                <div class="flex flex-wrap gap-1" id="swNextChips"><button type="button" onclick="appendSwChip('swNext', '保持每次15分钟，拍15秒侧面视频')" class="px-1.5 py-0.5 rounded bg-white border border-slate-200 text-[10px] text-slate-700">+ 保持每次15分钟，拍15秒侧面视频</button><button type="button" onclick="appendSwChip('swNext', '弱侧腿多练1组，下周测试对比')" class="px-1.5 py-0.5 rounded bg-white border border-slate-200 text-[10px] text-slate-700">+ 弱侧腿多练1组，下周测试对比</button><button type="button" onclick="appendSwChip('swNext', '注意练后小腿拉伸与早睡恢复')" class="px-1.5 py-0.5 rounded bg-white border border-slate-200 text-[10px] text-slate-700">+ 注意练后小腿拉伸与早睡恢复</button></div>
+                <div id="swNext" contenteditable="true" oninput="saveSandwichDraft()" data-placeholder="点击直接输入下一步微目标..." class="flow-edit w-full bg-white border border-slate-200 rounded-lg p-2.5 text-xs text-slate-800 leading-relaxed"></div>
+                <div class="flex flex-wrap gap-1" id="swNextChips"></div>
               </div>
             </div>
 
             <div>
-              <label class="text-[11px] font-bold text-slate-600 block mb-1">🎙️ 合成 60 秒语音提词 / 微信文字预览：</label>
-              <textarea id="swFinalPreview" rows="4" class="w-full bg-forest-900 text-slate-100 rounded-xl p-3 text-xs leading-relaxed"></textarea>
+              <div class="flex items-center justify-between mb-1">
+                <label class="text-[11px] font-bold text-slate-600">🎙️ 合成 60 秒语音提词 / 微信文字预览（全展开直读 · 可直接微调）：</label>
+              </div>
+              <div id="swFinalPreview" contenteditable="true" class="flow-edit-dark w-full bg-forest-900 text-slate-100 rounded-xl p-3.5 text-xs leading-relaxed"></div>
             </div>
           </div>
 
@@ -1625,12 +1712,15 @@
             <div class="lg:col-span-6 card p-4 space-y-3 border-forest-900/20">
               <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-2 flex-wrap">
                 <div>
-                  <span class="px-2 py-0.5 rounded bg-forest-900 text-champagne-400 font-bold text-[10px]">从 1 到 N 步 · 持续迭代升级你的线上转化闭环</span>
+                  <span class="px-2 py-0.5 rounded bg-forest-900 text-champagne-400 font-bold text-[10px]">全展开时间轴 · 触发节点 + 可勾选细化动作 · 一眼看清全部</span>
                   <h3 class="font-bold text-sm text-forest-900 mt-1">🧭 线上成交与交付全流程 SOP</h3>
                 </div>
-                <button type="button" onclick="addOnlineBizSopStep()" class="btn-primary px-2.5 py-1 rounded-lg text-xs font-bold">+ 新增步骤</button>
+                <div class="flex items-center gap-1.5">
+                  <button type="button" onclick="resetSopChecks('online')" class="px-2 py-1 rounded-lg text-[11px] bg-slate-100 text-slate-600 font-semibold hover:bg-slate-200">🔄 重置勾选</button>
+                  <button type="button" onclick="addOnlineBizSopStep()" class="btn-primary px-2.5 py-1 rounded-lg text-xs font-bold">+ 新增步骤</button>
+                </div>
               </div>
-              <div id="onlineSopList" class="space-y-2.5"></div>
+              <div id="onlineSopList" class="sop-timeline-wrap space-y-3"></div>
             </div>
 
             <!-- 右侧：家长沟通话术沉淀库 -->
@@ -2199,7 +2289,7 @@
       
         <button type="button" onclick="setCueCatFilter('热身拉伸')" class="px-2 py-1 rounded text-[11px] font-bold bg-slate-100 text-slate-600">热身拉伸</button>
       </div>
-              <div id="bilingualCueList" class="space-y-1.5 max-h-[480px] overflow-y-auto pr-0.5">
+              <div id="bilingualCueList" class="space-y-1.5">
         <div class="p-2 rounded-lg border border-slate-200 bg-slate-50/70 space-y-1 text-xs">
           <div class="flex items-center justify-between gap-1">
             <span class="px-1.5 py-0.5 rounded bg-amber-100 text-amber-900 text-[10px] font-bold">敏捷</span>
@@ -2637,7 +2727,7 @@
             </div>
             <div id="offUpgradeResultBox" class="text-xs font-bold text-forest-900 bg-white p-2.5 rounded-lg border border-champagne-500/40">📊 无损折算：剩余学费 ¥1620 ÷ ¥180/节 (1V2) = 9 节（可凑整 9 节）</div>
             <div class="flex flex-col sm:flex-row gap-2">
-              <textarea id="offUpgradeScriptBox" rows="2" class="flex-1 bg-forest-900 text-slate-100 rounded-lg p-2.5 text-xs leading-relaxed"></textarea>
+              <div id="offUpgradeScriptBox" contenteditable="true" class="flow-edit-dark flex-1 bg-forest-900 text-slate-100 rounded-lg p-3 text-xs leading-relaxed"></div>
               <button type="button" onclick="copyText('offUpgradeScriptBox', '升舱话术已复制！')" class="btn-gold px-4 py-2 rounded-lg text-xs shrink-0">复制升舱话术</button>
             </div>
           </div>
@@ -2651,15 +2741,16 @@
             <div class="card p-4 space-y-3 border-forest-900/20">
               <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-2 flex-wrap">
                 <div>
-                  <span class="px-2 py-0.5 rounded bg-forest-900 text-champagne-400 font-bold text-[10px]">自由增删改 · 从 1 到 N 步沉淀你的专属成交闭环</span>
+                  <span class="px-2 py-0.5 rounded bg-forest-900 text-champagne-400 font-bold text-[10px]">全展开时间轴 · 触发节点 + 可勾选细化动作 · 一眼看清全部</span>
                   <h2 class="font-bold text-sm text-forest-900 mt-1" data-label-key="offCampTitle">📋 我的业务全流程 SOP（实战迭代库）</h2>
                 </div>
-                <div class="flex items-center gap-1.5">
+                <div class="flex items-center gap-1.5 flex-wrap">
+                  <button type="button" onclick="resetSopChecks('offline')" class="px-2 py-1.5 rounded-lg text-[11px] bg-slate-100 text-slate-600 font-semibold">🔄 重置勾选</button>
                   <button type="button" onclick="copyFullBizSop()" class="px-2.5 py-1.5 rounded-lg text-xs bg-slate-100 text-forest-900 font-semibold">📋 复制SOP</button>
                   <button type="button" onclick="addBizSopStep()" class="btn-primary px-3 py-1.5 rounded-lg text-xs font-bold">+ 新增步骤</button>
                 </div>
               </div>
-              <div id="offlineSopList" class="space-y-2.5">
+              <div id="offlineSopList" class="sop-timeline-wrap space-y-3">
           <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-1.5 text-xs">
             <div class="flex items-center justify-between gap-2">
               <div class="flex items-center gap-1.5 flex-1 min-w-0">
@@ -2806,7 +2897,7 @@
                     <span class="font-bold text-xs text-forest-900">🛡️ 已发邀请卡核销台账（防重复转发使用）</span>
                     <span id="refLedgerCount" class="text-[10px] text-slate-400">已发 1 张</span>
                   </div>
-                  <div id="referralLedgerList" class="space-y-1.5 max-h-48 overflow-y-auto pr-0.5">
+                  <div id="referralLedgerList" class="space-y-1.5">
             <div class="flex items-center justify-between gap-2 p-2 rounded-lg border text-[11px] bg-white border-emerald-200">
               <div class="min-w-0 flex-1">
                 <div class="flex items-center gap-1.5 flex-wrap">
@@ -3509,12 +3600,72 @@
       ],
       onlineMrrCalc: { stdCount: 12, proCount: 8, vipCount: 3, weeklyMins: 12, marginPct: 92 },
       onlineBizSop: [
-        { id: "osop_1", title: "公域引流加微 · 首句破冰与建立专业人设", content: "通过小红书/抖音/视频号自然流加微后，10分钟内发欢迎语，简明亮出「体育硕士 · 青少年体能顾问」身份，询问孩子年龄与目前运动项目，不急于抛价目表。" },
-        { id: "osop_2", title: "发送极简诊断问卷 · 收集关键基线信息", content: "从 Tab 3 一键复制4题极简版诊断问卷发家长，请家长顺手拍一段 15 秒孩子跑步/跳绳/蹲跳的侧面小视频，降低回复门槛。" },
-        { id: "osop_3", title: "出具诊断结论与《三阶蓝图》· 建立高信任锚点", content: "将问卷数据录入 Tab 3 自动生成诊断书，并在 Tab 4 输出《月·季·年三阶成长跃迁蓝图》发家长，用专业动作力学判断让家长眼前一亮。" },
-        { id: "osop_4", title: "权益报价与异议处理 · 促成季卡/年卡签约", content: "展示标准版/进阶版/尊享版权益矩阵，针对「线上有没有效果」「家长没时间盯」等常见顾虑用沉淀话术温和化解，引导先跑通首季习惯周期。" },
-        { id: "osop_5", title: "首周启动交付 · 跑通每周3次×15分钟打卡闭环", content: "在 Tab 2 建档，用 Tab 5 拼出首月《模块化月度指导卡》并发送《首周启动通知》，固定每晚 21:30–22:00 发出 60 秒三明治语音复盘。" },
-        { id: "osop_6", title: "打卡关怀防流失 + 月末升舱 + 季末对比续费", content: "关注 Tab 2 超过5天未打卡预警，及时发低阻力关怀话术；第4周复盘引导升级进阶版，第11周整理前后动作对比促成续费。" }
+        {
+          id: "osop_1",
+          title: "公域引流加微 · 首句破冰与建立专业人设",
+          trigger: "小红书 / 抖音 / 视频号私信加微后 10 分钟内",
+          actions: [
+            { id: "oa_1_1", text: "发送欢迎语，简明亮出「体育硕士 · 青少年体能顾问」身份", done: false },
+            { id: "oa_1_2", text: "询问孩子出生年月、性别、目前专项运动或核心体能痛点", done: false },
+            { id: "oa_1_3", text: "先给 1 条免费敏感期/避坑专业判断，绝不急于直接抛价目表", done: false }
+          ],
+          note: "首触达目标只有一个：让家长觉得你懂孩子、够专业，愿意填问卷。"
+        },
+        {
+          id: "osop_2",
+          title: "发送极简诊断问卷 · 收集关键基线信息",
+          trigger: "家长回复孩子基本情况、表达明确需求后",
+          actions: [
+            { id: "oa_2_1", text: "在 Tab 3 一键复制 4 题极简版诊断问卷发微信（支持语音回复降门槛）", done: false },
+            { id: "oa_2_2", text: "请家长顺手拍 1 段 15 秒孩子跑步 / 跳绳 / 纵跳的侧面小视频", done: false },
+            { id: "oa_2_3", text: "将线索录入 Tab 2【咨询意向】方便持续跟进", done: false }
+          ],
+          note: "若家长忙碌未拍视频，先凭问卷出初版诊断，降低决策阻力。"
+        },
+        {
+          id: "osop_3",
+          title: "出具诊断结论与《三阶蓝图》· 建立高信任锚点",
+          trigger: "收到问卷或动作视频后 24 小时内",
+          actions: [
+            { id: "oa_3_1", text: "在 Tab 3 录入出生日期、体格与动作痛点，生成《体能诊断书》", done: false },
+            { id: "oa_3_2", text: "一键同步至 Tab 4，输出《月·季·年三阶成长跃迁蓝图》发给家长", done: false },
+            { id: "oa_3_3", text: "发 1 条 45 秒语音点出 1 个最关键的动作力学卡点（如跟骨/落地缓冲）", done: false }
+          ],
+          note: "蓝图可视化 + 精准单点力学判断 = 最高效的成交信任锚点。"
+        },
+        {
+          id: "osop_4",
+          title: "权益报价与异议处理 · 促成季卡/年卡签约",
+          trigger: "家长看完诊断蓝图表示认可、询问怎么合作时",
+          actions: [
+            { id: "oa_4_1", text: "在 Tab 7 一键复制三级权益矩阵（标准版 599/季 · 进阶版 · 尊享版）", done: false },
+            { id: "oa_4_2", text: "针对「线上怕没效果 / 家长不会教」调用右侧异议话术温和化解", done: false },
+            { id: "oa_4_3", text: "引导先跑通首季 90 天习惯周期，收款后立即转正建档", done: false }
+          ],
+          note: "强调每周只需 3 次 × 15 分钟 + 家长口令卡，把执行门槛降到最低。"
+        },
+        {
+          id: "osop_5",
+          title: "首周启动交付 · 跑通每周3次×15分钟打卡闭环",
+          trigger: "确认收款后 24 小时内启动建档交付",
+          actions: [
+            { id: "oa_5_1", text: "在 Tab 2 转为【正式订阅学员】并标明跟骨/体态注意点与频次", done: false },
+            { id: "oa_5_2", text: "在 Tab 5 拼出首月《模块化月度指导卡》导出 PNG 发送家长", done: false },
+            { id: "oa_5_3", text: "发送《首周启动通知》，固定每晚 21:30–22:00 发 60 秒三明治语音复盘", done: false }
+          ],
+          note: "第一周只要孩子拍出第 1 条 15 秒视频并收到夸奖语音，留存率即大幅提升。"
+        },
+        {
+          id: "osop_6",
+          title: "打卡关怀防流失 + 月末升舱 + 季末对比续费",
+          trigger: "超 5 天未打卡预警 / 第 4 周末 / 第 11 周末",
+          actions: [
+            { id: "oa_6_1", text: "Tab 2 出现 >5 天未打卡红标时，一键发低阻力关怀话术（只练3分钟）", done: false },
+            { id: "oa_6_2", text: "第 4 周末发送月度总结，顺势引导有专项需求的家庭补差升级「进阶版」", done: false },
+            { id: "oa_6_3", text: "第 11 周整理第 1 周 vs 第 11 周动作对比视频，自然衔接季卡/年卡续费", done: false }
+          ],
+          note: "续费靠的是「肉眼可见的动作对比 + 孩子养成的运动习惯」。"
+        }
       ],
       onlineCommScripts: [
         {
@@ -3684,12 +3835,72 @@
         ]
       },
       offlineBizSop: [
-        { id: "sop_1", title: "破冰建联与家长需求摸底", content: "先聊孩子年龄、目前在练的运动项目、平时运动习惯与性格特点，建立体育硕士专业信任感，不急于推销课包。" },
-        { id: "sop_2", title: "首次体验课与现场体态动作测评", content: "60–90分钟视孩子状态弹性把控；完成足弓/姿态/敏捷/平衡基线打分，并记入【本地学员表 · 仅体验课待转化】。" },
-        { id: "sop_3", title: "课后 2 小时内发出视觉反馈海报", content: "发送 3 张高光抓拍 + 专业点评卡 + 现场诊断卡，让家长直观看到专业度与孩子的开心状态。" },
-        { id: "sop_4", title: "长期课包成交与同龄同时间段拼班", content: "根据学员表中的年龄段与常上课时间段，匹配 1V2/1V3/1V4 伙伴团购或 1V1 定制长期课包。" },
-        { id: "sop_5", title: "第 5 节黄金窗口口碑裂变与转介绍", content: "发出带唯一核销码的转介绍邀请卡（可打印实体卡或发图），一码一家庭防滥用，促成老带新。" },
-        { id: "sop_6", title: "余 2–3 节黄金窗口 · 阶段复测与续费转化", content: "在剩余 2–3 节课时时安排阶段性体能复测，输出《阶段对比喜报》展示量化进步，同步给出下一阶段训练重点并自然衔接续费或 1V2/团课升舱。" }
+        {
+          id: "sop_1",
+          title: "破冰建联与家长需求摸底",
+          trigger: "同城引流 / 老家长转介绍加上微信后 15 分钟内",
+          actions: [
+            { id: "fa_1_1", text: "了解孩子年龄、目前在练运动、平时运动习惯与性格特点", done: false },
+            { id: "fa_1_2", text: "简明建立「体育硕士 · 户外双语体能」专业信任感，不急于推销课包", done: false },
+            { id: "fa_1_3", text: "约定周末处州公园 / 白云山草坪 1v1 首次体验测评时间", done: false }
+          ],
+          note: "先聊孩子状态和痛点，约上见面体验就成功了一半。"
+        },
+        {
+          id: "sop_2",
+          title: "首次体验课与现场体态动作测评",
+          trigger: "首次线下见面（60–90分钟按专注度弹性把控）",
+          actions: [
+            { id: "fa_2_1", text: "按 Tab 4 四段式教案带课，穿插短促纯英口令让孩子快速兴奋投入", done: false },
+            { id: "fa_2_2", text: "完成足弓 / 脊柱姿态 / 敏捷步频 / 平衡 6 维打分与 4 项量化实测", done: false },
+            { id: "fa_2_3", text: "将学员记入 Tab 2【仅体验课待转化】，标注年龄段与常上课时间段", done: false }
+          ],
+          note: "现场随手抓拍 3 张高光动作照 + 1 段 5 秒纯英互动原声素材。"
+        },
+        {
+          id: "sop_3",
+          title: "课后 2 小时内发出视觉反馈海报与诊断卡",
+          trigger: "体验课或正式课结束后 2 小时黄金记忆窗口内",
+          actions: [
+            { id: "fa_3_1", text: "在 Tab 3 导出《学员体态与动作模式诊断卡》PNG（含青少年 BMI 判定）", done: false },
+            { id: "fa_3_2", text: "在 Tab 5 生成 3 张高光抓拍 + 100 字专业点评海报发家长留存", done: false },
+            { id: "fa_3_3", text: "附 1 条简短语音肯定孩子亮点，并点出下阶段最值得突破的 1 个方向", done: false }
+          ],
+          note: "高质感视觉交付直接拉开与普通体适能班的差距，家长极易自发晒朋友圈。"
+        },
+        {
+          id: "sop_4",
+          title: "长期课包成交与同龄同时间段拼班",
+          trigger: "家长收到课后反馈海报表示满意、询问正式课安排时",
+          actions: [
+            { id: "fa_4_1", text: "发出 Tab 6 官方阶梯报价单（1V1–1V4）与《课程说明及请假规则》", done: false },
+            { id: "fa_4_2", text: "按 Tab 2 年龄段与常上课时间段，匹配 1V2/1V3/1V4 伙伴团购或 1V1 定制", done: false },
+            { id: "fa_4_3", text: "收款后在 Tab 2 点击「转为长期课」，锁定固定周末档期", done: false }
+          ],
+          note: "优先引导 1V2/1V3 同龄伙伴班，兼顾家长性价比与教练高时薪。"
+        },
+        {
+          id: "sop_5",
+          title: "第 5 节黄金窗口口碑裂变与转介绍",
+          trigger: "正式课消至第 4–5 节、家长满意度与信任度最高点",
+          actions: [
+            { id: "fa_5_1", text: "在右侧输入推荐人姓名，点击生成【唯一核销码】转介绍邀请卡", done: false },
+            { id: "fa_5_2", text: "导出高清 PNG 或打印实体 VIP 卡交付家长（一码一家庭防滥用）", done: false },
+            { id: "fa_5_3", text: "搭配下方转介绍标准话术发送，促成好友体验报名双方各赠 1 节", done: false }
+          ],
+          note: "用「同龄伙伴同场竞技提升胜负欲」作为利他理由，家长转发零尴尬。"
+        },
+        {
+          id: "sop_6",
+          title: "余 2–3 节黄金窗口 · 阶段复测与续费转化",
+          trigger: "Tab 2 出现结课续费红标提醒（课包剩余 2–3 节）",
+          actions: [
+            { id: "fa_6_1", text: "发下方【余 3 节提前铺垫】话术，预告下节课安排阶段体能复测", done: false },
+            { id: "fa_6_2", text: "在 Tab 3 录入复测数据并同步至 Tab 5 导出《阶段对比喜报》海报", done: false },
+            { id: "fa_6_3", text: "用量化进步数据自然衔接 10/20 节续费，或用升舱折算器引导 1V2/小班", done: false }
+          ],
+          note: "不要等到最后 1 节才提续费；提前 3 节用数据喜报铺垫，成交最丝滑。"
+        }
       ],
       offlineRenewalScripts: [
         {
@@ -3917,9 +4128,34 @@
         }
       }
 
-      if (Array.isArray(raw.offlineBizSop) && raw.offlineBizSop.length) merged.offlineBizSop = raw.offlineBizSop;
+      function normalizeSopList(rawList, defaultList, prefix) {
+        return rawList.map((s, idx) => {
+          const def = (defaultList || []).find(d => d.id === s.id) || (defaultList || [])[idx] || {};
+          let actions = [];
+          if (Array.isArray(s.actions)) {
+            actions = s.actions.map((a, ai) => typeof a === "string"
+              ? { id: `${prefix}_a_${idx}_${ai}`, text: a, done: false }
+              : { id: a.id || `${prefix}_a_${idx}_${ai}`, text: String(a.text || ""), done: !!a.done }
+            ).filter(a => a.text.trim());
+          } else if (typeof s.content === "string" && s.content.trim()) {
+            const parts = s.content.split(/[\n；;]+/).map(x => x.trim()).filter(Boolean);
+            actions = parts.map((t, ai) => ({ id: `${prefix}_a_${idx}_${ai}`, text: t, done: false }));
+          } else if (Array.isArray(def.actions)) {
+            actions = structuredClone(def.actions);
+          }
+          return {
+            id: s.id || `${prefix}_${Date.now()}_${idx}`,
+            title: s.title || def.title || `第 ${idx + 1} 步`,
+            trigger: s.trigger !== undefined ? s.trigger : (def.trigger || ""),
+            actions,
+            note: s.note !== undefined ? s.note : (s.actions ? "" : (def.note || "")),
+            content: s.content || ""
+          };
+        });
+      }
+      if (Array.isArray(raw.offlineBizSop) && raw.offlineBizSop.length) merged.offlineBizSop = normalizeSopList(raw.offlineBizSop, DEFAULT_STATE.offlineBizSop, "fa");
       if (Array.isArray(raw.offlineRenewalScripts) && raw.offlineRenewalScripts.length) merged.offlineRenewalScripts = raw.offlineRenewalScripts;
-      if (Array.isArray(raw.onlineBizSop) && raw.onlineBizSop.length) merged.onlineBizSop = raw.onlineBizSop;
+      if (Array.isArray(raw.onlineBizSop) && raw.onlineBizSop.length) merged.onlineBizSop = normalizeSopList(raw.onlineBizSop, DEFAULT_STATE.onlineBizSop, "oa");
       if (Array.isArray(raw.onlineCommScripts) && raw.onlineCommScripts.length) merged.onlineCommScripts = raw.onlineCommScripts;
       if (Array.isArray(raw.offlineReferralLedger)) merged.offlineReferralLedger = raw.offlineReferralLedger;
       if (raw.offlineCampReferral) {
@@ -4823,7 +5059,7 @@
               <div class="text-[10px] text-slate-400">兼顾睡眠与日常健康习惯</div>
             </div>
           </div>
-          <textarea id="icDiagnosisText" rows="5" class="w-full bg-white border border-slate-200 rounded-lg p-2.5 text-xs leading-relaxed">${escHtml(diag)}</textarea>
+          <div id="icDiagnosisText" contenteditable="true" class="flow-edit w-full bg-white border border-emerald-200 border-l-[3px] border-l-forest-900 rounded-lg p-3 text-xs text-slate-800 leading-relaxed">${escHtml(diag)}</div>
         `;
       }
     };
@@ -4837,13 +5073,16 @@
       }
       computeIntakeSciencePreview();
       document.getElementById("intakeList").innerHTML = (state.onlineIntakeQuestions || []).map((q, idx) => `
-        <div class="card p-3 space-y-1.5 border-slate-200">
+        <div class="script-flow-card p-3 space-y-2">
           <div class="flex items-center justify-between gap-2">
             <input type="text" value="${escHtml(q.cat)}" onchange="editIntakeQ(${idx}, 'cat', this.value)" class="font-bold text-xs text-forest-900 bg-transparent border-b border-transparent focus:border-champagne-500 focus:outline-none flex-1" />
-            <button type="button" onclick="deleteIntakeQ(${idx})" class="text-[11px] text-rose-400">删</button>
+            <button type="button" onclick="deleteIntakeQ(${idx})" class="text-[11px] text-rose-400 shrink-0">删</button>
           </div>
-          <textarea rows="2" onchange="editIntakeQ(${idx}, 'q', this.value)" class="w-full text-xs text-slate-700 bg-slate-50 border border-slate-200 rounded p-1.5">${escHtml(q.q)}</textarea>
-          <input type="text" value="${escHtml(q.quickOpts || '')}" onchange="editIntakeQ(${idx}, 'quickOpts', this.value)" placeholder="家长秒回选项..." class="w-full text-[11px] bg-amber-50 text-amber-900 border border-amber-200 rounded px-2 py-1" />
+          <div contenteditable="true" onblur="editIntakeQ(${idx}, 'q', this.innerText.trim())" data-placeholder="输入提问话术..." class="flow-edit w-full text-xs text-slate-800 bg-slate-50/80 border border-slate-200/80 rounded-lg p-2.5 leading-relaxed">${escHtml(q.q)}</div>
+          <div class="flex items-center gap-1.5 bg-amber-50/80 border border-amber-200/80 rounded-lg px-2 py-1">
+            <span class="text-[10px] font-bold text-amber-900 shrink-0">⚡ 秒回选项：</span>
+            <input type="text" value="${escHtml(q.quickOpts || '')}" onchange="editIntakeQ(${idx}, 'quickOpts', this.value)" placeholder="家长秒回选项..." class="flex-1 text-[11px] bg-transparent text-amber-950 focus:outline-none min-w-0" />
+          </div>
         </div>
       `).join("");
     }
@@ -5212,41 +5451,48 @@
         if (cur) sel.value = cur;
       }
       const d = state.onlineFeedbackDraft || DEFAULT_STATE.onlineFeedbackDraft;
-      document.getElementById("swPraise").value = d.praise || "";
-      document.getElementById("swCorrect").value = d.correct || "";
-      document.getElementById("swNext").value = d.nextStep || "";
+      const pEl = document.getElementById("swPraise");
+      const cEl = document.getElementById("swCorrect");
+      const nEl = document.getElementById("swNext");
+      if (pEl && document.activeElement !== pEl) pEl.innerText = d.praise || "";
+      if (cEl && document.activeElement !== cEl) cEl.innerText = d.correct || "";
+      if (nEl && document.activeElement !== nEl) nEl.innerText = d.nextStep || "";
 
-      document.getElementById("swPraiseChips").innerHTML = SW_CHIPS.praise.map(t => `<button type="button" onclick="appendSwChip('swPraise', '${escHtml(t)}')" class="px-1.5 py-0.5 rounded bg-white border border-emerald-200 text-[10px] text-emerald-800">+ ${t}</button>`).join("");
-      document.getElementById("swCorrectChips").innerHTML = SW_CHIPS.correct.map(t => `<button type="button" onclick="appendSwChip('swCorrect', '${escHtml(t)}')" class="px-1.5 py-0.5 rounded bg-white border border-amber-200 text-[10px] text-amber-900">+ ${t}</button>`).join("");
-      document.getElementById("swNextChips").innerHTML = SW_CHIPS.nextStep.map(t => `<button type="button" onclick="appendSwChip('swNext', '${escHtml(t)}')" class="px-1.5 py-0.5 rounded bg-white border border-slate-200 text-[10px] text-slate-700">+ ${t}</button>`).join("");
+      document.getElementById("swPraiseChips").innerHTML = SW_CHIPS.praise.map(t => `<button type="button" onclick="appendSwChip('swPraise', '${escHtml(t)}')" class="px-1.5 py-0.5 rounded bg-white border border-emerald-200 text-[10px] text-emerald-800 hover:bg-emerald-50">+ ${t}</button>`).join("");
+      document.getElementById("swCorrectChips").innerHTML = SW_CHIPS.correct.map(t => `<button type="button" onclick="appendSwChip('swCorrect', '${escHtml(t)}')" class="px-1.5 py-0.5 rounded bg-white border border-amber-200 text-[10px] text-amber-900 hover:bg-amber-50">+ ${t}</button>`).join("");
+      document.getElementById("swNextChips").innerHTML = SW_CHIPS.nextStep.map(t => `<button type="button" onclick="appendSwChip('swNext', '${escHtml(t)}')" class="px-1.5 py-0.5 rounded bg-white border border-slate-200 text-[10px] text-slate-700 hover:bg-slate-100">+ ${t}</button>`).join("");
       renderSandwichPreview();
 
       document.getElementById("onlineStageScriptsList").innerHTML = (state.onlineStageScripts || []).map((s, idx) => `
-        <div class="card p-3 space-y-2 border-slate-200 bg-slate-50/60">
-          <div class="flex items-center justify-between gap-2">
-            <div class="flex items-center gap-1.5 flex-1">
-              <input type="text" value="${escHtml(s.stage)}" onchange="editOnlineStageScript(${idx}, 'stage', this.value)" class="font-bold text-xs text-forest-900 bg-white border border-slate-200 rounded px-2 py-0.5 w-32" />
-              <input type="text" value="${escHtml(s.tag)}" onchange="editOnlineStageScript(${idx}, 'tag', this.value)" class="text-[10px] text-amber-900 bg-amber-50 border border-amber-200 rounded px-1.5 py-0.5 flex-1" />
+        <div class="script-flow-card p-3.5 space-y-2.5">
+          <div class="flex items-center justify-between gap-2 flex-wrap border-b border-slate-100 pb-2">
+            <div class="flex items-center gap-1.5 flex-1 min-w-[150px]">
+              <input type="text" value="${escHtml(s.stage)}" onchange="editOnlineStageScript(${idx}, 'stage', this.value)" class="font-bold text-xs text-forest-900 bg-transparent border-b border-transparent focus:border-champagne-500 focus:outline-none w-32" />
+              <input type="text" value="${escHtml(s.tag)}" onchange="editOnlineStageScript(${idx}, 'tag', this.value)" class="text-[10px] text-amber-900 bg-amber-50 border border-amber-200 rounded-md px-2 py-0.5 flex-1 min-w-[80px] font-semibold" />
             </div>
             <div class="flex items-center gap-1.5 shrink-0">
-              <button type="button" onclick="copyOnlineStageScript(${idx})" class="btn-gold px-2.5 py-1 rounded text-[11px]">📋 一键复制</button>
-              <button type="button" onclick="deleteOnlineStageScript(${idx})" class="text-[11px] text-rose-400">删</button>
+              <button type="button" onclick="copyOnlineStageScript(${idx})" class="btn-gold px-2.5 py-1 rounded-md text-[11px]">📋 一键复制</button>
+              <button type="button" onclick="deleteOnlineStageScript(${idx})" class="text-[11px] text-rose-400 px-1">删</button>
             </div>
           </div>
-          <textarea rows="4" onchange="editOnlineStageScript(${idx}, 'text', this.value)" class="w-full bg-white border border-slate-200 rounded-lg p-2 text-xs text-slate-700 leading-relaxed">${escHtml(s.text)}</textarea>
+          <div contenteditable="true" onblur="editOnlineStageScript(${idx}, 'text', this.innerText.trim())" data-placeholder="点击直接输入话术内容..." class="flow-edit w-full bg-slate-50/60 rounded-lg p-2.5 text-xs text-slate-700 leading-relaxed">${escHtml(s.text)}</div>
         </div>
       `).join("");
     }
 
     window.appendSwChip = (elId, txt) => {
       const el = document.getElementById(elId);
-      if (el) { el.value = (el.value ? el.value + "；" : "") + txt; saveSandwichDraft(); }
+      if (el) {
+        const cur = (el.innerText || "").trim();
+        el.innerText = (cur ? cur + "；" : "") + txt;
+        saveSandwichDraft();
+      }
     };
     window.saveSandwichDraft = () => {
       state.onlineFeedbackDraft = {
-        praise: document.getElementById("swPraise").value,
-        correct: document.getElementById("swCorrect").value,
-        nextStep: document.getElementById("swNext").value
+        praise: (document.getElementById("swPraise")?.innerText || "").trim(),
+        correct: (document.getElementById("swCorrect")?.innerText || "").trim(),
+        nextStep: (document.getElementById("swNext")?.innerText || "").trim()
       };
       renderSandwichPreview();
       saveStateDebounced(true);
@@ -5256,7 +5502,8 @@
       const stu = (state.onlineClients || []).find(c => c.id === cid);
       const name = stu ? stu.name : "宝贝";
       const d = state.onlineFeedbackDraft;
-      document.getElementById("swFinalPreview").value = `【60秒语音复盘提词 · ${name}】\n🌟 [表扬亮点]：${d.praise}\n🔧 [纠偏代偿]：${d.correct}\n🎯 [下一步要求]：${d.nextStep}`;
+      const prevEl = document.getElementById("swFinalPreview");
+      if (prevEl) prevEl.innerText = `【60秒语音复盘提词 · ${name}】\n🌟 [表扬亮点]：${d.praise}\n🔧 [纠偏代偿]：${d.correct}\n🎯 [下一步要求]：${d.nextStep}`;
     };
     window.editOnlineStageScript = (idx, field, val) => {
       if (state.onlineStageScripts[idx]) { state.onlineStageScripts[idx][field] = val; saveStateDebounced(true); }
@@ -5375,47 +5622,151 @@
       copyRaw(`【Leo 线上青少年体能顾问 · 订阅权益与收费标准】\n\n${lines}`, "✅ 三级权益报价矩阵已复制！");
     };
 
-    // ==================== 线上 Tab 8：线上业务全流程 SOP & 家长沟通话术沉淀库 ====================
-    function renderOnlineSop() {
-      const sopList = state.onlineBizSop || DEFAULT_STATE.onlineBizSop;
-      state.onlineBizSop = sopList;
-      const sopBox = document.getElementById("onlineSopList");
-      if (sopBox) {
-        sopBox.innerHTML = sopList.map((step, idx) => `
-          <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-1.5 text-xs">
-            <div class="flex items-center justify-between gap-2">
-              <div class="flex items-center gap-1.5 flex-1 min-w-0">
-                <span class="px-2 py-0.5 rounded bg-forest-900 text-champagne-400 font-extrabold text-[10px] shrink-0">STEP ${idx + 1}</span>
-                <input type="text" value="${escHtml(step.title)}" onchange="editOnlineBizSopStep(${idx}, 'title', this.value)" class="font-bold text-forest-900 bg-white border border-slate-200 rounded px-2 py-0.5 flex-1 min-w-0" />
+    // ==================== 通用结构化全展开 SOP 时间轴引擎（线上 + 线下共用） ====================
+    function getSopArr(track) {
+      const key = track === "online" ? "onlineBizSop" : "offlineBizSop";
+      if (!Array.isArray(state[key])) state[key] = structuredClone(DEFAULT_STATE[key]);
+      return state[key];
+    }
+
+    function renderSopFlowList(track, containerId) {
+      const box = document.getElementById(containerId);
+      if (!box) return;
+      const list = getSopArr(track);
+      const isOn = track === "online";
+      const moveFn = isOn ? "moveOnlineBizSopStep" : "moveBizSopStep";
+      const delFn = isOn ? "deleteOnlineBizSopStep" : "deleteBizSopStep";
+
+      box.innerHTML = list.map((step, idx) => {
+        if (!Array.isArray(step.actions)) {
+          step.actions = step.content
+            ? step.content.split(/[\n；;]+/).map(x => x.trim()).filter(Boolean).map((t, ai) => ({ id: `${track}_a_${idx}_${ai}`, text: t, done: false }))
+            : [];
+        }
+        const totalA = step.actions.length;
+        const doneA = step.actions.filter(a => a.done).length;
+        const allDone = totalA > 0 && doneA === totalA;
+        return `
+          <div class="sop-step-card p-3.5 space-y-2.5 text-xs ${allDone ? 'bg-emerald-50/30 border-emerald-300' : ''}">
+            <span class="sop-step-dot"></span>
+            <div class="flex items-start justify-between gap-2">
+              <div class="flex items-start gap-2 flex-1 min-w-0">
+                <span class="px-2 py-0.5 rounded-md bg-forest-900 text-champagne-400 font-extrabold text-[10px] shrink-0 mt-0.5">STEP ${idx + 1}</span>
+                <div contenteditable="true" onblur="editSopStepField('${track}', ${idx}, 'title', this.innerText.trim())" data-placeholder="输入本步骤主题..." class="flow-edit font-extrabold text-sm text-forest-900 flex-1 min-w-0 rounded px-1 -mx-1">${escHtml(step.title || '')}</div>
               </div>
               <div class="flex items-center gap-1 shrink-0 text-[10px]">
-                <button type="button" onclick="moveOnlineBizSopStep(${idx}, -1)" class="px-1.5 py-0.5 bg-white border rounded">↑</button>
-                <button type="button" onclick="moveOnlineBizSopStep(${idx}, 1)" class="px-1.5 py-0.5 bg-white border rounded">↓</button>
-                <button type="button" onclick="deleteOnlineBizSopStep(${idx})" class="text-rose-400 px-1">删</button>
+                ${totalA > 0 ? `<span class="px-1.5 py-0.5 rounded font-bold ${allDone ? 'bg-emerald-100 text-emerald-800' : 'bg-slate-100 text-slate-600'}">${doneA}/${totalA}</span>` : ''}
+                <button type="button" onclick="${moveFn}(${idx}, -1)" title="上移" class="px-1.5 py-0.5 bg-slate-50 border border-slate-200 rounded hover:bg-slate-100">↑</button>
+                <button type="button" onclick="${moveFn}(${idx}, 1)" title="下移" class="px-1.5 py-0.5 bg-slate-50 border border-slate-200 rounded hover:bg-slate-100">↓</button>
+                <button type="button" onclick="${delFn}(${idx})" title="删除步骤" class="text-rose-400 hover:text-rose-600 px-1">删</button>
               </div>
             </div>
-            <textarea rows="3" onchange="editOnlineBizSopStep(${idx}, 'content', this.value)" placeholder="写下这一步的执行动作、关键细节或复盘迭代心得..." class="w-full bg-white border border-slate-200 rounded-lg p-2 text-xs text-slate-700 leading-relaxed">${escHtml(step.content || '')}</textarea>
+
+            <div class="flex items-start gap-1.5 bg-amber-50/85 border border-amber-200/80 rounded-lg px-2.5 py-1.5">
+              <span class="text-[11px] font-extrabold text-amber-900 shrink-0 mt-0.5">⚡ 触发节点：</span>
+              <div contenteditable="true" onblur="editSopStepField('${track}', ${idx}, 'trigger', this.innerText.trim())" data-placeholder="什么时候触发这一步？（如：课后2小时内 / 加微10分钟内）" class="flow-edit flex-1 min-w-0 text-xs font-semibold text-amber-950 rounded px-1">${escHtml(step.trigger || '')}</div>
+            </div>
+
+            <div class="space-y-1.5">
+              <div class="text-[11px] font-bold text-slate-500 flex items-center justify-between">
+                <span>🎯 细化动作与逻辑点（可按需勾选执行，点击文字即改）</span>
+              </div>
+              <div class="space-y-1.5">
+                ${step.actions.map((act, aIdx) => `
+                  <div class="flex items-start gap-2 px-2.5 py-2 rounded-lg border ${act.done ? 'bg-emerald-50/60 border-emerald-200/80' : 'bg-slate-50/70 border-slate-200/80'}">
+                    <input type="checkbox" ${act.done ? 'checked' : ''} onchange="toggleSopAction('${track}', ${idx}, ${aIdx})" title="可选勾选" class="w-3.5 h-3.5 mt-0.5 accent-forest-900 rounded cursor-pointer shrink-0" />
+                    <span class="font-extrabold text-forest-900 shrink-0 mt-0.5 text-[11px]">${aIdx + 1}.</span>
+                    <div contenteditable="true" onblur="editSopAction('${track}', ${idx}, ${aIdx}, this.innerText.trim())" class="flow-edit flex-1 min-w-0 leading-relaxed rounded px-1 ${act.done ? 'line-through text-slate-400' : 'text-slate-800 font-medium'}">${escHtml(act.text)}</div>
+                    <button type="button" onclick="deleteSopAction('${track}', ${idx}, ${aIdx})" title="删除此动作" class="text-[10px] text-rose-400 hover:text-rose-600 px-1 shrink-0 mt-0.5">✕</button>
+                  </div>
+                `).join("") || `<div class="text-[11px] text-slate-400 px-2 py-1">暂无细化动作，在下方直接添加逻辑点</div>`}
+              </div>
+              <div class="flex gap-1.5 pt-1">
+                <input id="newSopAct_${track}_${idx}" type="text" onkeydown="if(event.key==='Enter')addSopAction('${track}', ${idx})" placeholder="+ 添加细化动作 / 逻辑点（回车直接加入）..." class="flex-1 bg-white border border-slate-200 rounded-lg px-2.5 py-1 text-[11px] min-w-0 focus:border-champagne-500 focus:outline-none" />
+                <button type="button" onclick="addSopAction('${track}', ${idx})" class="px-2.5 py-1 rounded-lg bg-forest-900 text-champagne-400 text-[11px] font-bold shrink-0">+ 加要点</button>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-1.5 bg-slate-50/80 border border-slate-200/70 rounded-lg px-2.5 py-1.5 text-[11px]">
+              <span class="font-bold text-slate-500 shrink-0 mt-0.5">💡 避坑/备注：</span>
+              <div contenteditable="true" onblur="editSopStepField('${track}', ${idx}, 'note', this.innerText.trim())" data-placeholder="选填：记录这一步的关键心态、避坑提醒或复盘心得..." class="flow-edit flex-1 min-w-0 text-slate-600 leading-relaxed rounded px-1">${escHtml(step.note || '')}</div>
+            </div>
           </div>
-        `).join("") || `<div class="text-xs text-slate-400 text-center py-4">点击右上角「+ 新增步骤」开始沉淀你的线上业务 SOP</div>`;
+        `;
+      }).join("") || `<div class="text-xs text-slate-400 text-center py-4">点击右上角「+ 新增步骤」开始沉淀你的专属业务 SOP</div>`;
+    }
+
+    window.editSopStepField = (track, idx, field, val) => {
+      const list = getSopArr(track);
+      if (list[idx]) {
+        list[idx][field] = val;
+        saveStateDebounced(true);
       }
+    };
+    window.toggleSopAction = (track, stepIdx, actIdx) => {
+      const act = getSopArr(track)[stepIdx]?.actions?.[actIdx];
+      if (act) { act.done = !act.done; saveState(); }
+    };
+    window.editSopAction = (track, stepIdx, actIdx, val) => {
+      const act = getSopArr(track)[stepIdx]?.actions?.[actIdx];
+      if (act) { act.text = val; saveStateDebounced(true); }
+    };
+    window.addSopAction = (track, stepIdx) => {
+      const inp = document.getElementById(`newSopAct_${track}_${stepIdx}`);
+      const txt = inp?.value?.trim();
+      if (!txt) return;
+      const step = getSopArr(track)[stepIdx];
+      if (!step) return;
+      if (!Array.isArray(step.actions)) step.actions = [];
+      step.actions.push({ id: `${track}_a_${Date.now()}`, text: txt, done: false });
+      inp.value = "";
+      saveState();
+    };
+    window.deleteSopAction = (track, stepIdx, actIdx) => {
+      getSopArr(track)[stepIdx]?.actions?.splice(actIdx, 1);
+      saveState();
+    };
+    window.resetSopChecks = (track) => {
+      getSopArr(track).forEach(s => (s.actions || []).forEach(a => a.done = false));
+      saveState();
+      showToast("🔄 已重置全部逻辑点勾选状态");
+    };
+
+    function formatSopForCopy(list) {
+      return (list || []).map((s, i) => {
+        const lines = [`【STEP ${i + 1} · ${s.title}】`];
+        if (s.trigger) lines.push(`⚡ 触发节点：${s.trigger}`);
+        if (Array.isArray(s.actions) && s.actions.length) {
+          s.actions.forEach((a, ai) => lines.push(`  ${ai + 1}. ${a.text}`));
+        } else if (s.content) {
+          lines.push(s.content);
+        }
+        if (s.note) lines.push(`💡 备注：${s.note}`);
+        return lines.join("\n");
+      }).join("\n\n");
+    }
+
+    // ==================== 线上 Tab 8：线上业务全流程 SOP & 家长沟通话术沉淀库 ====================
+    function renderOnlineSop() {
+      renderSopFlowList("online", "onlineSopList");
 
       const commList = state.onlineCommScripts || DEFAULT_STATE.onlineCommScripts;
       state.onlineCommScripts = commList;
       const commBox = document.getElementById("onlineCommScriptsList");
       if (commBox) {
         commBox.innerHTML = commList.map((sc, idx) => `
-          <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-2 text-xs">
-            <div class="flex items-center justify-between gap-1.5 flex-wrap">
+          <div class="script-flow-card p-3.5 space-y-2.5 text-xs">
+            <div class="flex items-center justify-between gap-1.5 flex-wrap border-b border-slate-100 pb-2">
               <div class="flex items-center gap-1.5 flex-1 min-w-[160px]">
-                <input type="text" value="${escHtml(sc.title)}" onchange="editOnlineCommScript(${idx}, 'title', this.value)" class="font-bold text-forest-900 bg-white border border-slate-200 rounded px-2 py-0.5 flex-1 min-w-0" />
-                <input type="text" value="${escHtml(sc.tag || '')}" onchange="editOnlineCommScript(${idx}, 'tag', this.value)" placeholder="场景标签" class="text-[10px] text-amber-900 bg-amber-50 border border-amber-200 rounded px-1.5 py-0.5 w-24 shrink-0" />
+                <input type="text" value="${escHtml(sc.title)}" onchange="editOnlineCommScript(${idx}, 'title', this.value)" class="font-bold text-forest-900 bg-transparent border-b border-transparent focus:border-champagne-500 focus:outline-none flex-1 min-w-0" />
+                <input type="text" value="${escHtml(sc.tag || '')}" onchange="editOnlineCommScript(${idx}, 'tag', this.value)" placeholder="场景标签" class="text-[10px] text-amber-900 bg-amber-50 border border-amber-200 rounded-md px-2 py-0.5 w-24 shrink-0 font-semibold" />
               </div>
               <div class="flex items-center gap-1.5 shrink-0">
-                <button type="button" onclick="copyOnlineCommScript(${idx})" class="btn-gold px-2.5 py-0.5 rounded text-[11px]">📋 复制</button>
-                <button type="button" onclick="deleteOnlineCommScript(${idx})" class="text-[11px] text-rose-400">删</button>
+                <button type="button" onclick="copyOnlineCommScript(${idx})" class="btn-gold px-2.5 py-0.5 rounded-md text-[11px]">📋 复制</button>
+                <button type="button" onclick="deleteOnlineCommScript(${idx})" class="text-[11px] text-rose-400 px-1">删</button>
               </div>
             </div>
-            <textarea rows="4" onchange="editOnlineCommScript(${idx}, 'text', this.value)" placeholder="输入并持续优化给家长的沟通话术..." class="w-full bg-white border border-slate-200 rounded-lg p-2 text-xs text-slate-700 leading-relaxed">${escHtml(sc.text || '')}</textarea>
+            <div contenteditable="true" onblur="editOnlineCommScript(${idx}, 'text', this.innerText.trim())" data-placeholder="点击直接输入并持续优化给家长的沟通话术..." class="flow-edit w-full bg-slate-50/60 rounded-lg p-2.5 text-xs text-slate-700 leading-relaxed">${escHtml(sc.text || '')}</div>
           </div>
         `).join("") || `<div class="text-xs text-slate-400 text-center py-4">点击右上角「+ 新增话术」沉淀与家长沟通的高转化话术</div>`;
       }
@@ -5424,7 +5775,13 @@
     window.addOnlineBizSopStep = () => {
       if (!Array.isArray(state.onlineBizSop)) state.onlineBizSop = [];
       const n = state.onlineBizSop.length + 1;
-      state.onlineBizSop.push({ id: "osop_" + Date.now(), title: `第 ${n} 步线上流程（点击修改）`, content: "" });
+      state.onlineBizSop.push({
+        id: "osop_" + Date.now(),
+        title: `第 ${n} 步线上流程（点击修改）`,
+        trigger: "点击填写触发节点...",
+        actions: [{ id: "oa_new_" + Date.now(), text: "点击填写第一个细化动作 / 逻辑点...", done: false }],
+        note: ""
+      });
       saveState();
       showToast(`已新增线上 SOP STEP ${n}`);
     };
@@ -5443,8 +5800,7 @@
       saveState();
     };
     window.copyFullOnlineBizSop = () => {
-      const txt = (state.onlineBizSop || []).map((s, i) => `【STEP ${i + 1} · ${s.title}】\n${s.content}`).join("\n\n");
-      copyRaw(`【Leo 线上青少年体能顾问 · 业务全流程 SOP】\n\n${txt}`, "✅ 线上完整业务 SOP 已复制！");
+      copyRaw(`【Leo 线上青少年体能顾问 · 业务全流程 SOP】\n\n${formatSopForCopy(state.onlineBizSop)}`, "✅ 线上完整业务 SOP 已复制！");
     };
     window.addOnlineCommScript = () => {
       if (!Array.isArray(state.onlineCommScripts)) state.onlineCommScripts = [];
@@ -6083,12 +6439,15 @@
       ];
 
       document.getElementById("lpFourBlocksBox").innerHTML = sections.map(sec => `
-        <div class="p-2.5 rounded-xl border ${sec.bg} space-y-1.5">
-          <div class="flex items-center gap-2">
-            <span class="px-2 py-0.5 rounded text-[10px] font-bold ${sec.badge}">${sec.pct}</span>
-            <span class="font-bold text-xs text-forest-900">${sec.label}</span>
+        <div class="p-3 rounded-xl border ${sec.bg} space-y-2">
+          <div class="flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2">
+              <span class="px-2 py-0.5 rounded text-[10px] font-bold ${sec.badge}">${sec.pct}</span>
+              <span class="font-bold text-xs text-forest-900">${sec.label}</span>
+            </div>
+            <span class="text-[10px] text-slate-400">全展开直读 · 点击即改</span>
           </div>
-          <textarea rows="3" oninput="updateCurrentLessonPlanField('${sec.key}', this.value)" class="w-full bg-white border border-slate-200 rounded-lg p-2 text-xs leading-relaxed text-slate-700">${escHtml(cur[sec.key] || '')}</textarea>
+          <div contenteditable="true" onblur="updateCurrentLessonPlanField('${sec.key}', this.innerText.trim())" data-placeholder="点击直接编辑本阶段训练内容..." class="flow-edit w-full bg-white border border-slate-200/80 rounded-lg p-2.5 text-xs leading-relaxed text-slate-800">${escHtml(cur[sec.key] || '')}</div>
         </div>
       `).join("");
 
@@ -6637,19 +6996,19 @@
       const notesBox = document.getElementById("offlineCourseNotesList");
       if (notesBox) {
         notesBox.innerHTML = op.courseNotes.map((n, idx) => `
-          <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-1.5 text-xs">
-            <div class="flex items-center justify-between gap-1.5">
+          <div class="script-flow-card p-3.5 space-y-2 text-xs">
+            <div class="flex items-center justify-between gap-1.5 border-b border-slate-100 pb-1.5">
               <div class="flex items-center gap-1.5 flex-1 min-w-0">
                 <span class="px-1.5 py-0.5 rounded bg-forest-900 text-champagne-400 font-bold text-[10px] shrink-0">${idx + 1}</span>
-                <input type="text" value="${escHtml(n.title)}" onchange="editOfflineCourseNote(${idx}, 'title', this.value)" class="font-bold text-forest-900 bg-white border border-slate-200 rounded px-2 py-0.5 flex-1 min-w-0" />
+                <input type="text" value="${escHtml(n.title)}" onchange="editOfflineCourseNote(${idx}, 'title', this.value)" class="font-bold text-forest-900 bg-transparent border-b border-transparent focus:border-champagne-500 focus:outline-none flex-1 min-w-0" />
               </div>
               <div class="flex items-center gap-1 shrink-0 text-[10px]">
-                <button type="button" onclick="moveOfflineCourseNote(${idx}, -1)" class="px-1.5 py-0.5 bg-white border rounded">↑</button>
-                <button type="button" onclick="moveOfflineCourseNote(${idx}, 1)" class="px-1.5 py-0.5 bg-white border rounded">↓</button>
+                <button type="button" onclick="moveOfflineCourseNote(${idx}, -1)" class="px-1.5 py-0.5 bg-slate-50 border rounded">↑</button>
+                <button type="button" onclick="moveOfflineCourseNote(${idx}, 1)" class="px-1.5 py-0.5 bg-slate-50 border rounded">↓</button>
                 <button type="button" onclick="deleteOfflineCourseNote(${idx})" class="text-rose-400 px-1">删</button>
               </div>
             </div>
-            <textarea rows="3" onchange="editOfflineCourseNote(${idx}, 'content', this.value)" placeholder="输入具体规则说明（如请假时限、10节课有效期等）..." class="w-full bg-white border border-slate-200 rounded-lg p-2 text-xs text-slate-700 leading-relaxed">${escHtml(n.content || '')}</textarea>
+            <div contenteditable="true" onblur="editOfflineCourseNote(${idx}, 'content', this.innerText.trim())" data-placeholder="点击输入具体规则说明（如请假时限、10节课有效期等）..." class="flow-edit w-full bg-slate-50/60 rounded-lg p-2.5 text-xs text-slate-700 leading-relaxed">${escHtml(n.content || '')}</div>
           </div>
         `).join("") || `<div class="col-span-2 text-xs text-slate-400 text-center py-4 bg-slate-50 rounded-lg">暂无课程说明条款，点击右上角「+ 新增条款」添加请假/有效期等规则</div>`;
       }
@@ -6751,32 +7110,12 @@
       const unit = Math.round(targetRow.totalPerPerson / Math.max(1, targetRow.lessons));
       const lessons = +(bal / Math.max(1, unit)).toFixed(1);
       document.getElementById("offUpgradeResultBox").textContent = `📊 无损折算：剩余学费 ¥${bal} ÷ ¥${unit}/节 (1V${targetPeople}) = ${lessons} 节（可凑整 ${Math.floor(lessons)} 节）`;
-      document.getElementById("offUpgradeScriptBox").value = `您好！目前账户剩余学费 ¥${bal}，若邀约好朋友组 1V${targetPeople} 同伴班，单节降至 ¥${unit}/节，余额可无损折算为 ${Math.floor(lessons)} 节课，孩子有伙伴对抗积极性更高！`;
+      document.getElementById("offUpgradeScriptBox").innerText = `您好！目前账户剩余学费 ¥${bal}，若邀约好朋友组 1V${targetPeople} 同伴班，单节降至 ¥${unit}/节，余额可无损折算为 ${Math.floor(lessons)} 节课，孩子有伙伴对抗积极性更高！`;
     };
 
     // ==================== 线下 Tab 6：业务全流程 SOP & 唯一码转介绍中心 ====================
     function renderOfflineCampReferral() {
-      const sopList = state.offlineBizSop || DEFAULT_STATE.offlineBizSop;
-      state.offlineBizSop = sopList;
-      const sopBox = document.getElementById("offlineSopList");
-      if (sopBox) {
-        sopBox.innerHTML = sopList.map((step, idx) => `
-          <div class="bg-slate-50 border border-slate-200 rounded-xl p-3 space-y-1.5 text-xs">
-            <div class="flex items-center justify-between gap-2">
-              <div class="flex items-center gap-1.5 flex-1 min-w-0">
-                <span class="px-2 py-0.5 rounded bg-forest-900 text-champagne-400 font-extrabold text-[10px] shrink-0">STEP ${idx + 1}</span>
-                <input type="text" value="${escHtml(step.title)}" onchange="editBizSopStep(${idx}, 'title', this.value)" class="font-bold text-forest-900 bg-white border border-slate-200 rounded px-2 py-0.5 flex-1 min-w-0" />
-              </div>
-              <div class="flex items-center gap-1 shrink-0 text-[10px]">
-                <button type="button" onclick="moveBizSopStep(${idx}, -1)" class="px-1.5 py-0.5 bg-white border rounded">↑</button>
-                <button type="button" onclick="moveBizSopStep(${idx}, 1)" class="px-1.5 py-0.5 bg-white border rounded">↓</button>
-                <button type="button" onclick="deleteBizSopStep(${idx})" class="text-rose-400 px-1">删</button>
-              </div>
-            </div>
-            <textarea rows="2" onchange="editBizSopStep(${idx}, 'content', this.value)" placeholder="写下这一步的具体做法、话术要点或复盘心得..." class="w-full bg-white border border-slate-200 rounded-lg p-2 text-xs text-slate-700 leading-relaxed">${escHtml(step.content || '')}</textarea>
-          </div>
-        `).join("") || `<div class="text-xs text-slate-400 text-center py-4">点击右上角「+ 新增步骤」开始沉淀你的第 1 步业务流程</div>`;
-      }
+      renderSopFlowList("offline", "offlineSopList");
 
       const cr = state.offlineCampReferral || DEFAULT_STATE.offlineCampReferral;
       document.getElementById("refCardTitle").innerText = cr.refTitle;
@@ -6820,32 +7159,32 @@
       const renBox = document.getElementById("offlineRenewalScriptsBox");
       if (renBox) {
         renBox.innerHTML = renList.map((sc, idx) => `
-          <div class="bg-white border border-emerald-200 rounded-xl p-2.5 space-y-1.5">
-            <div class="flex items-center justify-between gap-1.5 flex-wrap">
+          <div class="script-flow-card-emerald p-3.5 space-y-2">
+            <div class="flex items-center justify-between gap-1.5 flex-wrap border-b border-emerald-100 pb-2">
               <div class="flex items-center gap-1.5 flex-1 min-w-[150px]">
-                <input type="text" value="${escHtml(sc.title)}" onchange="editOfflineRenewalScript(${idx}, 'title', this.value)" class="font-bold text-xs text-forest-900 bg-transparent flex-1 min-w-0" />
-                <input type="text" value="${escHtml(sc.tag || '')}" onchange="editOfflineRenewalScript(${idx}, 'tag', this.value)" placeholder="时机标签" class="text-[10px] text-emerald-900 bg-emerald-50 border border-emerald-200 rounded px-1.5 py-0.5 w-20 shrink-0" />
+                <input type="text" value="${escHtml(sc.title)}" onchange="editOfflineRenewalScript(${idx}, 'title', this.value)" class="font-bold text-xs text-forest-900 bg-transparent border-b border-transparent focus:border-champagne-500 focus:outline-none flex-1 min-w-0" />
+                <input type="text" value="${escHtml(sc.tag || '')}" onchange="editOfflineRenewalScript(${idx}, 'tag', this.value)" placeholder="时机标签" class="text-[10px] text-emerald-900 bg-emerald-50 border border-emerald-200 rounded-md px-2 py-0.5 w-22 shrink-0 font-semibold" />
               </div>
               <div class="flex items-center gap-1.5 shrink-0">
-                <button type="button" onclick="copyOfflineRenewalScript(${idx})" class="btn-gold px-2.5 py-0.5 rounded text-[11px]">📋 复制</button>
-                <button type="button" onclick="deleteOfflineRenewalScript(${idx})" class="text-[11px] text-rose-400">删</button>
+                <button type="button" onclick="copyOfflineRenewalScript(${idx})" class="btn-gold px-2.5 py-0.5 rounded-md text-[11px]">📋 复制</button>
+                <button type="button" onclick="deleteOfflineRenewalScript(${idx})" class="text-[11px] text-rose-400 px-1">删</button>
               </div>
             </div>
-            <textarea rows="4" onchange="editOfflineRenewalScript(${idx}, 'text', this.value)" class="w-full bg-slate-50/70 border border-slate-200 rounded-lg p-2 text-xs text-slate-700 leading-relaxed">${escHtml(sc.text || '')}</textarea>
+            <div contenteditable="true" onblur="editOfflineRenewalScript(${idx}, 'text', this.innerText.trim())" data-placeholder="点击直接输入续费话术..." class="flow-edit w-full bg-emerald-50/30 rounded-lg p-2.5 text-xs text-slate-700 leading-relaxed">${escHtml(sc.text || '')}</div>
           </div>
         `).join("") || `<div class="text-xs text-slate-400 text-center py-3">暂无续费话术，点击右上角「+ 新增续费话术」添加</div>`;
       }
 
       document.getElementById("campReferralScriptsBox").innerHTML = (cr.scripts || []).map((sc, idx) => `
-        <div class="bg-slate-50 border border-slate-200 rounded-xl p-2.5 space-y-1.5">
-          <div class="flex items-center justify-between gap-2">
-            <input type="text" value="${escHtml(sc.title)}" onchange="editCampScript(${idx}, 'title', this.value)" class="font-bold text-xs text-forest-900 bg-transparent flex-1" />
-            <div class="flex items-center gap-1.5">
-              <button type="button" onclick="copyRaw(state.offlineCampReferral.scripts[${idx}].text, '话术已复制！')" class="btn-gold px-2.5 py-0.5 rounded text-[11px]">📋 复制</button>
-              <button type="button" onclick="deleteReferralScript(${idx})" class="text-[11px] text-rose-400">删</button>
+        <div class="script-flow-card p-3.5 space-y-2">
+          <div class="flex items-center justify-between gap-2 border-b border-slate-100 pb-2">
+            <input type="text" value="${escHtml(sc.title)}" onchange="editCampScript(${idx}, 'title', this.value)" class="font-bold text-xs text-forest-900 bg-transparent border-b border-transparent focus:border-champagne-500 focus:outline-none flex-1" />
+            <div class="flex items-center gap-1.5 shrink-0">
+              <button type="button" onclick="copyRaw(state.offlineCampReferral.scripts[${idx}].text, '话术已复制！')" class="btn-gold px-2.5 py-0.5 rounded-md text-[11px]">📋 复制</button>
+              <button type="button" onclick="deleteReferralScript(${idx})" class="text-[11px] text-rose-400 px-1">删</button>
             </div>
           </div>
-          <textarea rows="4" onchange="editCampScript(${idx}, 'text', this.value)" class="w-full bg-white border border-slate-200 rounded-lg p-2 text-xs text-slate-700 leading-relaxed">${escHtml(sc.text)}</textarea>
+          <div contenteditable="true" onblur="editCampScript(${idx}, 'text', this.innerText.trim())" data-placeholder="点击直接输入转介绍话术..." class="flow-edit w-full bg-slate-50/60 rounded-lg p-2.5 text-xs text-slate-700 leading-relaxed">${escHtml(sc.text)}</div>
         </div>
       `).join("");
     }
@@ -6853,7 +7192,13 @@
     window.addBizSopStep = () => {
       if (!Array.isArray(state.offlineBizSop)) state.offlineBizSop = [];
       const n = state.offlineBizSop.length + 1;
-      state.offlineBizSop.push({ id: "sop_" + Date.now(), title: `第 ${n} 步业务流程（点击修改）`, content: "" });
+      state.offlineBizSop.push({
+        id: "sop_" + Date.now(),
+        title: `第 ${n} 步业务流程（点击修改）`,
+        trigger: "点击填写触发节点...",
+        actions: [{ id: "fa_new_" + Date.now(), text: "点击填写第一个细化动作 / 逻辑点...", done: false }],
+        note: ""
+      });
       saveState();
       showToast(`已新增 STEP ${n}`);
     };
@@ -6872,8 +7217,7 @@
       saveState();
     };
     window.copyFullBizSop = () => {
-      const txt = (state.offlineBizSop || []).map((s, i) => `【STEP ${i + 1} · ${s.title}】\n${s.content}`).join("\n\n");
-      copyRaw(`【Leo 户外双语体能 · 业务全流程 SOP】\n\n${txt}`, "✅ 完整业务 SOP 已复制！");
+      copyRaw(`【Leo 户外双语体能 · 业务全流程 SOP】\n\n${formatSopForCopy(state.offlineBizSop)}`, "✅ 完整业务 SOP 已复制！");
     };
 
     window.issueUniqueReferralCode = () => {
@@ -7319,7 +7663,7 @@
     };
 
     window.toggleMediaExpand = (track, id) => {
-      ui.mediaExpandedIds[id] = !ui.mediaExpandedIds[id];
+      ui.mediaExpandedIds[id] = ui.mediaExpandedIds[id] === false ? true : false;
       renderMediaStudio(track);
     };
 
@@ -7635,12 +7979,12 @@
       const box = document.getElementById(`${prefix}MediaList`);
       if (!box) return;
       box.innerHTML = filtered.map(item => {
-        const isExp = !!ui.mediaExpandedIds[item.id];
+        const isCollapsed = ui.mediaExpandedIds[item.id] === false;
         const titleLen = (item.title || "").trim().length;
         const hasXhs = (item.platforms || []).includes("小红书");
         const xhsWarn = hasXhs && titleLen > 20;
         const bodyLines = (item.body || "").split("\n");
-        const previewBody = isExp || bodyLines.length <= 4 ? (item.body || "") : (bodyLines.slice(0, 4).join("\n") + "\n……");
+        const previewBody = !isCollapsed || bodyLines.length <= 4 ? (item.body || "") : (bodyLines.slice(0, 4).join("\n") + "\n……");
 
         return `
           <div class="card p-3.5 space-y-2.5 border ${item.status === "爆款复盘" ? "border-rose-300 bg-rose-50/15" : "border-slate-200"}">
@@ -7691,7 +8035,7 @@
               <div class="bg-slate-50 border border-slate-200/80 rounded-lg p-2.5 space-y-1">
                 <div class="flex items-center justify-between">
                   <span class="text-[11px] font-bold text-forest-900">📝 正文 / 分镜脚本文案</span>
-                  ${bodyLines.length > 4 ? `<button type="button" onclick="toggleMediaExpand('${track}', '${item.id}')" class="text-[11px] text-champagne-600 font-bold hover:underline">${isExp ? "收起脚本 ▲" : "展开完整脚本 ▼"}</button>` : ""}
+                  ${bodyLines.length > 4 ? `<button type="button" onclick="toggleMediaExpand('${track}', '${item.id}')" class="text-[11px] text-champagne-600 font-bold hover:underline">${isCollapsed ? "展开完整脚本 ▼" : "收起脚本 ▲"}</button>` : ""}
                 </div>
                 <div class="text-xs text-slate-700 leading-relaxed whitespace-pre-line">${escHtml(previewBody)}</div>
               </div>
